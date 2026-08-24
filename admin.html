@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard - Multi Varian, Bank Stok & SnK</title>
+  <title>Admin Dashboard - Produk, Stok & Upload Gambar</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -97,9 +97,32 @@
           </div>
         </div>
 
-        <div>
-          <label class="block font-medium text-slate-700 mb-1">URL Gambar Logo (Link)</label>
-          <input type="url" id="form-image" required placeholder="https://..." class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+        <!-- Opsi Gambar (URL atau Upload Device) -->
+        <div class="border border-slate-200 p-3 rounded-xl bg-slate-50/50 space-y-2.5">
+          <label class="block font-bold text-slate-800 text-xs">Logo / Gambar Produk:</label>
+          
+          <div class="flex items-center gap-3">
+            <div class="w-16 h-16 rounded-xl border border-slate-200 bg-white p-1 flex items-center justify-center overflow-hidden flex-shrink-0 shadow-2xs">
+              <img id="image-preview" src="" alt="Preview" class="w-full h-full object-contain hidden" />
+              <i id="image-placeholder-icon" data-lucide="image" class="w-6 h-6 text-slate-300"></i>
+            </div>
+            
+            <div class="flex-1 space-y-2">
+              <!-- Input URL -->
+              <div>
+                <input type="text" id="form-image" placeholder="Tempelkan URL Gambar (https://...)" oninput="handleUrlImageInput(this.value)" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+              </div>
+              <!-- Upload dari Device -->
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] text-slate-400 font-bold uppercase">atau</span>
+                <label class="cursor-pointer bg-blue-50 hover:bg-blue-100 text-blue-600 border border-blue-200 text-xs font-semibold px-3 py-1 rounded-lg flex items-center gap-1 transition-colors">
+                  <i data-lucide="upload" class="w-3.5 h-3.5"></i>
+                  <span>Pilih dari HP / Laptop</span>
+                  <input type="file" id="form-image-file" accept="image/*" onchange="handleFileUpload(event)" class="hidden" />
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Multi Varian & Bank Akun -->
@@ -127,7 +150,7 @@
           <textarea id="form-desc" rows="3" placeholder="Tuliskan keunggulan produk di katalog..." class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
         </div>
 
-        <!-- Kolom Syarat & Ketentuan Baru -->
+        <!-- Kolom Syarat & Ketentuan -->
         <div class="bg-amber-50/60 border border-amber-200 p-3 rounded-xl">
           <label class="block font-bold text-amber-900 mb-1 text-xs flex items-center gap-1">
             <i data-lucide="file-text" class="w-3.5 h-3.5 text-amber-600"></i> Syarat & Ketentuan (Muncul setelah Checkout Lunas):
@@ -160,6 +183,44 @@
       container.appendChild(toast);
       setTimeout(() => toast.classList.remove('opacity-0', 'translate-y-2'), 10);
       setTimeout(() => { toast.classList.add('opacity-0', '-translate-y-2'); setTimeout(() => toast.remove(), 300); }, 2500);
+    }
+
+    // Penanganan Input Gambar & Preview
+    function setPreviewImage(src) {
+      const preview = document.getElementById('image-preview');
+      const icon = document.getElementById('image-placeholder-icon');
+      if (src && src.trim() !== '') {
+        preview.src = src;
+        preview.classList.remove('hidden');
+        icon.classList.add('hidden');
+      } else {
+        preview.src = '';
+        preview.classList.add('hidden');
+        icon.classList.remove('hidden');
+      }
+    }
+
+    function handleUrlImageInput(val) {
+      setPreviewImage(val);
+    }
+
+    function handleFileUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      if (file.size > 2 * 1024 * 1024) {
+        showToast('Ukuran gambar maksimal 2MB!', 'error');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const base64String = event.target.result;
+        document.getElementById('form-image').value = base64String;
+        setPreviewImage(base64String);
+        showToast('Gambar berhasil diunggah!');
+      };
+      reader.readAsDataURL(file);
     }
 
     async function fetchProducts() {
@@ -225,7 +286,7 @@
                   <h4 class="text-xs sm:text-sm font-semibold text-slate-800 truncate">${item.name}</h4>
                 </div>
                 <div class="flex flex-wrap items-center gap-2 mt-1 text-[11px] text-slate-500">
-                  <span class="font-bold text-blue-600">Mulai ${formatIDR(minPrice)}</span>
+                  <span class="font-bold text-blue-600">${formatIDR(minPrice)}</span>
                   <span>•</span><span>Total Stok: <b class="${totalStock > 0 ? 'text-emerald-600' : 'text-red-500'}">${totalStock} Akun</b></span>
                   <span>•</span><span class="text-yellow-500 font-bold">★ ${item.rating || '5.0'}</span>
                 </div>
@@ -293,6 +354,8 @@
       document.getElementById('product-form').reset();
       document.getElementById('form-id').value = '';
       document.getElementById('form-rating').value = '5.0';
+      document.getElementById('form-image-file').value = '';
+      setPreviewImage('');
       document.getElementById('form-terms').value = '1. Dilarang mengubah email dan password akun.\n2. Gunakan akun sesuai batas slot perangkat yang ditentukan.\n3. Hubungi WhatsApp Admin jika mengalami kendala login.';
       document.getElementById('modal-title').innerText = 'Tambah Produk Baru';
       document.getElementById('variants-container').innerHTML = '';
@@ -312,6 +375,7 @@
       document.getElementById('form-sold').value = p.sold || 0;
       document.getElementById('form-rating').value = p.rating || '5.0';
       document.getElementById('form-image').value = p.image;
+      setPreviewImage(p.image);
       document.getElementById('form-warranty').value = p.warranty || '';
       document.getElementById('form-desc').value = p.description || '';
       document.getElementById('form-terms').value = p.terms || '';
