@@ -114,29 +114,40 @@
   <div id="payment-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div onclick="closePaymentModal()" class="absolute inset-0 bg-black/60 backdrop-blur-xs"></div>
     <div class="fixed inset-0 flex items-center justify-center p-4">
-      <div id="payment-modal-card" class="bg-white w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden p-5 flex flex-col text-center">
+      <div id="payment-modal-card" class="bg-white w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden p-5 flex flex-col text-center max-h-[92vh] overflow-y-auto">
         
         <!-- Header Modal Pembayaran -->
-        <div class="flex justify-between items-center mb-3">
+        <div class="flex justify-between items-center mb-2">
           <h3 class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
             <i data-lucide="wallet" class="w-4 h-4 text-blue-600"></i> Pembayaran QRIS GoPay
           </h3>
           <button onclick="closePaymentModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
         </div>
 
-        <!-- TAMPILAN 1: SCAN QRIS -->
+        <!-- TAMPILAN 1: SCAN QRIS & PANDUAN LANGKAH PEMBAYARAN -->
         <div id="step-pay" class="space-y-3">
-          <div class="bg-slate-50 p-2.5 rounded-2xl border border-slate-100">
+          <div class="bg-blue-50/60 p-2.5 rounded-2xl border border-blue-100 text-center">
             <p id="pay-item-name" class="text-xs font-semibold text-slate-800 truncate"></p>
             <p id="pay-total-amount" class="text-base font-extrabold text-blue-600 mt-0.5"></p>
           </div>
 
-          <!-- Gambar QRIS -->
-          <div class="w-52 h-52 mx-auto bg-white p-2 rounded-2xl border-2 border-dashed border-slate-300 flex items-center justify-center shadow-xs">
+          <!-- Gambar Barcode QRIS -->
+          <div class="w-48 h-48 mx-auto bg-white p-2 rounded-2xl border-2 border-dashed border-slate-300 flex items-center justify-center shadow-xs">
             <img id="qris-img" src="https://placehold.co/300x300/ffffff/000000?text=QRIS+GOPAY+ANDA" alt="QRIS GoPay" class="w-full h-full object-contain" />
           </div>
 
-          <p class="text-[11px] text-slate-500">Scan menggunakan GoPay, BCA, DANA, OVO, ShopeePay atau Mobile Banking lainnya.</p>
+          <!-- KOTAK PANDUAN LANGKAH BAYAR -->
+          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 text-left space-y-2">
+            <p class="text-[11px] font-bold text-slate-800 flex items-center gap-1">
+              <i data-lucide="info" class="w-3.5 h-3.5 text-blue-600"></i> Panduan Cara Pembayaran:
+            </p>
+            <ol class="text-[10.5px] text-slate-600 space-y-1 pl-4 list-decimal leading-relaxed">
+              <li>Buka aplikasi <b>GoPay, BCA, DANA, OVO, ShopeePay,</b> atau <b>M-Banking</b> Anda.</li>
+              <li>Pilih menu <b>Scan / Bayar QRIS</b> lalu arahkan kamera ke barcode di atas (atau screenshot jika pakai 1 HP).</li>
+              <li>Pastikan <b>nama merchant sesuai</b> dan masukkan nominal <b>persis seperti harga di atas</b>.</li>
+              <li>Setelah transfer berhasil, klik tombol hijau <b>"Saya Sudah Transfer"</b> di bawah.</li>
+            </ol>
+          </div>
 
           <button onclick="confirmPayment()" class="w-full bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white py-2.5 rounded-xl font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1.5">
             <i data-lucide="check-circle" class="w-4 h-4"></i> Saya Sudah Transfer
@@ -192,8 +203,8 @@
   <script>
     // ================= PENGATURAN ADMIN =================
     const API_URL = "https://toko-digital-api.rizqinastore97.workers.dev";
-    const WHATSAPP_NUMBER = "6281234567890"; // Ganti No WA Anda
-    const QRIS_IMAGE_URL = "https://placehold.co/400x400/2563eb/ffffff?text=SCAN+QRIS+GOPAY"; // Ganti URL Gambar QRIS Anda
+    const WHATSAPP_NUMBER = "6281234567890"; // Ganti nomor WhatsApp Anda
+    const QRIS_IMAGE_URL = "https://placehold.co/400x400/2563eb/ffffff?text=SCAN+QRIS+GOPAY"; // Ganti URL Gambar QRIS GoPay Anda
     // ====================================================
 
     let products = [];
@@ -311,8 +322,6 @@
     function renderVariantButtons() {
       document.getElementById('modal-variants-list').innerHTML = currentSelectedProduct.variants.map((v, idx) => {
         const isSelected = currentSelectedVariant.name === v.name;
-        const stockCount = (v.items && Array.isArray(v.items)) ? v.items.length : Number(v.stock || 0);
-
         return `
           <button onclick="selectVariant(${idx})" class="px-3 py-1.5 rounded-xl text-xs font-semibold transition-all border ${
             isSelected ? 'bg-blue-50 border-blue-600 text-blue-600 shadow-xs ring-1 ring-blue-600' : 'bg-white border-slate-200 text-slate-700 hover:border-slate-300'
@@ -337,7 +346,6 @@
       document.getElementById('modal-btn-chat').onclick = () => { window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=Halo%20Admin,%20saya%20mau%20tanya%20produk%20*${encodeURIComponent(currentSelectedProduct.name)}*%20varian%20*${encodeURIComponent(v.name)}*%20(${formatIDR(v.price)}).%20Apakah%20stok%20tersedia?`, '_blank'); };
       document.getElementById('modal-btn-cart').onclick = () => { addToCart(currentSelectedProduct, v); closeDetailModal(); };
       
-      // Buka Modal Pembayaran QRIS Langsung
       document.getElementById('modal-btn-buy').onclick = () => {
         closeDetailModal();
         openPaymentModal({
@@ -351,7 +359,7 @@
 
     function closeDetailModal() { document.getElementById('detail-modal').classList.add('hidden'); }
 
-    // ================= ALUR PEMBAYARAN QRIS & INSTANT DELIVERY =================
+    // Modal Pembayaran QRIS
     function openPaymentModal(itemData) {
       currentPayingItem = itemData;
       document.getElementById('qris-img').src = QRIS_IMAGE_URL;
@@ -393,12 +401,10 @@
         const hasStock = v.items && Array.isArray(v.items) && v.items.length > 0;
 
         if (hasStock) {
-          // AMBIL 1 AKUN INSTAN DARI BANK DATA
-          const assignedAccount = v.items.shift(); // Ambil akun paling atas
+          const assignedAccount = v.items.shift();
           v.stock = v.items.length;
           p.sold = (p.sold || 0) + 1;
 
-          // Sinkronisasi pemotongan stok ke Cloudflare KV
           fetch(API_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -416,7 +422,6 @@
             window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
           };
         } else {
-          // STOK INSTAN HABIS -> FALLBACK KE WHATSAPP ADMIN
           badgeContainer.innerHTML = `<div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-2"><i data-lucide="clock" class="w-6 h-6"></i></div>`;
           title.innerText = "Klaim Akun ke WhatsApp";
           subtitle.innerText = `Stok otomatis sedang kosong. Klik tombol di bawah untuk mengirim bukti transfer ${invoiceCode} ke Admin agar akun langsung dikirim via WhatsApp.`;
@@ -428,7 +433,6 @@
           };
         }
       } else {
-        // PEMBAYARAN VIA KERANJANG
         badgeContainer.innerHTML = `<div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-2"><i data-lucide="message-square" class="w-6 h-6"></i></div>`;
         title.innerText = "Kirim Bukti Pembayaran";
         subtitle.innerText = `Pembayaran pesanan keranjang (${invoiceCode}) telah dibuat. Silakan kirim bukti pembayaran ke Admin.`;
