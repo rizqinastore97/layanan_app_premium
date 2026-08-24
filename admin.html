@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard - Multi Varian & Bank Stok</title>
+  <title>Admin Dashboard - Multi Varian, Bank Stok & SnK</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -18,7 +18,7 @@
         <h1 class="text-lg sm:text-xl font-bold text-slate-800 flex items-center gap-2">
           Dashboard Toko <i data-lucide="cloud-check" class="w-5 h-5 text-blue-500"></i>
         </h1>
-        <p class="text-[10px] sm:text-xs text-slate-500">Kelola Produk, Multi-Varian & Bank Stok Digital</p>
+        <p class="text-[10px] sm:text-xs text-slate-500">Kelola Produk, Stok Digital & Syarat Ketentuan</p>
       </div>
       <div class="flex items-center gap-2">
         <a href="index.html" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-semibold px-3.5 py-2 rounded-xl transition-all flex items-center gap-1">
@@ -102,12 +102,12 @@
           <input type="url" id="form-image" required placeholder="https://..." class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" />
         </div>
 
-        <!-- Bagian Multi Varian & Bank Akun -->
+        <!-- Multi Varian & Bank Akun -->
         <div class="border border-blue-100 bg-blue-50/40 p-3 rounded-xl space-y-3">
           <div class="flex items-center justify-between">
             <div>
               <label class="font-bold text-slate-800 text-xs">Varian & Bank Stok Digital:</label>
-              <p class="text-[10px] text-slate-500">1 Baris di Bank Stok = 1 Akun/Lisensi yang dikirim otomatis</p>
+              <p class="text-[10px] text-slate-500">1 Baris = 1 Akun/Lisensi yang dikirim otomatis</p>
             </div>
             <button type="button" onclick="addVariantRow()" class="text-[11px] bg-blue-600 text-white font-semibold px-2.5 py-1 rounded-lg hover:bg-blue-700 flex items-center gap-1">
               <i data-lucide="plus" class="w-3 h-3"></i> Tambah Varian
@@ -123,8 +123,16 @@
         </div>
 
         <div>
-          <label class="block font-medium text-slate-700 mb-1">Deskripsi Lengkap</label>
-          <textarea id="form-desc" rows="3" placeholder="Tuliskan keunggulan produk..." class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+          <label class="block font-medium text-slate-700 mb-1">Deskripsi Produk (Katalog)</label>
+          <textarea id="form-desc" rows="3" placeholder="Tuliskan keunggulan produk di katalog..." class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+        </div>
+
+        <!-- Kolom Syarat & Ketentuan Baru -->
+        <div class="bg-amber-50/60 border border-amber-200 p-3 rounded-xl">
+          <label class="block font-bold text-amber-900 mb-1 text-xs flex items-center gap-1">
+            <i data-lucide="file-text" class="w-3.5 h-3.5 text-amber-600"></i> Syarat & Ketentuan (Muncul setelah Checkout Lunas):
+          </label>
+          <textarea id="form-terms" rows="3" placeholder="Contoh:&#10;1. Dilarang mengubah email/password&#10;2. Gunakan hanya di 1 perangkat&#10;3. Klaim garansi wajib hubungi WhatsApp Admin" class="w-full px-3 py-2 border border-amber-200 rounded-xl text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none bg-white"></textarea>
         </div>
 
         <div class="pt-2 flex justify-end gap-2 border-t border-slate-100">
@@ -160,7 +168,7 @@
         const data = await response.json();
         products = Array.isArray(data) ? data : [];
       } catch (err) {
-        showToast("Gagal mengambil data dari Server Cloudflare!", "error");
+        showToast("Gagal sinkronisasi data dari Cloudflare", "error");
       } finally {
         document.getElementById('admin-loading').classList.add('hidden');
         document.getElementById('admin-container').classList.remove('hidden');
@@ -218,7 +226,7 @@
                 </div>
                 <div class="flex flex-wrap items-center gap-2 mt-1 text-[11px] text-slate-500">
                   <span class="font-bold text-blue-600">Mulai ${formatIDR(minPrice)}</span>
-                  <span>•</span><span>Total Stok Ready: <b class="${totalStock > 0 ? 'text-emerald-600' : 'text-red-500'}">${totalStock} Akun</b></span>
+                  <span>•</span><span>Total Stok: <b class="${totalStock > 0 ? 'text-emerald-600' : 'text-red-500'}">${totalStock} Akun</b></span>
                   <span>•</span><span class="text-yellow-500 font-bold">★ ${item.rating || '5.0'}</span>
                 </div>
               </div>
@@ -285,6 +293,7 @@
       document.getElementById('product-form').reset();
       document.getElementById('form-id').value = '';
       document.getElementById('form-rating').value = '5.0';
+      document.getElementById('form-terms').value = '1. Dilarang mengubah email dan password akun.\n2. Gunakan akun sesuai batas slot perangkat yang ditentukan.\n3. Hubungi WhatsApp Admin jika mengalami kendala login.';
       document.getElementById('modal-title').innerText = 'Tambah Produk Baru';
       document.getElementById('variants-container').innerHTML = '';
       addVariantRow('1 Bulan', '35000', []);
@@ -305,6 +314,7 @@
       document.getElementById('form-image').value = p.image;
       document.getElementById('form-warranty').value = p.warranty || '';
       document.getElementById('form-desc').value = p.description || '';
+      document.getElementById('form-terms').value = p.terms || '';
       document.getElementById('modal-title').innerText = 'Edit Produk';
       
       const container = document.getElementById('variants-container');
@@ -338,7 +348,7 @@
           name: names[i].value.trim(),
           price: Number(prices[i].value),
           items: items,
-          stock: items.length // Stok otomatis sama dengan jumlah baris akun
+          stock: items.length
         });
       }
 
@@ -351,6 +361,7 @@
         image: document.getElementById('form-image').value.trim(),
         warranty: document.getElementById('form-warranty').value.trim(),
         description: document.getElementById('form-desc').value.trim(),
+        terms: document.getElementById('form-terms').value.trim(),
         variants: collectedVariants
       };
 
