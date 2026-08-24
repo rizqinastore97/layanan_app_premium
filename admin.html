@@ -419,32 +419,44 @@
       setTimeout(() => { toast.classList.add('opacity-0', '-translate-y-2'); setTimeout(() => toast.remove(), 300); }, 2500);
     }
 
-    async function loadProductsFromKV() {
-      try {
-        const res = await fetch(API_URL);
-        const data = await res.json();
-        if (Array.isArray(data)) {
-          // Cari apakah ada data konfigurasi banner tersimpan di KV
-          const bannerObj = data.find(item => item._isBannerConfig || item.id === "__BANNER_CONFIG__");
-          if (bannerObj) {
-            bannerSettings = {
-              active: Boolean(bannerObj.active),
-              type: bannerObj.type || 'image',
-              imageUrl: bannerObj.imageUrl || ''
-            };
-          }
-          products = data.filter(item => !item._isBannerConfig && item.id !== "__BANNER_CONFIG__");
-        } else {
-          products = [];
-        }
-        renderAdminProductsList(products);
-        populateReviewProductSelector();
-        loadBannerSettingsToUI();
-        showToast('Data produk & banner disinkron dari Cloudflare KV!');
-      } catch (err) {
-        showToast('Gagal memuat data Cloudflare KV', 'error');
+   async function loadProductsFromKV() {
+  try {
+    const res = await fetch(API_URL, {
+      method: "GET",
+      headers: {
+        "Accept": "application/json"
       }
+    });
+    
+    if (!res.ok) throw new Error('Network response was not ok');
+    
+    const data = await res.json();
+    if (Array.isArray(data)) {
+      const bannerObj = data.find(item => item._isBannerConfig || item.id === "__BANNER_CONFIG__");
+      if (bannerObj) {
+        bannerSettings = {
+          active: Boolean(bannerObj.active),
+          type: bannerObj.type || 'image',
+          imageUrl: bannerObj.imageUrl || ''
+        };
+      }
+      products = data.filter(item => !item._isBannerConfig && item.id !== "__BANNER_CONFIG__");
+    } else {
+      products = [];
     }
+    
+    renderAdminProductsList(products);
+    populateReviewProductSelector();
+    if (typeof loadBannerSettingsToUI === 'function') loadBannerSettingsToUI();
+    showToast('Data produk & ulasan berhasil disinkron!');
+  } catch (err) {
+    console.warn('Gagal memuat via GET, mencoba inisialisasi kosong...', err);
+    // Jika data kosong atau error CORS pertama kali, biarkan array produk siap diisi
+    if (!products) products = [];
+    renderAdminProductsList(products);
+    showToast('Mode offline / Inisialisasi siap disimpan.', 'info');
+  }
+}
 
     function switchTab(tab) {
       document.getElementById('section-products').classList.add('hidden');
