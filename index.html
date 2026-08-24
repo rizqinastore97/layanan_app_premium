@@ -28,7 +28,7 @@
       </div>
     </div>
     <div class="flex items-center gap-2 sm:gap-3">
-      <a href="https://wa.me/6281234567890?text=Halo%20Admin,%20mau%20tanya%20produk%20digital" target="_blank" class="hidden sm:flex items-center gap-1.5 text-xs font-semibold text-emerald-600 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3.5 py-2 rounded-xl transition-colors">
+      <a href="https://wa.me/6282243890517?text=Halo%20Admin,%20mau%20tanya%20produk%20digital" target="_blank" class="hidden sm:flex items-center gap-1.5 text-xs font-semibold text-emerald-600 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3.5 py-2 rounded-xl transition-colors">
         <i data-lucide="message-circle" class="w-4 h-4"></i><span>Chat Admin</span>
       </a>
       <button onclick="toggleCart(true)" class="relative flex items-center justify-center bg-blue-50 text-blue-600 hover:bg-blue-100 p-2.5 rounded-xl transition-colors">
@@ -121,19 +121,29 @@
           <h3 class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
             <i data-lucide="wallet" class="w-4 h-4 text-blue-600"></i> Pembayaran QRIS GoPay
           </h3>
-          <button onclick="closePaymentModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+          <button onclick="closePaymentModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
 
-        <!-- TAMPILAN 1: SCAN QRIS & PANDUAN LANGKAH PEMBAYARAN -->
+        <!-- TAMPILAN 1: SCAN QRIS, TOMBOL DOWNLOAD, PANDUAN & PERINGATAN -->
         <div id="step-pay" class="space-y-3">
           <div class="bg-blue-50/60 p-2.5 rounded-2xl border border-blue-100 text-center">
             <p id="pay-item-name" class="text-xs font-semibold text-slate-800 truncate"></p>
             <p id="pay-total-amount" class="text-base font-extrabold text-blue-600 mt-0.5"></p>
           </div>
 
-          <!-- Gambar Barcode QRIS -->
-          <div class="w-48 h-48 mx-auto bg-white p-2 rounded-2xl border-2 border-dashed border-slate-300 flex items-center justify-center shadow-xs">
-            <img id="qris-img" src="https://placehold.co/300x300/ffffff/000000?text=QRIS+GOPAY+ANDA" alt="QRIS GoPay" class="w-full h-full object-contain" />
+          <!-- Barcode QRIS & Tombol Download -->
+          <div class="flex flex-col items-center">
+            <div class="w-48 h-48 bg-white p-2 rounded-2xl border-2 border-dashed border-slate-300 flex items-center justify-center shadow-xs">
+              <img id="qris-img" src="" alt="QRIS GoPay" class="w-full h-full object-contain rounded-xl" />
+            </div>
+            <!-- Tombol Download QRIS -->
+            <button 
+              type="button"
+              onclick="downloadQRIS()"
+              class="mt-2 text-xs text-blue-600 hover:text-blue-700 font-semibold bg-blue-50 hover:bg-blue-100 border border-blue-200 px-3 py-1.5 rounded-xl flex items-center gap-1.5 transition-colors"
+            >
+              <i data-lucide="download" class="w-3.5 h-3.5"></i> Unduh / Simpan QRIS
+            </button>
           </div>
 
           <!-- KOTAK PANDUAN LANGKAH BAYAR -->
@@ -143,10 +153,18 @@
             </p>
             <ol class="text-[10.5px] text-slate-600 space-y-1 pl-4 list-decimal leading-relaxed">
               <li>Buka aplikasi <b>GoPay, BCA, DANA, OVO, ShopeePay,</b> atau <b>M-Banking</b> Anda.</li>
-              <li>Pilih menu <b>Scan / Bayar QRIS</b> lalu arahkan kamera ke barcode di atas (atau screenshot jika pakai 1 HP).</li>
-              <li>Pastikan <b>nama merchant sesuai</b> dan masukkan nominal <b>persis seperti harga di atas</b>.</li>
-              <li>Setelah transfer berhasil, klik tombol hijau <b>"Saya Sudah Transfer"</b> di bawah.</li>
+              <li>Pilih menu <b>Scan / Bayar QRIS</b> lalu scan barcode di atas atau unggah foto barcode yang sudah diunduh.</li>
+              <li>Masukkan nominal pembayaran <b>persis sesuai harga</b>.</li>
+              <li>Setelah berhasil, <b>screenshot bukti transfer</b> lalu klik tombol di bawah.</li>
             </ol>
+          </div>
+
+          <!-- KOTAK PERINGATAN WAJIB SCREENSHOT -->
+          <div class="bg-amber-50 border border-amber-200 rounded-2xl p-2.5 text-left flex items-start gap-2">
+            <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5"></i>
+            <p class="text-[10.5px] text-amber-900 font-medium leading-tight">
+              <b>Peringatan:</b> Transaksi <b>tidak dapat diproses</b> jika tidak menyertakan bukti screenshot transfer asli.
+            </p>
           </div>
 
           <button onclick="confirmPayment()" class="w-full bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white py-2.5 rounded-xl font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1.5">
@@ -168,6 +186,14 @@
             <button onclick="copyAccountData()" class="mt-2 w-full bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold py-1.5 rounded-lg flex items-center justify-center gap-1 transition-all">
               <i data-lucide="copy" class="w-3.5 h-3.5"></i> Salin Data Akun
             </button>
+          </div>
+
+          <!-- Peringatan di Halaman Konfirmasi WhatsApp -->
+          <div class="bg-amber-50 border border-amber-200 rounded-2xl p-2.5 text-left flex items-start gap-2">
+            <i data-lucide="alert-circle" class="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5"></i>
+            <p class="text-[10px] text-amber-900 leading-tight">
+              Harap lampirkan <b>foto screenshot bukti transfer</b> saat mengirim pesan ke WhatsApp Admin.
+            </p>
           </div>
 
           <!-- Tombol Kirim Bukti ke WhatsApp -->
@@ -203,8 +229,8 @@
   <script>
     // ================= PENGATURAN ADMIN =================
     const API_URL = "https://toko-digital-api.rizqinastore97.workers.dev";
-    const WHATSAPP_NUMBER = "6282243890517"; // Ganti nomor WhatsApp Anda
-    const QRIS_IMAGE_URL = "https://i.ibb.co.com/PGRmz0G8/Whats-App-Image-2026-08-24-at-12-25-05.jpg"; // Ganti URL Gambar QRIS GoPay Anda
+    const WHATSAPP_NUMBER = "6282243890517"; 
+    const QRIS_IMAGE_URL = "https://i.ibb.co.com/PGRmz0G8/Whats-App-Image-2026-08-24-at-12-25-05.jpg"; 
     // ====================================================
 
     let products = [];
@@ -382,6 +408,27 @@
       document.getElementById('payment-modal').classList.add('hidden');
     }
 
+    // Fungsi Unduh Gambar QRIS
+    async function downloadQRIS() {
+      try {
+        showToast('Mengunduh barcode QRIS...');
+        const response = await fetch(QRIS_IMAGE_URL);
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = `QRIS-Payment-${Date.now()}.jpg`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(blobUrl);
+        showToast('QRIS berhasil diunduh ke galeri/perangkat!');
+      } catch (e) {
+        // Fallback jika diblokir oleh CORS gambar eksternal
+        window.open(QRIS_IMAGE_URL, '_blank');
+      }
+    }
+
     async function confirmPayment() {
       document.getElementById('step-pay').classList.add('hidden');
       document.getElementById('step-result').classList.remove('hidden');
@@ -412,36 +459,36 @@
           });
 
           badgeContainer.innerHTML = `<div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-2"><i data-lucide="check" class="w-6 h-6"></i></div>`;
-          title.innerText = "Pembayaran Dikonfirmasi!";
-          subtitle.innerText = "Terima kasih! Berikut adalah rincian akun/lisensi digital Anda:";
+          title.innerText = "Pembayaran Selesai!";
+          subtitle.innerText = "Data akun digital Anda berhasil diambil dari sistem. Silakan simpan detail di bawah:";
           accountData.innerText = assignedAccount;
           accountBox.classList.remove('hidden');
 
           btnWa.onclick = () => {
-            const msg = `*Konfirmasi Pembelian Berhasil (${invoiceCode})*%0AProduk: ${p.name} (${v.name})%0AHarga: ${formatIDR(v.price)}%0A%0ASaya sudah menerima akun, mohon konfirmasi garansi. Terima kasih!`;
+            const msg = `*Konfirmasi Pembelian & Klaim Garansi (${invoiceCode})*%0AProduk: ${p.name} (${v.name})%0AHarga: ${formatIDR(v.price)}%0A%0A_Saya sudah transfer dan melampirkan screenshot bukti transfer di bawah ini. Mohon aktifkan garansinya._`;
             window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
           };
         } else {
           badgeContainer.innerHTML = `<div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-2"><i data-lucide="clock" class="w-6 h-6"></i></div>`;
           title.innerText = "Klaim Akun ke WhatsApp";
-          subtitle.innerText = `Stok otomatis sedang kosong. Klik tombol di bawah untuk mengirim bukti transfer ${invoiceCode} ke Admin agar akun langsung dikirim via WhatsApp.`;
+          subtitle.innerText = `Stok otomatis sedang kosong. Klik tombol di bawah dan **WAJIB lampirkan screenshot bukti transfer** ${invoiceCode} agar diproses oleh Admin.`;
           accountBox.classList.add('hidden');
 
           btnWa.onclick = () => {
-            const msg = `*Klaim Pesanan Manual (${invoiceCode})*%0AProduk: ${p.name} (${v.name})%0ATotal Bayar: ${formatIDR(v.price)}%0A%0ASaya sudah transfer via QRIS, berikut lampiran bukti transfer saya. Mohon kirimkan akunnya ya Admin!`;
+            const msg = `*Klaim Pesanan Manual (${invoiceCode})*%0AProduk: ${p.name} (${v.name})%0ATotal Bayar: ${formatIDR(v.price)}%0A%0A*PENTING:* Saya sudah transfer via QRIS dan menyertakan foto/screenshot bukti transfer pada chat ini. Mohon segera dikirimkan akunnya ya Admin!`;
             window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
           };
         }
       } else {
         badgeContainer.innerHTML = `<div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-2"><i data-lucide="message-square" class="w-6 h-6"></i></div>`;
         title.innerText = "Kirim Bukti Pembayaran";
-        subtitle.innerText = `Pembayaran pesanan keranjang (${invoiceCode}) telah dibuat. Silakan kirim bukti pembayaran ke Admin.`;
+        subtitle.innerText = `Pesanan keranjang (${invoiceCode}) siap dikonfirmasi. Kirim screenshot bukti transfer ke WhatsApp Admin.`;
         accountBox.classList.add('hidden');
 
         btnWa.onclick = () => {
           let msg = `*Checkout Keranjang QRIS (${invoiceCode})*%0A`;
           cart.forEach((item, idx) => { msg += `${idx + 1}. ${item.name} (${item.quantity}x) - ${formatIDR(item.price * item.quantity)}%0A`; });
-          msg += `%0A*Total Transfer: ${formatIDR(currentPayingItem.amount)}*%0A%0ASaya sudah transfer via QRIS, mohon diproses pesanan saya. Terima kasih!`;
+          msg += `%0A*Total Transfer: ${formatIDR(currentPayingItem.amount)}*%0A%0ASaya sudah transfer via QRIS dan menyertakan screenshot bukti pembayaran di chat ini. Mohon diproses. Terima kasih!`;
           window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
         };
         cart = [];
