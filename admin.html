@@ -94,7 +94,7 @@
           <h2 class="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
             <span id="view-title">Manajemen Produk</span>
           </h2>
-          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Kelola produk dengan AI Generator Deskripsi, urutan posisi, dan stok otomatis</p>
+          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Kelola produk dengan AI Generator Deskripsi (80+ Produk Siap Pakai)</p>
         </div>
         <div class="flex items-center gap-2">
           <button onclick="openProductModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-2xl shadow-sm transition-all flex items-center gap-1.5">
@@ -157,7 +157,7 @@
           <div class="space-y-3">
             <label class="text-xs font-bold text-slate-700 block">Pilih Tipe Tampilan Banner:</label>
             <div class="grid grid-cols-2 gap-3">
-              <label class="border-2 border-slate-200 p-3 rounded-2xl flex items-center gap-2.5 cursor-pointer hover:border-indigo-500 transition-colors">
+              <label class="border-2 border-slate-200 p-3 rounded-2xl flex items-center gap-2.5 cursor-pointer hover:border-indigo-500 transition-colors" id="label-type-custom">
                 <input type="radio" name="banner_type" value="image" onchange="setBannerType('image')" class="accent-indigo-600" checked />
                 <div>
                   <p class="font-bold text-xs text-slate-800">Gambar Banner Kustom</p>
@@ -165,7 +165,7 @@
                 </div>
               </label>
 
-              <label class="border-2 border-slate-200 p-3 rounded-2xl flex items-center gap-2.5 cursor-pointer hover:border-indigo-500 transition-colors">
+              <label class="border-2 border-slate-200 p-3 rounded-2xl flex items-center gap-2.5 cursor-pointer hover:border-indigo-500 transition-colors" id="label-type-text">
                 <input type="radio" name="banner_type" value="text" onchange="setBannerType('text')" class="accent-indigo-600" />
                 <div>
                   <p class="font-bold text-xs text-slate-800">LazFlash Teks Bawaan</p>
@@ -543,77 +543,306 @@
       lucide.createIcons();
     }
 
-    // ================= DATABASE PENGETAHUAN AI GENERATOR (50+ PRODUK) =================
+    // ================= MEGA DATABASE PENGETAHUAN AI (80+ PRODUK LENGKAP) =================
     const aiProductKnowledgeBase = {
+      // 1. AI TOOLS
       gemini: {
-        category: 'AI',
-        warranty: 'Resmi 1 Bulan',
+        category: 'AI', warranty: 'Resmi 1 Bulan',
         desc: 'Nikmati kecerdasan AI generasi terbaru dari Google dengan Gemini Pro / Advanced. Membantu riset, analisis data, coding, penulisan konten, hingga integrasi Google Workspace dengan penalaran tingkat tinggi.\n\n✨ Keunggulan Akun:\n• Model AI multimodal terbaru & context window super luas\n• Analisis file, PDF, spreadsheet, dan dokumen panjang\n• Terintegrasi dengan ekosistem Google (Docs, Drive, Gmail)\n• Login akun private/resmi, aman, dan anti-suspend\n\n⚡ Pengiriman: Otomatis via Auto QRIS / Instan 24 Jam\n🛡️ Garansi: Full garansi sesuai durasi paket',
         terms: '1. Dilarang mengganti email utama akun.\n2. Akun legal dan aman digunakan untuk keperluan kerja/harian.\n3. Garansi berlaku penuh selama masa aktif paket.',
         variants: [{ name: '1 Bulan Private', price: 4000 }, { name: '3 Bulan Private', price: 10000 }]
       },
       chatgpt: {
-        category: 'AI',
-        warranty: 'Resmi 1 Bulan',
+        category: 'AI', warranty: 'Resmi 1 Bulan',
         desc: 'Buka potensi produktivitas maksimal dengan ChatGPT Plus resmi OpenAI. Dilengkapi akses model GPT-4o penalaran cepat, DALL·E 3 untuk generate gambar ultra-HD, browsing web real-time, dan fitur Voice Mode interaktif.\n\n✨ Keunggulan Akun:\n• Akses model GPT-4o / GPT-4 Turbo tanpa antre\n• Fitur Generate Gambar DALL-E 3 & Custom GPTs\n• Analisis data, file code, dan dokumen kompleks\n• Tersedia opsi Akun Private atau Akun Siap Pakai\n\n⚡ Pengiriman: Otomatis via QRIS / Instant Delivery\n🛡️ Garansi: Full garansi & support replace jika berkendala',
         terms: '1. Dilarang menyalahgunakan akun untuk aktivitas yang melanggar ToS OpenAI.\n2. Garansi replace jika terjadi kendala login.\n3. Simpan invoice sebagai bukti garansi sah.',
         variants: [{ name: '1 Bulan Sharing', price: 15000 }, { name: '1 Bulan Private', price: 45000 }]
       },
       claude: {
-        category: 'AI',
-        warranty: 'Resmi 1 Bulan',
+        category: 'AI', warranty: 'Resmi 1 Bulan',
         desc: 'Akses Claude Pro dari Anthropic dengan model Claude 3.5 Sonnet & Opus. Terkenal sebagai AI dengan kemampuan coding, penulisan esai bernada manusiawi, dan penalaran logika terbaik di kelasnya.\n\n✨ Keunggulan Akun:\n• Kapasitas pemrosesan hingga 200.000 token per prompt\n• Fitur Claude Artifacts (preview coding & desain interaktif)\n• Bahasa Indonesia natural & akurasi logika tinggi\n• Akun private bergaransi penuh\n\n⚡ Pengiriman: Instan otomatis setelah pembayaran\n🛡️ Garansi: Full cover selama masa aktif',
-        terms: '1. Gunakan sesuai batas wajar prompt harian Anthropic.\n2. Garansi 100% replace akun jika terjadi masalah login.\n3. Hubungi CS WhatsApp untuk bantuan klaim.',
+        terms: '1. Gunakan sesuai batas wajar prompt harian Anthropic.\n2. Garansi 100% replace akun jika terjadi masalah login.',
         variants: [{ name: '1 Bulan Pro', price: 25000 }]
       },
+      midjourney: {
+        category: 'AI', warranty: 'Resmi 1 Bulan',
+        desc: 'Generate gambar AI paling fotorealistik dan estetik di dunia. Buka akses GPU generation cepat, mode stealth, dan variasi gambar resolusi tinggi tanpa batas.\n\n✨ Keunggulan Akun:\n• Akses Fast GPU Hours melimpah\n• Prompting visual detail & kualitas render 8K\n• Komersial license penuh atas hasil gambar\n• Akun stabil via Discord / Web',
+        terms: '1. Dilarang melanggar ToS Midjourney (konten NSFW/SARA).\n2. Garansi replace jika terjadi kendala server.',
+        variants: [{ name: 'Basic Plan 1 Bulan', price: 35000 }, { name: 'Standard Plan 1 Bulan', price: 75000 }]
+      },
+      grok: {
+        category: 'AI', warranty: 'Resmi 1 Bulan',
+        desc: 'Jelajahi AI tanpa sensor dari xAI milik Elon Musk. Terhubung langsung dengan database live platform X (Twitter) untuk berita terhangat, data real-time, dan pembuatan visual tanpa batasan kaku.\n\n✨ Keunggulan Akun:\n• Akses Grok 2 & Grok Vision real-time\n• Terhubung langsung dengan live feed X (Twitter)\n• Jawaban cerdas, lugas, dan minim batasan/filter\n• Akun siap pakai & aman digunakan',
+        terms: '1. Dilarang mengubah data profil utama akun sharing.\n2. Garansi full replace jika kendala.',
+        variants: [{ name: 'Grok 2 Premium 1 Bulan', price: 20000 }]
+      },
+      perplexity: {
+        category: 'AI', warranty: 'Resmi 1 Bulan',
+        desc: 'Mesin pencari berbasis AI terbaik untuk riset akademik, profesional, dan analisis pasar. Menyajikan jawaban akurat lengkap dengan sumber rujukan valid dan sitasi ilmiah.\n\n✨ Keunggulan Akun:\n• Akses Perplexity Pro dengan pilihan engine (GPT-4o, Claude 3.5, Sonar)\n• Upload file riset tanpa batas & Pro Search mendalam\n• Menampilkan sitasi dan link rujukan langsung\n• Akun resmi & stabil',
+        terms: '1. Akun privat aman untuk riset harian.\n2. Garansi 1 bulan penuh.',
+        variants: [{ name: '1 Bulan Pro', price: 15000 }, { name: '1 Tahun Pro', price: 90000 }]
+      },
+      leonardo: {
+        category: 'AI', warranty: 'Resmi 1 Bulan',
+        desc: 'Platform AI Art Generation profesional untuk desainer, ilustrator, dan kreator konten. Hasilkan aset visual game, ilustrasi realistis, dan vector berkualitas tinggi.\n\n✨ Keunggulan Akun:\n• Kuota token harian/bulanan melimpah\n• Fitur Realtime Canvas, PhotoReal, dan Motion Generator\n• Hak cipta komersial penuh atas aset yang dibuat\n• Akun stabil & siap pakai',
+        terms: '1. Token ter-refresh otomatis.\n2. Garansi aktif selama masa langganan.',
+        variants: [{ name: 'Apprentice Plan 1 Bulan', price: 20000 }]
+      },
+      suno: {
+        category: 'AI', warranty: 'Resmi 1 Bulan',
+        desc: 'Buat lagu dan musik lengkap dengan vokal dan instrumen berkualitas studio hanya dari teks prompt menggunakan Suno AI Pro.\n\n✨ Keunggulan Akun:\n• 2.500 Credits bulanan (bisa buat hingga 500 lagu)\n• Hak cipta komersial penuh (bisa upload Spotify/Apple Music)\n• Prioritas antrean pembuatan lagu cepat\n• Format audio lossless HD',
+        terms: '1. Hak cipta lagu milik Anda sepenuhnya.\n2. Garansi akun aktif sesuai paket.',
+        variants: [{ name: 'Pro Plan 2.500 Credits', price: 25000 }]
+      },
+      elevenlabs: {
+        category: 'AI', warranty: 'Resmi 1 Bulan',
+        desc: 'AI Text-to-Speech (TTS) dan Voice Cloning paling realistis dan ekspresif di dunia. Sangat cocok untuk dubbing video YouTube, TikTok, dan audiobook.\n\n✨ Keunggulan Akun:\n• Akses Voice Cloning & Ribuan suara AI ekspresif\n• Kuota 30.000 - 100.000 karakter per bulan\n• Kualitas audio studio jernih tanpa robotik\n• Komersial lisensi resmi',
+        terms: '1. Dilarang meng-clone suara tanpa izin pemilik suara.\n2. Garansi kuota aktif penuh.',
+        variants: [{ name: 'Starter Plan 30k Karakter', price: 20000 }]
+      },
+      cursor: {
+        category: 'AI', warranty: 'Resmi 1 Bulan',
+        desc: 'Code Editor berbasis AI terbaik untuk programmer. Dilengkapi fitur Auto-Complete pintar, chat konteks seluruh codebase, dan refactor code instan.\n\n✨ Keunggulan Akun:\n• Akses Cursor Pro dengan GPT-4o & Claude 3.5 Sonnet\n• Fast Premium Requests melimpah\n• Integrasi langsung dengan VS Code extensions\n• Sangat menghemat waktu coding hingga 10x lipat',
+        terms: '1. Akun privat resmi untuk developer.\n2. Garansi penuh 1 bulan.',
+        variants: [{ name: 'Cursor Pro 1 Bulan', price: 35000 }]
+      },
+      deepl: {
+        category: 'AI', warranty: 'Resmi 1 Bulan',
+        desc: 'Penerjemah dokumen dan teks berbasis neural network paling akurat di dunia. Terjemahan alami dan jauh lebih presisi dari penerjemah standar.\n\n✨ Keunggulan Akun:\n• Terjemahan dokumen PDF, Word, PPT utuh tanpa merusak format\n• Keamanan data terenkripsi (Data Protection)\n• Terjemahan tanpa batas karakter\n• Tone suara formal/informal kustom',
+        terms: '1. Legal dan aman untuk dokumen penting kantor.\n2. Garansi 1 bulan.',
+        variants: [{ name: 'DeepL Pro Starter', price: 18000 }]
+      },
+      quillbot: {
+        category: 'AI', warranty: 'Resmi 1 Bulan',
+        desc: 'Tool Parafrase, Grammar Checker, dan Summarizer AI terbaik untuk mahasiswa, penulis, dan profesional agar tulisan bebas plagiarisme.\n\n✨ Keunggulan Akun:\n• Unlimited Paraphrase Words tanpa batasan\n• Semua Mode Parafrase Terbuka (Formal, Creative, Shorten, Expand)\n• Plagiarism Checker terintegrasi\n• Ekstensi Chrome & MS Word siap pakai',
+        terms: '1. Garansi replace jika kendala login.\n2. Dilarang mengubah email akun sharing.',
+        variants: [{ name: '1 Bulan Premium', price: 6000 }, { name: '1 Tahun Premium', price: 25000 }]
+      },
+
+      // 2. DESAIN & EDITING
       capcut: {
-        category: 'Editor',
-        warranty: 'Resmi 1 Tahun',
+        category: 'Editor', warranty: 'Resmi 1 Tahun',
         desc: 'Aplikasi editing video paling populer untuk kreator TikTok, Instagram Reels, dan YouTube Shorts. Buka semua fitur pro, efek eksklusif, dan preset tren tanpa watermark.\n\n✨ Keunggulan Akun:\n• Buka semua Efek Pro, Transisi, Filter, dan Font Premium\n• Fitur Auto-Caption (Subtitle Otomatis) & AI Voice Generator\n• Ekspor video resolusi 2K/4K 60fps tanpa watermark\n• Kompatibel untuk Android, iOS, Windows, dan MacOS\n\n⚡ Pengiriman: Data login instan terkirim otomatis\n🛡️ Garansi: Full garansi ganti baru jika kendala',
         terms: '1. Dilarang mengubah email/password akun sharing.\n2. Bisa digunakan di HP dan PC/Laptop.\n3. Garansi aktif selama 1 tahun penuh.',
         variants: [{ name: '1 Tahun Pro', price: 9000 }, { name: '1 Bulan Pro', price: 3000 }]
       },
       alightmotion: {
-        category: 'Editor',
-        warranty: 'Resmi 1 Tahun',
+        category: 'Editor', warranty: 'Resmi 1 Tahun',
         desc: 'Software motion graphics dan visual effects terbaik di smartphone. Sangat cocok untuk editing jedag-jedug (JJ), preset XML, typografi, dan animasi kompleks.\n\n✨ Keunggulan Akun:\n• Dukungan penuh import/export Preset XML & Link 5MB+\n• Tanpa watermark Alight Motion pada hasil ekspor\n• Buka semua Efek Visual, Blending Mode, dan Easing kurva\n• Ekspor video kualitas Full HD & 4K lancar\n\n⚡ Pengiriman: Akun otomatis terkirim\n🛡️ Garansi: Garansi resmi selama masa aktif',
         terms: '1. Login sesuai panduan yang diberikan.\n2. Jangan logout akun dari aplikasi agar preset tetap tersimpan.\n3. Garansi 1 tahun replace.',
         variants: [{ name: '1 Tahun Full Support', price: 1000 }]
       },
       canva: {
-        category: 'Editor',
-        warranty: 'Resmi 1 Tahun',
+        category: 'Editor', warranty: 'Resmi 1 Tahun',
         desc: 'Platform desain grafis serba bisa untuk presentasi, konten media sosial, banner promosi, hingga dokumen bisnis.\n\n✨ Keunggulan Akun:\n• Akses 100+ juta foto, video, font, dan elemen premium\n• Fitur Penghapus Latar Belakang (Magic Background Remover) 1-klik\n• Resize desain otomatis (Magic Switch) & AI Magic Studio\n• Bisa menggunakan email pribadi pembeli\n\n⚡ Pengiriman: Undangan via email / akun instan\n🛡️ Garansi: Full garansi selama durasi langganan',
         terms: '1. Desain Anda bersifat privat di dalam tim/pro.\n2. Garansi re-invite jika sewaktu-waktu status pro terlepas.\n3. Masa aktif terjamin sesuai pilihan paket.',
         variants: [{ name: '1 Tahun Pro Designer', price: 5000 }, { name: 'Lifetime Edu', price: 15000 }]
       },
+      adobe: {
+        category: 'Editor', warranty: 'Resmi 1 Bulan',
+        desc: 'Akses seluruh aplikasi Adobe Creative Cloud Original (Photoshop, Illustrator, Premiere Pro, After Effects, InDesign, Acrobat Pro).\n\n✨ Keunggulan Akun:\n• Akses 20+ Aplikasi Adobe Desktop & Mobile\n• Fitur Generative Fill AI Photoshop & AI Premiere Pro\n• Cloud Storage Adobe 100GB aktif\n• Bisa login di 2 perangkat aktif bersamaan',
+        terms: '1. Aktivasi langsung ke email Adobe pribadi Anda.\n2. Legalitas terjamin dan anti-ban.\n3. Garansi full masa aktif.',
+        variants: [{ name: '1 Bulan All Apps', price: 45000 }, { name: '3 Bulan All Apps', price: 120000 }]
+      },
+      lightroom: {
+        category: 'Editor', warranty: 'Resmi 1 Tahun',
+        desc: 'Preset dan editor foto profesional standar fotografer dari Adobe. Tingkatkan kualitas warna foto dengan grading sinematik.\n\n✨ Keunggulan Akun:\n• Buka semua Preset Premium eksklusif Adobe\n• Fitur Selective Editing, Healing Brush, dan Masking AI\n• Dukungan editing file format RAW resolusi tinggi\n• Cloud storage sinkron antar perangkat',
+        terms: '1. Akun siap pakai atau invite email.\n2. Garansi aktif penuh.',
+        variants: [{ name: '1 Tahun Premium', price: 10000 }]
+      },
+      remini: {
+        category: 'Editor', warranty: 'Resmi 1 Bulan',
+        desc: 'Ubah foto buram, jadul, dan pecah menjadi foto ultra-HD beresolusi tajam dalam hitungan detik menggunakan teknologi AI Enhancer.\n\n✨ Keunggulan Akun:\n• AI Photo & Video Enhancer tanpa batas\n• Fitur AI Headshot / Foto Profil Profesional Studio\n• Memperjelas detail wajah, mata, dan tekstur kulit\n• Tanpa antre dan bebas iklan',
+        terms: '1. Akun siap pakai langsung login.\n2. Garansi replace jika limit.',
+        variants: [{ name: '1 Bulan Pro Unlimited', price: 8000 }]
+      },
+      picsart: {
+        category: 'Editor', warranty: 'Resmi 1 Tahun',
+        desc: 'Aplikasi all-in-one photo & video editor lengkap dengan filter AI, stiker premium, dan tool manipulasi gambar kreatif.\n\n✨ Keunggulan Akun:\n• Akses semua tool Picsart Gold & AI Enhance\n• Bebas iklan & hapus background otomatis\n• Ribuan template, stiker, dan font eksklusif\n• Ekspor kualitas resolusi tertinggi',
+        terms: '1. Dilarang mengubah data akun sharing.\n2. Garansi replace selama masa aktif.',
+        variants: [{ name: '1 Tahun Gold', price: 7000 }]
+      },
+      vsco: {
+        category: 'Editor', warranty: 'Resmi 1 Tahun',
+        desc: 'Aplikasi filter warna foto dan video paling estetik untuk selebgram dan fotografer profesional dengan 200+ filter film analog.\n\n✨ Keunggulan Akun:\n• 200+ Preset Film & Analog Terbuka Penuh\n• Fitur Video Editing & HSL Color Tuning\n• Efek Film Grain, Dust, dan Vintage Frame\n• Kompatibel iOS & Android',
+        terms: '1. Login sesuai tutorial toko.\n2. Garansi 1 tahun penuh.',
+        variants: [{ name: '1 Tahun VSCO X Member', price: 5000 }]
+      },
+      envato: {
+        category: 'Editor', warranty: 'Resmi 1 Bulan',
+        desc: 'Download jutaan aset grafis, video template, musik, audio effect, 3D model, dan web template tanpa batas dari Envato Elements.\n\n✨ Keunggulan Akun:\n• Unlimited Downloads aset kreatif setiap hari\n• Lisensi komersial aman untuk project klien\n• Ribuan template After Effects, Premiere, & Photoshop\n• Server download berkecepatan tinggi',
+        terms: '1. Gunakan ekstensi / shared login resmi toko.\n2. Garansi aktif 1 bulan.',
+        variants: [{ name: '1 Bulan Unlimited Download', price: 25000 }]
+      },
+      freepik: {
+        category: 'Editor', warranty: 'Resmi 1 Bulan',
+        desc: 'Akses jutaan file Vector, PSD mockups, icon, foto stok HD, dan template desain premium dari Freepik.\n\n✨ Keunggulan Akun:\n• Kuota download 100+ file premium setiap hari\n• Lisensi komersial bebas atribusi\n• Akses Flaticon Premium terintegrasi\n• Akun stabil dan cepat',
+        terms: '1. Dilarang membagikan login ke pihak lain.\n2. Garansi kuota aktif penuh.',
+        variants: [{ name: '1 Bulan Premium', price: 20000 }]
+      },
+
+      // 3. STREAMING FILM & DRAMA
       netflix: {
-        category: 'Stream',
-        warranty: 'Full Garansi',
+        category: 'Stream', warranty: 'Full Garansi',
         desc: 'Nonton ribuan film blockbuster, serial original, drakor, dan anime terpopuler di dunia dengan kualitas tertinggi 4K Ultra HD + Dolby Atmos.\n\n✨ Keunggulan Akun:\n• Kualitas gambar maksimal 4K Ultra HD + HDR\n• Audio jernih surround sound Dolby Vision/Atmos\n• Profil private ber-PIN (Aman, history tontonan tidak tercampur)\n• Kompatibel untuk Smart TV, Laptop, Tablet, Android, dan iPhone\n\n⚡ Pengiriman: Data akun dikirim instan otomatis\n🛡️ Garansi: Full garansi ganti akun jika ada kendala',
         terms: '1. Dilarang mengubah email, password, dan nama profil orang lain.\n2. Login hanya pada 1 perangkat sesuai jumlah profil yang dibeli.\n3. Garansi full ganti akun jika terkena screen limit / household.',
         variants: [{ name: '1 Bulan 1 Profil 4K', price: 18000 }, { name: '1 Bulan Privat Akun', price: 65000 }]
       },
       youtube: {
-        category: 'Stream',
-        warranty: 'Full Garansi',
+        category: 'Stream', warranty: 'Full Garansi',
         desc: 'Nonton jutaan video YouTube tanpa gangguan iklan sedikit pun! Paket sudah termasuk akses penuh ke YouTube Music Premium.\n\n✨ Keunggulan Akun:\n• Bebas iklan di semua video selamanya\n• Putar video di latar belakang (Background Play saat layar mati/buka aplikasi lain)\n• Download video offline kualitas Full HD\n• Termasuk akses aplikasi YouTube Music Premium resmi\n• Proses mudah via invite email pribadi pembeli\n\n⚡ Pengiriman: Proses cepat & instan\n🛡️ Garansi: Garansi full sesuai masa langganan',
         terms: '1. Email tidak boleh sedang tergabung dalam grup keluarga YouTube lain dalam 12 bulan terakhir.\n2. Garansi invite ulang jika terjadi kendala langganan.\n3. Pembayaran 1x untuk durasi penuh.',
         variants: [{ name: '1 Bulan Akun Pribadi', price: 5000 }, { name: '3 Bulan No Limit', price: 12000 }]
       },
+      disney: {
+        category: 'Stream', warranty: 'Full Garansi',
+        desc: 'Pusat tontonan film Marvel, Disney, Pixar, Star Wars, National Geographic, serta serial drama Asia eksklusif dengan subtitle Indonesia.\n\n✨ Keunggulan Akun:\n• Streaming kualitas 4K UHD & IMAX Enhanced\n• Audio Dolby Digital 5.1 jernih\n• Profil pribadi dengan opsi PIN pengaman\n• Kompatibel di HP, Tablet, Laptop, dan Smart TV',
+        terms: '1. Login menggunakan nomor/email yang diberikan.\n2. Garansi replace jika terjadi kendala.',
+        variants: [{ name: '1 Bulan Basic', price: 12000 }, { name: '1 Bulan Premium TV', price: 22000 }]
+      },
+      primevideo: {
+        category: 'Stream', warranty: 'Full Garansi',
+        desc: 'Streaming serial original Amazon eksklusif (The Boys, Rings of Power, Fallout) dan film-film box office internasional.\n\n✨ Keunggulan Akun:\n• Kualitas 4K Ultra HD & HDR10+\n• Fitur X-Ray eksklusif (lihat detail aktor & soundtrack)\n• Subtitle & Audio Indonesia lengkap\n• Akun resmi, stabil, dan anti-on hold',
+        terms: '1. Dilarang mengganti password akun.\n2. Garansi full masa aktif.',
+        variants: [{ name: '1 Bulan Private', price: 8000 }, { name: '3 Bulan Private', price: 20000 }]
+      },
+      vidio: {
+        category: 'Stream', warranty: 'Full Garansi',
+        desc: 'Platform streaming lokal nomor 1 untuk tayangan Premier League (Liga Inggris), BRI Liga 1, UCL, NBA, Vidio Original Series, dan TV Nasional HD.\n\n✨ Keunggulan Akun:\n• Paket Platinum / Diamond (Live Sport & Movies)\n• Nonton bola live streaming lancar tanpa buffering\n• Buka semua episode Vidio Original Series eksklusif\n• Kualitas HD jernih di HP, Laptop, dan Smart TV',
+        terms: '1. Login 1 device aktif saat pertandingan live.\n2. Garansi full selama masa aktif.',
+        variants: [{ name: '1 Bulan Platinum (All Series)', price: 10000 }, { name: '1 Bulan Diamond (All Sport & EPL)', price: 35000 }]
+      },
+      viu: {
+        category: 'Stream', warranty: 'Full Garansi',
+        desc: 'Surganya pecinta Drama Korea (Drakor), drama China, variety show Korea, dan anime terlengkap dengan subtitle Indonesia resmi tercepat.\n\n✨ Keunggulan Akun:\n• Buka semua konten Viu Premium tanpa jeda iklan\n• Download episode drama untuk nonton offline\n• Tayang di hari yang sama dengan penyiaran Korea (Simulcast)\n• Kualitas gambar Full HD 1080p',
+        terms: '1. Akun privat/sharing aman anti-logout.\n2. Garansi penuh sesuai durasi.',
+        variants: [{ name: '1 Bulan Premium', price: 4000 }, { name: '6 Bulan Premium', price: 12000 }]
+      },
+      wetv: {
+        category: 'Stream', warranty: 'Full Garansi',
+        desc: 'Nonton Drama China (Drachin), Drama Asia, dan WeTV Original Series populer lebih awal dengan status VIP.\n\n✨ Keunggulan Akun:\n• Akses episode VIP Fast Track lebih cepat dari pengguna biasa\n• Nonton nyaman tanpa interupsi iklan\n• Kualitas video Full HD & fitur subtitle dwibahasa\n• Akun resmi & anti-logout',
+        terms: '1. Dilarang merubah data akun sharing.\n2. Garansi replace jika kendala.',
+        variants: [{ name: '1 Bulan VIP', price: 5000 }, { name: '3 Bulan VIP', price: 14000 }]
+      },
+      bstation: {
+        category: 'Stream', warranty: 'Full Garansi',
+        desc: 'Pusat streaming anime legal terlengkap di Asia Tenggara. Nonton anime favorit musim ini dengan kualitas Full HD dan terjemahan resmi.\n\n✨ Keunggulan Akun:\n• Buka seluruh episode anime VIP tanpa batasan\n• Kualitas video Full HD 1080p hingga 4K\n• Bebas jeda iklan selamanya\n• Komunitas & subtitle Bahasa Indonesia aktif',
+        terms: '1. Akun siap pakai langsung login.\n2. Garansi aktif penuh.',
+        variants: [{ name: '1 Bulan Premium Bstation', price: 4000 }, { name: '1 Tahun Premium', price: 18000 }]
+      },
+      crunchyroll: {
+        category: 'Stream', warranty: 'Full Garansi',
+        desc: 'Koleksi anime terbesar di dunia dengan penayangan tercepat hanya 1 jam setelah tayang di Jepang (Simulcast).\n\n✨ Keunggulan Akun:\n• Paket Mega Fan (Streaming bebas iklan di semua perangkat)\n• Akses ribuan judul anime & manga digital\n• Fitur download tontonan offline\n• Kualitas audio & video original HD',
+        terms: '1. Garansi replace jika terjadi error.\n2. Dilarang merubah profil akun.',
+        variants: [{ name: '1 Bulan Mega Fan', price: 6000 }, { name: '1 Tahun Mega Fan', price: 20000 }]
+      },
+
+      // 4. MUSIK & AUDIO
       spotify: {
-        category: 'Stream',
-        warranty: 'Full Garansi',
+        category: 'Stream', warranty: 'Full Garansi',
         desc: 'Dengarkan lebih dari 100 juta lagu dan jutaan podcast favorit tanpa gangguan iklan dengan kualitas audio terbaik.\n\n✨ Keunggulan Akun:\n• Bebas dari seluruh jeda iklan\n• Skip lagu tanpa batas (Unlimited Skips)\n• Download lagu sepuasnya untuk didengarkan offline\n• Kualitas audio Very High Quality (320 kbps)\n• Bisa menggunakan akun pribadi pembeli / akun baru\n\n⚡ Pengiriman: Proses instan via link invite / akun siap pakai\n🛡️ Garansi: Full garansi selama masa langganan',
         terms: '1. Akun regional Indonesia/Global resmi.\n2. Garansi re-invite jika status premium terlepas sebelum waktunya.\n3. Playlist dan lagu kesukaan Anda tetap aman.',
         variants: [{ name: '1 Bulan Individual', price: 8000 }, { name: '3 Bulan Premium', price: 20000 }]
       },
+      applemusic: {
+        category: 'Stream', warranty: 'Full Garansi',
+        desc: 'Pengalaman mendengarkan musik premium dengan teknologi audio spasial Dolby Atmos dan format Lossless Audio beresolusi tinggi.\n\n✨ Keunggulan Akun:\n• Kualitas suara master Lossless & Hi-Res Lossless Audio\n• Teknologi Spatial Audio dengan Dolby Atmos\n• Akses 100+ juta lagu tanpa iklan\n• Kompatibel untuk perangkat iOS, Android, Mac, dan PC',
+        terms: '1. Akun regional resmi Apple.\n2. Garansi replace jika kendala langganan.',
+        variants: [{ name: '1 Bulan Family Invite', price: 7000 }, { name: '3 Bulan Individual', price: 18000 }]
+      },
+
+      // 5. PRODUKTIVITAS & KANTOR
+      office365: {
+        category: 'AI', warranty: 'Resmi 1 Tahun',
+        desc: 'Lisensi resmi Microsoft 365 Original untuk Word, Excel, PowerPoint, Outlook, OneNote, dan 1TB Cloud Storage OneDrive.\n\n✨ Keunggulan Akun:\n• Bisa diinstal di 5 Perangkat Sekaligus (Windows, Mac, Android, iOS)\n• Penyimpanan Cloud OneDrive 1.000 GB (1TB) Aman\n• Fitur update terbaru otomatis & AI Copilot ready\n• Lisensi legal, anti-crack, dan anti-malware',
+        terms: '1. Akun custom domain / akun resmi Microsoft.\n2. Garansi 1 tahun penuh.',
+        variants: [{ name: 'Akun 1TB OneDrive (1 Tahun)', price: 15000 }, { name: 'Lifetime Account', price: 35000 }]
+      },
+      notion: {
+        category: 'AI', warranty: 'Resmi 1 Tahun',
+        desc: 'Workspace serbaguna untuk catatan, manajemen proyek tim, database, dan dokumentasi lengkap dengan Notion AI Unlimited.\n\n✨ Keunggulan Akun:\n• Notion Plus Plan Unlimited Blocks & File Upload\n• Fitur Notion AI (Autopilot catatan & ringkas dokumen)\n• Integrasi database & kolaborasi tim tanpa batas\n• Sinkronisasi otomatis di semua device',
+        terms: '1. Aktivasi langsung ke akun Notion Anda.\n2. Garansi aktif 1 tahun.',
+        variants: [{ name: '1 Tahun Plus + AI Member', price: 20000 }]
+      },
+      googleone: {
+        category: 'AI', warranty: 'Resmi 1 Tahun',
+        desc: 'Kapasitas penyimpanan Google Drive, Google Photos, dan Gmail berkapasitas besar tanpa takut memori HP penuh.\n\n✨ Keunggulan Akun:\n• Kapasitas penyimpanan lega (100GB / 200GB / 2TB)\n• Foto & Video tersimpan dalam resolusi asli (Original Quality)\n• Fitur Magic Editor di Google Photos terbuka\n• Aman, legal, dan data pribadi tidak bisa dilihat orang lain',
+        terms: '1. Sistem invite Google Family resmi.\n2. Garansi 1 tahun penuh.',
+        variants: [{ name: '100GB Google Drive 1 Tahun', price: 15000 }, { name: '200GB Google Drive 1 Tahun', price: 25000 }]
+      },
+      zoom: {
+        category: 'AI', warranty: 'Resmi 1 Bulan',
+        desc: 'Akun Zoom Pro / Business Meeting untuk webinar, rapat kantor, dan kelas daring tanpa batasan waktu 40 menit.\n\n✨ Keunggulan Akun:\n• Meeting tanpa batas durasi (hingga 30 jam per sesi)\n• Kapasitas 100 - 300+ peserta per ruang meeting\n• Fitur Breakout Rooms, Cloud Recording, dan Co-Host lengkap\n• Akun resmi, stabil, dan jernih HD',
+        terms: '1. Akun private berlisensi resmi.\n2. Garansi replace jika kendala meeting.',
+        variants: [{ name: 'Zoom Pro 100 Peserta (1 Bulan)', price: 15000 }, { name: 'Zoom Pro 300 Peserta (1 Bulan)', price: 30000 }]
+      },
+      duolingo: {
+        category: 'AI', warranty: 'Resmi 1 Tahun',
+        desc: 'Belajar bahasa asing jadi lebih cepat dan menyenangkan dengan Duolingo Super / Max. Belajar tanpa jeda iklan dan tanpa batasan nyawa!\n\n✨ Keunggulan Akun:\n• Nyawa tak terbatas (Unlimited Hearts)\n• Bebas dari semua jeda iklan\n• Fitur Review Kesalahan & Latihan Personalisasi\n• Bisa masuk ke akun pribadi pembeli',
+        terms: '1. Join via link invite resmi kelas/family.\n2. Garansi full 1 tahun.',
+        variants: [{ name: '1 Tahun Super Duolingo', price: 8000 }]
+      },
+
+      // 6. VPN & KEAMANAN
+      expressvpn: {
+        category: 'AI', warranty: 'Full Garansi',
+        desc: 'VPN premium tercepat dan paling stabil di dunia. Sangat ampuh untuk gaming luar negeri, streaming anti-lag, dan bypass blokir wilayah.\n\n✨ Keunggulan Akun:\n• Server ultra cepat di 105 negara dengan protokol Lightway\n• Akses streaming internasional tanpa hambatan\n• Enkripsi AES-256 bit & proteksi kebocoran DNS/IP\n• Akun resmi berkecepatan maksimal',
+        terms: '1. Login menggunakan kode aktivasi / credential toko.\n2. Garansi full selama durasi paket.',
+        variants: [{ name: '1 Bulan Premium', price: 10000 }, { name: '1 Tahun Premium', price: 35000 }]
+      },
+      nordvpn: {
+        category: 'AI', warranty: 'Full Garansi',
+        desc: 'Layanan VPN teraman di dunia dengan fitur Threat Protection (Blokir Iklan, Tracker, dan Malware) serta ribuan server cepat.\n\n✨ Keunggulan Akun:\n• 6.000+ Server di 111 negara\n• Fitur Double VPN & Onion Over VPN\n• Kecepatan kencang tanpa kuota limit\n• Mendukung Windows, Mac, Android, iOS',
+        terms: '1. Dilarang merubah password akun sharing.\n2. Garansi 100% replace.',
+        variants: [{ name: '1 Tahun NordVPN Complete', price: 15000 }]
+      },
+      getcontact: {
+        category: 'AI', warranty: 'Resmi 1 Bulan',
+        desc: 'Cari tahu identitas nomor tak dikenal dan ketahui nama kontak Anda di HP orang lain dengan fitur GetContact Premium.\n\n✨ Keunggulan Akun:\n• Lihat siapa yang mencari/melihat tag nomor Anda (Who Viewed My Profile)\n• Kuota pencarian tag dan nomor telepon melimpah\n• Proteksi dari spam, penipuan, dan panggilan robot\n• Badge verified premium di profil',
+        terms: '1. Aktivasi langsung ke nomor HP Anda.\n2. Garansi masa aktif.',
+        variants: [{ name: '1 Bulan Premium GTC', price: 8000 }]
+      },
+
+      // 7. NOKOS & SOSMED
       nokos: {
-        category: 'Nokos',
-        warranty: '1x OTP Garansi',
+        category: 'Nokos', warranty: '1x OTP Garansi',
         desc: 'Layanan nomor virtual (Nomor Kosong) untuk menerima 1x kode verifikasi SMS OTP pembuatan akun aplikasi baru secara instan.\n\n✨ Keunggulan Layanan:\n• Mendukung verifikasi WhatsApp, Telegram, Google, TikTok, dll.\n• Tersedia nomor dari berbagai negara (Indonesia & Internasional)\n• Nomor fresh dan belum pernah terdaftar sebelumnya\n• Proses instan: kode OTP langsung muncul di sistem\n\n⚠️ Catatan: Nomor hanya berlaku untuk 1x verifikasi SMS OTP.\n⚡ Pengiriman: Kode nomor instan otomatis',
         terms: '1. Nomor hanya berlaku untuk 1x penerimaan kode SMS OTP.\n2. Wajib langsung gunakan nomor dalam waktu 15 menit setelah diberikan.\n3. Garansi ganti nomor baru jika kode OTP tidak masuk dalam 10 menit.',
-        variants: [{ name: 'OTP WhatsApp Indo', price: 3000 }, { name: 'OTP Telegram Global', price: 2500 }]
+        variants: [{ name: 'OTP WhatsApp Indo (+62)', price: 3000 }, { name: 'OTP Telegram Global', price: 2500 }, { name: 'OTP Google / Gmail', price: 2000 }]
+      },
+      followers: {
+        category: 'Sosmed', warranty: 'Garansi Refill 30 Hari',
+        desc: 'Layanan penambah followers, likes, dan views media sosial (Instagram, TikTok, YouTube, X) berkualitas untuk personal branding & bisnis.\n\n✨ Keunggulan Layanan:\n• Proses aman: HANYA BUTUH USERNAME (Tanpa Password)\n• Akun aktif berkualitas dengan drop rate sangat rendah\n• Proses pengerjaan otomatis dan cepat\n• Bergaransi refill jika terjadi penurunan',
+        terms: '1. Akun target DILARANG di-private selama proses pengerjaan.\n2. Jangan ganti username sebelum pesanan selesai 100%.\n3. Garansi refill 30 hari jika drop.',
+        variants: [{ name: '500 Followers Indo', price: 10000 }, { name: '1.000 Followers Indo', price: 18000 }, { name: '5.000 Followers Campur', price: 40000 }]
+      },
+      kebsos: {
+        category: 'Sosmed', warranty: 'Garansi Refill 30 Hari',
+        desc: 'Paket lengkap optimasi media sosial (Likes, Views, Subscribers, Comments) untuk meningkatkan kredibilitas akun dan memicu algoritma FYP/Viral.\n\n✨ Keunggulan Layanan:\n• Mendukung TikTok, Instagram, YouTube, dan Facebook\n• Aman 100% tanpa risiko banned akun\n• Masuk secara bertahap dan terlihat alami\n• Layanan bergaransi resmi',
+        terms: '1. Akun tidak boleh dalam kondisi private.\n2. Masukkan link postingan/akun dengan benar di formulir pesanan.',
+        variants: [{ name: '10.000 Views TikTok/Reels', price: 5000 }, { name: '1.000 Likes Postingan', price: 8000 }]
+      },
+
+      // 8. DEVELOPER & BLOGGER
+      blogger: {
+        category: 'Blogger', warranty: 'Full Source Code',
+        desc: 'Template Blogger Premium responsive, super cepat, SEO optimized, dan siap pasang iklan AdSense maupun toko online.\n\n✨ Keunggulan Template:\n• Google PageSpeed Score 95+ (Super Ringan & Fast Loading)\n• Desain modern ala marketplace / portal berita profesional\n• Full Responsive Mobile Friendly & Dark Mode Ready\n• Dokumentasi setup lengkap mudah dipasang pemula',
+        terms: '1. Dilarang menjual ulang template tanpa izin developer.\n2. File template dikirim langsung via link Google Drive.\n3. Support bantuan instalasi gratis dari admin.',
+        variants: [{ name: 'Template Toko Online Pro', price: 25000 }, { name: 'Template Blog Berita SEO V3', price: 20000 }]
+      },
+      landing: {
+        category: 'Landing', warranty: 'Full Source Code',
+        desc: 'Source code landing page HTML, Tailwind CSS, & JS siap pakai dengan konversi penjualan tinggi (High-Converting Sales Page).\n\n✨ Keunggulan Template:\n• Desain eye-catching modern ala SaaS & Fintech\n• Kompatibel di HP dan Laptop tanpa bug tampilan\n• Script ringan tanpa jQuery berat\n• Mudah diedit teks, foto produk, dan link WhatsApp',
+        terms: '1. File berupa ZIP berisi HTML, CSS, dan aset gambar lengkap.\n2. Bebas diedit dan digunakan untuk project pribadi/klien.',
+        variants: [{ name: 'Landing Page Produk Digital', price: 25000 }, { name: 'Landing Page Jasa / Bisnis', price: 30000 }]
+      },
+
+      // 9. GAMING
+      discord: {
+        category: 'Stream', warranty: 'Resmi 1 Bulan',
+        desc: 'Upgrade akun Discord Anda dengan Discord Nitro! Buka custom emoji di semua server, streaming 4K 60fps, 2 Server Boosts, dan badge profil eksklusif.\n\n✨ Keunggulan Akun:\n• 2x Server Boosts Gratis\n• Upload file ukuran besar hingga 500MB\n• Streaming game kualitas HD 1080p / 4K 60fps\n• Custom avatar bergerak (GIF) & Banner profil',
+        terms: '1. Legal via gift / login resmi.\n2. Garansi replace jika kendala.',
+        variants: [{ name: '1 Bulan Nitro Boost', price: 25000 }, { name: '1 Bulan Nitro Basic', price: 12000 }]
       }
     };
 
@@ -669,23 +898,23 @@
       let warranty = 'Resmi 1 Bulan';
       let tagKeyword = 'Layanan Digital';
 
-      if (lower.includes('stream') || lower.includes('tv') || lower.includes('film') || lower.includes('movie') || lower.includes('video')) {
+      if (lower.includes('stream') || lower.includes('tv') || lower.includes('film') || lower.includes('movie') || lower.includes('video') || lower.includes('drama') || lower.includes('anime')) {
         category = 'Stream';
         warranty = 'Full Garansi';
         tagKeyword = 'Streaming Hiburan';
-      } else if (lower.includes('edit') || lower.includes('photo') || lower.includes('motion') || lower.includes('design')) {
+      } else if (lower.includes('edit') || lower.includes('photo') || lower.includes('motion') || lower.includes('design') || lower.includes('preset')) {
         category = 'Editor';
         warranty = 'Resmi 1 Tahun';
         tagKeyword = 'Aplikasi Kreatif & Editing';
-      } else if (lower.includes('follow') || lower.includes('like') || lower.includes('sosmed') || lower.includes('sub')) {
+      } else if (lower.includes('follow') || lower.includes('like') || lower.includes('sosmed') || lower.includes('sub') || lower.includes('view')) {
         category = 'Sosmed';
         warranty = 'Garansi Refill 30 Hari';
         tagKeyword = 'Layanan Optimasi Sosial Media';
-      } else if (lower.includes('otp') || lower.includes('nokos') || lower.includes('nomor')) {
+      } else if (lower.includes('otp') || lower.includes('nokos') || lower.includes('nomor') || lower.includes('sms')) {
         category = 'Nokos';
         warranty = 'Garansi 1x OTP';
         tagKeyword = 'Nomor Virtual SMS';
-      } else if (lower.includes('web') || lower.includes('template') || lower.includes('blogger') || lower.includes('landing')) {
+      } else if (lower.includes('web') || lower.includes('template') || lower.includes('blogger') || lower.includes('landing') || lower.includes('source')) {
         category = 'Blogger';
         warranty = 'Full Source Code';
         tagKeyword = 'Template Web Premium';
@@ -698,82 +927,6 @@
         terms: `1. Gunakan ${name} sesuai aturan dan panduan yang diberikan.\n2. Dilarang melakukan tindakan yang melanggar ketentuan layanan.\n3. Simpan Nomor Invoice sebagai bukti klaim garansi sah via WhatsApp Admin.`,
         variants: [{ name: 'Paket Reguler', price: 5000 }, { name: 'Paket VIP Premium', price: 15000 }]
       };
-    }
-
-    // ================= PENGATURAN BANNER =================
-    function loadBannerSettingsToUI() {
-      document.getElementById('banner-toggle-active').checked = bannerSettings.active;
-      const typeRadios = document.getElementsByName('banner_type');
-      for (const r of typeRadios) { r.checked = (r.value === bannerSettings.type); }
-      document.getElementById('banner-url-input').value = bannerSettings.imageUrl || '';
-      updateBannerPreview(bannerSettings.imageUrl);
-      setBannerType(bannerSettings.type);
-    }
-
-    function toggleBannerActive(isActive) {
-      bannerSettings.active = isActive;
-      showToast(isActive ? 'Banner diaktifkan' : 'Banner disembunyikan');
-    }
-
-    function setBannerType(type) {
-      bannerSettings.type = type;
-      const imgBox = document.getElementById('banner-image-form-box');
-      if (type === 'image') { imgBox.classList.remove('hidden'); } else { imgBox.classList.add('hidden'); }
-    }
-
-    function handleBannerFileUpload(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      showToast('Mengompres gambar banner...');
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          const maxDim = 900;
-          let width = img.width;
-          let height = img.height;
-          if (width > maxDim) { height *= maxDim / width; width = maxDim; }
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, width, height);
-
-          const compressed = canvas.toDataURL('image/webp', 0.85);
-          bannerSettings.imageUrl = compressed;
-          document.getElementById('banner-url-input').value = compressed;
-          updateBannerPreview(compressed);
-          showToast('Gambar banner siap digunakan!');
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function updateBannerPreviewFromUrl(url) {
-      bannerSettings.imageUrl = url.trim();
-      updateBannerPreview(url.trim());
-    }
-
-    function updateBannerPreview(src) {
-      const img = document.getElementById('banner-preview-img');
-      const icon = document.getElementById('banner-placeholder-icon');
-      if (src && src.length > 5) {
-        img.src = src;
-        img.classList.remove('hidden');
-        icon.classList.add('hidden');
-      } else {
-        img.src = '';
-        img.classList.add('hidden');
-        icon.classList.remove('hidden');
-      }
-    }
-
-    function saveBannerSettings() {
-      localStorage.setItem('my_banner_settings', JSON.stringify(bannerSettings));
-      showToast('Pengaturan banner berhasil disimpan!');
-      refreshPhonePreview();
     }
 
     // ================= HANDLER UPLOAD GAMBAR DEVICE =================
@@ -883,7 +1036,7 @@
                 <i data-lucide="star" class="w-3.5 h-3.5 text-amber-500"></i>
                 <span class="hidden sm:inline">Ulasan (${reviewsCount})</span>
               </button>
-              <button onclick="editProduct(${prod.id})" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold p-2 rounded-xl" title="Edit Produk"><i data-lucide="edit" class="w-3.5 h-3.5"></i></button>
+              <button onclick="editProduct(${prod.id})" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold p-2 rounded-xl" title="Edit Produk & Lencana"><i data-lucide="edit" class="w-3.5 h-3.5"></i></button>
               <button onclick="deleteProduct(${prod.id})" class="bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold p-2 rounded-xl" title="Hapus Produk"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
             </div>
           </div>
@@ -1035,7 +1188,7 @@
           body: JSON.stringify(products),
         });
         const data = await res.json();
-        if (data.success) { showToast('Semua data KV berhasil diperbarui!'); }
+        if (data.success) { showToast('Semua data KV & posisi produk berhasil diperbarui!'); }
       } catch (err) { showToast('Gagal terhubung ke Cloudflare', 'error'); }
     }
 
