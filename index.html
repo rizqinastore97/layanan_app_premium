@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Toko Produk Digital - QRIS Instant Delivery</title>
+  <title>Toko Produk Digital - Auto TriPay & Manual QRIS</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
@@ -15,7 +15,6 @@
 </head>
 <body class="bg-slate-100 text-slate-900 min-h-screen flex flex-col font-sans antialiased">
 
-  <!-- Toast Notification -->
   <div id="toast-container" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none w-full max-w-xs px-4"></div>
 
   <!-- Header -->
@@ -38,7 +37,7 @@
     </div>
   </header>
 
-  <!-- Konten Utama -->
+  <!-- Main Container -->
   <main class="flex-1 w-full max-w-[98%] 2xl:max-w-[1800px] mx-auto px-2 sm:px-6 py-4 sm:py-6">
     <div class="w-full mb-4 sm:mb-6">
       <div class="relative w-full mb-3">
@@ -70,7 +69,7 @@
     <a href="admin.html" class="inline-block mt-1 text-[11px] text-slate-400 hover:text-blue-600 transition-colors">• Dashboard Admin</a>
   </footer>
 
-  <!-- Modal Pop-up Detail Produk -->
+  <!-- Modal Detail Produk -->
   <div id="detail-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div onclick="closeDetailModal()" class="absolute inset-0 bg-black/50 backdrop-blur-xs"></div>
     <div class="fixed inset-0 flex items-end sm:items-center justify-center p-0 sm:p-4">
@@ -103,14 +102,14 @@
           <button id="modal-btn-chat" class="col-span-1 border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-xl flex flex-col items-center justify-center p-2 transition-colors"><i data-lucide="message-circle" class="w-4 h-4"></i><span class="text-[9px] font-bold mt-0.5">Chat</span></button>
           <button id="modal-btn-cart" class="col-span-2 bg-blue-50 hover:bg-blue-100 text-blue-600 border border-blue-200 font-bold rounded-xl text-xs py-2.5 transition-colors">+ Keranjang</button>
           <button id="modal-btn-buy" class="col-span-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs py-2.5 transition-colors shadow-xs flex items-center justify-center gap-1">
-            <i data-lucide="qr-code" class="w-4 h-4"></i> Bayar QRIS
+            <i data-lucide="qr-code" class="w-4 h-4"></i> Beli Sekarang
           </button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- MODAL PEMBAYARAN QRIS GOPAY & PENGIRIMAN AKUN -->
+  <!-- MODAL PEMBAYARAN TRIPAY OTOMATIS & MANUAL FALLBACK -->
   <div id="payment-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div onclick="closePaymentModal()" class="absolute inset-0 bg-black/60 backdrop-blur-xs"></div>
     <div class="fixed inset-0 flex items-center justify-center p-4">
@@ -118,13 +117,13 @@
         
         <!-- Header Modal Pembayaran -->
         <div class="flex justify-between items-center mb-2">
-          <h3 class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
-            <i data-lucide="wallet" class="w-4 h-4 text-blue-600"></i> Pembayaran QRIS GoPay
+          <h3 id="pay-modal-title" class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
+            <i data-lucide="wallet" class="w-4 h-4 text-blue-600"></i> Pembayaran QRIS
           </h3>
           <button onclick="closePaymentModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
 
-        <!-- TAMPILAN 1: SCAN QRIS, TOMBOL DOWNLOAD, PANDUAN & PERINGATAN -->
+        <!-- TAMPILAN 1: QRIS TriPay (Otomatis) / QRIS GoPay (Manual) -->
         <div id="step-pay" class="space-y-3">
           <div class="bg-blue-50/60 p-2.5 rounded-2xl border border-blue-100 text-center">
             <p id="pay-item-name" class="text-xs font-semibold text-slate-800 truncate"></p>
@@ -133,10 +132,13 @@
 
           <!-- Barcode QRIS & Tombol Download -->
           <div class="flex flex-col items-center">
-            <div class="w-48 h-48 bg-white p-2 rounded-2xl border-2 border-dashed border-slate-300 flex items-center justify-center shadow-xs">
-              <img id="qris-img" src="" alt="QRIS GoPay" class="w-full h-full object-contain rounded-xl" />
+            <div class="w-48 h-48 bg-white p-2 rounded-2xl border-2 border-dashed border-slate-300 flex items-center justify-center shadow-xs relative">
+              <img id="qris-img" src="" alt="QRIS" class="w-full h-full object-contain rounded-xl" />
+              <div id="qris-loading-spin" class="absolute inset-0 bg-white/80 flex flex-col items-center justify-center gap-1 hidden">
+                <i data-lucide="loader-2" class="w-6 h-6 animate-spin text-blue-600"></i>
+                <span class="text-[10px] font-semibold text-slate-600">Membuat QRIS TriPay...</span>
+              </div>
             </div>
-            <!-- Tombol Download QRIS -->
             <button 
               type="button"
               onclick="downloadQRIS()"
@@ -146,41 +148,39 @@
             </button>
           </div>
 
-          <!-- KOTAK PANDUAN LANGKAH BAYAR -->
-          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 text-left space-y-2">
+          <!-- Indikator Menunggu Pembayaran Otomatis -->
+          <div id="auto-polling-indicator" class="bg-emerald-50 border border-emerald-200 rounded-2xl p-2.5 text-left flex items-center gap-2">
+            <i data-lucide="loader" class="w-4 h-4 text-emerald-600 animate-spin flex-shrink-0"></i>
+            <p class="text-[10.5px] text-emerald-800 font-medium leading-tight">
+              <b>Sistem Otomatis:</b> Menunggu transfer masuk... Akun langsung terbuka begitu lunas.
+            </p>
+          </div>
+
+          <!-- Kotak Panduan Manual Jika Stok Habis -->
+          <div id="manual-guide-box" class="bg-slate-50 border border-slate-200 rounded-2xl p-3 text-left space-y-2 hidden">
             <p class="text-[11px] font-bold text-slate-800 flex items-center gap-1">
-              <i data-lucide="info" class="w-3.5 h-3.5 text-blue-600"></i> Panduan Cara Pembayaran:
+              <i data-lucide="info" class="w-3.5 h-3.5 text-blue-600"></i> Panduan Pembayaran Manual:
             </p>
             <ol class="text-[10.5px] text-slate-600 space-y-1 pl-4 list-decimal leading-relaxed">
-              <li>Buka aplikasi <b>GoPay, BCA, DANA, OVO, ShopeePay,</b> atau <b>M-Banking</b> Anda.</li>
-              <li>Pilih menu <b>Scan / Bayar QRIS</b> lalu scan barcode di atas atau unggah foto barcode yang sudah diunduh.</li>
-              <li>Masukkan nominal pembayaran <b>persis sesuai harga</b>.</li>
-              <li>Setelah berhasil, <b>screenshot bukti transfer</b> lalu klik tombol di bawah.</li>
+              <li>Scan QRIS GoPay di atas menggunakan E-Wallet/M-Banking.</li>
+              <li>Screenshot bukti pembayaran asli.</li>
+              <li>Klik tombol <b>"Kirim Bukti ke WA Admin"</b> di bawah.</li>
             </ol>
           </div>
 
-          <!-- KOTAK PERINGATAN WAJIB SCREENSHOT -->
-          <div class="bg-amber-50 border border-amber-200 rounded-2xl p-2.5 text-left flex items-start gap-2">
-            <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5"></i>
-            <p class="text-[10.5px] text-amber-900 font-medium leading-tight">
-              <b>Peringatan:</b> Transaksi <b>tidak dapat diproses</b> jika tidak menyertakan bukti screenshot transfer asli.
-            </p>
-          </div>
-
-          <button onclick="confirmPayment()" class="w-full bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white py-2.5 rounded-xl font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1.5">
-            <i data-lucide="check-circle" class="w-4 h-4"></i> Saya Sudah Transfer
+          <button id="btn-manual-confirm" onclick="processManualConfirm()" class="w-full bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white py-2.5 rounded-xl font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1.5 hidden">
+            <i data-lucide="message-circle" class="w-4 h-4"></i> Kirim Bukti ke WA Admin
           </button>
         </div>
 
-        <!-- TAMPILAN 2: HASIL PENGIRIMAN AKUN (INSTANT DELIVERY / FALLBACK WA) -->
+        <!-- TAMPILAN 2: HASIL PENGIRIMAN AKUN INSTAN -->
         <div id="step-result" class="space-y-3 hidden">
-          <div id="result-badge-container"></div>
+          <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-2"><i data-lucide="check" class="w-6 h-6"></i></div>
 
-          <h4 id="result-title" class="font-bold text-sm text-slate-800"></h4>
-          <p id="result-subtitle" class="text-xs text-slate-500 leading-relaxed"></p>
+          <h4 class="font-bold text-sm text-slate-800">Pembayaran Terverifikasi!</h4>
+          <p class="text-xs text-slate-500 leading-relaxed">Terima kasih, sistem otomatis telah mengonfirmasi pembayaran Anda.</p>
 
-          <!-- Kotak Akun (Jika Ready) -->
-          <div id="account-box" class="bg-blue-50 border border-blue-200 rounded-2xl p-3 text-left hidden">
+          <div class="bg-blue-50 border border-blue-200 rounded-2xl p-3 text-left">
             <span class="text-[10px] text-blue-600 font-bold block uppercase mb-1">Data Akun / Lisensi Anda:</span>
             <pre id="account-data" class="font-mono text-xs text-slate-800 whitespace-pre-wrap break-all bg-white p-2.5 rounded-xl border border-blue-100 select-all"></pre>
             <button onclick="copyAccountData()" class="mt-2 w-full bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold py-1.5 rounded-lg flex items-center justify-center gap-1 transition-all">
@@ -188,17 +188,8 @@
             </button>
           </div>
 
-          <!-- Peringatan di Halaman Konfirmasi WhatsApp -->
-          <div class="bg-amber-50 border border-amber-200 rounded-2xl p-2.5 text-left flex items-start gap-2">
-            <i data-lucide="alert-circle" class="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5"></i>
-            <p class="text-[10px] text-amber-900 leading-tight">
-              Harap lampirkan <b>foto screenshot bukti transfer</b> saat mengirim pesan ke WhatsApp Admin.
-            </p>
-          </div>
-
-          <!-- Tombol Kirim Bukti ke WhatsApp -->
           <button id="btn-wa-claim" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1.5">
-            <i data-lucide="message-circle" class="w-4 h-4"></i> Kirim Bukti Transfer ke WA
+            <i data-lucide="message-circle" class="w-4 h-4"></i> Konfirmasi & Garansi via WA
           </button>
         </div>
 
@@ -218,8 +209,8 @@
         <div id="cart-items" class="flex-1 overflow-y-auto p-3 sm:p-4 space-y-2.5"></div>
         <div id="cart-footer" class="p-4 border-t border-slate-100 bg-slate-50 space-y-3 hidden">
           <div class="flex justify-between items-center"><span class="text-xs text-slate-500 font-medium">Total Tagihan:</span><span id="cart-total-price" class="text-sm sm:text-base font-extrabold text-blue-600">Rp 0</span></div>
-          <button onclick="processCartQRIS()" class="w-full bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white py-3 rounded-xl font-bold text-xs sm:text-sm transition-all shadow-md flex items-center justify-center gap-2">
-            <i data-lucide="qr-code" class="w-4 h-4"></i> Bayar Semua via QRIS
+          <button onclick="processCartCheckout()" class="w-full bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white py-3 rounded-xl font-bold text-xs sm:text-sm transition-all shadow-md flex items-center justify-center gap-2">
+            <i data-lucide="message-circle" class="w-4 h-4"></i> Checkout via WhatsApp
           </button>
         </div>
       </div>
@@ -227,11 +218,11 @@
   </div>
 
   <script>
-    // ================= PENGATURAN ADMIN =================
+    // ================= PENGATURAN =================
     const API_URL = "https://toko-digital-api.rizqinastore97.workers.dev";
     const WHATSAPP_NUMBER = "6282243890517"; 
-    const QRIS_IMAGE_URL = "https://i.ibb.co.com/PGRmz0G8/Whats-App-Image-2026-08-24-at-12-25-05.jpg"; 
-    // ====================================================
+    const QRIS_STATIC_URL = "https://i.ibb.co.com/PGRmz0G8/Whats-App-Image-2026-08-24-at-12-25-05.jpg"; 
+    // ==============================================
 
     let products = [];
     let cart = [];
@@ -239,7 +230,8 @@
     let searchQuery = '';
     let currentSelectedProduct = null;
     let currentSelectedVariant = null;
-    let currentPayingItem = null;
+    let pollingInterval = null;
+    let currentQRISUrl = "";
 
     const formatIDR = (val) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(val);
 
@@ -294,7 +286,6 @@
       }
 
       grid.innerHTML = filtered.map(item => {
-        const totalStock = item.variants.reduce((sum, v) => sum + ((v.items && Array.isArray(v.items)) ? v.items.length : Number(v.stock || 0)), 0);
         const prices = item.variants.map(v => Number(v.price || 0));
         const minPrice = Math.min(...prices);
         const priceLabel = `Mulai ${formatIDR(minPrice)}`;
@@ -374,137 +365,131 @@
       
       document.getElementById('modal-btn-buy').onclick = () => {
         closeDetailModal();
-        openPaymentModal({
-          type: 'single',
-          product: currentSelectedProduct,
-          variant: v,
-          amount: v.price
-        });
+        startCheckoutProcess(currentSelectedProduct, v);
       };
     }
 
     function closeDetailModal() { document.getElementById('detail-modal').classList.add('hidden'); }
 
-    // Modal Pembayaran QRIS
-    function openPaymentModal(itemData) {
-      currentPayingItem = itemData;
-      document.getElementById('qris-img').src = QRIS_IMAGE_URL;
-      
-      if (itemData.type === 'single') {
-        document.getElementById('pay-item-name').innerText = `${itemData.product.name} (${itemData.variant.name})`;
-      } else {
-        document.getElementById('pay-item-name').innerText = `Checkout ${cart.length} Item Keranjang`;
-      }
-      
-      document.getElementById('pay-total-amount').innerText = formatIDR(itemData.amount);
+    // ================= PROSES CHECKOUT HYBRID =================
+    async function startCheckoutProcess(product, variant) {
+      if (pollingInterval) clearInterval(pollingInterval);
 
       document.getElementById('step-pay').classList.remove('hidden');
       document.getElementById('step-result').classList.add('hidden');
       document.getElementById('payment-modal').classList.remove('hidden');
+
+      document.getElementById('pay-item-name').innerText = `${product.name} (${variant.name})`;
+      document.getElementById('pay-total-amount').innerText = formatIDR(variant.price);
+
+      const hasStock = variant.items && Array.isArray(variant.items) && variant.items.length > 0;
+
+      if (hasStock) {
+        // 1. KONDISI STOK READY -> PAKAI TRIPAY OTOMATIS
+        document.getElementById('pay-modal-title').innerHTML = `<i data-lucide="zap" class="w-4 h-4 text-emerald-600"></i> QRIS Otomatis TriPay`;
+        document.getElementById('auto-polling-indicator').classList.remove('hidden');
+        document.getElementById('manual-guide-box').classList.add('hidden');
+        document.getElementById('btn-manual-confirm').classList.add('hidden');
+        document.getElementById('qris-loading-spin').classList.remove('hidden');
+
+        try {
+          const res = await fetch(`${API_URL}/create-tripay-tx`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              productId: product.id,
+              variantName: variant.name,
+              customerName: "Pembeli Digital",
+            }),
+          });
+
+          const data = await res.json();
+          document.getElementById('qris-loading-spin').classList.add('hidden');
+
+          if (data.success) {
+            currentQRISUrl = data.data.qr_url;
+            document.getElementById('qris-img').src = data.data.qr_url;
+            startPollingStatus(data.data.reference, product.id, variant.name);
+          } else {
+            showToast("Gagal membuat QRIS TriPay, beralih ke manual", "error");
+            fallbackToManualQRIS(product, variant);
+          }
+        } catch (e) {
+          document.getElementById('qris-loading-spin').classList.add('hidden');
+          fallbackToManualQRIS(product, variant);
+        }
+      } else {
+        // 2. KONDISI STOK HABIS -> PAKAI QRIS GOPAY MANUAL
+        fallbackToManualQRIS(product, variant);
+      }
       lucide.createIcons();
+    }
+
+    function fallbackToManualQRIS(product, variant) {
+      document.getElementById('pay-modal-title').innerHTML = `<i data-lucide="wallet" class="w-4 h-4 text-blue-600"></i> QRIS Manual GoPay`;
+      document.getElementById('auto-polling-indicator').classList.add('hidden');
+      document.getElementById('manual-guide-box').classList.remove('hidden');
+      document.getElementById('btn-manual-confirm').classList.remove('hidden');
+      currentQRISUrl = QRIS_STATIC_URL;
+      document.getElementById('qris-img').src = QRIS_STATIC_URL;
+      lucide.createIcons();
+    }
+
+    function startPollingStatus(reference, productId, variantName) {
+      pollingInterval = setInterval(async () => {
+        try {
+          const res = await fetch(`${API_URL}/check-status`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ reference, productId, variantName }),
+          });
+          const data = await res.json();
+
+          if (data.status === "PAID") {
+            clearInterval(pollingInterval);
+            document.getElementById('step-pay').classList.add('hidden');
+            document.getElementById('step-result').classList.remove('hidden');
+            document.getElementById('account-data').innerText = data.account;
+
+            document.getElementById('btn-wa-claim').onclick = () => {
+              const msg = `*Konfirmasi Pembelian Lunas (TriPay)*%0AInvoice: ${reference}%0AProduk: ${currentSelectedProduct.name} (${variantName})%0A%0ASaya sudah menerima akun otomatis. Mohon simpan data garansi saya. Terima kasih!`;
+              window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
+            };
+            lucide.createIcons();
+            loadProducts(); // refresh stok
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }, 3000); // Polling setiap 3 detik
+    }
+
+    function processManualConfirm() {
+      const p = currentSelectedProduct;
+      const v = currentSelectedVariant;
+      const invoiceCode = `INV-${Date.now().toString().slice(-6)}`;
+      const msg = `*Klaim Pesanan Manual (${invoiceCode})*%0AProduk: ${p.name} (${v.name})%0ATotal: ${formatIDR(v.price)}%0A%0A*PENTING:* Saya sudah transfer via QRIS dan menyertakan foto screenshot bukti transfer di chat ini. Mohon kirimkan akunnya ya Admin!`;
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
     }
 
     function closePaymentModal() {
+      if (pollingInterval) clearInterval(pollingInterval);
       document.getElementById('payment-modal').classList.add('hidden');
     }
 
-    // Fungsi Unduh Gambar QRIS
-    async function downloadQRIS() {
-      try {
-        showToast('Mengunduh barcode QRIS...');
-        const response = await fetch(QRIS_IMAGE_URL);
-        const blob = await response.blob();
-        const blobUrl = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = blobUrl;
-        link.download = `QRIS-Payment-${Date.now()}.jpg`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(blobUrl);
-        showToast('QRIS berhasil diunduh ke galeri/perangkat!');
-      } catch (e) {
-        // Fallback jika diblokir oleh CORS gambar eksternal
-        window.open(QRIS_IMAGE_URL, '_blank');
-      }
-    }
-
-    async function confirmPayment() {
-      document.getElementById('step-pay').classList.add('hidden');
-      document.getElementById('step-result').classList.remove('hidden');
-
-      const badgeContainer = document.getElementById('result-badge-container');
-      const title = document.getElementById('result-title');
-      const subtitle = document.getElementById('result-subtitle');
-      const accountBox = document.getElementById('account-box');
-      const accountData = document.getElementById('account-data');
-      const btnWa = document.getElementById('btn-wa-claim');
-
-      let invoiceCode = `INV-${Date.now().toString().slice(-6)}`;
-
-      if (currentPayingItem.type === 'single') {
-        const p = currentPayingItem.product;
-        const v = currentPayingItem.variant;
-        const hasStock = v.items && Array.isArray(v.items) && v.items.length > 0;
-
-        if (hasStock) {
-          const assignedAccount = v.items.shift();
-          v.stock = v.items.length;
-          p.sold = (p.sold || 0) + 1;
-
-          fetch(API_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(products)
-          });
-
-          badgeContainer.innerHTML = `<div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-2"><i data-lucide="check" class="w-6 h-6"></i></div>`;
-          title.innerText = "Pembayaran Selesai!";
-          subtitle.innerText = "Data akun digital Anda berhasil diambil dari sistem. Silakan simpan detail di bawah:";
-          accountData.innerText = assignedAccount;
-          accountBox.classList.remove('hidden');
-
-          btnWa.onclick = () => {
-            const msg = `*Konfirmasi Pembelian & Klaim Garansi (${invoiceCode})*%0AProduk: ${p.name} (${v.name})%0AHarga: ${formatIDR(v.price)}%0A%0A_Saya sudah transfer dan melampirkan screenshot bukti transfer di bawah ini. Mohon aktifkan garansinya._`;
-            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
-          };
-        } else {
-          badgeContainer.innerHTML = `<div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-2"><i data-lucide="clock" class="w-6 h-6"></i></div>`;
-          title.innerText = "Klaim Akun ke WhatsApp";
-          subtitle.innerText = `Stok otomatis sedang kosong. Klik tombol di bawah dan **WAJIB lampirkan screenshot bukti transfer** ${invoiceCode} agar diproses oleh Admin.`;
-          accountBox.classList.add('hidden');
-
-          btnWa.onclick = () => {
-            const msg = `*Klaim Pesanan Manual (${invoiceCode})*%0AProduk: ${p.name} (${v.name})%0ATotal Bayar: ${formatIDR(v.price)}%0A%0A*PENTING:* Saya sudah transfer via QRIS dan menyertakan foto/screenshot bukti transfer pada chat ini. Mohon segera dikirimkan akunnya ya Admin!`;
-            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
-          };
-        }
-      } else {
-        badgeContainer.innerHTML = `<div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-2"><i data-lucide="message-square" class="w-6 h-6"></i></div>`;
-        title.innerText = "Kirim Bukti Pembayaran";
-        subtitle.innerText = `Pesanan keranjang (${invoiceCode}) siap dikonfirmasi. Kirim screenshot bukti transfer ke WhatsApp Admin.`;
-        accountBox.classList.add('hidden');
-
-        btnWa.onclick = () => {
-          let msg = `*Checkout Keranjang QRIS (${invoiceCode})*%0A`;
-          cart.forEach((item, idx) => { msg += `${idx + 1}. ${item.name} (${item.quantity}x) - ${formatIDR(item.price * item.quantity)}%0A`; });
-          msg += `%0A*Total Transfer: ${formatIDR(currentPayingItem.amount)}*%0A%0ASaya sudah transfer via QRIS dan menyertakan screenshot bukti pembayaran di chat ini. Mohon diproses. Terima kasih!`;
-          window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
-        };
-        cart = [];
-        renderCart();
-      }
-      lucide.createIcons();
+    function downloadQRIS() {
+      if (!currentQRISUrl) return;
+      window.open(currentQRISUrl, '_blank');
     }
 
     function copyAccountData() {
       const text = document.getElementById('account-data').innerText;
       navigator.clipboard.writeText(text).then(() => {
-        showToast('Data akun berhasil disalin ke clipboard!');
+        showToast('Data akun berhasil disalin!');
       });
     }
 
-    // Keranjang
+    // Keranjang Drawer
     function toggleCart(open) {
       if (open) { document.getElementById('cart-modal').classList.remove('hidden'); setTimeout(() => document.getElementById('cart-drawer').classList.remove('translate-x-full'), 10); } 
       else { document.getElementById('cart-drawer').classList.add('translate-x-full'); setTimeout(() => document.getElementById('cart-modal').classList.add('hidden'), 250); }
@@ -515,10 +500,10 @@
       const existing = cart.find(c => c.cartId === cartItemId);
       if (existing) {
         existing.quantity += 1;
-        showToast(`Jumlah pesanan ${product.name} (${variant.name}) ditambah.`);
+        showToast(`Jumlah ${product.name} ditambah.`);
       } else {
         cart.push({ cartId: cartItemId, id: product.id, name: `${product.name} (${variant.name})`, price: variant.price, image: product.image, quantity: 1 });
-        showToast(`Berhasil masuk ke keranjang!`);
+        showToast(`Masuk ke keranjang!`);
       }
       renderCart();
     }
@@ -548,7 +533,7 @@
       
       const container = document.getElementById('cart-items');
       if (cart.length === 0) {
-        container.innerHTML = `<div class="h-64 flex flex-col items-center justify-center text-slate-400 text-center gap-2"><i data-lucide="shopping-bag" class="w-10 h-10 stroke-1"></i><p class="text-xs">Keranjang Anda masih kosong</p></div>`;
+        container.innerHTML = `<div class="h-64 flex flex-col items-center justify-center text-slate-400 text-center gap-2"><i data-lucide="shopping-bag" class="w-10 h-10 stroke-1"></i><p class="text-xs">Keranjang kosong</p></div>`;
       } else {
         container.innerHTML = cart.map(item => `
           <div class="flex items-center justify-between gap-2.5 p-2.5 bg-slate-50 rounded-2xl border border-slate-100">
@@ -567,14 +552,13 @@
       lucide.createIcons();
     }
 
-    function processCartQRIS() {
+    function processCartCheckout() {
       if (cart.length === 0) return;
       const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-      toggleCart(false);
-      openPaymentModal({
-        type: 'cart',
-        amount: totalPrice
-      });
+      let msg = `*Checkout Keranjang (${Date.now().toString().slice(-6)})*%0A`;
+      cart.forEach((item, idx) => { msg += `${idx + 1}. ${item.name} (${item.quantity}x) - ${formatIDR(item.price * item.quantity)}%0A`; });
+      msg += `%0A*Total: ${formatIDR(totalPrice)}*%0A%0ASaya ingin memesan daftar produk di atas. Mohon instruksi pembayarannya.`;
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
     }
 
     loadProducts();
