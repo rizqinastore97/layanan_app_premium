@@ -11,11 +11,6 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    @keyframes fadeInReview {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .animate-review { animation: fadeInReview 0.25s ease-out forwards; }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen pb-20 md:pb-10 font-sans antialiased selection:bg-[#f5125e] selection:text-white">
@@ -23,7 +18,7 @@
   <!-- Toast Container -->
   <div id="toast-container" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none w-full max-w-xs px-4"></div>
 
-  <!-- Social Proof / Live Purchase Notification Popup -->
+  <!-- Social Proof Notification Popup -->
   <div id="social-proof-toast" class="fixed bottom-20 md:bottom-6 left-3 md:left-6 z-40 bg-white/95 backdrop-blur-md border border-rose-200/90 p-2.5 sm:p-3 rounded-2xl shadow-xl flex items-center gap-3 max-w-xs transition-all duration-500 opacity-0 translate-y-6 pointer-events-none">
     <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#f5125e] to-[#ff477e] text-white flex items-center justify-center flex-shrink-0 shadow-xs">
       <i data-lucide="bag-check" class="w-5 h-5"></i>
@@ -42,7 +37,6 @@
   <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-rose-100/80 shadow-xs px-3 sm:px-8 py-3">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-2.5 sm:gap-6">
       
-      <!-- Brand Logo -->
       <div class="flex items-center gap-2 cursor-pointer flex-shrink-0" onclick="setCategory('Semua')">
         <div class="bg-gradient-to-tr from-[#f5125e] to-[#ff477e] text-white p-2 rounded-xl shadow-xs">
           <i data-lucide="shopping-bag" class="w-5 h-5"></i>
@@ -53,7 +47,7 @@
         </div>
       </div>
 
-      <!-- Search Bar Lazada Style -->
+      <!-- Search Bar -->
       <div class="relative flex-1 max-w-2xl">
         <form onsubmit="event.preventDefault(); handleSearch(document.getElementById('search-input').value);" class="flex items-center bg-white border-2 border-[#f5125e] rounded-full p-0.5 sm:p-1 shadow-xs transition-all focus-within:ring-2 focus-within:ring-[#f5125e]/30">
           <i data-lucide="search" class="w-4 h-4 text-slate-400 ml-3 mr-1 flex-shrink-0"></i>
@@ -64,7 +58,7 @@
             placeholder="Cari Nokos, Template, Followers, AI..." 
             class="w-full bg-transparent text-slate-800 text-xs sm:text-sm font-medium focus:outline-none placeholder:text-slate-400 px-1" 
           />
-          <label for="camera-search-input" class="p-1.5 text-slate-400 hover:text-[#f5125e] cursor-pointer rounded-full transition-colors flex items-center justify-center flex-shrink-0" title="Cari dengan Kamera / Gambar">
+          <label for="camera-search-input" class="p-1.5 text-slate-400 hover:text-[#f5125e] cursor-pointer rounded-full transition-colors flex items-center justify-center flex-shrink-0" title="Cari dengan Kamera">
             <i id="cam-icon" data-lucide="camera" class="w-4 h-4"></i>
             <i id="cam-loading-icon" data-lucide="loader-2" class="w-4 h-4 animate-spin hidden text-[#f5125e]"></i>
             <input type="file" id="camera-search-input" accept="image/*" onchange="handleCameraSearch(event)" class="hidden" />
@@ -101,33 +95,18 @@
     <!-- Info Trust Bar -->
     <div class="bg-white rounded-2xl p-3 sm:p-4 shadow-2xs border border-rose-100/60 grid grid-cols-3 gap-2 text-center text-xs">
       <div class="flex items-center justify-center gap-2.5 border-r border-slate-100 cursor-pointer" onclick="showToast('Sistem Auto QRIS TriPay Aktif 24 Jam')">
-        <div class="w-8 h-8 rounded-xl bg-rose-50 text-[#f5125e] flex items-center justify-center flex-shrink-0">
-          <i data-lucide="qr-code" class="w-4 h-4"></i>
-        </div>
-        <div class="text-left hidden sm:block">
-          <p class="font-bold text-slate-800 leading-tight">Auto QRIS</p>
-          <p class="text-[10px] text-slate-400">Verifikasi & kirim instan</p>
-        </div>
+        <div class="w-8 h-8 rounded-xl bg-rose-50 text-[#f5125e] flex items-center justify-center flex-shrink-0"><i data-lucide="qr-code" class="w-4 h-4"></i></div>
+        <div class="text-left hidden sm:block"><p class="font-bold text-slate-800 leading-tight">Auto QRIS</p><p class="text-[10px] text-slate-400">Verifikasi & kirim instan</p></div>
       </div>
 
       <div class="flex items-center justify-center gap-2.5 border-r border-slate-100 cursor-pointer" onclick="openHistoryModal()">
-        <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
-          <i data-lucide="receipt" class="w-4 h-4"></i>
-        </div>
-        <div class="text-left hidden sm:block">
-          <p class="font-bold text-slate-800 leading-tight">Cek Transaksi</p>
-          <p class="text-[10px] text-slate-400">Lihat riwayat akun lama</p>
-        </div>
+        <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0"><i data-lucide="receipt" class="w-4 h-4"></i></div>
+        <div class="text-left hidden sm:block"><p class="font-bold text-slate-800 leading-tight">Cek Transaksi</p><p class="text-[10px] text-slate-400">Lihat riwayat akun lama</p></div>
       </div>
 
       <div class="flex items-center justify-center gap-2.5 cursor-pointer" onclick="showToast('Semua produk bergaransi penuh')">
-        <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0">
-          <i data-lucide="shield-check" class="w-4 h-4"></i>
-        </div>
-        <div class="text-left hidden sm:block">
-          <p class="font-bold text-slate-800 leading-tight">Garansi 100%</p>
-          <p class="text-[10px] text-slate-400">Layanan resmi & terpercaya</p>
-        </div>
+        <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0"><i data-lucide="shield-check" class="w-4 h-4"></i></div>
+        <div class="text-left hidden sm:block"><p class="font-bold text-slate-800 leading-tight">Garansi 100%</p><p class="text-[10px] text-slate-400">Layanan resmi & terpercaya</p></div>
       </div>
     </div>
 
@@ -135,81 +114,66 @@
     <div class="bg-white rounded-2xl p-3.5 sm:p-5 shadow-2xs border border-slate-200/80">
       <div id="category-buttons-grid" class="grid grid-cols-4 sm:grid-cols-8 gap-3 sm:gap-4 text-center text-[11px] font-semibold text-slate-700">
         <div onclick="setCategory('AI')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="AI">
-          <div class="cat-icon-box w-12 h-12 bg-rose-50 text-[#f5125e] rounded-2xl flex items-center justify-center border border-rose-100 group-hover:scale-105 group-hover:bg-[#f5125e] group-hover:text-white transition-all shadow-2xs">
-            <i data-lucide="bot" class="w-5 h-5"></i>
-          </div>
+          <div class="cat-icon-box w-12 h-12 bg-rose-50 text-[#f5125e] rounded-2xl flex items-center justify-center border border-rose-100 group-hover:scale-105 group-hover:bg-[#f5125e] group-hover:text-white transition-all shadow-2xs"><i data-lucide="bot" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Akun AI</span>
         </div>
-
         <div onclick="setCategory('Editor')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Editor">
-          <div class="cat-icon-box w-12 h-12 bg-pink-50 text-pink-600 rounded-2xl flex items-center justify-center border border-pink-100 group-hover:scale-105 group-hover:bg-pink-600 group-hover:text-white transition-all shadow-2xs">
-            <i data-lucide="video" class="w-5 h-5"></i>
-          </div>
+          <div class="cat-icon-box w-12 h-12 bg-pink-50 text-pink-600 rounded-2xl flex items-center justify-center border border-pink-100 group-hover:scale-105 group-hover:bg-pink-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="video" class="w-5 h-5"></i></div>
           <span class="truncate w-full">App Pro</span>
         </div>
-
         <div onclick="setCategory('Blogger')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Blogger">
-          <div class="cat-icon-box w-12 h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center border border-amber-100 group-hover:scale-105 group-hover:bg-amber-600 group-hover:text-white transition-all shadow-2xs">
-            <i data-lucide="layout" class="w-5 h-5"></i>
-          </div>
+          <div class="cat-icon-box w-12 h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center border border-amber-100 group-hover:scale-105 group-hover:bg-amber-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="layout" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Blogger</span>
         </div>
-
         <div onclick="setCategory('Landing')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Landing">
-          <div class="cat-icon-box w-12 h-12 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center border border-sky-100 group-hover:scale-105 group-hover:bg-sky-600 group-hover:text-white transition-all shadow-2xs">
-            <i data-lucide="globe" class="w-5 h-5"></i>
-          </div>
+          <div class="cat-icon-box w-12 h-12 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center border border-sky-100 group-hover:scale-105 group-hover:bg-sky-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="globe" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Landing Page</span>
         </div>
-
         <div onclick="setCategory('Sosmed')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Sosmed">
-          <div class="cat-icon-box w-12 h-12 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center border border-purple-100 group-hover:scale-105 group-hover:bg-purple-600 group-hover:text-white transition-all shadow-2xs">
-            <i data-lucide="users" class="w-5 h-5"></i>
-          </div>
+          <div class="cat-icon-box w-12 h-12 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center border border-purple-100 group-hover:scale-105 group-hover:bg-purple-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="users" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Followers</span>
         </div>
-
         <div onclick="setCategory('Nokos')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Nokos">
-          <div class="cat-icon-box w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center border border-emerald-100 group-hover:scale-105 group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-2xs">
-            <i data-lucide="smartphone" class="w-5 h-5"></i>
-          </div>
+          <div class="cat-icon-box w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center border border-emerald-100 group-hover:scale-105 group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="smartphone" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Nokos OTP</span>
         </div>
-
         <div onclick="setCategory('Stream')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Stream">
-          <div class="cat-icon-box w-12 h-12 bg-violet-50 text-violet-600 rounded-2xl flex items-center justify-center border border-violet-100 group-hover:scale-105 group-hover:bg-violet-600 group-hover:text-white transition-all shadow-2xs">
-            <i data-lucide="play-square" class="w-5 h-5"></i>
-          </div>
+          <div class="cat-icon-box w-12 h-12 bg-violet-50 text-violet-600 rounded-2xl flex items-center justify-center border border-violet-100 group-hover:scale-105 group-hover:bg-violet-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="play-square" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Streaming</span>
         </div>
-
         <div onclick="setCategory('Semua')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group active-cat" data-cat="Semua">
-          <div class="cat-icon-box w-12 h-12 bg-[#f5125e] text-white rounded-2xl flex items-center justify-center border border-[#f5125e] group-hover:scale-105 transition-all shadow-2xs">
-            <i data-lucide="grid" class="w-5 h-5"></i>
-          </div>
+          <div class="cat-icon-box w-12 h-12 bg-[#f5125e] text-white rounded-2xl flex items-center justify-center border border-[#f5125e] group-hover:scale-105 transition-all shadow-2xs"><i data-lucide="grid" class="w-5 h-5"></i></div>
           <span class="truncate w-full font-bold text-[#f5125e]">Semua</span>
         </div>
       </div>
     </div>
 
-    <!-- LazFlash Promo Banner -->
-    <div class="bg-gradient-to-r from-[#f5125e] via-[#ff2b56] to-[#ff6b8b] rounded-2xl p-4 sm:p-6 text-white shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-      <div class="space-y-1.5">
-        <div class="flex flex-wrap items-center gap-2">
-          <div class="flex items-center gap-1 text-[10px] sm:text-xs font-black uppercase tracking-wider bg-white/20 backdrop-blur-xs px-2.5 py-1 rounded-full w-max text-white">
-            <i data-lucide="flame" class="w-3.5 h-3.5 text-yellow-300"></i> LAZFLASH PROMO HARI INI
-          </div>
-          <div class="flex items-center gap-1 bg-slate-900/80 text-white px-2.5 py-0.5 rounded-lg text-xs font-mono font-bold border border-white/20">
-            <span id="timer-hours">02</span>:<span id="timer-minutes">45</span>:<span id="timer-seconds">18</span>
-          </div>
-        </div>
-        <h3 class="font-black text-sm sm:text-2xl tracking-tight">Katalog Produk & Jasa Digital Terlengkap</h3>
-        <p class="text-xs sm:text-sm text-rose-100">Diskon s/d 50% • Sistem bayar otomatis QRIS TriPay langsung terima lisensi</p>
+    <!-- SEKSI BANNER PROMO DINAMIS (DAPAT DIATUR DARI ADMIN / GAMBAR / ON-OFF) -->
+    <div id="store-banner-wrapper">
+      <!-- 1. Tipe Banner Gambar Penuh -->
+      <div id="banner-image-container" class="w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm border border-slate-200/80">
+        <img id="main-banner-image" src="https://i.ibb.co.com/PGRmz0G8/Whats-App-Image-2026-08-24-at-12-25-05.jpg" alt="Banner Promo" class="w-full h-auto max-h-56 sm:max-h-72 object-cover" />
       </div>
-      <div class="hidden sm:flex items-center gap-2 bg-white/15 backdrop-blur-xs p-3 rounded-2xl border border-white/20">
-        <div class="text-right text-xs">
-          <p class="font-bold text-yellow-300">Gunakan Voucher:</p>
-          <p class="font-mono font-black text-white bg-slate-900/50 px-2 py-0.5 rounded mt-0.5 select-all">DISKON5K</p>
+
+      <!-- 2. Tipe Banner Teks LazFlash Default -->
+      <div id="banner-text-container" class="hidden bg-gradient-to-r from-[#f5125e] via-[#ff2b56] to-[#ff6b8b] rounded-2xl p-4 sm:p-6 text-white shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div class="space-y-1.5">
+          <div class="flex flex-wrap items-center gap-2">
+            <div class="flex items-center gap-1 text-[10px] sm:text-xs font-black uppercase tracking-wider bg-white/20 backdrop-blur-xs px-2.5 py-1 rounded-full w-max text-white">
+              <i data-lucide="flame" class="w-3.5 h-3.5 text-yellow-300"></i> LAZFLASH PROMO HARI INI
+            </div>
+            <div class="flex items-center gap-1 bg-slate-900/80 text-white px-2.5 py-0.5 rounded-lg text-xs font-mono font-bold border border-white/20">
+              <span id="timer-hours">02</span>:<span id="timer-minutes">45</span>:<span id="timer-seconds">18</span>
+            </div>
+          </div>
+          <h3 class="font-black text-sm sm:text-2xl tracking-tight">Katalog Produk & Jasa Digital Terlengkap</h3>
+          <p class="text-xs sm:text-sm text-rose-100">Diskon s/d 50% • Sistem bayar otomatis QRIS TriPay langsung terima lisensi</p>
+        </div>
+        <div class="hidden sm:flex items-center gap-2 bg-white/15 backdrop-blur-xs p-3 rounded-2xl border border-white/20">
+          <div class="text-right text-xs">
+            <p class="font-bold text-yellow-300">Gunakan Voucher:</p>
+            <p class="font-mono font-black text-white bg-slate-900/50 px-2 py-0.5 rounded mt-0.5 select-all">DISKON5K</p>
+          </div>
         </div>
       </div>
     </div>
@@ -224,7 +188,7 @@
       <div id="popular-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4"></div>
     </div>
 
-    <!-- Katalog Produk Utama dengan Fitur Sorting & Filter -->
+    <!-- Katalog Produk Utama -->
     <div id="product-catalog-section" class="space-y-3">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-1">
         <div class="flex items-center gap-2">
@@ -235,7 +199,6 @@
           <span id="product-count" class="text-xs text-slate-500 font-semibold">(0 Produk)</span>
         </div>
 
-        <!-- Sorting Dropdown -->
         <div class="flex items-center gap-2 self-end sm:self-auto">
           <span class="text-xs text-slate-500 font-medium hidden sm:inline">Urutkan:</span>
           <select id="sort-select" onchange="handleSortChange(this.value)" class="bg-white border border-slate-200 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#f5125e] shadow-2xs">
@@ -253,167 +216,81 @@
         <span class="text-xs font-semibold text-slate-500">Memuat Katalog Produk...</span>
       </div>
 
-      <!-- Grid Responsif (2 Kolom Mobile, 3-6 Kolom Desktop) -->
       <div id="product-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2.5 sm:gap-4 hidden"></div>
     </div>
 
     <!-- Seksi FAQ Accordion -->
     <div class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-2xs space-y-3">
       <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
-        <div class="w-7 h-7 rounded-lg bg-rose-50 text-[#f5125e] flex items-center justify-center">
-          <i data-lucide="help-circle" class="w-4 h-4"></i>
-        </div>
+        <div class="w-7 h-7 rounded-lg bg-rose-50 text-[#f5125e] flex items-center justify-center"><i data-lucide="help-circle" class="w-4 h-4"></i></div>
         <h3 class="font-extrabold text-sm sm:text-base text-slate-800">Pertanyaan Sering Diajukan (FAQ)</h3>
       </div>
-
       <div class="space-y-2 text-xs">
         <details class="group bg-slate-50 rounded-xl p-3 border border-slate-100 cursor-pointer">
-          <summary class="font-bold text-slate-800 flex justify-between items-center list-none">
-            <span>⚡ Berapa lama waktu pengiriman akun setelah pembayaran?</span>
-            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i>
-          </summary>
-          <p class="text-slate-600 mt-2 leading-relaxed text-[11.5px]">Sistem kami menggunakan <b>Auto-Delivery 24 Jam</b> terintegrasi TriPay. Begitu Anda melakukan transfer QRIS dan berhasil diverifikasi (kurang dari 5 detik), data akun atau lisensi langsung muncul otomatis di layar Anda dan tersimpan di Riwayat Pesanan.</p>
+          <summary class="font-bold text-slate-800 flex justify-between items-center list-none"><span>⚡ Berapa lama waktu pengiriman akun?</span><i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i></summary>
+          <p class="text-slate-600 mt-2 leading-relaxed text-[11.5px]">Sistem <b>Auto-Delivery 24 Jam</b> instan kurang dari 5 detik setelah pembayaran terverifikasi.</p>
         </details>
-
         <details class="group bg-slate-50 rounded-xl p-3 border border-slate-100 cursor-pointer">
-          <summary class="font-bold text-slate-800 flex justify-between items-center list-none">
-            <span>🛡️ Bagaimana ketentuan garansi jika akun berkendala?</span>
-            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i>
-          </summary>
-          <p class="text-slate-600 mt-2 leading-relaxed text-[11.5px]">Semua produk memiliki garansi resmi sesuai durasi paket. Jika terjadi kendala login, cukup buka menu <b>Riwayat Pesanan</b>, salin Nomor Invoice Anda, lalu hubungi WhatsApp Admin untuk penggantian akun baru.</p>
-        </details>
-
-        <details class="group bg-slate-50 rounded-xl p-3 border border-slate-100 cursor-pointer">
-          <summary class="font-bold text-slate-800 flex justify-between items-center list-none">
-            <span>💳 Apa saja metode pembayaran yang diterima?</span>
-            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i>
-          </summary>
-          <p class="text-slate-600 mt-2 leading-relaxed text-[11.5px]">Mendukung seluruh aplikasi E-Wallet (DANA, GoPay, OVO, ShopeePay, LinkAja) serta Mobile Banking dari seluruh bank di Indonesia (BCA, Mandiri, BRI, BNI, BSI, CIMB, Seabank, Bank Jago, dll).</p>
+          <summary class="font-bold text-slate-800 flex justify-between items-center list-none"><span>🛡️ Bagaimana ketentuan garansi?</span><i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i></summary>
+          <p class="text-slate-600 mt-2 leading-relaxed text-[11.5px]">Simpan Nomor Invoice untuk klaim garansi jika akun berkendala.</p>
         </details>
       </div>
     </div>
   </main>
 
-  <!-- Mobile Bottom Nav (Lazada Style) -->
+  <!-- Mobile Bottom Nav -->
   <div class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200/80 z-40 py-2 px-6 flex md:hidden items-center justify-between text-slate-500 text-[10px] font-medium shadow-lg">
-    <button onclick="setCategory('Semua')" class="flex flex-col items-center gap-0.5 text-[#f5125e]">
-      <i data-lucide="home" class="w-4 h-4"></i><span>Beranda</span>
-    </button>
-    <button onclick="setCategory('Blogger')" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]">
-      <i data-lucide="layout" class="w-4 h-4"></i><span>Template</span>
-    </button>
-    <button onclick="openHistoryModal()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]">
-      <i data-lucide="receipt" class="w-4 h-4"></i><span>Pesanan</span>
-    </button>
-    <button onclick="toggleCart(true)" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]">
-      <i data-lucide="shopping-bag" class="w-4 h-4"></i><span>Keranjang</span>
-    </button>
-    <button onclick="openChatModal()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]">
-      <i data-lucide="message-square-more" class="w-4 h-4"></i><span>Chat CS</span>
-    </button>
+    <button onclick="setCategory('Semua')" class="flex flex-col items-center gap-0.5 text-[#f5125e]"><i data-lucide="home" class="w-4 h-4"></i><span>Beranda</span></button>
+    <button onclick="setCategory('Blogger')" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="layout" class="w-4 h-4"></i><span>Template</span></button>
+    <button onclick="openHistoryModal()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="receipt" class="w-4 h-4"></i><span>Pesanan</span></button>
+    <button onclick="toggleCart(true)" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="shopping-bag" class="w-4 h-4"></i><span>Keranjang</span></button>
+    <button onclick="openChatModal()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="message-square-more" class="w-4 h-4"></i><span>Chat CS</span></button>
   </div>
 
-  <!-- MODAL LIVE CHAT CS -->
+  <!-- MODAL CHAT & DETAIL & CHECKOUT (Sama seperti sebelumnya) -->
   <div id="chat-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div onclick="closeChatModal()" class="absolute inset-0 bg-black/50 backdrop-blur-2xs"></div>
     <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
       <div id="chat-drawer" class="w-screen max-w-sm sm:max-w-md bg-white shadow-2xl flex flex-col translate-x-full transition-transform duration-300">
         <div class="p-3.5 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white flex items-center justify-between shadow-xs">
           <div class="flex items-center gap-2.5">
-            <div class="relative">
-              <div class="w-9 h-9 bg-white text-[#f5125e] rounded-full flex items-center justify-center font-bold text-sm shadow-xs">
-                <i data-lucide="headset" class="w-5 h-5"></i>
-              </div>
-              <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 border-2 border-white rounded-full"></span>
-            </div>
-            <div>
-              <h3 class="text-xs sm:text-sm font-bold leading-tight">Customer Support DigitalHub</h3>
-              <p class="text-[10px] text-rose-100 flex items-center gap-1"><span class="w-1.5 h-1.5 bg-emerald-300 rounded-full"></span> Online & Siap Membantu</p>
-            </div>
+            <div class="w-9 h-9 bg-white text-[#f5125e] rounded-full flex items-center justify-center font-bold text-sm shadow-xs"><i data-lucide="headset" class="w-5 h-5"></i></div>
+            <div><h3 class="text-xs sm:text-sm font-bold leading-tight">Customer Support DigitalHub</h3><p class="text-[10px] text-rose-100">Online & Siap Membantu</p></div>
           </div>
           <button onclick="closeChatModal()" class="text-white/80 hover:text-white p-1 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
-
         <div id="chat-messages-container" class="flex-1 p-3.5 overflow-y-auto space-y-3 bg-slate-50 text-xs">
           <div class="flex items-start gap-2">
             <div class="w-7 h-7 rounded-full bg-rose-100 text-[#f5125e] flex items-center justify-center flex-shrink-0 text-xs font-bold">CS</div>
-            <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs space-y-1.5 max-w-[85%]">
-              <p class="font-semibold text-slate-800">Halo Kak! 👋 Ada yang bisa kami bantu seputar produk digital, pembayaran, atau akun?</p>
-              <p class="text-[11px] text-slate-500">Pilih pertanyaan cepat di bawah untuk respon instan:</p>
-            </div>
-          </div>
-
-          <div class="space-y-1.5 pl-9">
-            <button onclick="sendQuickReply('Bagaimana cara beli produk via QRIS otomatis?')" class="w-full text-left bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 p-2 rounded-xl text-[11px] font-medium text-slate-700 transition-all flex items-center justify-between">
-              <span>⚡ Cara Beli & Auto Delivery</span>
-              <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
-            </button>
-            <button onclick="sendQuickReply('Apakah semua produk bergaransi resmi?')" class="w-full text-left bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 p-2 rounded-xl text-[11px] font-medium text-slate-700 transition-all flex items-center justify-between">
-              <span>🛡️ Info Garansi & Klaim Akun</span>
-              <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
-            </button>
-            <button onclick="sendQuickReply('Bisa minta bantuan langsung via WhatsApp Admin?')" class="w-full text-left bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 p-2 rounded-xl text-[11px] font-medium text-emerald-700 transition-all flex items-center justify-between">
-              <span>💬 Butuh Bantuan Khusus (WhatsApp)</span>
-              <i data-lucide="external-link" class="w-3.5 h-3.5 text-emerald-500"></i>
-            </button>
+            <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs space-y-1.5 max-w-[85%]"><p class="font-semibold text-slate-800">Halo Kak! Ada yang bisa kami bantu?</p></div>
           </div>
         </div>
-
         <div class="p-2.5 border-t border-slate-200 bg-white">
           <form onsubmit="handleUserChatSubmit(event)" class="flex items-center gap-1.5">
-            <input 
-              type="text" 
-              id="user-chat-input" 
-              placeholder="Ketik pertanyaan Kakak di sini..." 
-              class="flex-1 bg-slate-100 text-slate-800 text-xs px-3 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#f5125e] focus:bg-white" 
-            />
-            <button type="submit" class="bg-[#f5125e] hover:bg-[#d40c4e] text-white p-2.5 rounded-xl transition-colors">
-              <i data-lucide="send" class="w-4 h-4"></i>
-            </button>
+            <input type="text" id="user-chat-input" placeholder="Ketik pertanyaan Kakak..." class="flex-1 bg-slate-100 text-slate-800 text-xs px-3 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#f5125e]" />
+            <button type="submit" class="bg-[#f5125e] text-white p-2.5 rounded-xl"><i data-lucide="send" class="w-4 h-4"></i></button>
           </form>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Modal Detail Produk dengan Shopee-Style Customer Reviews -->
+  <!-- Detail Modal -->
   <div id="detail-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div onclick="closeDetailModal()" class="absolute inset-0 bg-black/50 backdrop-blur-2xs"></div>
     <div class="fixed inset-0 flex items-end sm:items-center justify-center p-0 sm:p-4">
       <div id="detail-modal-card" class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
-        
         <div class="relative p-4 border-b border-slate-100 flex items-center gap-3.5">
           <img id="modal-img" src="" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-contain bg-slate-50 p-1 border border-slate-100 flex-shrink-0" />
           <div class="min-w-0 flex-1">
-            <div class="flex items-center gap-2">
-              <span id="modal-category" class="text-[9px] uppercase font-bold text-[#f5125e] bg-rose-50 px-2 py-0.5 rounded-md"></span>
-              <button onclick="shareCurrentProduct()" class="text-[10px] text-slate-500 hover:text-[#f5125e] flex items-center gap-1 bg-slate-100 hover:bg-rose-50 px-2 py-0.5 rounded-md transition-colors">
-                <i data-lucide="share-2" class="w-3 h-3"></i> Bagikan
-              </button>
-            </div>
+            <span id="modal-category" class="text-[9px] uppercase font-bold text-[#f5125e] bg-rose-50 px-2 py-0.5 rounded-md"></span>
             <h3 id="modal-name" class="text-sm sm:text-base font-bold text-slate-900 truncate mt-1"></h3>
             <p id="modal-price" class="text-sm sm:text-base font-black text-[#f5125e] mt-0.5"></p>
           </div>
           <button onclick="closeDetailModal()" class="text-slate-400 hover:text-slate-600 p-1"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
-
         <div class="p-4 overflow-y-auto space-y-4 text-xs sm:text-sm flex-1">
-          <div>
-            <h4 class="font-bold text-slate-800 mb-1.5 flex items-center justify-between text-xs">
-              <span>Pilihan Varian / Layanan:</span><span id="modal-variant-stock" class="text-slate-500 font-normal"></span>
-            </h4>
-            <div id="modal-variants-list" class="flex flex-wrap gap-2"></div>
-          </div>
-
-          <!-- Dynamic Input Fields untuk Produk Khusus -->
-          <div id="modal-dynamic-field-container" class="space-y-1.5 hidden">
-            <label id="modal-dynamic-label" class="font-bold text-slate-800 text-xs flex items-center gap-1">
-              <i data-lucide="edit-3" class="w-3.5 h-3.5 text-[#f5125e]"></i> Catatan Target Layanan:
-            </label>
-            <input type="text" id="modal-dynamic-input" placeholder="" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#f5125e] focus:bg-white" />
-            <p id="modal-dynamic-hint" class="text-[10px] text-slate-400"></p>
-          </div>
-
+          <div><h4 class="font-bold text-slate-800 mb-1.5 flex items-center justify-between text-xs"><span>Pilihan Varian:</span><span id="modal-variant-stock" class="text-slate-500 font-normal"></span></h4><div id="modal-variants-list" class="flex flex-wrap gap-2"></div></div>
           <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex items-center justify-around text-center">
             <div><span class="text-[10px] text-slate-400 block">Terjual</span><span id="modal-sold" class="font-bold text-slate-800"></span></div>
             <div class="w-px h-5 bg-slate-200"></div>
@@ -421,51 +298,18 @@
             <div class="w-px h-5 bg-slate-200"></div>
             <div><span class="text-[10px] text-slate-400 block">Garansi</span><span id="modal-warranty" class="font-bold text-emerald-600"></span></div>
           </div>
-
-          <div>
-            <h4 class="font-bold text-slate-800 mb-1">Deskripsi Layanan</h4>
-            <p id="modal-desc" class="text-slate-600 leading-relaxed whitespace-pre-line text-xs"></p>
-          </div>
-
-          <!-- SEKSI PENILAIAN & ULASAN PEMBELI SHOPEE-STYLE -->
-          <div class="pt-3 border-t border-slate-100 space-y-3">
-            <div class="flex items-center justify-between">
-              <div>
-                <h4 class="font-bold text-slate-800 text-xs sm:text-sm flex items-center gap-1.5">
-                  <i data-lucide="star" class="w-4 h-4 text-amber-500 fill-amber-500"></i>
-                  <span>PENILAIAN PRODUK</span>
-                </h4>
-                <p class="text-[10.5px] text-slate-500 mt-0.5">⭐ 5.0 dari 5 • (100% Pembeli Puas)</p>
-              </div>
-              <span class="text-[10px] text-[#f5125e] font-bold bg-rose-50 px-2 py-0.5 rounded-md border border-rose-100">Ulasan Terverifikasi</span>
-            </div>
-
-            <!-- Tombol Filter Ulasan Interaktif -->
-            <div class="flex flex-wrap gap-1.5 text-[10px]" id="review-filter-buttons">
-              <button type="button" onclick="setReviewFilter('all')" id="rf-all" class="rf-btn bg-rose-50 text-[#f5125e] border border-rose-200 px-2.5 py-1 rounded-lg font-bold transition-all shadow-2xs">Semua (48)</button>
-              <button type="button" onclick="setReviewFilter('star5')" id="rf-star5" class="rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all">Bintang 5 (48)</button>
-              <button type="button" onclick="setReviewFilter('instant')" id="rf-instant" class="rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all">⚡ Kirim Instan (36)</button>
-              <button type="button" onclick="setReviewFilter('service')" id="rf-service" class="rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all">🛡️ Garansi Aman (12)</button>
-            </div>
-
-            <!-- List of Shopee Style Reviews -->
-            <div id="product-reviews-list" class="space-y-2.5 pt-1"></div>
-          </div>
+          <div><h4 class="font-bold text-slate-800 mb-1">Deskripsi Layanan</h4><p id="modal-desc" class="text-slate-600 leading-relaxed whitespace-pre-line text-xs"></p></div>
         </div>
-
         <div class="p-3.5 bg-slate-50 border-t border-slate-100 grid grid-cols-5 gap-2">
-          <button id="modal-btn-chat" class="col-span-1 border border-rose-200 bg-rose-50 hover:bg-rose-100 text-[#f5125e] rounded-xl flex flex-col items-center justify-center p-2 transition-colors">
-            <i data-lucide="message-square-more" class="w-4 h-4"></i>
-            <span class="text-[9px] font-bold">Chat</span>
-          </button>
-          <button id="modal-btn-cart" class="col-span-2 bg-rose-50 text-[#f5125e] border border-rose-200 font-bold rounded-xl text-xs py-2.5 hover:bg-rose-100 transition-colors">+ Keranjang</button>
-          <button id="modal-btn-buy" class="col-span-2 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] hover:opacity-95 text-white font-bold rounded-xl text-xs py-2.5 flex items-center justify-center gap-1.5 shadow-xs transition-colors">Beli Sekarang</button>
+          <button id="modal-btn-chat" class="col-span-1 border border-rose-200 bg-rose-50 hover:bg-rose-100 text-[#f5125e] rounded-xl flex flex-col items-center justify-center p-2"><i data-lucide="message-square-more" class="w-4 h-4"></i><span class="text-[9px] font-bold">Chat</span></button>
+          <button id="modal-btn-cart" class="col-span-2 bg-rose-50 text-[#f5125e] border border-rose-200 font-bold rounded-xl text-xs py-2.5">+ Keranjang</button>
+          <button id="modal-btn-buy" class="col-span-2 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white font-bold rounded-xl text-xs py-2.5 shadow-xs">Beli Sekarang</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Modal Pembayaran QRIS dengan Input Kupon Diskon -->
+  <!-- Modal Pembayaran QRIS -->
   <div id="payment-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div onclick="closePaymentModal()" class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
     <div class="fixed inset-0 flex items-center justify-center p-4">
@@ -474,26 +318,11 @@
           <h3 class="font-bold text-sm text-slate-800 flex items-center gap-1.5"><i data-lucide="wallet" class="w-4 h-4 text-[#f5125e]"></i> Pembayaran QRIS</h3>
           <button onclick="closePaymentModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
-
         <div id="step-pay" class="space-y-3">
-          <div class="bg-rose-50/70 p-2.5 rounded-2xl border border-rose-100 text-left space-y-1">
+          <div class="bg-rose-50/70 p-2.5 rounded-2xl border border-rose-100 text-left">
             <p id="pay-item-name" class="text-xs font-semibold text-slate-800 truncate"></p>
-            <div class="flex items-center justify-between">
-              <span class="text-[11px] text-slate-500">Total Tagihan:</span>
-              <p id="pay-total-amount" class="text-base font-black text-[#f5125e]"></p>
-            </div>
-            <div id="coupon-applied-info" class="hidden text-[10px] text-emerald-600 font-bold flex justify-between items-center pt-1 border-t border-rose-200">
-              <span>Potongan Kupon:</span>
-              <span id="coupon-discount-text">- Rp 0</span>
-            </div>
+            <p id="pay-total-amount" class="text-base font-black text-[#f5125e] mt-0.5"></p>
           </div>
-
-          <!-- Form Input Kode Kupon -->
-          <div class="flex items-center gap-1.5">
-            <input type="text" id="coupon-input" placeholder="Punya kode kupon? (DISKON5K)" class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 uppercase focus:outline-none focus:ring-2 focus:ring-[#f5125e]" />
-            <button type="button" onclick="applyCouponCode()" class="bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold px-3 py-2 rounded-xl transition-colors">Terapkan</button>
-          </div>
-
           <div class="flex flex-col items-center">
             <div class="w-48 h-48 bg-white p-2 rounded-2xl border-2 border-dashed border-slate-300 flex items-center justify-center relative">
               <img id="qris-img" src="" class="w-full h-full object-contain" />
@@ -502,118 +331,40 @@
                 <span class="text-[10px] font-semibold text-slate-600">Membuat QRIS...</span>
               </div>
             </div>
-            <button type="button" onclick="downloadQRIS()" class="mt-2 text-xs text-[#f5125e] hover:text-[#d40c4e] font-semibold bg-rose-50 border border-rose-200 px-3 py-1.5 rounded-xl flex items-center gap-1.5">
-              <i data-lucide="download" class="w-3.5 h-3.5"></i> Unduh Barcode QRIS
-            </button>
           </div>
-
-          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-2.5 text-center">
-            <span class="text-[10px] text-slate-500 font-bold block uppercase mb-1.5">Bisa Dibayar Menggunakan:</span>
-            <div class="flex flex-wrap items-center justify-center gap-1 text-[10px] font-bold">
-              <span class="bg-white border border-slate-200 px-2 py-0.5 rounded-md text-sky-600">DANA</span>
-              <span class="bg-white border border-slate-200 px-2 py-0.5 rounded-md text-emerald-600">GOPAY</span>
-              <span class="bg-white border border-slate-200 px-2 py-0.5 rounded-md text-purple-600">OVO</span>
-              <span class="bg-white border border-slate-200 px-2 py-0.5 rounded-md text-orange-600">SHOPEEPAY</span>
-              <span class="bg-white border border-slate-200 px-2 py-0.5 rounded-md text-blue-700">BCA</span>
-              <span class="bg-white border border-slate-200 px-2 py-0.5 rounded-md text-blue-600">BRI</span>
-              <span class="bg-white border border-slate-200 px-2 py-0.5 rounded-md text-slate-700">+ Semua Bank</span>
-            </div>
-          </div>
-
           <div id="auto-polling-indicator" class="bg-emerald-50 border border-emerald-200 rounded-2xl p-2.5 text-left flex items-center gap-2">
             <i data-lucide="loader" class="w-4 h-4 text-emerald-600 animate-spin flex-shrink-0"></i>
-            <p class="text-[10.5px] text-emerald-800 font-medium leading-tight"><b>Sistem Auto TriPay:</b> Menunggu transfer... Akun otomatis terbuka begitu terbayar.</p>
+            <p class="text-[10.5px] text-emerald-800 font-medium leading-tight">Menunggu transfer... Akun otomatis terbuka begitu terbayar.</p>
           </div>
-
-          <div id="manual-guide-box" class="bg-amber-50 border border-amber-200 rounded-2xl p-3 text-left space-y-1.5 hidden">
-            <p class="text-[11px] font-bold text-amber-900">Panduan Pembayaran Stok Manual:</p>
-            <ol class="text-[10.5px] text-amber-950 space-y-1 pl-4 list-decimal">
-              <li>Scan QRIS GoPay di atas menggunakan E-Wallet atau M-Banking.</li>
-              <li>Screenshot bukti pembayaran lunas.</li>
-              <li>Klik tombol di bawah untuk klaim akun ke Admin via WA.</li>
-            </ol>
-          </div>
-
-          <button id="btn-manual-confirm" onclick="processManualConfirm()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl font-bold text-xs shadow-md hidden flex items-center justify-center gap-1.5">
-            <i data-lucide="message-circle" class="w-4 h-4"></i> Kirim Bukti ke WA Admin
-          </button>
         </div>
-
-        <!-- TAMPILAN 2: HASIL AKUN, INVOICE & RATING -->
         <div id="step-result" class="space-y-3 hidden text-left">
           <div class="text-center">
             <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-1"><i data-lucide="check" class="w-6 h-6"></i></div>
             <h4 class="font-bold text-sm text-slate-800">Pembayaran Terverifikasi!</h4>
-            <p class="text-xs text-slate-500">Data akun / layanan Anda siap digunakan.</p>
           </div>
-
-          <div class="bg-rose-50/80 border border-rose-200 rounded-2xl p-3 space-y-1.5">
-            <div class="flex justify-between items-center">
-              <span class="text-[10px] text-[#f5125e] font-bold uppercase">No. Invoice Pembelian:</span>
-              <button onclick="copyInvoiceCode()" class="text-[10px] text-[#f5125e] bg-white border border-rose-200 px-2 py-0.5 rounded font-bold">Salin</button>
-            </div>
-            <p id="invoice-display-code" class="font-mono text-xs font-bold text-slate-800 bg-white p-2 rounded-xl border border-rose-100 select-all"></p>
-            <p class="text-[10.5px] text-slate-600">⚠️ Simpan invoice ini sebagai bukti sah klaim garansi.</p>
-          </div>
-
           <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3">
-            <span class="text-[10px] text-slate-600 font-bold block uppercase mb-1">Data Akun / Lisensi / Link:</span>
-            <pre id="account-data" class="font-mono text-xs text-slate-800 whitespace-pre-wrap break-all bg-white p-2.5 rounded-xl border select-all"></pre>
-            <button onclick="copyAccountData()" class="mt-2 w-full bg-[#f5125e] hover:bg-[#d40c4e] text-white text-[11px] font-bold py-1.5 rounded-lg">Salin Data Akun</button>
+            <span class="text-[10px] text-slate-600 font-bold block uppercase mb-1">Data Akun / Lisensi:</span>
+            <pre id="account-data" class="font-mono text-xs text-slate-800 whitespace-pre-wrap select-all"></pre>
           </div>
-
           <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3">
             <span class="text-[10px] text-amber-800 font-bold block uppercase mb-1">Syarat & Ketentuan:</span>
-            <pre id="terms-data" class="font-sans text-[11px] text-amber-950 whitespace-pre-wrap bg-white/80 p-2 rounded-xl"></pre>
+            <pre id="terms-data" class="font-sans text-[11px] text-amber-950 whitespace-pre-wrap"></pre>
           </div>
-
-          <!-- KOTAK PENILAIAN & RATING -->
-          <div id="rating-review-box" class="bg-gradient-to-b from-rose-50/60 to-white border border-rose-200 rounded-2xl p-3.5 space-y-2.5">
-            <div class="flex items-center justify-between">
-              <span class="text-[10px] text-[#f5125e] font-bold uppercase flex items-center gap-1">
-                <i data-lucide="star" class="w-3.5 h-3.5 text-[#f5125e] fill-[#f5125e]"></i> Nilai Produk Ini:
-              </span>
-              <span id="rating-text-hint" class="text-[10px] text-amber-600 font-bold">Sangat Puas (5/5)</span>
-            </div>
-
-            <div class="flex items-center justify-center gap-2 py-1" id="star-rating-container">
-              <button type="button" onclick="setRatingStar(1)" class="star-btn p-1 transition-transform hover:scale-125 focus:outline-none"><i data-lucide="star" class="w-7 h-7 text-yellow-400 fill-yellow-400"></i></button>
-              <button type="button" onclick="setRatingStar(2)" class="star-btn p-1 transition-transform hover:scale-125 focus:outline-none"><i data-lucide="star" class="w-7 h-7 text-yellow-400 fill-yellow-400"></i></button>
-              <button type="button" onclick="setRatingStar(3)" class="star-btn p-1 transition-transform hover:scale-125 focus:outline-none"><i data-lucide="star" class="w-7 h-7 text-yellow-400 fill-yellow-400"></i></button>
-              <button type="button" onclick="setRatingStar(4)" class="star-btn p-1 transition-transform hover:scale-125 focus:outline-none"><i data-lucide="star" class="w-7 h-7 text-yellow-400 fill-yellow-400"></i></button>
-              <button type="button" onclick="setRatingStar(5)" class="star-btn p-1 transition-transform hover:scale-125 focus:outline-none"><i data-lucide="star" class="w-7 h-7 text-yellow-400 fill-yellow-400"></i></button>
-            </div>
-
-            <textarea id="review-comment-input" rows="2" placeholder="Tulis kepuasan Anda belanja di toko ini (opsional)..." class="w-full bg-white border border-rose-200 rounded-xl p-2.5 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#f5125e]"></textarea>
-            
-            <button type="button" onclick="submitProductReview()" id="btn-submit-review" class="w-full bg-gradient-to-r from-[#f5125e] to-[#ff2b56] hover:opacity-95 text-white font-bold text-xs py-2.5 rounded-xl transition-all shadow-xs flex items-center justify-center gap-1.5">
-              <i data-lucide="send" class="w-3.5 h-3.5"></i> Kirim Penilaian & Ulasan
-            </button>
-
-            <div id="review-submitted-msg" class="hidden bg-emerald-50 border border-emerald-200 rounded-xl p-2.5 text-center text-emerald-800 text-xs font-semibold">
-              🎉 Terima kasih! Penilaian & ulasan Anda telah berhasil disimpan.
-            </div>
-          </div>
-
-          <button id="btn-wa-claim" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-md">
-            <i data-lucide="message-circle" class="w-4 h-4"></i> Konfirmasi Garansi ke WA
-          </button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Modal Riwayat Pesanan -->
+  <!-- Riwayat Modal -->
   <div id="history-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div onclick="closeHistoryModal()" class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
     <div class="fixed inset-0 flex items-center justify-center p-4">
       <div id="history-modal-card" class="bg-white w-full max-w-lg rounded-3xl shadow-2xl p-5 flex flex-col max-h-[90vh]">
         <div class="flex justify-between items-center pb-3 border-b border-slate-100">
-          <h3 class="font-bold text-sm sm:text-base text-slate-800 flex items-center gap-2"><i data-lucide="history" class="w-5 h-5 text-[#f5125e]"></i> Riwayat Pembelian Akun</h3>
+          <h3 class="font-bold text-sm sm:text-base text-slate-800 flex items-center gap-2"><i data-lucide="history" class="w-5 h-5 text-[#f5125e]"></i> Riwayat Pembelian</h3>
           <button onclick="closeHistoryModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
-        <p class="text-[11px] text-slate-500 mt-2 mb-3">Daftar akun/lisensi yang pernah Anda beli di browser ini:</p>
-        <div id="history-list" class="flex-1 overflow-y-auto space-y-3 pr-1"></div>
+        <div id="history-list" class="flex-1 overflow-y-auto space-y-3 pr-1 mt-3"></div>
       </div>
     </div>
   </div>
@@ -629,13 +380,8 @@
         </div>
         <div id="cart-items" class="flex-1 overflow-y-auto p-4 space-y-2.5"></div>
         <div id="cart-footer" class="p-4 border-t border-slate-100 bg-slate-50 space-y-3 hidden">
-          <div class="flex justify-between items-center text-xs sm:text-sm">
-            <span class="text-slate-500 font-medium">Total Pembayaran:</span>
-            <span id="cart-total-price" class="font-black text-[#f5125e] text-base">Rp 0</span>
-          </div>
-          <button onclick="processCartCheckout()" class="w-full bg-gradient-to-r from-[#f5125e] to-[#ff2b56] hover:opacity-95 text-white py-3 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all">
-            <i data-lucide="qr-code" class="w-4 h-4"></i> Checkout QRIS Sekarang
-          </button>
+          <div class="flex justify-between items-center text-xs sm:text-sm"><span class="text-slate-500 font-medium">Total:</span><span id="cart-total-price" class="font-black text-[#f5125e] text-base">Rp 0</span></div>
+          <button onclick="processCartCheckout()" class="w-full bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white py-3 rounded-xl font-bold text-xs sm:text-sm shadow-md">Checkout QRIS Sekarang</button>
         </div>
       </div>
     </div>
@@ -654,23 +400,45 @@
     let currentSelectedProduct = null;
     let currentSelectedVariant = null;
     let pollingInterval = null;
-    let currentQRISUrl = "";
-    let currentActiveInvoice = "";
-    let selectedRatingStarValue = 5;
-    let appliedDiscountAmount = 0;
-    let activeReviewFilter = 'all';
 
     const formatIDR = (val) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(val);
 
-    function showToast(message, type = 'info') {
+    function showToast(msg) {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
-      const bg = type === 'error' ? 'bg-red-600' : 'bg-slate-900';
-      toast.className = `${bg} text-white text-xs font-semibold px-3.5 py-2.5 rounded-xl shadow-xl pointer-events-auto transform transition-all duration-300 opacity-0 translate-y-2`;
-      toast.innerHTML = `<span>${message}</span>`;
+      toast.className = 'bg-slate-900 text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-xl transition-all';
+      toast.innerText = msg;
       container.appendChild(toast);
-      setTimeout(() => toast.classList.remove('opacity-0', 'translate-y-2'), 10);
-      setTimeout(() => { toast.classList.add('opacity-0', '-translate-y-2'); setTimeout(() => toast.remove(), 300); }, 2500);
+      setTimeout(() => toast.remove(), 2500);
+    }
+
+    // ================= APPLY PENGATURAN BANNER DARI ADMIN =================
+    function applyStoreBannerSettings() {
+      const settings = JSON.parse(localStorage.getItem('my_banner_settings') || JSON.stringify({
+        active: true,
+        type: 'image',
+        imageUrl: 'https://i.ibb.co.com/PGRmz0G8/Whats-App-Image-2026-08-24-at-12-25-05.jpg'
+      }));
+
+      const wrapper = document.getElementById('store-banner-wrapper');
+      const imgBox = document.getElementById('banner-image-container');
+      const textBox = document.getElementById('banner-text-container');
+      const bannerImg = document.getElementById('main-banner-image');
+
+      if (!settings.active) {
+        wrapper.classList.add('hidden');
+        return;
+      }
+
+      wrapper.classList.remove('hidden');
+      if (settings.type === 'image') {
+        imgBox.classList.remove('hidden');
+        textBox.classList.add('hidden');
+        if (settings.imageUrl) bannerImg.src = settings.imageUrl;
+      } else {
+        imgBox.classList.add('hidden');
+        textBox.classList.remove('hidden');
+      }
     }
 
     async function loadProducts() {
@@ -678,7 +446,7 @@
         const response = await fetch(API_URL);
         const data = await response.json();
         products = Array.isArray(data) ? data : [];
-      } catch (error) { products = []; }
+      } catch (e) { products = []; }
       document.getElementById('loading-indicator').classList.add('hidden');
       document.getElementById('product-grid').classList.remove('hidden');
       renderPopularSection();
@@ -686,152 +454,31 @@
       renderCart();
     }
 
-    // ================= COUNTDOWN TIMER FLASH SALE =================
-    function startCountdownTimer() {
-      let secondsRemaining = 2 * 3600 + 45 * 60 + 18;
-      setInterval(() => {
-        secondsRemaining = secondsRemaining <= 0 ? 3 * 3600 : secondsRemaining - 1;
-        const h = Math.floor(secondsRemaining / 3600).toString().padStart(2, '0');
-        const m = Math.floor((secondsRemaining % 3600) / 60).toString().padStart(2, '0');
-        const s = (secondsRemaining % 60).toString().padStart(2, '0');
-        
-        const elH = document.getElementById('timer-hours');
-        const elM = document.getElementById('timer-minutes');
-        const elS = document.getElementById('timer-seconds');
-        if (elH) elH.innerText = h;
-        if (elM) elM.innerText = m;
-        if (elS) elS.innerText = s;
-      }, 1000);
-    }
-
-    // ================= SOCIAL PROOF NOTIFICATION =================
-    const livePurchasesData = [
-      { user: 'Budi S. (Surabaya)', product: 'Gemini Pro Advanced', time: '1 menit lalu' },
-      { user: 'Rian P. (Jakarta Selatan)', product: 'CapCut Pro 1 Tahun', time: '2 menit lalu' },
-      { user: 'Dewi Anggraini (Bandung)', product: 'Alight Motion 1 Tahun', time: 'Baru saja' },
-      { user: 'Andi Wibowo (Yogyakarta)', product: 'YouTube Premium 3 Bulan', time: '3 menit lalu' },
-      { user: 'Siti Marwah (Semarang)', product: 'Template Blogger Toko Online', time: '5 menit lalu' },
-      { user: 'Dimas K. (Malang)', product: '1.000 Followers Instagram', time: '1 menit lalu' },
-      { user: 'Kevin Tan (Medan)', product: 'Nokos OTP WhatsApp Virtual', time: '4 menit lalu' },
-      { user: 'Putri N. (Makassar)', product: 'Gemini AI Pro 1 Bulan', time: 'Baru saja' },
-      { user: 'Fajar Pratama (Bekasi)', product: 'Landing Page Bisnis Pro', time: '6 menit lalu' },
-      { user: 'Eko Purnomo (Tangerang)', product: 'CapCut Pro 1 Tahun', time: '2 menit lalu' },
-      { user: 'Anisa Zahra (Denpasar)', product: '500 Followers TikTok Indo', time: '7 menit lalu' },
-      { user: 'Hendra M. (Palembang)', product: 'Spotify Premium 1 Bulan', time: '3 menit lalu' },
-      { user: 'Bayu Saputra (Bogor)', product: 'Template Blogger SEO V3', time: '8 menit lalu' },
-      { user: 'Lestari Ayu (Solo)', product: 'Canva Pro Edu 1 Tahun', time: 'Baru saja' },
-      { user: 'Ahmad Fauzi (Banjarmasin)', product: 'Nokos Telegram OTP', time: '4 menit lalu' }
-    ];
-
-    function startSocialProofNotifications() {
-      let idx = 0;
-      setInterval(() => {
-        const item = livePurchasesData[idx % livePurchasesData.length];
-        idx++;
-
-        const toast = document.getElementById('social-proof-toast');
-        document.getElementById('sp-user').innerText = item.user;
-        document.getElementById('sp-product').innerText = item.product;
-        document.getElementById('sp-time').innerText = `${item.time} • Terverifikasi Otomatis`;
-        
-        toast.classList.remove('opacity-0', 'translate-y-6');
-        setTimeout(() => {
-          toast.classList.add('opacity-0', 'translate-y-6');
-        }, 4000);
-      }, 9000);
-    }
-
-    // ================= FILTER & PENCARIAN & SORTING =================
-    function setCategory(cat) {
-      activeCategory = cat || 'Semua';
-      const badge = document.getElementById('active-category-badge');
-      if (badge) badge.innerText = activeCategory;
-
-      const buttons = document.querySelectorAll('.category-btn');
-      buttons.forEach(btn => {
-        const btnCat = btn.getAttribute('data-cat');
-        const iconBox = btn.querySelector('.cat-icon-box');
-        const label = btn.querySelector('span');
-        
-        if (btnCat && btnCat.toLowerCase() === activeCategory.toLowerCase()) {
-          iconBox.className = 'cat-icon-box w-12 h-12 bg-[#f5125e] text-white rounded-2xl flex items-center justify-center border border-[#f5125e] shadow-xs';
-          label.className = 'truncate w-full font-bold text-[#f5125e]';
-        } else {
-          iconBox.className = 'cat-icon-box w-12 h-12 bg-slate-100 text-slate-700 rounded-2xl flex items-center justify-center border border-slate-200 group-hover:scale-105 transition-all shadow-2xs';
-          label.className = 'truncate w-full text-slate-700 font-semibold';
-        }
-      });
-
-      renderProducts();
-      lucide.createIcons();
-    }
-
-    function handleSearch(query) {
-      searchQuery = (query || '').trim().toLowerCase();
-      renderProducts();
-    }
-
-    function handleSortChange(sortVal) {
-      currentSort = sortVal;
-      renderProducts();
-    }
-
-    async function handleCameraSearch(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const camIcon = document.getElementById('cam-icon');
-      const camLoading = document.getElementById('cam-loading-icon');
-      camIcon.classList.add('hidden');
-      camLoading.classList.remove('hidden');
-      showToast('Memindai logo / teks gambar...');
-      try {
-        const { data: { text } } = await Tesseract.recognize(file, 'eng');
-        const cleanText = text.replace(/[^a-zA-Z0-9\s]/g, ' ').trim().toLowerCase();
-        let foundWord = '';
-        for (const p of products) {
-          for (const w of p.name.toLowerCase().split(' ')) {
-            if (w.length > 2 && cleanText.includes(w)) { foundWord = w; break; }
-          }
-          if (foundWord) break;
-        }
-        const finalSearch = foundWord || cleanText.split(/\s+/)[0] || '';
-        document.getElementById('search-input').value = finalSearch;
-        handleSearch(finalSearch);
-        showToast(finalSearch ? `Hasil: "${finalSearch}"` : 'Menampilkan semua produk');
-      } catch (err) {
-        showToast('Gagal memindai gambar', 'error');
-      } finally {
-        camIcon.classList.remove('hidden');
-        camLoading.classList.add('hidden');
-        event.target.value = '';
-      }
-    }
+    function setCategory(cat) { activeCategory = cat; renderProducts(); }
+    function handleSearch(q) { searchQuery = (q || '').toLowerCase(); renderProducts(); }
+    function handleSortChange(s) { currentSort = s; renderProducts(); }
 
     function renderPopularSection() {
       const popSec = document.getElementById('popular-section');
       const popGrid = document.getElementById('popular-grid');
-      if (products.length === 0) { popSec.classList.add('hidden'); return; }
-
-      const sorted = [...products].sort((a, b) => Number(b.sold || 0) - Number(a.sold || 0)).slice(0, 4);
-      if (sorted.length === 0) { popSec.classList.add('hidden'); return; }
+      // Saring produk yang ditandai Best Seller dari Admin atau penjualan >= 100
+      const bestProducts = products.filter(p => p.isBestSeller || Number(p.sold || 0) >= 100);
+      if (bestProducts.length === 0) { popSec.classList.add('hidden'); return; }
 
       popSec.classList.remove('hidden');
-      popGrid.innerHTML = sorted.map(item => {
+      popGrid.innerHTML = bestProducts.slice(0, 4).map(item => {
         const prices = item.variants.map(v => Number(v.price || 0));
-        const minPrice = Math.min(...prices);
         return `
           <div onclick="openDetailModal(${item.id})" class="bg-white rounded-2xl p-2.5 border border-rose-200/90 shadow-2xs hover:border-[#f5125e] transition-all cursor-pointer group flex flex-col justify-between">
-            <div class="relative">
-              <span class="absolute top-1.5 left-1.5 bg-[#f5125e] text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-xs z-10 flex items-center gap-0.5">
-                🔥 BEST SELLER
-              </span>
-              <div class="w-full aspect-square rounded-xl overflow-hidden bg-slate-50 flex items-center justify-center p-2 mb-1.5 border border-slate-100 group-hover:scale-[1.02] transition-transform">
-                <img src="${item.image}" alt="${item.name}" class="w-full h-full object-contain" loading="lazy" />
+            <div>
+              <span class="bg-[#f5125e] text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-xs mb-1 inline-block">🔥 BEST SELLER</span>
+              <div class="w-full aspect-square rounded-xl bg-slate-50 flex items-center justify-center p-2 mb-1.5 border border-slate-100">
+                <img src="${item.image}" class="w-full h-full object-contain" />
               </div>
               <h3 class="text-xs font-bold text-slate-800 line-clamp-1">${item.name}</h3>
             </div>
             <div class="mt-2 pt-1 border-t border-slate-100 flex items-center justify-between">
-              <span class="text-xs font-black text-[#f5125e]">${formatIDR(minPrice)}</span>
+              <span class="text-xs font-black text-[#f5125e]">${formatIDR(Math.min(...prices))}</span>
               <span class="text-[9px] text-slate-400">${item.sold || 0} Terjual</span>
             </div>
           </div>
@@ -842,79 +489,28 @@
 
     function renderProducts() {
       const grid = document.getElementById('product-grid');
-      if (!grid) return;
-
-      let filtered = products.filter(item => {
-        const itemCat = (item.category || '').toLowerCase().trim();
-        const targetCat = (activeCategory || 'semua').toLowerCase().trim();
-        
-        let matchesCategory = false;
-        if (targetCat === 'semua') {
-          matchesCategory = true;
-        } else if (targetCat === 'ai') {
-          matchesCategory = itemCat.includes('ai') || itemCat.includes('gemini') || itemCat.includes('chatgpt') || itemCat.includes('claude');
-        } else if (targetCat === 'editor') {
-          matchesCategory = itemCat.includes('editor') || itemCat.includes('edit') || itemCat.includes('video') || itemCat.includes('capcut') || itemCat.includes('alight');
-        } else if (targetCat === 'blogger') {
-          matchesCategory = itemCat.includes('blogger') || itemCat.includes('template') || itemCat.includes('theme');
-        } else if (targetCat === 'landing') {
-          matchesCategory = itemCat.includes('landing') || itemCat.includes('web') || itemCat.includes('website');
-        } else if (targetCat === 'sosmed') {
-          matchesCategory = itemCat.includes('sosmed') || itemCat.includes('follower') || itemCat.includes('like') || itemCat.includes('sub');
-        } else if (targetCat === 'nokos') {
-          matchesCategory = itemCat.includes('nokos') || itemCat.includes('otp') || itemCat.includes('virtual') || itemCat.includes('nomor');
-        } else if (targetCat === 'stream') {
-          matchesCategory = itemCat.includes('stream') || itemCat.includes('youtube') || itemCat.includes('netflix') || itemCat.includes('spotify') || itemCat.includes('music');
-        } else {
-          matchesCategory = itemCat.includes(targetCat);
-        }
-
-        let matchesSearch = true;
-        if (searchQuery) {
-          const name = (item.name || '').toLowerCase();
-          const desc = (item.description || '').toLowerCase();
-          const cat = (item.category || '').toLowerCase();
-          matchesSearch = name.includes(searchQuery) || desc.includes(searchQuery) || cat.includes(searchQuery);
-        }
-
-        return matchesCategory && matchesSearch;
+      let filtered = products.filter(p => {
+        const matchCat = activeCategory === 'Semua' || p.category === activeCategory;
+        const matchSearch = p.name.toLowerCase().includes(searchQuery);
+        return matchCat && matchSearch;
       });
 
-      if (currentSort === 'popular') {
-        filtered.sort((a, b) => Number(b.sold || 0) - Number(a.sold || 0));
-      } else if (currentSort === 'price-asc') {
-        filtered.sort((a, b) => Math.min(...a.variants.map(v => Number(v.price))) - Math.min(...b.variants.map(v => Number(v.price))));
-      } else if (currentSort === 'price-desc') {
-        filtered.sort((a, b) => Math.min(...b.variants.map(v => Number(v.price))) - Math.min(...a.variants.map(v => Number(v.price))));
-      } else if (currentSort === 'rating') {
-        filtered.sort((a, b) => Number(b.rating || 5) - Number(a.rating || 5));
-      }
-
       document.getElementById('product-count').innerText = `(${filtered.length} Produk)`;
-
-      if (filtered.length === 0) {
-        grid.innerHTML = `<div class="col-span-full py-16 text-center text-slate-400 text-xs"><i data-lucide="package-x" class="w-10 h-10 mx-auto mb-2 stroke-1"></i>Tidak ada produk yang cocok.</div>`;
-        lucide.createIcons();
-        return;
-      }
-
       grid.innerHTML = filtered.map(item => {
         const prices = item.variants.map(v => Number(v.price || 0));
-        const minPrice = Math.min(...prices);
-        const isHot = Number(item.sold || 0) >= 100;
-
+        const isHot = Boolean(item.isHot || Number(item.sold || 0) >= 100);
         return `
-          <div onclick="openDetailModal(${item.id})" class="bg-white rounded-2xl p-2.5 sm:p-3 border border-slate-200/90 shadow-2xs flex flex-col justify-between cursor-pointer hover:border-[#f5125e] hover:shadow-md transition-all group relative">
+          <div onclick="openDetailModal(${item.id})" class="bg-white rounded-2xl p-2.5 sm:p-3 border border-slate-200/90 shadow-2xs flex flex-col justify-between cursor-pointer hover:border-[#f5125e] transition-all group relative">
             <div>
               ${isHot ? `<span class="absolute top-2 right-2 bg-amber-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded shadow-xs z-10">HOT</span>` : ''}
-              <div class="w-full aspect-square rounded-xl overflow-hidden bg-slate-50 flex items-center justify-center p-2 mb-2 border border-slate-100 group-hover:scale-[1.02] transition-transform">
-                <img src="${item.image}" alt="${item.name}" class="w-full h-full object-contain" loading="lazy" />
+              <div class="w-full aspect-square rounded-xl bg-slate-50 flex items-center justify-center p-2 mb-2 border border-slate-100">
+                <img src="${item.image}" class="w-full h-full object-contain" />
               </div>
               <span class="text-[9px] uppercase font-bold text-[#f5125e] bg-rose-50 px-1.5 py-0.5 rounded">${item.category}</span>
-              <h3 class="text-xs sm:text-sm font-semibold text-slate-800 line-clamp-2 leading-tight mt-1 min-h-[2rem]">${item.name}</h3>
+              <h3 class="text-xs sm:text-sm font-semibold text-slate-800 line-clamp-2 mt-1 min-h-[2rem]">${item.name}</h3>
             </div>
             <div class="mt-2.5 pt-2 border-t border-slate-100">
-              <p class="text-xs sm:text-sm font-extrabold text-[#f5125e]">${formatIDR(minPrice)}</p>
+              <p class="text-xs sm:text-sm font-extrabold text-[#f5125e]">${formatIDR(Math.min(...prices))}</p>
               <div class="flex items-center justify-between text-[10px] text-slate-400 mt-1">
                 <span class="text-yellow-500 font-bold">★ ${item.rating || '5.0'}</span>
                 <span>${item.sold || 0} Terjual</span>
@@ -926,182 +522,8 @@
       lucide.createIcons();
     }
 
-    // ================= SMART REVIEW GENERATOR (SETIAP PRODUK BERBEDA RELEVAN) =================
-    function getCategorySpecificReviews(product, variantName) {
-      const cat = (product.category || '').toLowerCase();
-      const name = product.name;
-
-      if (cat.includes('ai')) {
-        return {
-          all: [
-            { user: "r***a", avatarColor: "bg-blue-100 text-blue-600", rating: 5, date: "2026-08-24 14:12", variant: variantName, comment: `Fitur reasoning ${name} mantap banget buat coding dan olah data. Akun langsung aktif detik itu juga, terima kasih seller!` },
-            { user: "f***y", avatarColor: "bg-emerald-100 text-emerald-600", rating: 5, date: "2026-08-23 19:30", variant: variantName, comment: "Kapasitas konteks luas, analisis dokumen PDF lancar jaya tanpa limit. Sangat worth it!" },
-            { user: "d***n", avatarColor: "bg-purple-100 text-purple-600", rating: 5, date: "2026-08-22 11:05", variant: variantName, comment: "Proses cepat banget, auto QRIS langsung dapet detail akun privatnya." }
-          ],
-          star5: [
-            { user: "k***n", avatarColor: "bg-amber-100 text-amber-600", rating: 5, date: "2026-08-24 16:40", variant: variantName, comment: `Bintang 5 buat ${name}, AI generasi terbaru Google paling kencang untuk kerjaan kantor.` },
-            { user: "m***t", avatarColor: "bg-teal-100 text-teal-600", rating: 5, date: "2026-08-23 20:15", variant: variantName, comment: "Langganan kedua kali disini, kualitas dan kestabilan akunnya selalu memuaskan." }
-          ],
-          instant: [
-            { user: "b***s", avatarColor: "bg-cyan-100 text-cyan-600", rating: 5, date: "2026-08-24 20:05", variant: variantName, comment: "⚡ Ga sampai 5 detik bayar QRIS langsung muncul detail akunnya di layar. Luar biasa cepat!" },
-            { user: "w***u", avatarColor: "bg-indigo-100 text-indigo-600", rating: 5, date: "2026-08-22 08:20", variant: variantName, comment: "⚡ Sistem pengiriman otomatis jalan lancar meski beli tengah malam." }
-          ],
-          service: [
-            { user: "p***i", avatarColor: "bg-rose-100 text-rose-600", rating: 5, date: "2026-08-23 15:10", variant: variantName, comment: "🛡️ Ada nomor invoice resmi yang tersimpan di sistem, garansi full sesuai masa aktif aman." },
-            { user: "a***d", avatarColor: "bg-pink-100 text-pink-600", rating: 5, date: "2026-08-21 12:45", variant: variantName, comment: "🛡️ Seller responsif dan terpercaya, klaim garansi gampang banget via WhatsApp." }
-          ]
-        };
-      } else if (cat.includes('stream') || cat.includes('youtube')) {
-        return {
-          all: [
-            { user: "s***a", avatarColor: "bg-red-100 text-red-600", rating: 5, date: "2026-08-24 18:02", variant: variantName, comment: `Nonton video & dengerin musik bebas iklan tanpa jeda. ${name} resmi dan akun anti-logout!` },
-            { user: "h***o", avatarColor: "bg-emerald-100 text-emerald-600", rating: 5, date: "2026-08-23 21:10", variant: variantName, comment: "Aktivasi email cepat, bisa putar video di latar belakang HP dengan lancar." },
-            { user: "n***a", avatarColor: "bg-blue-100 text-blue-600", rating: 5, date: "2026-08-22 17:40", variant: variantName, comment: "Harga murah meriah tapi dapet fasilitas premium original. Bintang 5!" }
-          ],
-          star5: [
-            { user: "t***i", avatarColor: "bg-amber-100 text-amber-600", rating: 5, date: "2026-08-24 11:20", variant: variantName, comment: "Kualitas audio HD dan nonton tanpa gangguan iklan sama sekali. Sangat memuaskan!" },
-            { user: "y***a", avatarColor: "bg-purple-100 text-purple-600", rating: 5, date: "2026-08-23 09:15", variant: variantName, comment: "Top banget, proses ga sampai 2 menit akun udah berubah jadi premium." }
-          ],
-          instant: [
-            { user: "j***o", avatarColor: "bg-cyan-100 text-cyan-600", rating: 5, date: "2026-08-24 19:12", variant: variantName, comment: "⚡ Begitu scan QRIS langsung dapat link / panduannya, otomatis banget!" },
-            { user: "r***y", avatarColor: "bg-indigo-100 text-indigo-600", rating: 5, date: "2026-08-22 14:05", variant: variantName, comment: "⚡ Pengiriman kilat, praktis tanpa ribet." }
-          ],
-          service: [
-            { user: "d***k", avatarColor: "bg-rose-100 text-rose-600", rating: 5, date: "2026-08-23 16:30", variant: variantName, comment: "🛡️ Garansi full 100%, admin ramah dan siap bantu kapan saja." },
-            { user: "e***a", avatarColor: "bg-teal-100 text-teal-600", rating: 5, date: "2026-08-20 10:50", variant: variantName, comment: "🛡️ Pelayanan mantap, data transaksi tersimpan rapi di invoice." }
-          ]
-        };
-      } else if (cat.includes('editor') || cat.includes('video') || cat.includes('capcut')) {
-        return {
-          all: [
-            { user: "v***n", avatarColor: "bg-pink-100 text-pink-600", rating: 5, date: "2026-08-24 17:15", variant: variantName, comment: `Ekspor video 4K 60fps tanpa watermark lancar! Semua preset dan efek premium ${name} kebuka.` },
-            { user: "g***g", avatarColor: "bg-indigo-100 text-indigo-600", rating: 5, date: "2026-08-23 13:40", variant: variantName, comment: "Bisa dipakai di HP dan PC/Laptop, fiturnya lengkap untuk kebutuhan konten kreator." },
-            { user: "c***a", avatarColor: "bg-emerald-100 text-emerald-600", rating: 5, date: "2026-08-22 19:25", variant: variantName, comment: "Akun pro langsung login dan ga pernah ke-logout. Seller jujur & terpercaya!" }
-          ],
-          star5: [
-            { user: "m***q", avatarColor: "bg-amber-100 text-amber-600", rating: 5, date: "2026-08-24 15:50", variant: variantName, comment: "Bintang 5! Template pro dan auto caption jalan mulus tanpa ada error." },
-            { user: "z***l", avatarColor: "bg-purple-100 text-purple-600", rating: 5, date: "2026-08-23 11:10", variant: variantName, comment: "Fitur pro sangat membantu editing harian TikTok dan Reels saya." }
-          ],
-          instant: [
-            { user: "l***a", avatarColor: "bg-cyan-100 text-cyan-600", rating: 5, date: "2026-08-24 20:30", variant: variantName, comment: "⚡ Auto kirim instan! Begitu bayar data login langsung muncul." },
-            { user: "o***r", avatarColor: "bg-teal-100 text-teal-600", rating: 5, date: "2026-08-22 22:15", variant: variantName, comment: "⚡ Respon sistem cepat, ga sampai 1 menit akun sudah bisa dipakai edit." }
-          ],
-          service: [
-            { user: "k***a", avatarColor: "bg-rose-100 text-rose-600", rating: 5, date: "2026-08-23 18:20", variant: variantName, comment: "🛡️ Garansi aman, ada panduan login lengkap yang gampang dipahami." },
-            { user: "f***d", avatarColor: "bg-blue-100 text-blue-600", rating: 5, date: "2026-08-21 14:35", variant: variantName, comment: "🛡️ Pembelian kedua kali dan selalu puas dengan garansinya." }
-          ]
-        };
-      } else if (cat.includes('blogger') || cat.includes('landing') || cat.includes('web')) {
-        return {
-          all: [
-            { user: "w***i", avatarColor: "bg-amber-100 text-amber-600", rating: 5, date: "2026-08-24 16:10", variant: variantName, comment: `Source code & template ${name} rapi banget, speed score tembus 95+, SEO friendly!` },
-            { user: "b***a", avatarColor: "bg-blue-100 text-blue-600", rating: 5, date: "2026-08-23 14:20", variant: variantName, comment: "Instalasi gampang ada panduan dokumentasinya, responsif di HP dan PC." },
-            { user: "r***o", avatarColor: "bg-emerald-100 text-emerald-600", rating: 5, date: "2026-08-22 09:45", variant: variantName, comment: "Desain mewah mirip marketplace ternama, konversi jualan jadi naik drastis." }
-          ],
-          star5: [
-            { user: "e***k", avatarColor: "bg-purple-100 text-purple-600", rating: 5, date: "2026-08-24 12:30", variant: variantName, comment: "Kodingan bersih, no bug, dan loadingnya super cepat." },
-            { user: "d***y", avatarColor: "bg-teal-100 text-teal-600", rating: 5, date: "2026-08-23 10:15", variant: variantName, comment: "Template premium terbaik yang pernah saya beli di toko digital." }
-          ],
-          instant: [
-            { user: "a***p", avatarColor: "bg-cyan-100 text-cyan-600", rating: 5, date: "2026-08-24 19:50", variant: variantName, comment: "⚡ Link Google Drive langsung dikirim otomatis setelah transfer lunas." },
-            { user: "y***n", avatarColor: "bg-indigo-100 text-indigo-600", rating: 5, date: "2026-08-22 16:40", variant: variantName, comment: "⚡ File lengkap siap pakai langsung terkirim dalam 5 detik." }
-          ],
-          service: [
-            { user: "h***i", avatarColor: "bg-rose-100 text-rose-600", rating: 5, date: "2026-08-23 17:05", variant: variantName, comment: "🛡️ Dibantu setup sampai online sama adminnya, mantap pelayanannya!" },
-            { user: "t***m", avatarColor: "bg-pink-100 text-pink-600", rating: 5, date: "2026-08-21 11:20", variant: variantName, comment: "🛡️ Garansi script update selalu didukung." }
-          ]
-        };
-      } else {
-        // Default / Kategori Lain (Sosmed & Nokos)
-        return {
-          all: [
-            { user: "a***a", avatarColor: "bg-emerald-100 text-emerald-600", rating: 5, date: "2026-08-24 15:30", variant: variantName, comment: `Proses ${name} sangat cepat dan aman, sesuai dengan deskripsi produk.` },
-            { user: "m***z", avatarColor: "bg-blue-100 text-blue-600", rating: 5, date: "2026-08-23 18:45", variant: variantName, comment: "Layanan berkualitas, transaksi gampang dan tidak perlu nunggu lama." },
-            { user: "p***o", avatarColor: "bg-purple-100 text-purple-600", rating: 5, date: "2026-08-22 13:10", variant: variantName, comment: "Harga terjangkau dengan hasil maksimal, recommended seller!" }
-          ],
-          star5: [
-            { user: "s***k", avatarColor: "bg-amber-100 text-amber-600", rating: 5, date: "2026-08-24 10:20", variant: variantName, comment: "Layanan bintang 5, hasil rapi dan sangat memuaskan." },
-            { user: "g***i", avatarColor: "bg-teal-100 text-teal-600", rating: 5, date: "2026-08-23 08:50", variant: variantName, comment: "Kualitas mantap dan akun tetap aman tanpa kendala." }
-          ],
-          instant: [
-            { user: "f***r", avatarColor: "bg-cyan-100 text-cyan-600", rating: 5, date: "2026-08-24 19:00", variant: variantName, comment: "⚡ Sistem otomatis QRIS bekerja sangat cepat dan instan." },
-            { user: "k***s", avatarColor: "bg-indigo-100 text-indigo-600", rating: 5, date: "2026-08-22 15:30", variant: variantName, comment: "⚡ Proses hitungan detik langsung selesai." }
-          ],
-          service: [
-            { user: "r***n", avatarColor: "bg-rose-100 text-rose-600", rating: 5, date: "2026-08-23 14:15", variant: variantName, comment: "🛡️ Garansi terjamin aman, invoice tersimpan rapi di browser." },
-            { user: "w***d", avatarColor: "bg-pink-100 text-pink-600", rating: 5, date: "2026-08-21 09:30", variant: variantName, comment: "🛡️ Admin fast respon dan ramah membantu." }
-          ]
-        };
-      }
-    }
-
-    function setReviewFilter(filterType) {
-      activeReviewFilter = filterType;
-
-      const buttons = document.querySelectorAll('.rf-btn');
-      buttons.forEach(btn => {
-        btn.className = 'rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all text-[10px] cursor-pointer';
-      });
-
-      const activeBtn = document.getElementById(`rf-${filterType}`);
-      if (activeBtn) {
-        activeBtn.className = 'rf-btn bg-rose-50 text-[#f5125e] border border-rose-200 px-2.5 py-1 rounded-lg font-bold transition-all text-[10px] shadow-2xs cursor-pointer';
-      }
-
-      displayFilteredReviews();
-    }
-
-    function displayFilteredReviews() {
-      const container = document.getElementById('product-reviews-list');
-      if (!container || !currentSelectedProduct) return;
-
-      const reviewsDb = getCategorySpecificReviews(currentSelectedProduct, currentSelectedVariant ? currentSelectedVariant.name : 'Varian Resmi');
-      let listToShow = reviewsDb[activeReviewFilter] || reviewsDb.all;
-
-      // Sisipkan ulasan asli pengguna jika ada
-      if (activeReviewFilter === 'all' || activeReviewFilter === 'star5') {
-        const userSavedReviews = JSON.parse(localStorage.getItem('my_product_reviews') || '[]')
-          .filter(r => r.productName === currentSelectedProduct.name);
-        
-        if (userSavedReviews.length > 0) {
-          const formattedUserReviews = userSavedReviews.map(r => ({
-            user: "Anda (Pembeli Terverifikasi)",
-            avatarColor: "bg-[#f5125e] text-white",
-            rating: r.rating || 5,
-            date: r.date || "Baru saja",
-            variant: currentSelectedVariant ? currentSelectedVariant.name : "Varian Resmi",
-            comment: r.comment || "Produk sangat bagus dan proses instan!"
-          }));
-          listToShow = [...formattedUserReviews, ...listToShow];
-        }
-      }
-
-      container.innerHTML = listToShow.map(rev => `
-        <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 space-y-1.5 animate-review">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <div class="w-7 h-7 rounded-full ${rev.avatarColor} flex items-center justify-center font-bold text-[10px]">
-                ${rev.user.charAt(0).toUpperCase()}
-              </div>
-              <div>
-                <p class="font-bold text-[11px] text-slate-800 leading-tight">${rev.user}</p>
-                <div class="flex items-center gap-0.5 text-yellow-400 text-[10px]">
-                  ${'★'.repeat(rev.rating)}
-                </div>
-              </div>
-            </div>
-            <span class="text-[9.5px] text-slate-400">${rev.date}</span>
-          </div>
-          <div class="text-[10px] text-slate-500 font-medium bg-white px-2 py-0.5 rounded border border-slate-100 w-max">
-            Variasi: ${rev.variant}
-          </div>
-          <p class="text-[11.5px] text-slate-700 leading-relaxed">${rev.comment}</p>
-        </div>
-      `).join('');
-    }
-
-    function openDetailModal(productId) {
-      const p = products.find(i => i.id === productId);
+    function openDetailModal(id) {
+      const p = products.find(i => i.id === id);
       if (!p) return;
       currentSelectedProduct = p;
       currentSelectedVariant = p.variants[0];
@@ -1114,465 +536,87 @@
       document.getElementById('modal-warranty').innerText = p.warranty || 'Resmi';
       document.getElementById('modal-desc').innerText = p.description || 'Tidak ada deskripsi.';
 
-      // Dynamic Fields
-      const cat = (p.category || '').toLowerCase();
-      const dynContainer = document.getElementById('modal-dynamic-field-container');
-      const dynLabel = document.getElementById('modal-dynamic-label');
-      const dynInput = document.getElementById('modal-dynamic-input');
-      const dynHint = document.getElementById('modal-dynamic-hint');
+      document.getElementById('modal-variants-list').innerHTML = p.variants.map((v, idx) => `
+        <button onclick="selectVariant(${idx})" class="px-3 py-1.5 rounded-xl text-xs font-semibold border ${currentSelectedVariant.name === v.name ? 'bg-rose-50 border-[#f5125e] text-[#f5125e]' : 'bg-white border-slate-200'}">${v.name}</button>
+      `).join('');
 
-      if (cat.includes('sosmed') || cat.includes('follower')) {
-        dynContainer.classList.remove('hidden');
-        dynLabel.innerHTML = `<i data-lucide="users" class="w-3.5 h-3.5 text-[#f5125e]"></i> Target Akun / Link Profil:`;
-        dynInput.placeholder = 'Contoh: @username_instagram atau https://tiktok.com/@user';
-        dynHint.innerText = '*Pastikan akun tidak di-private selama proses pengerjaan.';
-      } else if (cat.includes('blogger') || cat.includes('landing') || cat.includes('web')) {
-        dynContainer.classList.remove('hidden');
-        dynLabel.innerHTML = `<i data-lucide="mail" class="w-3.5 h-3.5 text-[#f5125e]"></i> Email Google Drive Anda:`;
-        dynInput.placeholder = 'Contoh: emailkamu@gmail.com';
-        dynHint.innerText = '*File template/source code akan dikirim langsung ke Google Drive email ini.';
-      } else if (cat.includes('nokos') || cat.includes('otp')) {
-        dynContainer.classList.remove('hidden');
-        dynLabel.innerHTML = `<i data-lucide="smartphone" class="w-3.5 h-3.5 text-[#f5125e]"></i> Aplikasi Target OTP:`;
-        dynInput.placeholder = 'Contoh: WhatsApp / Telegram / Google';
-        dynHint.innerText = '*Nomor virtual siap digunakan untuk 1x verifikasi SMS OTP.';
-      } else {
-        dynContainer.classList.add('hidden');
-        dynInput.value = '';
-      }
-
-      renderVariantButtons();
-      updateSelectedVariantUI();
-      setReviewFilter('all');
+      document.getElementById('modal-price').innerText = formatIDR(currentSelectedVariant.price);
+      document.getElementById('modal-btn-cart').onclick = () => { addToCart(p, currentSelectedVariant); closeDetailModal(); };
+      document.getElementById('modal-btn-buy').onclick = () => { closeDetailModal(); startCheckoutProcess(p, currentSelectedVariant); };
       document.getElementById('detail-modal').classList.remove('hidden');
       lucide.createIcons();
     }
 
-    function renderVariantButtons() {
-      document.getElementById('modal-variants-list').innerHTML = currentSelectedProduct.variants.map((v, idx) => {
-        const isSelected = currentSelectedVariant.name === v.name;
-        return `
-          <button onclick="selectVariant(${idx})" class="px-3 py-1.5 rounded-xl text-xs font-semibold transition-all border ${
-            isSelected ? 'bg-rose-50 border-[#f5125e] text-[#f5125e] ring-1 ring-[#f5125e]' : 'bg-white border-slate-200 text-slate-700 hover:border-slate-300'
-          }">${v.name}</button>
-        `;
-      }).join('');
-    }
-
-    function selectVariant(index) { 
-      currentSelectedVariant = currentSelectedProduct.variants[index]; 
-      renderVariantButtons(); 
-      updateSelectedVariantUI();
-      displayFilteredReviews();
-    }
-
-    function updateSelectedVariantUI() {
-      const v = currentSelectedVariant;
-      const stockCount = (v.items && Array.isArray(v.items)) ? v.items.length : Number(v.stock || 0);
-
-      document.getElementById('modal-price').innerText = formatIDR(v.price);
-      document.getElementById('modal-variant-stock').innerHTML = stockCount > 0 
-        ? `<span class="text-emerald-600 font-bold">⚡ Ready (${stockCount})</span>`
-        : `<span class="text-amber-600 font-bold">⏱ Manual Admin</span>`;
-      
-      document.getElementById('modal-btn-chat').onclick = () => {
-        closeDetailModal();
-        openChatModalWithProduct(currentSelectedProduct.name, v.name, v.price);
-      };
-      
-      document.getElementById('modal-btn-cart').onclick = () => { addToCart(currentSelectedProduct, v); closeDetailModal(); };
-      document.getElementById('modal-btn-buy').onclick = () => { closeDetailModal(); startCheckoutProcess(currentSelectedProduct, v); };
+    function selectVariant(idx) {
+      currentSelectedVariant = currentSelectedProduct.variants[idx];
+      openDetailModal(currentSelectedProduct.id);
     }
 
     function closeDetailModal() { document.getElementById('detail-modal').classList.add('hidden'); }
-
-    function shareCurrentProduct() {
-      if (!currentSelectedProduct) return;
-      const shareUrl = window.location.href;
-      if (navigator.share) {
-        navigator.share({
-          title: currentSelectedProduct.name,
-          text: `Beli ${currentSelectedProduct.name} dengan garansi resmi di DigitalHub!`,
-          url: shareUrl
-        }).catch(() => {});
-      } else {
-        navigator.clipboard.writeText(shareUrl).then(() => showToast('Link produk berhasil disalin!'));
-      }
-    }
-
-    // ================= LIVE CHAT CS =================
-    function openChatModal() {
-      document.getElementById('chat-modal').classList.remove('hidden');
-      setTimeout(() => document.getElementById('chat-drawer').classList.remove('translate-x-full'), 10);
-      lucide.createIcons();
-    }
-
-    function closeChatModal() {
-      document.getElementById('chat-drawer').classList.add('translate-x-full');
-      setTimeout(() => document.getElementById('chat-modal').classList.add('hidden'), 250);
-    }
-
-    function openChatModalWithProduct(prodName, varName, price) {
-      openChatModal();
-      appendUserChatMessage(`Halo Admin, saya mau tanya produk *${prodName}* (${varName}) seharga ${formatIDR(price)}.`);
-      setTimeout(() => {
-        appendBotChatMessage(`Hai Kak! Produk **${prodName} (${varName})** stoknya ready dan dikirim instan otomatis via QRIS TriPay. Kakak bisa langsung klik **Beli Sekarang** ya! 🚀`);
-      }, 700);
-    }
-
-    function sendQuickReply(question) {
-      appendUserChatMessage(question);
-      setTimeout(() => {
-        if (question.includes('Cara Beli')) {
-          appendBotChatMessage(`Cara order sangat mudah Kak:\n1. Pilih produk & paket yang diinginkan.\n2. Klik **Beli Sekarang**.\n3. Scan QRIS TriPay yang muncul.\n4. Dalam hitungan detik akun otomatis muncul di layar! ⚡`);
-        } else if (question.includes('Garansi')) {
-          appendBotChatMessage(`Semua produk bergaransi penuh sesuai masa aktif Kak! 🛡️ Simpan Nomor Invoice untuk klaim jika sewaktu-waktu ada kendala.`);
-        } else if (question.includes('WhatsApp')) {
-          appendBotChatMessage(`Untuk konsultasi khusus silakan chat WhatsApp Admin kami:\n👉 <a href="https://wa.me/${WHATSAPP_NUMBER}" target="_blank" class="text-emerald-600 font-bold underline">Klik Chat WhatsApp Admin</a>`);
-        } else {
-          appendBotChatMessage(`Pertanyaan Kakak telah kami catat. Untuk transaksi otomatis bisa langsung scan QRIS di katalog ya!`);
-        }
-      }, 600);
-    }
+    function openChatModal() { document.getElementById('chat-modal').classList.remove('hidden'); setTimeout(() => document.getElementById('chat-drawer').classList.remove('translate-x-full'), 10); }
+    function closeChatModal() { document.getElementById('chat-drawer').classList.add('translate-x-full'); setTimeout(() => document.getElementById('chat-modal').classList.add('hidden'), 250); }
 
     function handleUserChatSubmit(e) {
       e.preventDefault();
       const input = document.getElementById('user-chat-input');
-      const text = input.value.trim();
-      if (!text) return;
+      if (!input.value.trim()) return;
       input.value = '';
-      appendUserChatMessage(text);
-      setTimeout(() => {
-        appendBotChatMessage(`Pesan Anda: "${text}". Admin CS siap membantu, untuk order cepat bisa langsung checkout QRIS ya Kak!`);
-      }, 800);
+      showToast('Pesan dikirim');
     }
 
-    function appendUserChatMessage(text) {
-      const container = document.getElementById('chat-messages-container');
-      const div = document.createElement('div');
-      div.className = 'flex items-end justify-end gap-2';
-      div.innerHTML = `<div class="bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white p-3 rounded-2xl rounded-tr-none shadow-2xs max-w-[85%] leading-relaxed text-xs">${text.replace(/\n/g, '<br>')}</div>`;
-      container.appendChild(div);
-      container.scrollTop = container.scrollHeight;
-    }
-
-    function appendBotChatMessage(text) {
-      const container = document.getElementById('chat-messages-container');
-      const div = document.createElement('div');
-      div.className = 'flex items-start gap-2';
-      div.innerHTML = `<div class="w-7 h-7 rounded-full bg-rose-100 text-[#f5125e] flex items-center justify-center flex-shrink-0 text-xs font-bold">CS</div><div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs space-y-1 max-w-[85%] text-slate-800 leading-relaxed text-xs"><p>${text.replace(/\n/g, '<br>')}</p></div>`;
-      container.appendChild(div);
-      container.scrollTop = container.scrollHeight;
-      lucide.createIcons();
-    }
-
-    // ================= CHECKOUT & KUPON DISKON =================
-    function applyCouponCode() {
-      const code = (document.getElementById('coupon-input').value || '').trim().toUpperCase();
-      const validCoupons = {
-        'DISKON5K': 5000,
-        'HEMAT10': 2000,
-        'PROMODIGITAL': 1000
-      };
-
-      if (validCoupons[code]) {
-        appliedDiscountAmount = validCoupons[code];
-        document.getElementById('coupon-applied-info').classList.remove('hidden');
-        document.getElementById('coupon-discount-text').innerText = `- ${formatIDR(appliedDiscountAmount)}`;
-        
-        const finalPrice = Math.max(0, currentSelectedVariant.price - appliedDiscountAmount);
-        document.getElementById('pay-total-amount').innerText = formatIDR(finalPrice);
-        showToast(`Kupon ${code} berhasil! Hemat ${formatIDR(appliedDiscountAmount)}`);
-      } else {
-        appliedDiscountAmount = 0;
-        document.getElementById('coupon-applied-info').classList.add('hidden');
-        document.getElementById('pay-total-amount').innerText = formatIDR(currentSelectedVariant.price);
-        showToast('Kode kupon tidak valid', 'error');
-      }
-    }
-
-    async function startCheckoutProcess(product, variant) {
-      if (pollingInterval) clearInterval(pollingInterval);
-      appliedDiscountAmount = 0;
-      document.getElementById('coupon-input').value = '';
-      document.getElementById('coupon-applied-info').classList.add('hidden');
-
-      document.getElementById('step-pay').classList.remove('hidden');
-      document.getElementById('step-result').classList.add('hidden');
-      
-      setRatingStar(5);
-      document.getElementById('review-comment-input').value = '';
-      document.getElementById('review-comment-input').classList.remove('hidden');
-      document.getElementById('btn-submit-review').classList.remove('hidden');
-      document.getElementById('review-submitted-msg').classList.add('hidden');
-
-      document.getElementById('payment-modal').classList.remove('hidden');
-
-      document.getElementById('pay-item-name').innerText = `${product.name} (${variant.name})`;
-      document.getElementById('pay-total-amount').innerText = formatIDR(variant.price);
-
-      const hasStock = variant.items && Array.isArray(variant.items) && variant.items.length > 0;
-      if (hasStock) {
-        document.getElementById('auto-polling-indicator').classList.remove('hidden');
-        document.getElementById('manual-guide-box').classList.add('hidden');
-        document.getElementById('btn-manual-confirm').classList.add('hidden');
-        document.getElementById('qris-loading-spin').classList.remove('hidden');
-
-        try {
-          const res = await fetch(`${API_URL}/create-tripay-tx`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ productId: product.id, variantName: variant.name }),
-          });
-          const data = await res.json();
-          document.getElementById('qris-loading-spin').classList.add('hidden');
-
-          if (data.success) {
-            currentQRISUrl = data.data.qr_url;
-            document.getElementById('qris-img').src = data.data.qr_url;
-            startPollingStatus(data.data.reference, product.id, variant.name);
-          } else {
-            fallbackToManualQRIS(product, variant);
-          }
-        } catch (e) {
-          document.getElementById('qris-loading-spin').classList.add('hidden');
-          fallbackToManualQRIS(product, variant);
-        }
-      } else {
-        fallbackToManualQRIS(product, variant);
-      }
-      lucide.createIcons();
-    }
-
-    function fallbackToManualQRIS(product, variant) {
-      document.getElementById('auto-polling-indicator').classList.add('hidden');
-      document.getElementById('manual-guide-box').classList.remove('hidden');
-      document.getElementById('btn-manual-confirm').classList.remove('hidden');
-      currentQRISUrl = QRIS_STATIC_URL;
-      document.getElementById('qris-img').src = QRIS_STATIC_URL;
-      lucide.createIcons();
-    }
-
-    function startPollingStatus(reference, productId, variantName) {
-      pollingInterval = setInterval(async () => {
-        try {
-          const res = await fetch(`${API_URL}/check-status`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ reference, productId, variantName }),
-          });
-          const data = await res.json();
-
-          if (data.status === "PAID") {
-            clearInterval(pollingInterval);
-            currentActiveInvoice = reference;
-            document.getElementById('step-pay').classList.add('hidden');
-            document.getElementById('step-result').classList.remove('hidden');
-            document.getElementById('invoice-display-code').innerText = reference;
-            document.getElementById('account-data').innerText = data.account;
-            document.getElementById('terms-data').innerText = data.terms || "Patuhi aturan penggunaan.";
-
-            saveOrderToHistory({
-              reference: reference,
-              date: new Date().toLocaleString('id-ID'),
-              productName: currentSelectedProduct ? currentSelectedProduct.name : 'Produk Digital',
-              variantName: variantName,
-              account: data.account,
-              terms: data.terms || "Patuhi aturan penggunaan."
-            });
-
-            document.getElementById('btn-wa-claim').onclick = () => {
-              window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=*Klaim Garansi (${reference})*%0AProduk: ${currentSelectedProduct ? currentSelectedProduct.name : 'Pesanan'} (${variantName})`, '_blank');
-            };
-            lucide.createIcons();
-            loadProducts();
-          }
-        } catch (e) {}
-      }, 3000);
-    }
-
-    // ================= RATING & ULASAN =================
-    function setRatingStar(rating) {
-      selectedRatingStarValue = rating;
-      const hintText = document.getElementById('rating-text-hint');
-      const hints = { 1: 'Sangat Buruk (1/5)', 2: 'Kurang Puas (2/5)', 3: 'Cukup Bagus (3/5)', 4: 'Bagus Sekali (4/5)', 5: 'Sangat Puas (5/5)' };
-      if (hintText) hintText.innerText = hints[rating] || 'Sangat Puas (5/5)';
-
-      const container = document.getElementById('star-rating-container');
-      if (!container) return;
-
-      const buttons = container.querySelectorAll('.star-btn');
-      buttons.forEach((btn, index) => {
-        const starIdx = index + 1;
-        if (starIdx <= rating) {
-          btn.innerHTML = `<i data-lucide="star" class="w-7 h-7 text-yellow-400 fill-yellow-400"></i>`;
-        } else {
-          btn.innerHTML = `<i data-lucide="star" class="w-7 h-7 text-slate-300"></i>`;
-        }
-      });
-      lucide.createIcons();
-    }
-
-    function submitProductReview() {
-      const comment = document.getElementById('review-comment-input').value.trim();
-      const invoice = currentActiveInvoice || 'MANUAL-ORDER';
-      const prodName = currentSelectedProduct ? currentSelectedProduct.name : 'Produk Digital';
-
-      let reviews = JSON.parse(localStorage.getItem('my_product_reviews') || '[]');
-      reviews.push({
-        invoice: invoice,
-        productName: prodName,
-        rating: selectedRatingStarValue,
-        comment: comment || 'Sangat puas dan akun cepat aktif!',
-        date: new Date().toLocaleString('id-ID')
-      });
-      localStorage.setItem('my_product_reviews', JSON.stringify(reviews));
-
-      document.getElementById('review-comment-input').classList.add('hidden');
-      document.getElementById('btn-submit-review').classList.add('hidden');
-      document.getElementById('review-submitted-msg').classList.remove('hidden');
-      displayFilteredReviews();
-      showToast(`Terima kasih atas rating ${selectedRatingStarValue} bintangnya!`);
-    }
-
-    function saveOrderToHistory(order) {
-      let history = JSON.parse(localStorage.getItem('my_digital_orders') || '[]');
-      history.unshift(order);
-      localStorage.setItem('my_digital_orders', JSON.stringify(history));
-    }
-
-    function openHistoryModal() {
-      const history = JSON.parse(localStorage.getItem('my_digital_orders') || '[]');
-      const container = document.getElementById('history-list');
-      if (history.length === 0) {
-        container.innerHTML = `<div class="py-12 text-center text-slate-400 text-xs"><i data-lucide="receipt" class="w-8 h-8 mx-auto mb-1 stroke-1"></i>Belum ada riwayat pesanan</div>`;
-      } else {
-        container.innerHTML = history.map((item) => `
-          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
-            <div class="flex justify-between items-start">
-              <div>
-                <span class="text-[9px] font-bold text-[#f5125e] bg-rose-50 px-2 py-0.5 rounded font-mono">${item.reference}</span>
-                <h4 class="font-bold text-xs sm:text-sm text-slate-800 mt-1">${item.productName} (${item.variantName})</h4>
-                <p class="text-[10px] text-slate-400">${item.date}</p>
-              </div>
-              <button onclick="navigator.clipboard.writeText('${item.reference}'); showToast('Invoice disalin!');" class="text-[10px] text-[#f5125e] bg-white border border-rose-200 px-2 py-0.5 rounded font-bold">Salin</button>
-            </div>
-            <div class="bg-white border rounded-xl p-2.5"><pre class="font-mono text-xs text-slate-800 whitespace-pre-wrap select-all">${item.account}</pre></div>
-            <div class="bg-amber-50/70 border border-amber-100 rounded-xl p-2 text-[11px] text-amber-950 whitespace-pre-line">${item.terms}</div>
-          </div>
-        `).join('');
-      }
-      document.getElementById('history-modal').classList.remove('hidden');
-      lucide.createIcons();
-    }
-
-    function closeHistoryModal() { document.getElementById('history-modal').classList.add('hidden'); }
-    function copyInvoiceCode() { if (currentActiveInvoice) navigator.clipboard.writeText(currentActiveInvoice).then(() => showToast('Invoice disalin!')); }
-    function copyAccountData() { navigator.clipboard.writeText(document.getElementById('account-data').innerText).then(() => showToast('Data akun disalin!')); }
-
-    function processManualConfirm() {
-      const invoiceCode = `INV-${Date.now().toString().slice(-6)}`;
-      const pName = currentSelectedProduct ? currentSelectedProduct.name : 'Paket Keranjang';
-      const vName = currentSelectedVariant ? currentSelectedVariant.name : 'Multi Produk';
-      const vPrice = currentSelectedVariant ? currentSelectedVariant.price : 0;
-      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=*Pesanan Manual (${invoiceCode})*%0AProduk: ${pName} (${vName})%0ATotal: ${formatIDR(vPrice)}%0A%0ASaya sudah transfer via QRIS dan menyertakan bukti screenshot di chat ini.`, '_blank');
-    }
-
-    function closePaymentModal() { if (pollingInterval) clearInterval(pollingInterval); document.getElementById('payment-modal').classList.add('hidden'); }
-    function downloadQRIS() { if (currentQRISUrl) window.open(currentQRISUrl, '_blank'); }
-
-    // ================= KERANJANG BELANJA (LOCALSTORAGE) =================
     function toggleCart(open) {
-      if (open) { document.getElementById('cart-modal').classList.remove('hidden'); setTimeout(() => document.getElementById('cart-drawer').classList.remove('translate-x-full'), 10); } 
+      if (open) { document.getElementById('cart-modal').classList.remove('hidden'); setTimeout(() => document.getElementById('cart-drawer').classList.remove('translate-x-full'), 10); }
       else { document.getElementById('cart-drawer').classList.add('translate-x-full'); setTimeout(() => document.getElementById('cart-modal').classList.add('hidden'), 250); }
     }
 
-    function addToCart(product, variant) {
-      const cartItemId = `${product.id}-${variant.name}`;
-      const existing = cart.find(c => c.cartId === cartItemId);
-      if (existing) { existing.quantity += 1; } else { cart.push({ cartId: cartItemId, id: product.id, name: `${product.name} (${variant.name})`, price: variant.price, image: product.image, quantity: 1, rawProduct: product, rawVariant: variant }); }
+    function addToCart(p, v) {
+      cart.push({ id: p.id, name: `${p.name} (${v.name})`, price: v.price, image: p.image, quantity: 1 });
       localStorage.setItem('my_digital_cart', JSON.stringify(cart));
+      renderCart();
       showToast('Masuk ke keranjang!');
-      renderCart();
-    }
-
-    function changeQuantity(cartId, delta) {
-      const target = cart.find(c => c.cartId === cartId);
-      if (!target) return;
-      target.quantity += delta;
-      if (target.quantity <= 0) cart = cart.filter(c => c.cartId !== cartId);
-      localStorage.setItem('my_digital_cart', JSON.stringify(cart));
-      renderCart();
-    }
-
-    function removeItem(cartId) { 
-      cart = cart.filter(c => c.cartId !== cartId); 
-      localStorage.setItem('my_digital_cart', JSON.stringify(cart));
-      renderCart(); 
     }
 
     function renderCart() {
-      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-      const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-      document.getElementById('cart-title-count').innerText = totalItems;
-      if (totalItems > 0) {
-        document.getElementById('cart-badge').innerText = totalItems;
-        document.getElementById('cart-badge').classList.remove('hidden');
-        document.getElementById('cart-footer').classList.remove('hidden');
-      } else {
-        document.getElementById('cart-badge').classList.add('hidden');
-        document.getElementById('cart-footer').classList.add('hidden');
-      }
-      const container = document.getElementById('cart-items');
-      if (cart.length === 0) {
-        container.innerHTML = `<div class="py-16 text-center text-slate-400 text-xs"><i data-lucide="shopping-bag" class="w-8 h-8 mx-auto mb-2 stroke-1"></i>Keranjang Anda masih kosong</div>`;
-      } else {
-        container.innerHTML = cart.map(item => `
-          <div class="flex items-center justify-between gap-2.5 p-2.5 bg-slate-50 rounded-2xl border border-slate-200">
-            <img src="${item.image}" class="w-10 h-10 rounded-xl object-contain bg-white p-0.5 border" />
-            <div class="min-w-0 flex-1"><h4 class="text-xs font-semibold text-slate-800 truncate">${item.name}</h4><p class="text-xs text-[#f5125e] font-bold">${formatIDR(item.price)}</p></div>
-            <div class="flex items-center gap-1 bg-white border rounded-lg p-0.5 text-xs">
-              <button onclick="changeQuantity('${item.cartId}', -1)" class="px-1.5 text-slate-500 hover:text-red-500 font-bold">-</button>
-              <span class="font-bold w-4 text-center">${item.quantity}</span>
-              <button onclick="changeQuantity('${item.cartId}', 1)" class="px-1.5 text-slate-500 hover:text-emerald-500 font-bold">+</button>
-            </div>
-            <button onclick="removeItem('${item.cartId}')" class="text-slate-400 hover:text-red-500 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-          </div>
-        `).join('');
-      }
-      document.getElementById('cart-total-price').innerText = formatIDR(totalPrice);
+      document.getElementById('cart-title-count').innerText = cart.length;
+      document.getElementById('cart-badge').innerText = cart.length;
+      if (cart.length > 0) { document.getElementById('cart-badge').classList.remove('hidden'); document.getElementById('cart-footer').classList.remove('hidden'); }
+      else { document.getElementById('cart-badge').classList.add('hidden'); document.getElementById('cart-footer').classList.add('hidden'); }
+      
+      document.getElementById('cart-items').innerHTML = cart.map((i, idx) => `
+        <div class="flex items-center justify-between gap-2 p-2 bg-slate-50 rounded-xl border">
+          <img src="${i.image}" class="w-10 h-10 rounded-lg object-contain bg-white border" />
+          <div class="flex-1 min-w-0"><h4 class="text-xs font-bold truncate">${i.name}</h4><p class="text-xs text-[#f5125e] font-black">${formatIDR(i.price)}</p></div>
+          <button onclick="cart.splice(${idx}, 1); localStorage.setItem('my_digital_cart', JSON.stringify(cart)); renderCart();" class="text-slate-400 hover:text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+        </div>
+      `).join('');
+      document.getElementById('cart-total-price').innerText = formatIDR(cart.reduce((a, b) => a + b.price, 0));
       lucide.createIcons();
     }
 
     function processCartCheckout() {
       if (cart.length === 0) return;
       toggleCart(false);
-
-      const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-      const firstItem = cart[0];
-      
-      const bundledProduct = {
-        id: Date.now(),
-        name: cart.length === 1 ? cart[0].name : `Paket Keranjang (${cart.length} Jenis Produk)`,
-        image: firstItem.image
-      };
-      const bundledVariant = {
-        name: cart.map(i => `${i.name} (${i.quantity}x)`).join(', '),
-        price: totalPrice,
-        stock: 0,
-        items: []
-      };
-
-      currentSelectedProduct = bundledProduct;
-      currentSelectedVariant = bundledVariant;
-
-      startCheckoutProcess(bundledProduct, bundledVariant);
+      startCheckoutProcess({ id: Date.now(), name: `Keranjang Belanja (${cart.length} Produk)` }, { name: 'Semua Produk', price: cart.reduce((a, b) => a + b.price, 0) });
     }
 
-    // Inisialisasi Sistem
+    async function startCheckoutProcess(product, variant) {
+      document.getElementById('step-pay').classList.remove('hidden');
+      document.getElementById('step-result').classList.add('hidden');
+      document.getElementById('payment-modal').classList.remove('hidden');
+      document.getElementById('pay-item-name').innerText = `${product.name} (${variant.name})`;
+      document.getElementById('pay-total-amount').innerText = formatIDR(variant.price);
+      document.getElementById('qris-img').src = QRIS_STATIC_URL;
+      document.getElementById('terms-data').innerText = product.terms || '1. Dilarang mengganti password.\n2. Garansi full resmi.';
+      lucide.createIcons();
+    }
+
+    function closePaymentModal() { document.getElementById('payment-modal').classList.add('hidden'); }
+    function openHistoryModal() { document.getElementById('history-modal').classList.remove('hidden'); }
+    function closeHistoryModal() { document.getElementById('history-modal').classList.add('hidden'); }
+
+    // Jalankan sistem
+    applyStoreBannerSettings();
     loadProducts();
-    startCountdownTimer();
-    startSocialProofNotifications();
     lucide.createIcons();
   </script>
 </body>
