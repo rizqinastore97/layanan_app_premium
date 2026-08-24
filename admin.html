@@ -3,74 +3,79 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard - Cloudflare API</title>
+  <title>Admin Dashboard - Multi Varian & Bank Stok</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-slate-100 text-slate-800 min-h-screen">
+<body class="bg-slate-100 text-slate-800 min-h-screen font-sans">
 
   <div id="toast-container" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none w-full max-w-xs px-4"></div>
 
   <div class="max-w-4xl mx-auto p-4 sm:p-6">
-    <div class="flex items-center justify-between bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between bg-white p-4 rounded-2xl shadow-xs border border-slate-200 mb-6">
       <div>
         <h1 class="text-lg sm:text-xl font-bold text-slate-800 flex items-center gap-2">
-          Dashboard <i data-lucide="cloud-check" class="w-5 h-5 text-blue-500"></i>
+          Dashboard Toko <i data-lucide="cloud-check" class="w-5 h-5 text-blue-500"></i>
         </h1>
-        <p class="text-[10px] sm:text-xs text-slate-500">Katalog Tersinkronisasi via Cloudflare KV</p>
+        <p class="text-[10px] sm:text-xs text-slate-500">Kelola Produk, Multi-Varian & Bank Stok Digital</p>
       </div>
       <div class="flex items-center gap-2">
         <a href="index.html" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-semibold px-3.5 py-2 rounded-xl transition-all flex items-center gap-1">
           <i data-lucide="external-link" class="w-4 h-4"></i> Lihat Toko
         </a>
-        <button onclick="openModal()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-xl flex items-center gap-1.5 shadow-sm transition-all">
-          <i data-lucide="plus" class="w-4 h-4"></i> Tambah
+        <button onclick="openModal()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-xl flex items-center gap-1.5 shadow-xs transition-all">
+          <i data-lucide="plus" class="w-4 h-4"></i> Tambah Produk
         </button>
       </div>
     </div>
 
     <!-- Statistik -->
     <div class="grid grid-cols-3 gap-3 mb-6">
-      <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm text-center">
+      <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs text-center">
         <p class="text-xs text-slate-500">Total Produk</p>
         <p id="stat-total" class="text-lg font-bold text-slate-800 mt-0.5">0</p>
       </div>
-      <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm text-center">
+      <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs text-center">
         <p class="text-xs text-slate-500">Total Terjual</p>
         <p id="stat-sold" class="text-lg font-bold text-emerald-600 mt-0.5">0</p>
       </div>
-      <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm text-center">
-        <p class="text-xs text-slate-500">Stok Menipis</p>
-        <p id="stat-low" class="text-lg font-bold text-amber-600 mt-0.5">0</p>
+      <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs text-center">
+        <p class="text-xs text-slate-500">Total Akun Ready</p>
+        <p id="stat-stock" class="text-lg font-bold text-blue-600 mt-0.5">0</p>
       </div>
     </div>
 
-    <!-- Loading Data Info -->
+    <!-- Loading Info -->
     <div id="admin-loading" class="flex items-center justify-center py-10 text-blue-600 font-semibold text-xs">
-      <i data-lucide="loader" class="w-6 h-6 animate-spin mr-2"></i> Sinkronisasi dengan Database Cloudflare...
+      <i data-lucide="loader" class="w-6 h-6 animate-spin mr-2"></i> Sinkronisasi Cloudflare KV...
     </div>
 
-    <div id="admin-container" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden hidden">
+    <!-- Container List -->
+    <div id="admin-container" class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden hidden">
       <div class="p-4 border-b border-slate-100 flex items-center justify-between">
-        <h2 class="font-bold text-sm text-slate-800">Daftar Produk Cloud</h2>
+        <h2 class="font-bold text-sm text-slate-800">Daftar Produk Aktif</h2>
+        <span class="text-xs text-slate-400">Database Cloud Real-Time</span>
       </div>
       <div id="admin-product-list" class="divide-y divide-slate-100 p-2"></div>
     </div>
   </div>
 
-  <!-- Modal Tambah/Edit Produk -->
+  <!-- Modal Form Tambah / Edit -->
   <div id="product-modal" class="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-lg w-full p-5 shadow-2xl border border-slate-100 max-h-[92vh] overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-xl w-full p-5 shadow-2xl border border-slate-100 max-h-[92vh] overflow-y-auto">
       <div class="flex justify-between items-center pb-3 border-b border-slate-100 mb-4">
         <h3 id="modal-title" class="font-bold text-slate-800 text-sm sm:text-base">Tambah Produk Baru</h3>
         <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
+
       <form id="product-form" onsubmit="handleSaveProduct(event)" class="space-y-3.5 text-xs sm:text-sm">
         <input type="hidden" id="form-id" />
+
         <div class="grid grid-cols-3 gap-3">
           <div class="col-span-2">
-            <label class="block font-medium text-slate-700 mb-1">Nama Produk Digital</label>
-            <input type="text" id="form-name" required placeholder="Contoh: Google Gemini Pro" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+            <label class="block font-medium text-slate-700 mb-1">Nama Produk</label>
+            <input type="text" id="form-name" required placeholder="Contoh: CapCut Pro" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" />
           </div>
           <div>
             <label class="block font-medium text-slate-700 mb-1">Kategori</label>
@@ -80,40 +85,62 @@
             </select>
           </div>
         </div>
+
         <div class="grid grid-cols-2 gap-3">
-          <div><label class="block font-medium text-slate-700 mb-1">Angka Terjual</label><input type="number" id="form-sold" required placeholder="120" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" /></div>
-          <div><label class="block font-medium text-slate-700 mb-1">Rating (★ 1.0 - 5.0)</label><input type="number" step="0.1" min="1" max="5" id="form-rating" required placeholder="4.9" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" /></div>
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">Jumlah Terjual</label>
+            <input type="number" id="form-sold" required placeholder="120" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+          </div>
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">Rating Bintang (1.0 - 5.0)</label>
+            <input type="number" step="0.1" min="1" max="5" id="form-rating" required placeholder="5.0" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+          </div>
         </div>
+
         <div>
-          <label class="block font-medium text-slate-700 mb-1">URL Gambar Logo (Link/URL)</label>
+          <label class="block font-medium text-slate-700 mb-1">URL Gambar Logo (Link)</label>
           <input type="url" id="form-image" required placeholder="https://..." class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" />
         </div>
-        
-        <!-- Varian Dinamis -->
-        <div class="border border-blue-100 bg-blue-50/40 p-3 rounded-xl space-y-2.5">
+
+        <!-- Bagian Multi Varian & Bank Akun -->
+        <div class="border border-blue-100 bg-blue-50/40 p-3 rounded-xl space-y-3">
           <div class="flex items-center justify-between">
-            <label class="font-bold text-slate-800 text-xs">Varian Paket (Durasi & Harga):</label>
-            <button type="button" onclick="addVariantRow()" class="text-[11px] bg-blue-600 text-white font-semibold px-2.5 py-1 rounded-lg hover:bg-blue-700 flex items-center gap-1"><i data-lucide="plus" class="w-3 h-3"></i> Varian</button>
+            <div>
+              <label class="font-bold text-slate-800 text-xs">Varian & Bank Stok Digital:</label>
+              <p class="text-[10px] text-slate-500">1 Baris di Bank Stok = 1 Akun/Lisensi yang dikirim otomatis</p>
+            </div>
+            <button type="button" onclick="addVariantRow()" class="text-[11px] bg-blue-600 text-white font-semibold px-2.5 py-1 rounded-lg hover:bg-blue-700 flex items-center gap-1">
+              <i data-lucide="plus" class="w-3 h-3"></i> Tambah Varian
+            </button>
           </div>
-          <div id="variants-container" class="space-y-2"></div>
+
+          <div id="variants-container" class="space-y-3"></div>
         </div>
-        
-        <div><label class="block font-medium text-slate-700 mb-1">Garansi Produk</label><input type="text" id="form-warranty" placeholder="Contoh: Garansi Full Sesuai Durasi" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" /></div>
-        <div><label class="block font-medium text-slate-700 mb-1">Deskripsi Singkat</label><textarea id="form-desc" rows="2" placeholder="Detail cara pakai..." class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea></div>
-        
+
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">Garansi</label>
+          <input type="text" id="form-warranty" placeholder="Contoh: Garansi Full Sesuai Durasi" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+        </div>
+
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">Deskripsi Lengkap</label>
+          <textarea id="form-desc" rows="3" placeholder="Tuliskan keunggulan produk..." class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+        </div>
+
         <div class="pt-2 flex justify-end gap-2 border-t border-slate-100">
           <button type="button" onclick="closeModal()" class="px-4 py-2 border border-slate-200 rounded-xl font-medium text-slate-600 hover:bg-slate-50">Batal</button>
-          <button type="submit" id="save-btn" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold shadow-sm flex items-center gap-1.5"><i data-lucide="cloud-upload" class="w-4 h-4"></i> Simpan ke Cloud</button>
+          <button type="submit" id="save-btn" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold shadow-xs flex items-center gap-1.5">
+            <i data-lucide="cloud-upload" class="w-4 h-4"></i> Simpan ke Cloud
+          </button>
         </div>
       </form>
     </div>
   </div>
 
   <script>
-    // URL CLOUDFLARE WORKER 
     const API_URL = "https://toko-digital-api.rizqinastore97.workers.dev";
-    
     let products = [];
+
     const formatIDR = (val) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(val);
 
     function showToast(message, type = 'info') {
@@ -127,7 +154,6 @@
       setTimeout(() => { toast.classList.add('opacity-0', '-translate-y-2'); setTimeout(() => toast.remove(), 300); }, 2500);
     }
 
-    // Ambil Data Pertama Kali dari Cloudflare
     async function fetchProducts() {
       try {
         const response = await fetch(API_URL);
@@ -135,7 +161,6 @@
         products = Array.isArray(data) ? data : [];
       } catch (err) {
         showToast("Gagal mengambil data dari Server Cloudflare!", "error");
-        console.error(err);
       } finally {
         document.getElementById('admin-loading').classList.add('hidden');
         document.getElementById('admin-container').classList.remove('hidden');
@@ -143,7 +168,6 @@
       }
     }
 
-    // Fungsi Upload Data ke Cloudflare
     async function syncToCloudflare() {
       try {
         const response = await fetch(API_URL, {
@@ -152,12 +176,11 @@
           body: JSON.stringify(products)
         });
         const res = await response.json();
-        if(res.success) {
-          showToast('Berhasil sinkronisasi ke Cloudflare KV!');
+        if (res.success) {
+          showToast('Data berhasil disimpan ke Cloudflare!');
         }
       } catch (err) {
-        showToast('Gagal terhubung ke Cloudflare saat menyimpan', 'error');
-        console.error(err);
+        showToast('Gagal sinkronisasi ke Cloudflare', 'error');
       }
     }
 
@@ -165,22 +188,29 @@
       const list = document.getElementById('admin-product-list');
       document.getElementById('stat-total').innerText = products.length;
       document.getElementById('stat-sold').innerText = products.reduce((a, b) => a + Number(b.sold || 0), 0);
-      document.getElementById('stat-low').innerText = products.filter(p => p.variants.reduce((sum, v) => sum + Number(v.stock || 0), 0) <= 5).length;
+
+      let totalReadyStock = 0;
+      products.forEach(p => {
+        p.variants.forEach(v => {
+          totalReadyStock += (v.items && Array.isArray(v.items)) ? v.items.length : Number(v.stock || 0);
+        });
+      });
+      document.getElementById('stat-stock').innerText = totalReadyStock;
 
       if (products.length === 0) {
-        list.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs">Belum ada data di Cloudflare.</div>`;
+        list.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs">Belum ada produk di database Cloudflare.</div>`;
         return;
       }
 
       list.innerHTML = products.map(item => {
-        const totalStock = item.variants.reduce((sum, v) => sum + Number(v.stock || 0), 0);
+        const totalStock = item.variants.reduce((sum, v) => sum + ((v.items && Array.isArray(v.items)) ? v.items.length : Number(v.stock || 0)), 0);
         const prices = item.variants.map(v => Number(v.price || 0));
         const minPrice = Math.min(...prices);
 
         return `
           <div class="flex items-center justify-between p-3 sm:p-4 hover:bg-slate-50 rounded-xl transition-colors">
             <div class="flex items-center gap-3 min-w-0">
-              <img src="${item.image}" alt="${item.name}" class="w-12 h-12 rounded-xl object-cover bg-slate-100 flex-shrink-0" />
+              <img src="${item.image}" alt="${item.name}" class="w-12 h-12 rounded-xl object-contain bg-slate-50 p-1 border border-slate-100 flex-shrink-0" />
               <div class="min-w-0">
                 <div class="flex items-center gap-2">
                   <span class="text-[9px] uppercase font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded">${item.category}</span>
@@ -188,7 +218,7 @@
                 </div>
                 <div class="flex flex-wrap items-center gap-2 mt-1 text-[11px] text-slate-500">
                   <span class="font-bold text-blue-600">Mulai ${formatIDR(minPrice)}</span>
-                  <span>•</span><span>Stok: <b>${totalStock}</b></span>
+                  <span>•</span><span>Total Stok Ready: <b class="${totalStock > 0 ? 'text-emerald-600' : 'text-red-500'}">${totalStock} Akun</b></span>
                   <span>•</span><span class="text-yellow-500 font-bold">★ ${item.rating || '5.0'}</span>
                 </div>
               </div>
@@ -203,24 +233,51 @@
       lucide.createIcons();
     }
 
-    function addVariantRow(name = '', price = '', stock = '') {
+    function addVariantRow(name = '', price = '', itemsArray = []) {
       const container = document.getElementById('variants-container');
-      const rowId = `var-row-${Date.now()}`;
+      const rowId = `var-row-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`;
+      const itemsText = Array.isArray(itemsArray) ? itemsArray.join('\n') : '';
+
       const div = document.createElement('div');
       div.id = rowId;
-      div.className = 'grid grid-cols-12 gap-2 items-center bg-white p-2 rounded-xl border border-slate-200';
+      div.className = 'bg-white p-3 rounded-xl border border-slate-200 space-y-2';
       div.innerHTML = `
-        <div class="col-span-5"><input type="text" placeholder="Nama Paket" value="${name}" required class="variant-name w-full px-2 py-1.5 border border-slate-200 rounded-lg text-xs focus:ring-1 focus:ring-blue-500" /></div>
-        <div class="col-span-4"><input type="number" placeholder="Harga" value="${price}" required class="variant-price w-full px-2 py-1.5 border border-slate-200 rounded-lg text-xs focus:ring-1 focus:ring-blue-500" /></div>
-        <div class="col-span-2"><input type="number" placeholder="Stok" value="${stock}" required class="variant-stock w-full px-2 py-1.5 border border-slate-200 rounded-lg text-xs focus:ring-1 focus:ring-blue-500" /></div>
-        <div class="col-span-1 text-center"><button type="button" onclick="removeVariantRow('${rowId}')" class="text-slate-400 hover:text-red-500 p-1"><i data-lucide="trash" class="w-3.5 h-3.5"></i></button></div>
+        <div class="grid grid-cols-12 gap-2 items-center">
+          <div class="col-span-6">
+            <label class="text-[10px] text-slate-500 font-medium">Nama Paket</label>
+            <input type="text" placeholder="cth: 1 Bulan" value="${name}" required class="variant-name w-full px-2.5 py-1.5 border border-slate-200 rounded-lg text-xs focus:ring-1 focus:ring-blue-500 focus:outline-none" />
+          </div>
+          <div class="col-span-5">
+            <label class="text-[10px] text-slate-500 font-medium">Harga (Rp)</label>
+            <input type="number" placeholder="cth: 35000" value="${price}" required class="variant-price w-full px-2.5 py-1.5 border border-slate-200 rounded-lg text-xs focus:ring-1 focus:ring-blue-500 focus:outline-none" />
+          </div>
+          <div class="col-span-1 text-right pt-3">
+            <button type="button" onclick="removeVariantRow('${rowId}')" class="text-slate-400 hover:text-red-500 p-1">
+              <i data-lucide="trash" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+        <div>
+          <label class="text-[10px] text-slate-500 font-medium flex justify-between">
+            <span>Bank Data Akun (1 Baris = 1 Akun/Lisensi):</span>
+            <span class="text-blue-600 font-semibold" id="count-${rowId}">Stok: ${itemsArray.length}</span>
+          </label>
+          <textarea rows="2" placeholder="email1@gmail.com | pass: abc12345&#10;email2@gmail.com | pass: def67890" oninput="updateStockCounter('${rowId}', this.value)" class="variant-items w-full px-2.5 py-1.5 border border-slate-200 rounded-lg text-xs font-mono focus:ring-1 focus:ring-blue-500 focus:outline-none mt-0.5">${itemsText}</textarea>
+        </div>
       `;
       container.appendChild(div);
       lucide.createIcons();
     }
 
+    function updateStockCounter(rowId, text) {
+      const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+      const counter = document.getElementById(`count-${rowId}`);
+      if (counter) counter.innerText = `Stok: ${lines.length}`;
+    }
+
     function removeVariantRow(rowId) {
-      if (document.getElementById('variants-container').children.length <= 1) return showToast('Minimal 1 varian!', 'error');
+      const container = document.getElementById('variants-container');
+      if (container.children.length <= 1) return showToast('Minimal harus ada 1 varian!', 'error');
       document.getElementById(rowId)?.remove();
     }
 
@@ -230,7 +287,7 @@
       document.getElementById('form-rating').value = '5.0';
       document.getElementById('modal-title').innerText = 'Tambah Produk Baru';
       document.getElementById('variants-container').innerHTML = '';
-      addVariantRow('Standar', '0', '10');
+      addVariantRow('1 Bulan', '35000', []);
       document.getElementById('product-modal').classList.remove('hidden');
       lucide.createIcons();
     }
@@ -252,7 +309,10 @@
       
       const container = document.getElementById('variants-container');
       container.innerHTML = '';
-      p.variants.forEach(v => addVariantRow(v.name, v.price, v.stock));
+      p.variants.forEach(v => {
+        const items = v.items || (v.stock > 0 ? Array(v.stock).fill('Akun Standar Ready') : []);
+        addVariantRow(v.name, v.price, items);
+      });
 
       document.getElementById('product-modal').classList.remove('hidden');
       lucide.createIcons();
@@ -268,14 +328,17 @@
       const id = document.getElementById('form-id').value;
       const names = document.querySelectorAll('.variant-name');
       const prices = document.querySelectorAll('.variant-price');
-      const stocks = document.querySelectorAll('.variant-stock');
+      const itemsList = document.querySelectorAll('.variant-items');
 
       const collectedVariants = [];
       for (let i = 0; i < names.length; i++) {
+        const rawText = itemsList[i].value;
+        const items = rawText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
         collectedVariants.push({
           name: names[i].value.trim(),
           price: Number(prices[i].value),
-          stock: Number(stocks[i].value)
+          items: items,
+          stock: items.length // Stok otomatis sama dengan jumlah baris akun
         });
       }
 
@@ -297,7 +360,6 @@
         products.unshift(productData);
       }
 
-      // Sync ke Cloudflare 
       await syncToCloudflare();
       renderList();
       closeModal();
@@ -308,10 +370,10 @@
     }
 
     async function deleteProduct(id) {
-      if (confirm('Yakin menghapus data produk ini dari Cloudflare?')) {
+      if (confirm('Yakin menghapus produk ini dari Cloudflare?')) {
         products = products.filter(p => p.id !== id);
         renderList();
-        await syncToCloudflare(); // Hapus di Cloudflare
+        await syncToCloudflare();
       }
     }
 
