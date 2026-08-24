@@ -132,7 +132,7 @@
         </div>
       </section>
 
-      <!-- TAB 2: PENGATURAN BANNER (SINKRON KV SERVER) -->
+      <!-- TAB 2: PENGATURAN BANNER -->
       <section id="section-banner" class="space-y-4 hidden">
         <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-xs space-y-5">
           <div>
@@ -143,7 +143,6 @@
             <p class="text-xs text-slate-500 mt-0.5">Aktifkan/nonaktifkan banner dan ganti tampilan gambar secara instan</p>
           </div>
 
-          <!-- Switch Status Banner (ON / OFF) -->
           <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl flex items-center justify-between">
             <div>
               <p class="font-bold text-slate-800 text-xs sm:text-sm">Status Tampilan Banner:</p>
@@ -155,7 +154,6 @@
             </label>
           </div>
 
-          <!-- Pilihan Tipe Banner -->
           <div class="space-y-3">
             <label class="text-xs font-bold text-slate-700 block">Pilih Tipe Tampilan Banner:</label>
             <div class="grid grid-cols-2 gap-3">
@@ -293,7 +291,7 @@
                 <span>✨ AI Generate Deskripsi & Data</span>
               </button>
             </div>
-            <input type="text" id="prod-form-name" required placeholder="Contoh: Gemini Pro / Netflix / CapCut / Canva" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none font-semibold text-slate-800" />
+            <input type="text" id="prod-form-name" required placeholder="Contoh: Gemini Pro / Netflix / CapCut / Googleflow" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none font-semibold text-slate-800" />
           </div>
 
           <div class="grid grid-cols-2 gap-2.5">
@@ -397,6 +395,65 @@
     </div>
   </div>
 
+  <!-- MODAL ULASAN -->
+  <div id="review-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
+    <div onclick="closeReviewModal()" class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
+    <div class="fixed inset-0 flex items-center justify-center p-4">
+      <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl p-5 sm:p-6 flex flex-col max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center pb-3 border-b border-slate-100">
+          <h3 id="modal-review-title" class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
+            <i data-lucide="star" class="w-4 h-4 text-amber-500"></i> Buat Ulasan Produk Baru
+          </h3>
+          <button onclick="closeReviewModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+
+        <form onsubmit="handleSaveReview(event)" class="space-y-3 pt-3 text-xs">
+          <input type="hidden" id="rev-form-index" />
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Nama Pembeli:</label>
+            <input type="text" id="rev-form-user" required placeholder="Contoh: b***9" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Jumlah Bintang:</label>
+              <select id="rev-form-rating" class="w-full px-3 py-2 border border-slate-200 rounded-xl font-bold text-amber-600">
+                <option value="5">⭐⭐⭐⭐⭐ (5 Bintang)</option>
+                <option value="4">⭐⭐⭐⭐ (4 Bintang)</option>
+                <option value="3">⭐⭐⭐ (3 Bintang)</option>
+              </select>
+            </div>
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Kategori Tag:</label>
+              <select id="rev-form-tag" class="w-full px-3 py-2 border border-slate-200 rounded-xl">
+                <option value="instant">⚡ Kirim Instan</option>
+                <option value="service">🛡️ Garansi Aman</option>
+                <option value="general">Umum / Semua</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Varian:</label>
+              <input type="text" id="rev-form-variant" placeholder="Contoh: 1 Bulan" class="w-full px-3 py-2 border border-slate-200 rounded-xl" />
+            </div>
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Waktu / Tanggal:</label>
+              <input type="text" id="rev-form-date" placeholder="2026-08-24 19:40" class="w-full px-3 py-2 border border-slate-200 rounded-xl" />
+            </div>
+          </div>
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Isi Komentar / Testimoni:</label>
+            <textarea id="rev-form-comment" rows="3" required placeholder="Tuliskan ulasan kepuasan produk..." class="w-full px-3 py-2 border border-slate-200 rounded-xl"></textarea>
+          </div>
+          <div class="pt-3 border-t border-slate-100 flex gap-2">
+            <button type="button" onclick="closeReviewModal()" class="w-1/2 py-2.5 bg-slate-100 font-bold rounded-xl text-slate-600">Batal</button>
+            <button type="submit" class="w-1/2 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-sm">Simpan Ulasan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <script>
     const API_URL = "https://toko-digital-api.rizqinastore97.workers.dev";
     let products = [];
@@ -406,6 +463,40 @@
       active: false,
       type: 'image',
       imageUrl: ''
+    };
+
+    // Kamus AI Generator Lengkap + Smart Matching
+    const aiProductKnowledgeBase = {
+      googleflow: {
+        category: 'AI', warranty: 'Resmi 1 Tahun',
+        desc: 'Solusi penyimpanan cloud Google One / Googleflow kapasitas besar. Aman untuk backup foto, video resolusi penuh, dan file project kerja.\n\n✨ Keunggulan Akun:\n• Kapasitas penyimpanan lega (100GB / 200GB / 2TB+)\n• Penyimpanan terintegrasi untuk Google Drive, Photos, & Gmail\n• Upload & download berkecepatan tinggi tanpa limit\n• Legal, aman, dan data tersimpan privat\n\n⚡ Pengiriman: Proses cepat via undangan email / akun siap pakai\n🛡️ Garansi: Full support masa aktif',
+        terms: '1. Sistem invite Google Family resmi.\n2. Data dan file bersifat privat, tidak dapat dilihat anggota lain.\n3. Garansi full selama durasi langganan.',
+        variants: [{ name: '100GB Googleflow (1 Tahun)', price: 15000 }, { name: '200GB Googleflow (1 Tahun)', price: 25000 }]
+      },
+      gemini: {
+        category: 'AI', warranty: 'Resmi 1 Bulan',
+        desc: 'Nikmati kecerdasan AI generasi terbaru dari Google dengan Gemini Pro / Advanced. Membantu riset, analisis data, coding, penulisan konten, hingga integrasi Google Workspace dengan penalaran tingkat tinggi.\n\n✨ Keunggulan Akun:\n• Model AI multimodal terbaru & context window super luas\n• Analisis file, PDF, spreadsheet, dan dokumen panjang\n• Terintegrasi dengan ekosistem Google (Docs, Drive, Gmail)\n• Login akun private/resmi, aman, dan anti-suspend\n\n⚡ Pengiriman: Otomatis via Auto QRIS / Instan 24 Jam\n🛡️ Garansi: Full garansi sesuai durasi paket',
+        terms: '1. Dilarang mengganti email utama akun.\n2. Akun legal dan aman digunakan untuk keperluan kerja/harian.\n3. Garansi berlaku penuh selama masa aktif paket.',
+        variants: [{ name: '1 Bulan Private', price: 4000 }, { name: '3 Bulan Private', price: 10000 }]
+      },
+      chatgpt: {
+        category: 'AI', warranty: 'Resmi 1 Bulan',
+        desc: 'Buka potensi produktivitas maksimal dengan ChatGPT Plus resmi OpenAI. Dilengkapi akses model GPT-4o penalaran cepat, DALL·E 3 untuk generate gambar ultra-HD, browsing web real-time, dan fitur Voice Mode interaktif.\n\n✨ Keunggulan Akun:\n• Akses model GPT-4o / GPT-4 Turbo tanpa antre\n• Fitur Generate Gambar DALL-E 3 & Custom GPTs\n• Analisis data, file code, dan dokumen kompleks\n• Tersedia opsi Akun Private atau Akun Siap Pakai\n\n⚡ Pengiriman: Otomatis via QRIS / Instant Delivery\n🛡️ Garansi: Full garansi & support replace jika berkendala',
+        terms: '1. Dilarang menyalahgunakan akun untuk aktivitas yang melanggar ToS OpenAI.\n2. Garansi replace jika terjadi kendala login.\n3. Simpan invoice sebagai bukti garansi sah.',
+        variants: [{ name: '1 Bulan Sharing', price: 15000 }, { name: '1 Bulan Private', price: 45000 }]
+      },
+      capcut: {
+        category: 'Editor', warranty: 'Resmi 1 Tahun',
+        desc: 'Aplikasi editing video paling populer untuk kreator TikTok, Instagram Reels, dan YouTube Shorts. Buka semua fitur pro, efek eksklusif, dan preset tren tanpa watermark.\n\n✨ Keunggulan Akun:\n• Buka semua Efek Pro, Transisi, Filter, dan Font Premium\n• Fitur Auto-Caption (Subtitle Otomatis) & AI Voice Generator\n• Ekspor video resolusi 2K/4K 60fps tanpa watermark\n• Kompatibel untuk Android, iOS, Windows, dan MacOS\n\n⚡ Pengiriman: Data login instan terkirim otomatis\n🛡️ Garansi: Full garansi ganti baru jika kendala',
+        terms: '1. Dilarang mengubah email/password akun sharing.\n2. Bisa digunakan di HP dan PC/Laptop.\n3. Garansi aktif selama 1 tahun penuh.',
+        variants: [{ name: '1 Tahun Pro', price: 9000 }, { name: '1 Bulan Pro', price: 3000 }]
+      },
+      netflix: {
+        category: 'Stream', warranty: 'Full Garansi',
+        desc: 'Nonton ribuan film blockbuster, serial original, drakor, dan anime terpopuler di dunia dengan kualitas tertinggi 4K Ultra HD + Dolby Atmos.\n\n✨ Keunggulan Akun:\n• Kualitas gambar maksimal 4K Ultra HD + HDR\n• Audio jernih surround sound Dolby Vision/Atmos\n• Profil private ber-PIN (Aman, history tontonan tidak tercampur)\n• Kompatibel untuk Smart TV, Laptop, Tablet, Android, dan iPhone\n\n⚡ Pengiriman: Data akun dikirim instan otomatis\n🛡️ Garansi: Full garansi ganti akun jika ada kendala',
+        terms: '1. Dilarang mengubah email, password, dan nama profil orang lain.\n2. Login hanya pada 1 perangkat sesuai jumlah profil yang dibeli.\n3. Garansi full ganti akun jika terkena screen limit / household.',
+        variants: [{ name: '1 Bulan 1 Profil 4K', price: 18000 }, { name: '1 Bulan Privat Akun', price: 65000 }]
+      }
     };
 
     function showToast(message, type = 'info') {
@@ -419,44 +510,34 @@
       setTimeout(() => { toast.classList.add('opacity-0', '-translate-y-2'); setTimeout(() => toast.remove(), 300); }, 2500);
     }
 
-   async function loadProductsFromKV() {
-  try {
-    const res = await fetch(API_URL, {
-      method: "GET",
-      headers: {
-        "Accept": "application/json"
+    async function loadProductsFromKV() {
+      try {
+        const res = await fetch(API_URL, { method: "GET", headers: { "Accept": "application/json" } });
+        if (!res.ok) throw new Error('Network error');
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          const bannerObj = data.find(item => item._isBannerConfig || item.id === "__BANNER_CONFIG__");
+          if (bannerObj) {
+            bannerSettings = {
+              active: Boolean(bannerObj.active),
+              type: bannerObj.type || 'image',
+              imageUrl: bannerObj.imageUrl || ''
+            };
+          }
+          products = data.filter(item => !item._isBannerConfig && item.id !== "__BANNER_CONFIG__");
+        } else {
+          products = [];
+        }
+        renderAdminProductsList(products);
+        populateReviewProductSelector();
+        loadBannerSettingsToUI();
+        showToast('Data produk & ulasan berhasil disinkron!');
+      } catch (err) {
+        if (!products) products = [];
+        renderAdminProductsList(products);
+        showToast('Mode siap digunakan.', 'info');
       }
-    });
-    
-    if (!res.ok) throw new Error('Network response was not ok');
-    
-    const data = await res.json();
-    if (Array.isArray(data)) {
-      const bannerObj = data.find(item => item._isBannerConfig || item.id === "__BANNER_CONFIG__");
-      if (bannerObj) {
-        bannerSettings = {
-          active: Boolean(bannerObj.active),
-          type: bannerObj.type || 'image',
-          imageUrl: bannerObj.imageUrl || ''
-        };
-      }
-      products = data.filter(item => !item._isBannerConfig && item.id !== "__BANNER_CONFIG__");
-    } else {
-      products = [];
     }
-    
-    renderAdminProductsList(products);
-    populateReviewProductSelector();
-    if (typeof loadBannerSettingsToUI === 'function') loadBannerSettingsToUI();
-    showToast('Data produk & ulasan berhasil disinkron!');
-  } catch (err) {
-    console.warn('Gagal memuat via GET, mencoba inisialisasi kosong...', err);
-    // Jika data kosong atau error CORS pertama kali, biarkan array produk siap diisi
-    if (!products) products = [];
-    renderAdminProductsList(products);
-    showToast('Mode offline / Inisialisasi siap disimpan.', 'info');
-  }
-}
 
     function switchTab(tab) {
       document.getElementById('section-products').classList.add('hidden');
@@ -491,6 +572,75 @@
       lucide.createIcons();
     }
 
+    // ================= AI GENERATE SMART MATCHING =================
+    function triggerAiGenerateDescription() {
+      const nameInput = document.getElementById('prod-form-name');
+      const rawName = (nameInput.value || '').trim();
+
+      if (!rawName) {
+        showToast('Ketik nama produk terlebih dahulu (misal: Googleflow, Gemini, Netflix)', 'error');
+        nameInput.focus();
+        return;
+      }
+
+      showToast('✨ AI sedang meracik deskripsi & data terbaik...');
+      const cleanKey = rawName.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+      let matchedData = null;
+      for (const [k, v] of Object.entries(aiProductKnowledgeBase)) {
+        if (cleanKey.includes(k) || k.includes(cleanKey) || (cleanKey.includes('google') && k.includes('google'))) {
+          matchedData = v;
+          break;
+        }
+      }
+
+      if (!matchedData) {
+        matchedData = generateSmartHeuristicProductData(rawName);
+      }
+
+      document.getElementById('prod-form-desc').value = matchedData.desc;
+      document.getElementById('prod-form-terms').value = matchedData.terms;
+      document.getElementById('prod-form-category').value = matchedData.category;
+      document.getElementById('prod-form-warranty').value = matchedData.warranty;
+
+      const varContainer = document.getElementById('variants-form-container');
+      if (matchedData.variants && matchedData.variants.length > 0) {
+        varContainer.innerHTML = '';
+        matchedData.variants.forEach(v => {
+          addVariantFormRow(v.name, v.price, '');
+        });
+      }
+
+      showToast(`✨ Sukses generate data AI untuk "${rawName}"!`);
+    }
+
+    function generateSmartHeuristicProductData(name) {
+      const lower = name.toLowerCase();
+      let category = 'AI';
+      let warranty = 'Resmi 1 Bulan';
+      let tagKeyword = 'Layanan Digital';
+
+      if (lower.includes('stream') || lower.includes('tv') || lower.includes('film') || lower.includes('movie') || lower.includes('video') || lower.includes('drama') || lower.includes('anime')) {
+        category = 'Stream'; warranty = 'Full Garansi'; tagKeyword = 'Streaming Hiburan';
+      } else if (lower.includes('edit') || lower.includes('photo') || lower.includes('motion') || lower.includes('design') || lower.includes('preset')) {
+        category = 'Editor'; warranty = 'Resmi 1 Tahun'; tagKeyword = 'Aplikasi Kreatif & Editing';
+      } else if (lower.includes('follow') || lower.includes('like') || lower.includes('sosmed') || lower.includes('sub') || lower.includes('view')) {
+        category = 'Sosmed'; warranty = 'Garansi Refill 30 Hari'; tagKeyword = 'Layanan Optimasi Sosial Media';
+      } else if (lower.includes('otp') || lower.includes('nokos') || lower.includes('nomor') || lower.includes('sms')) {
+        category = 'Nokos'; warranty = 'Garansi 1x OTP'; tagKeyword = 'Nomor Virtual SMS';
+      } else if (lower.includes('web') || lower.includes('template') || lower.includes('blogger') || lower.includes('landing')) {
+        category = 'Blogger'; warranty = 'Full Source Code'; tagKeyword = 'Template Web Premium';
+      }
+
+      return {
+        category: category,
+        warranty: warranty,
+        desc: `Beli layanan ${name} resmi dan bergaransi penuh di DigitalHub. Solusi ${tagKeyword} berkualitas dengan proses pengiriman instan 24 jam.\n\n✨ Keunggulan Layanan:\n• Fitur Premium / VIP terbuka penuh tanpa batasan\n• Akun stabil, aman, dan anti-suspend\n• Mendukung penggunaan di berbagai perangkat\n• Harga paling terjangkau dengan kualitas nomor satu\n\n⚡ Pengiriman: Otomatis via QRIS TriPay (< 5 Detik)\n🛡️ Garansi: ${warranty}`,
+        terms: `1. Gunakan ${name} sesuai aturan dan panduan yang diberikan.\n2. Dilarang melakukan tindakan yang melanggar ketentuan layanan.\n3. Simpan Nomor Invoice sebagai bukti klaim garansi sah via WhatsApp Admin.`,
+        variants: [{ name: 'Paket Reguler', price: 5000 }, { name: 'Paket VIP Premium', price: 15000 }]
+      };
+    }
+
     // ================= PENGATURAN BANNER =================
     function loadBannerSettingsToUI() {
       document.getElementById('banner-toggle-active').checked = bannerSettings.active;
@@ -501,11 +651,7 @@
       setBannerType(bannerSettings.type);
     }
 
-    function toggleBannerActive(isActive) {
-      bannerSettings.active = isActive;
-      showToast(isActive ? 'Banner diaktifkan (Klik Simpan untuk sinkron ke HP)' : 'Banner dinonaktifkan (Klik Simpan untuk sinkron ke HP)');
-    }
-
+    function toggleBannerActive(isActive) { bannerSettings.active = isActive; }
     function setBannerType(type) {
       bannerSettings.type = type;
       const imgBox = document.getElementById('banner-image-form-box');
@@ -515,163 +661,96 @@
     function handleBannerFileUpload(event) {
       const file = event.target.files[0];
       if (!file) return;
-
-      showToast('Mengompres gambar banner...');
       const reader = new FileReader();
       reader.onload = (e) => {
         const img = new Image();
         img.onload = () => {
           const canvas = document.createElement('canvas');
           const maxDim = 900;
-          let width = img.width;
-          let height = img.height;
+          let width = img.width, height = img.height;
           if (width > maxDim) { height *= maxDim / width; width = maxDim; }
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, width, height);
-
+          canvas.width = width; canvas.height = height;
+          const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
           const compressed = canvas.toDataURL('image/webp', 0.85);
           bannerSettings.imageUrl = compressed;
           document.getElementById('banner-url-input').value = compressed;
           updateBannerPreview(compressed);
-          showToast('Gambar banner siap! Klik tombol Simpan di bawah.');
         };
         img.src = e.target.result;
       };
       reader.readAsDataURL(file);
     }
 
-    function updateBannerPreviewFromUrl(url) {
-      bannerSettings.imageUrl = url.trim();
-      updateBannerPreview(url.trim());
-    }
-
+    function updateBannerPreviewFromUrl(url) { bannerSettings.imageUrl = url.trim(); updateBannerPreview(url.trim()); }
     function updateBannerPreview(src) {
       const img = document.getElementById('banner-preview-img');
       const icon = document.getElementById('banner-placeholder-icon');
       if (src && src.length > 5) {
-        img.src = src;
-        img.classList.remove('hidden');
-        icon.classList.add('hidden');
+        img.src = src; img.classList.remove('hidden'); icon.classList.add('hidden');
       } else {
-        img.src = '';
-        img.classList.add('hidden');
-        icon.classList.remove('hidden');
+        img.src = ''; img.classList.add('hidden'); icon.classList.remove('hidden');
       }
     }
 
-    // SIMPAN KE CLOUDFLARE WORKER KV (OTOMATIS SINKRON KE SEMUA HP PEMBELI)
     async function saveBannerSettings() {
       showToast('Menyimpan status banner ke Cloudflare KV...');
       const payload = [
-        {
-          id: "__BANNER_CONFIG__",
-          _isBannerConfig: true,
-          active: bannerSettings.active,
-          type: bannerSettings.type,
-          imageUrl: bannerSettings.imageUrl
-        },
+        { id: "__BANNER_CONFIG__", _isBannerConfig: true, active: bannerSettings.active, type: bannerSettings.type, imageUrl: bannerSettings.imageUrl },
         ...products
       ];
-
       try {
-        const res = await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
+        const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
         const data = await res.json();
-        if (data.success) {
-          showToast(bannerSettings.active ? 'Banner berhasil diaktifkan di toko HP!' : 'Banner berhasil dimatikan & hilang dari HP!');
-          refreshPhonePreview();
-        } else {
-          showToast('Gagal menyimpan ke KV', 'error');
-        }
-      } catch (err) {
-        showToast('Error koneksi ke server', 'error');
-      }
+        if (data.success) { showToast('Pengaturan banner berhasil disimpan ke server KV!'); }
+      } catch (err) { showToast('Gagal terhubung ke Cloudflare', 'error'); }
     }
 
     async function saveAllProductsToKV() {
       showToast('Menyimpan perubahan ke Cloudflare KV...');
       const payload = [
-        {
-          id: "__BANNER_CONFIG__",
-          _isBannerConfig: true,
-          active: bannerSettings.active,
-          type: bannerSettings.type,
-          imageUrl: bannerSettings.imageUrl
-        },
+        { id: "__BANNER_CONFIG__", _isBannerConfig: true, active: bannerSettings.active, type: bannerSettings.type, imageUrl: bannerSettings.imageUrl },
         ...products
       ];
-
       try {
-        const res = await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
+        const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
         const data = await res.json();
-        if (data.success) {
-          showToast('Semua data KV & posisi produk berhasil diperbarui!');
-        } else {
-          showToast('Gagal menyimpan ke KV', 'error');
-        }
-      } catch (err) {
-        showToast('Gagal terhubung ke Cloudflare', 'error');
-      }
+        if (data.success) { showToast('Semua data KV berhasil diperbarui!'); }
+      } catch (err) { showToast('Gagal terhubung ke Cloudflare', 'error'); }
     }
 
-    // ================= HANDLER PRODUK =================
+    // ================= MANAJEMEN PRODUK =================
     function renderAdminProductsList(list) {
       const container = document.getElementById('admin-product-list');
       if (list.length === 0) {
-        container.innerHTML = `<div class="p-8 text-center text-slate-400 bg-white rounded-2xl border text-xs">Belum ada produk. Klik tombol "+ Tambah Produk Baru" di atas.</div>`;
+        container.innerHTML = `<div class="p-8 text-center text-slate-400 bg-white rounded-2xl border text-xs">Belum ada produk.</div>`;
         return;
       }
-
       container.innerHTML = list.map((prod, pIdx) => {
         const prices = prod.variants.map(v => Number(v.price || 0));
         const minPrice = Math.min(...prices);
         const totalStock = prod.variants.reduce((acc, v) => acc + (v.items ? v.items.length : (Number(v.stock) || 0)), 0);
         const reviewsCount = prod.customReviews ? prod.customReviews.length : 0;
-        const isBest = Boolean(prod.isBestSeller);
-        const isHot = Boolean(prod.isHot || Number(prod.sold || 0) >= 100);
-
         return `
           <div class="bg-white rounded-3xl p-3.5 sm:p-4 border border-slate-200 shadow-2xs hover:border-indigo-500 transition-all flex items-center justify-between gap-3 group">
             <div class="flex flex-col items-center gap-1 pr-1 border-r border-slate-100 flex-shrink-0">
-              <button onclick="moveProduct(${pIdx}, -1)" ${pIdx === 0 ? 'disabled class="opacity-20 cursor-not-allowed"' : 'class="hover:text-indigo-600 hover:bg-indigo-50"'} p-1 rounded-md text-slate-500 font-bold" title="Pindah ke Atas">
-                <i data-lucide="chevron-up" class="w-4 h-4"></i>
-              </button>
+              <button onclick="moveProduct(${pIdx}, -1)" ${pIdx === 0 ? 'disabled class="opacity-20 cursor-not-allowed"' : 'class="hover:text-indigo-600"'} p-1 rounded-md text-slate-500 font-bold"><i data-lucide="chevron-up" class="w-4 h-4"></i></button>
               <span class="text-[10px] font-black text-slate-400 leading-none">${pIdx + 1}</span>
-              <button onclick="moveProduct(${pIdx}, 1)" ${pIdx === list.length - 1 ? 'disabled class="opacity-20 cursor-not-allowed"' : 'class="hover:text-indigo-600 hover:bg-indigo-50"'} p-1 rounded-md text-slate-500 font-bold" title="Pindah ke Bawah">
-                <i data-lucide="chevron-down" class="w-4 h-4"></i>
-              </button>
+              <button onclick="moveProduct(${pIdx}, 1)" ${pIdx === list.length - 1 ? 'disabled class="opacity-20 cursor-not-allowed"' : 'class="hover:text-indigo-600"'} p-1 rounded-md text-slate-500 font-bold"><i data-lucide="chevron-down" class="w-4 h-4"></i></button>
             </div>
-
             <div class="flex items-center gap-3 min-w-0 flex-1">
               <img src="${prod.image}" class="w-12 h-12 rounded-2xl object-contain bg-slate-50 p-1 border border-slate-100 flex-shrink-0" />
               <div class="min-w-0 flex-1">
                 <div class="flex items-center gap-1.5 flex-wrap">
-                  <span class="text-[9px] uppercase font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md border border-indigo-100">${prod.category}</span>
+                  <span class="text-[9px] uppercase font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md">${prod.category}</span>
                   <span class="text-[9.5px] font-bold text-slate-400">• Stok: ${totalStock}</span>
-                  ${isBest ? `<span class="text-[9px] font-black text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-200">🔥 BEST SELLER</span>` : ''}
-                  ${isHot ? `<span class="text-[9px] font-black text-rose-700 bg-rose-100 px-1.5 py-0.5 rounded border border-rose-200">⚡ HOT</span>` : ''}
                 </div>
                 <h3 class="text-xs sm:text-sm font-bold text-slate-800 truncate mt-0.5">${prod.name}</h3>
-                <p class="text-[11px] font-black text-indigo-600">Rp ${minPrice.toLocaleString('id-ID')} <span class="text-[10px] text-slate-400 font-normal">(${prod.variants.length} Paket • ${prod.sold || 0} Terjual)</span></p>
+                <p class="text-[11px] font-black text-indigo-600">Rp ${minPrice.toLocaleString('id-ID')} <span class="text-[10px] text-slate-400 font-normal">(${prod.variants.length} Paket)</span></p>
               </div>
             </div>
-
             <div class="flex items-center gap-1.5 flex-shrink-0">
-              <button onclick="manageReviewsForProduct(${prod.id})" title="Kelola Ulasan Produk Ini" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-bold px-2.5 py-1.5 rounded-xl flex items-center gap-1">
-                <i data-lucide="star" class="w-3.5 h-3.5 text-amber-500"></i>
-                <span class="hidden sm:inline">Ulasan (${reviewsCount})</span>
-              </button>
-              <button onclick="editProduct(${prod.id})" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold p-2 rounded-xl" title="Edit Produk"><i data-lucide="edit" class="w-3.5 h-3.5"></i></button>
-              <button onclick="deleteProduct(${prod.id})" class="bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold p-2 rounded-xl" title="Hapus Produk"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+              <button onclick="editProduct(${prod.id})" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold p-2 rounded-xl"><i data-lucide="edit" class="w-3.5 h-3.5"></i></button>
+              <button onclick="deleteProduct(${prod.id})" class="bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold p-2 rounded-xl"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
             </div>
           </div>
         `;
@@ -686,13 +765,11 @@
       products[index] = products[targetIndex];
       products[targetIndex] = temp;
       renderAdminProductsList(products);
-      showToast(`Posisi "${temp.name}" dipindahkan`);
     }
 
     function filterAdminProducts(query) {
       const q = (query || '').toLowerCase();
-      const filtered = products.filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
-      renderAdminProductsList(filtered);
+      renderAdminProductsList(products.filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q)));
     }
 
     function openProductModal() {
@@ -700,16 +777,10 @@
       document.getElementById('modal-product-title').innerHTML = `<i data-lucide="package-plus" class="w-5 h-5 text-indigo-600"></i> Tambah Produk Baru`;
       document.getElementById('prod-form-id').value = '';
       document.getElementById('prod-form-name').value = '';
-      document.getElementById('prod-form-category').value = 'AI';
-      document.getElementById('prod-form-warranty').value = 'Resmi 1 Bulan';
-      document.getElementById('prod-form-bestseller').checked = false;
-      document.getElementById('prod-form-hot').checked = false;
-      document.getElementById('prod-form-sold').value = '100';
-      document.getElementById('prod-form-rating').value = '5.0';
       document.getElementById('prod-form-image').value = '';
       updateImagePreview('');
       document.getElementById('prod-form-desc').value = '';
-      document.getElementById('prod-form-terms').value = '1. Dilarang mengganti password email akun.\n2. Garansi full berlaku selama masa aktif.\n3. Hubungi admin WhatsApp jika ada kendala.';
+      document.getElementById('prod-form-terms').value = '1. Dilarang mengganti password email akun.\n2. Garansi full berlaku selama masa aktif.';
       document.getElementById('variants-form-container').innerHTML = '';
       addVariantFormRow('1 Bulan', 5000, '');
       document.getElementById('product-modal').classList.remove('hidden');
@@ -726,13 +797,13 @@
       document.getElementById('prod-form-category').value = p.category;
       document.getElementById('prod-form-warranty').value = p.warranty || 'Resmi';
       document.getElementById('prod-form-bestseller').checked = Boolean(p.isBestSeller);
-      document.getElementById('prod-form-hot').checked = Boolean(p.isHot || Number(p.sold || 0) >= 100);
+      document.getElementById('prod-form-hot').checked = Boolean(p.isHot);
       document.getElementById('prod-form-sold').value = p.sold || '0';
       document.getElementById('prod-form-rating').value = p.rating || '5.0';
       document.getElementById('prod-form-image').value = p.image || '';
       updateImagePreview(p.image || '');
       document.getElementById('prod-form-desc').value = p.description || '';
-      document.getElementById('prod-form-terms').value = p.terms || '1. Dilarang mengganti password email akun.\n2. Garansi full berlaku selama masa aktif.\n3. Hubungi admin WhatsApp jika ada kendala.';
+      document.getElementById('prod-form-terms').value = p.terms || '';
 
       const varContainer = document.getElementById('variants-form-container');
       varContainer.innerHTML = '';
@@ -740,7 +811,6 @@
         const rawItems = (v.items && Array.isArray(v.items)) ? v.items.join('\n') : '';
         addVariantFormRow(v.name, v.price, rawItems);
       });
-
       document.getElementById('product-modal').classList.remove('hidden');
       lucide.createIcons();
     }
@@ -755,10 +825,10 @@
           <input type="number" placeholder="Harga (Rp)" value="${price}" class="var-price-input px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs" required />
         </div>
         <div>
-          <label class="text-[10px] font-bold text-slate-500 block mb-0.5">Kunci Akun / Lisensi Auto-Delivery (1 Baris = 1 Akun Terkirim):</label>
-          <textarea rows="2" placeholder="email:pass atau link template" class="var-items-input w-full p-2 bg-white border border-slate-200 rounded-xl font-mono text-[11px]">${items}</textarea>
+          <label class="text-[10px] font-bold text-slate-500 block mb-0.5">Kunci Akun / Lisensi (1 Baris = 1 Akun):</label>
+          <textarea rows="2" class="var-items-input w-full p-2 bg-white border border-slate-200 rounded-xl font-mono text-[11px]">${items}</textarea>
         </div>
-        <button type="button" onclick="this.parentElement.remove()" class="text-[10px] text-rose-600 hover:underline font-bold">Hapus Paket Ini</button>
+        <button type="button" onclick="this.parentElement.remove()" class="text-[10px] text-rose-600 font-bold">Hapus Paket Ini</button>
       `;
       container.appendChild(div);
     }
@@ -769,7 +839,6 @@
       e.preventDefault();
       const varRows = document.querySelectorAll('#variants-form-container > div');
       const variants = [];
-
       varRows.forEach(row => {
         const name = row.querySelector('.var-name-input').value.trim();
         const price = Number(row.querySelector('.var-price-input').value) || 0;
@@ -777,13 +846,6 @@
         const items = rawItems ? rawItems.split('\n').map(i => i.trim()).filter(Boolean) : [];
         if (name) { variants.push({ name, price, stock: items.length, items }); }
       });
-
-      if (variants.length === 0) { showToast('Minimal harus ada 1 paket varian produk', 'error'); return; }
-
-      const isBest = document.getElementById('prod-form-bestseller').checked;
-      const isHot = document.getElementById('prod-form-hot').checked;
-      const soldVal = Number(document.getElementById('prod-form-sold').value) || 0;
-      const ratingVal = document.getElementById('prod-form-rating').value.trim() || '5.0';
 
       const newProductData = {
         id: currentEditingProductId ? currentEditingProductId : Date.now(),
@@ -793,10 +855,10 @@
         image: document.getElementById('prod-form-image').value.trim(),
         description: document.getElementById('prod-form-desc').value.trim(),
         terms: document.getElementById('prod-form-terms').value.trim(),
-        isBestSeller: isBest,
-        isHot: isHot,
-        sold: soldVal,
-        rating: ratingVal,
+        isBestSeller: document.getElementById('prod-form-bestseller').checked,
+        isHot: document.getElementById('prod-form-hot').checked,
+        sold: Number(document.getElementById('prod-form-sold').value) || 0,
+        rating: document.getElementById('prod-form-rating').value.trim() || '5.0',
         variants: variants,
         customReviews: currentEditingProductId ? (products.find(p => p.id === currentEditingProductId)?.customReviews || []) : []
       };
@@ -811,40 +873,32 @@
       closeProductModal();
       renderAdminProductsList(products);
       await saveAllProductsToKV();
-      refreshPhonePreview();
     }
 
     async function deleteProduct(productId) {
-      if (!confirm('Yakin ingin menghapus produk ini dari database?')) return;
+      if (!confirm('Yakin ingin menghapus produk ini?')) return;
       products = products.filter(p => p.id !== productId);
       renderAdminProductsList(products);
       await saveAllProductsToKV();
-      refreshPhonePreview();
-      showToast('Produk berhasil dihapus');
     }
 
     function handleImageFileUpload(event) {
       const file = event.target.files[0];
       if (!file) return;
-
-      showToast('Memproses gambar...');
       const reader = new FileReader();
       reader.onload = (e) => {
         const img = new Image();
         img.onload = () => {
           const canvas = document.createElement('canvas');
           const maxDim = 400;
-          let width = img.width;
-          let height = img.height;
+          let width = img.width, height = img.height;
           if (width > height) { if (width > maxDim) { height *= maxDim / width; width = maxDim; } }
           else { if (height > maxDim) { width *= maxDim / height; height = maxDim; } }
           canvas.width = width; canvas.height = height;
           const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
-
           const compressed = canvas.toDataURL('image/webp', 0.85);
           document.getElementById('prod-form-image').value = compressed;
           updateImagePreview(compressed);
-          showToast('Gambar logo berhasil diunggah!');
         };
         img.src = e.target.result;
       };
@@ -862,11 +916,82 @@
       }
     }
 
+    // ================= MANAJEMEN ULASAN =================
+    let selectedReviewProductId = null;
+    function populateReviewProductSelector() {
+      const select = document.getElementById('review-product-selector');
+      if (!select) return;
+      select.innerHTML = products.map(p => `<option value="${p.id}">${p.name} (${p.category})</option>`).join('');
+      if (products.length > 0) {
+        selectedReviewProductId = Number(select.value);
+        renderReviewsForSelectedProduct(selectedReviewProductId);
+      }
+    }
+
+    function renderReviewsForSelectedProduct(prodId) {
+      selectedReviewProductId = Number(prodId);
+      const product = products.find(p => p.id === selectedReviewProductId);
+      const container = document.getElementById('admin-reviews-container');
+      const badge = document.getElementById('review-count-badge');
+      if (!product) return;
+      if (!product.customReviews) product.customReviews = [];
+      badge.innerText = `Total: ${product.customReviews.length} Ulasan Kustom`;
+
+      if (product.customReviews.length === 0) {
+        container.innerHTML = `<div class="bg-white p-8 rounded-3xl border text-center text-slate-400 text-xs">Belum ada ulasan untuk ${product.name}.</div>`;
+        return;
+      }
+
+      container.innerHTML = product.customReviews.map((rev, rIdx) => `
+        <div class="bg-white border rounded-3xl p-4 space-y-2">
+          <div class="flex items-center justify-between">
+            <p class="font-bold text-xs">${rev.user} (${'★'.repeat(rev.rating)})</p>
+            <button onclick="deleteReview(${rIdx})" class="text-rose-600 text-xs font-bold p-1">Hapus</button>
+          </div>
+          <p class="text-xs text-slate-600">${rev.comment}</p>
+        </div>
+      `).join('');
+    }
+
+    function openAddReviewModal() {
+      document.getElementById('rev-form-user').value = 'b***' + Math.floor(Math.random() * 9 + 1);
+      document.getElementById('rev-form-comment').value = '';
+      document.getElementById('review-modal').classList.remove('hidden');
+    }
+    function closeReviewModal() { document.getElementById('review-modal').classList.add('hidden'); }
+
+    async function handleSaveReview(e) {
+      e.preventDefault();
+      const product = products.find(p => p.id === selectedReviewProductId);
+      if (!product) return;
+      if (!product.customReviews) product.customReviews = [];
+      
+      product.customReviews.unshift({
+        user: document.getElementById('rev-form-user').value.trim(),
+        rating: Number(document.getElementById('rev-form-rating').value) || 5,
+        tag: document.getElementById('rev-form-tag').value,
+        variant: document.getElementById('rev-form-variant').value.trim() || '1 Bulan',
+        date: new Date().toISOString().slice(0, 16).replace('T', ' '),
+        comment: document.getElementById('rev-form-comment').value.trim()
+      });
+
+      closeReviewModal();
+      renderReviewsForSelectedProduct(selectedReviewProductId);
+      await saveAllProductsToKV();
+    }
+
+    async function deleteReview(index) {
+      const product = products.find(p => p.id === selectedReviewProductId);
+      if (!product) return;
+      product.customReviews.splice(index, 1);
+      renderReviewsForSelectedProduct(selectedReviewProductId);
+      await saveAllProductsToKV();
+    }
+
     function refreshPhonePreview() {
       const iframe = document.getElementById('phone-preview-iframe');
       if (iframe) iframe.src = iframe.src;
     }
-
     function toggleMobileSidebar() { document.querySelector('aside').classList.toggle('hidden'); }
 
     loadProductsFromKV();
