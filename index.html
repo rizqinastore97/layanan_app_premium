@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Toko Produk Digital - Multi Varian</title>
+  <title>Toko Produk Digital - QRIS Instant Delivery</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    #cart-drawer, #detail-modal-card { transition: all 0.25s ease-in-out; }
+    #cart-drawer, #detail-modal-card, #payment-modal-card { transition: all 0.25s ease-in-out; }
     .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -49,11 +49,9 @@
     </div>
 
     <div class="mb-3 sm:mb-4 px-1 flex items-center justify-between">
-      <div>
-        <h2 class="text-sm sm:text-lg font-bold text-slate-800 flex items-center gap-1.5">
-          <i data-lucide="layout-grid" class="w-4 h-4 text-blue-600"></i> Katalog Produk (<span id="product-count">0</span>)
-        </h2>
-      </div>
+      <h2 class="text-sm sm:text-lg font-bold text-slate-800 flex items-center gap-1.5">
+        <i data-lucide="layout-grid" class="w-4 h-4 text-blue-600"></i> Katalog Produk (<span id="product-count">0</span>)
+      </h2>
       <span class="text-[11px] sm:text-xs text-emerald-600 font-semibold flex items-center gap-1">
         <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Garansi Full 100%
       </span>
@@ -67,20 +65,18 @@
     <div id="product-grid" class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-4 hidden"></div>
   </main>
 
-  <a href="https://wa.me/6281234567890?text=Halo%20Admin,%20mau%20tanya%20seputar%20produk%20digital" target="_blank" class="fixed bottom-5 right-5 z-40 bg-emerald-500 hover:bg-emerald-600 text-white p-3.5 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-105 active:scale-95"><i data-lucide="message-circle" class="w-6 h-6"></i></a>
-
   <footer class="mt-auto py-6 border-t border-slate-200 text-center text-xs text-slate-500 bg-white">
     <p>© 2026 Toko Digital. All rights reserved.</p>
     <a href="admin.html" class="inline-block mt-1 text-[11px] text-slate-400 hover:text-blue-600 transition-colors">• Dashboard Admin</a>
   </footer>
 
-  <!-- Modal Detail -->
+  <!-- Modal Pop-up Detail Produk -->
   <div id="detail-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div onclick="closeDetailModal()" class="absolute inset-0 bg-black/50 backdrop-blur-xs"></div>
     <div class="fixed inset-0 flex items-end sm:items-center justify-center p-0 sm:p-4">
       <div id="detail-modal-card" class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         <div class="relative p-4 border-b border-slate-100 flex items-center gap-3">
-          <img id="modal-img" src="" alt="" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover bg-slate-100 flex-shrink-0" />
+          <img id="modal-img" src="" alt="" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-contain bg-slate-50 p-1 border border-slate-100 flex-shrink-0" />
           <div class="min-w-0 flex-1">
             <span id="modal-category" class="text-[10px] uppercase font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md"></span>
             <h3 id="modal-name" class="text-sm sm:text-base font-bold text-slate-900 truncate mt-1"></h3>
@@ -106,8 +102,69 @@
         <div class="p-3 sm:p-4 bg-slate-50 border-t border-slate-100 grid grid-cols-5 gap-2">
           <button id="modal-btn-chat" class="col-span-1 border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-xl flex flex-col items-center justify-center p-2 transition-colors"><i data-lucide="message-circle" class="w-4 h-4"></i><span class="text-[9px] font-bold mt-0.5">Chat</span></button>
           <button id="modal-btn-cart" class="col-span-2 bg-blue-50 hover:bg-blue-100 text-blue-600 border border-blue-200 font-bold rounded-xl text-xs py-2.5 transition-colors">+ Keranjang</button>
-          <button id="modal-btn-buy" class="col-span-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs py-2.5 transition-colors shadow-sm">Beli Sekarang</button>
+          <button id="modal-btn-buy" class="col-span-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs py-2.5 transition-colors shadow-xs flex items-center justify-center gap-1">
+            <i data-lucide="qr-code" class="w-4 h-4"></i> Bayar QRIS
+          </button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL PEMBAYARAN QRIS GOPAY & PENGIRIMAN AKUN -->
+  <div id="payment-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
+    <div onclick="closePaymentModal()" class="absolute inset-0 bg-black/60 backdrop-blur-xs"></div>
+    <div class="fixed inset-0 flex items-center justify-center p-4">
+      <div id="payment-modal-card" class="bg-white w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden p-5 flex flex-col text-center">
+        
+        <!-- Header Modal Pembayaran -->
+        <div class="flex justify-between items-center mb-3">
+          <h3 class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
+            <i data-lucide="wallet" class="w-4 h-4 text-blue-600"></i> Pembayaran QRIS GoPay
+          </h3>
+          <button onclick="closePaymentModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+        </div>
+
+        <!-- TAMPILAN 1: SCAN QRIS -->
+        <div id="step-pay" class="space-y-3">
+          <div class="bg-slate-50 p-2.5 rounded-2xl border border-slate-100">
+            <p id="pay-item-name" class="text-xs font-semibold text-slate-800 truncate"></p>
+            <p id="pay-total-amount" class="text-base font-extrabold text-blue-600 mt-0.5"></p>
+          </div>
+
+          <!-- Gambar QRIS -->
+          <div class="w-52 h-52 mx-auto bg-white p-2 rounded-2xl border-2 border-dashed border-slate-300 flex items-center justify-center shadow-xs">
+            <img id="qris-img" src="https://placehold.co/300x300/ffffff/000000?text=QRIS+GOPAY+ANDA" alt="QRIS GoPay" class="w-full h-full object-contain" />
+          </div>
+
+          <p class="text-[11px] text-slate-500">Scan menggunakan GoPay, BCA, DANA, OVO, ShopeePay atau Mobile Banking lainnya.</p>
+
+          <button onclick="confirmPayment()" class="w-full bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white py-2.5 rounded-xl font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1.5">
+            <i data-lucide="check-circle" class="w-4 h-4"></i> Saya Sudah Transfer
+          </button>
+        </div>
+
+        <!-- TAMPILAN 2: HASIL PENGIRIMAN AKUN (INSTANT DELIVERY / FALLBACK WA) -->
+        <div id="step-result" class="space-y-3 hidden">
+          <div id="result-badge-container"></div>
+
+          <h4 id="result-title" class="font-bold text-sm text-slate-800"></h4>
+          <p id="result-subtitle" class="text-xs text-slate-500 leading-relaxed"></p>
+
+          <!-- Kotak Akun (Jika Ready) -->
+          <div id="account-box" class="bg-blue-50 border border-blue-200 rounded-2xl p-3 text-left hidden">
+            <span class="text-[10px] text-blue-600 font-bold block uppercase mb-1">Data Akun / Lisensi Anda:</span>
+            <pre id="account-data" class="font-mono text-xs text-slate-800 whitespace-pre-wrap break-all bg-white p-2.5 rounded-xl border border-blue-100 select-all"></pre>
+            <button onclick="copyAccountData()" class="mt-2 w-full bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold py-1.5 rounded-lg flex items-center justify-center gap-1 transition-all">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i> Salin Data Akun
+            </button>
+          </div>
+
+          <!-- Tombol Kirim Bukti ke WhatsApp -->
+          <button id="btn-wa-claim" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1.5">
+            <i data-lucide="message-circle" class="w-4 h-4"></i> Kirim Bukti Transfer ke WA
+          </button>
+        </div>
+
       </div>
     </div>
   </div>
@@ -124,21 +181,28 @@
         <div id="cart-items" class="flex-1 overflow-y-auto p-3 sm:p-4 space-y-2.5"></div>
         <div id="cart-footer" class="p-4 border-t border-slate-100 bg-slate-50 space-y-3 hidden">
           <div class="flex justify-between items-center"><span class="text-xs text-slate-500 font-medium">Total Tagihan:</span><span id="cart-total-price" class="text-sm sm:text-base font-extrabold text-blue-600">Rp 0</span></div>
-          <button onclick="processWhatsAppCheckout()" class="w-full bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white py-3 rounded-xl font-bold text-xs sm:text-sm transition-all shadow-md flex items-center justify-center gap-2"><i data-lucide="message-circle" class="w-4 h-4"></i> Checkout via WhatsApp</button>
+          <button onclick="processCartQRIS()" class="w-full bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white py-3 rounded-xl font-bold text-xs sm:text-sm transition-all shadow-md flex items-center justify-center gap-2">
+            <i data-lucide="qr-code" class="w-4 h-4"></i> Bayar Semua via QRIS
+          </button>
         </div>
       </div>
     </div>
   </div>
 
   <script>
+    // ================= PENGATURAN ADMIN =================
     const API_URL = "https://toko-digital-api.rizqinastore97.workers.dev";
-    
+    const WHATSAPP_NUMBER = "6281234567890"; // Ganti No WA Anda
+    const QRIS_IMAGE_URL = "https://placehold.co/400x400/2563eb/ffffff?text=SCAN+QRIS+GOPAY"; // Ganti URL Gambar QRIS Anda
+    // ====================================================
+
     let products = [];
     let cart = [];
     let activeCategory = 'Semua';
     let searchQuery = '';
     let currentSelectedProduct = null;
     let currentSelectedVariant = null;
+    let currentPayingItem = null;
 
     const formatIDR = (val) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(val);
 
@@ -157,20 +221,12 @@
       try {
         const response = await fetch(API_URL);
         const data = await response.json();
-        if (data && Array.isArray(data) && data.length > 0) {
-          products = data;
-        } else {
-          products = [];
-        }
+        products = Array.isArray(data) ? data : [];
       } catch (error) {
-        console.error("Gagal memuat produk dari Cloudflare:", error);
-        showToast('Koneksi database bermasalah. Memuat data lokal...', 'error');
-        products = JSON.parse(localStorage.getItem('admin_products')) || [];
+        products = [];
       }
-
       document.getElementById('loading-indicator').classList.add('hidden');
       document.getElementById('product-grid').classList.remove('hidden');
-
       renderCategories();
       renderProducts();
     }
@@ -201,16 +257,14 @@
       }
 
       grid.innerHTML = filtered.map(item => {
-        const totalStock = item.variants.reduce((sum, v) => sum + Number(v.stock || 0), 0);
+        const totalStock = item.variants.reduce((sum, v) => sum + ((v.items && Array.isArray(v.items)) ? v.items.length : Number(v.stock || 0)), 0);
         const prices = item.variants.map(v => Number(v.price || 0));
         const minPrice = Math.min(...prices);
         const priceLabel = `Mulai ${formatIDR(minPrice)}`;
-        const isOutOfStock = totalStock <= 0;
 
         return `
           <div class="bg-white border border-slate-200 rounded-2xl p-2.5 sm:p-4 flex flex-col justify-between hover:shadow-md hover:border-blue-300 transition-all group">
             <div class="flex flex-col items-center text-center cursor-pointer w-full" onclick="openDetailModal(${item.id})">
-              <!-- UKURAN GAMBAR BESAR & PROPORSIONAL (Full Aspect Square) -->
               <div class="w-full aspect-square mb-2.5 rounded-xl overflow-hidden bg-slate-50 flex items-center justify-center p-2 border border-slate-100 group-hover:scale-[1.02] transition-transform">
                 <img src="${item.image}" alt="${item.name}" class="w-full h-full object-contain" loading="lazy" />
               </div>
@@ -224,7 +278,9 @@
                 <span class="font-bold text-slate-700">${item.rating || '5.0'}</span>
                 <span>•</span><span>${item.sold || 0} Terjual</span>
               </div>
-              <button onclick="openDetailModal(${item.id})" class="w-full ${isOutOfStock ? 'bg-slate-100 text-slate-400' : 'bg-blue-600 hover:bg-blue-700 text-white'} text-xs sm:text-sm py-2 px-1 rounded-xl font-bold transition-all shadow-xs flex items-center justify-center gap-1">${isOutOfStock ? 'Stok Habis' : 'Pilih Varian'}</button>
+              <button onclick="openDetailModal(${item.id})" class="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm py-2 px-1 rounded-xl font-bold transition-all shadow-xs flex items-center justify-center gap-1">
+                Pilih Varian
+              </button>
             </div>
           </div>
         `;
@@ -236,7 +292,7 @@
       const p = products.find(i => i.id === productId);
       if (!p) return;
       currentSelectedProduct = p;
-      currentSelectedVariant = p.variants.find(v => Number(v.stock) > 0) || p.variants[0];
+      currentSelectedVariant = p.variants[0];
 
       document.getElementById('modal-img').src = p.image;
       document.getElementById('modal-name').innerText = p.name;
@@ -255,8 +311,15 @@
     function renderVariantButtons() {
       document.getElementById('modal-variants-list').innerHTML = currentSelectedProduct.variants.map((v, idx) => {
         const isSelected = currentSelectedVariant.name === v.name;
-        const isOut = Number(v.stock) <= 0;
-        return `<button onclick="selectVariant(${idx})" ${isOut ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs font-semibold transition-all border ${isSelected ? 'bg-blue-50 border-blue-600 text-blue-600 shadow-xs ring-1 ring-blue-600' : isOut ? 'bg-slate-100 border-slate-200 text-slate-400 cursor-not-allowed line-through' : 'bg-white border-slate-200 text-slate-700 hover:border-slate-300'}">${v.name}</button>`;
+        const stockCount = (v.items && Array.isArray(v.items)) ? v.items.length : Number(v.stock || 0);
+
+        return `
+          <button onclick="selectVariant(${idx})" class="px-3 py-1.5 rounded-xl text-xs font-semibold transition-all border ${
+            isSelected ? 'bg-blue-50 border-blue-600 text-blue-600 shadow-xs ring-1 ring-blue-600' : 'bg-white border-slate-200 text-slate-700 hover:border-slate-300'
+          }">
+            ${v.name}
+          </button>
+        `;
       }).join('');
     }
 
@@ -264,16 +327,133 @@
 
     function updateSelectedVariantUI() {
       const v = currentSelectedVariant;
+      const stockCount = (v.items && Array.isArray(v.items)) ? v.items.length : Number(v.stock || 0);
+
       document.getElementById('modal-price').innerText = formatIDR(v.price);
-      document.getElementById('modal-variant-stock').innerHTML = Number(v.stock) > 0 ? `Stok: <b class="text-slate-800">${v.stock} unit</b>` : `<span class="text-red-500 font-bold">Stok Varian Habis</span>`;
+      document.getElementById('modal-variant-stock').innerHTML = stockCount > 0 
+        ? `<span class="text-emerald-600 font-bold">⚡ Stok Instan Ready (${stockCount})</span>`
+        : `<span class="text-amber-600 font-bold">⏱ Stok Manual via Admin</span>`;
       
-      document.getElementById('modal-btn-chat').onclick = () => { window.open(`https://wa.me/6281234567890?text=Halo%20Admin,%20saya%20mau%20tanya%20produk%20*${encodeURIComponent(currentSelectedProduct.name)}*%20varian%20*${encodeURIComponent(v.name)}*%20(${formatIDR(v.price)}).%20Apakah%20stok%20tersedia?`, '_blank'); };
-      document.getElementById('modal-btn-cart').onclick = () => { if (Number(v.stock) <= 0) return showToast('Varian ini sedang habis!', 'error'); addToCart(currentSelectedProduct, v); closeDetailModal(); };
-      document.getElementById('modal-btn-buy').onclick = () => { if (Number(v.stock) <= 0) return showToast('Varian ini sedang habis!', 'error'); window.open(`https://wa.me/6281234567890?text=${encodeURIComponent(`Halo Admin, saya ingin langsung beli *${currentSelectedProduct.name}* (Paket: ${v.name}) seharga *${formatIDR(v.price)}*. Mohon petunjuk pembayarannya.`)}`, '_blank'); };
+      document.getElementById('modal-btn-chat').onclick = () => { window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=Halo%20Admin,%20saya%20mau%20tanya%20produk%20*${encodeURIComponent(currentSelectedProduct.name)}*%20varian%20*${encodeURIComponent(v.name)}*%20(${formatIDR(v.price)}).%20Apakah%20stok%20tersedia?`, '_blank'); };
+      document.getElementById('modal-btn-cart').onclick = () => { addToCart(currentSelectedProduct, v); closeDetailModal(); };
+      
+      // Buka Modal Pembayaran QRIS Langsung
+      document.getElementById('modal-btn-buy').onclick = () => {
+        closeDetailModal();
+        openPaymentModal({
+          type: 'single',
+          product: currentSelectedProduct,
+          variant: v,
+          amount: v.price
+        });
+      };
     }
 
     function closeDetailModal() { document.getElementById('detail-modal').classList.add('hidden'); }
 
+    // ================= ALUR PEMBAYARAN QRIS & INSTANT DELIVERY =================
+    function openPaymentModal(itemData) {
+      currentPayingItem = itemData;
+      document.getElementById('qris-img').src = QRIS_IMAGE_URL;
+      
+      if (itemData.type === 'single') {
+        document.getElementById('pay-item-name').innerText = `${itemData.product.name} (${itemData.variant.name})`;
+      } else {
+        document.getElementById('pay-item-name').innerText = `Checkout ${cart.length} Item Keranjang`;
+      }
+      
+      document.getElementById('pay-total-amount').innerText = formatIDR(itemData.amount);
+
+      document.getElementById('step-pay').classList.remove('hidden');
+      document.getElementById('step-result').classList.add('hidden');
+      document.getElementById('payment-modal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closePaymentModal() {
+      document.getElementById('payment-modal').classList.add('hidden');
+    }
+
+    async function confirmPayment() {
+      document.getElementById('step-pay').classList.add('hidden');
+      document.getElementById('step-result').classList.remove('hidden');
+
+      const badgeContainer = document.getElementById('result-badge-container');
+      const title = document.getElementById('result-title');
+      const subtitle = document.getElementById('result-subtitle');
+      const accountBox = document.getElementById('account-box');
+      const accountData = document.getElementById('account-data');
+      const btnWa = document.getElementById('btn-wa-claim');
+
+      let invoiceCode = `INV-${Date.now().toString().slice(-6)}`;
+
+      if (currentPayingItem.type === 'single') {
+        const p = currentPayingItem.product;
+        const v = currentPayingItem.variant;
+        const hasStock = v.items && Array.isArray(v.items) && v.items.length > 0;
+
+        if (hasStock) {
+          // AMBIL 1 AKUN INSTAN DARI BANK DATA
+          const assignedAccount = v.items.shift(); // Ambil akun paling atas
+          v.stock = v.items.length;
+          p.sold = (p.sold || 0) + 1;
+
+          // Sinkronisasi pemotongan stok ke Cloudflare KV
+          fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(products)
+          });
+
+          badgeContainer.innerHTML = `<div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-2"><i data-lucide="check" class="w-6 h-6"></i></div>`;
+          title.innerText = "Pembayaran Dikonfirmasi!";
+          subtitle.innerText = "Terima kasih! Berikut adalah rincian akun/lisensi digital Anda:";
+          accountData.innerText = assignedAccount;
+          accountBox.classList.remove('hidden');
+
+          btnWa.onclick = () => {
+            const msg = `*Konfirmasi Pembelian Berhasil (${invoiceCode})*%0AProduk: ${p.name} (${v.name})%0AHarga: ${formatIDR(v.price)}%0A%0ASaya sudah menerima akun, mohon konfirmasi garansi. Terima kasih!`;
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
+          };
+        } else {
+          // STOK INSTAN HABIS -> FALLBACK KE WHATSAPP ADMIN
+          badgeContainer.innerHTML = `<div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-2"><i data-lucide="clock" class="w-6 h-6"></i></div>`;
+          title.innerText = "Klaim Akun ke WhatsApp";
+          subtitle.innerText = `Stok otomatis sedang kosong. Klik tombol di bawah untuk mengirim bukti transfer ${invoiceCode} ke Admin agar akun langsung dikirim via WhatsApp.`;
+          accountBox.classList.add('hidden');
+
+          btnWa.onclick = () => {
+            const msg = `*Klaim Pesanan Manual (${invoiceCode})*%0AProduk: ${p.name} (${v.name})%0ATotal Bayar: ${formatIDR(v.price)}%0A%0ASaya sudah transfer via QRIS, berikut lampiran bukti transfer saya. Mohon kirimkan akunnya ya Admin!`;
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
+          };
+        }
+      } else {
+        // PEMBAYARAN VIA KERANJANG
+        badgeContainer.innerHTML = `<div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-2"><i data-lucide="message-square" class="w-6 h-6"></i></div>`;
+        title.innerText = "Kirim Bukti Pembayaran";
+        subtitle.innerText = `Pembayaran pesanan keranjang (${invoiceCode}) telah dibuat. Silakan kirim bukti pembayaran ke Admin.`;
+        accountBox.classList.add('hidden');
+
+        btnWa.onclick = () => {
+          let msg = `*Checkout Keranjang QRIS (${invoiceCode})*%0A`;
+          cart.forEach((item, idx) => { msg += `${idx + 1}. ${item.name} (${item.quantity}x) - ${formatIDR(item.price * item.quantity)}%0A`; });
+          msg += `%0A*Total Transfer: ${formatIDR(currentPayingItem.amount)}*%0A%0ASaya sudah transfer via QRIS, mohon diproses pesanan saya. Terima kasih!`;
+          window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
+        };
+        cart = [];
+        renderCart();
+      }
+      lucide.createIcons();
+    }
+
+    function copyAccountData() {
+      const text = document.getElementById('account-data').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('Data akun berhasil disalin ke clipboard!');
+      });
+    }
+
+    // Keranjang
     function toggleCart(open) {
       if (open) { document.getElementById('cart-modal').classList.remove('hidden'); setTimeout(() => document.getElementById('cart-drawer').classList.remove('translate-x-full'), 10); } 
       else { document.getElementById('cart-drawer').classList.add('translate-x-full'); setTimeout(() => document.getElementById('cart-modal').classList.add('hidden'), 250); }
@@ -283,10 +463,10 @@
       const cartItemId = `${product.id}-${variant.name}`;
       const existing = cart.find(c => c.cartId === cartItemId);
       if (existing) {
-        if (existing.quantity < variant.stock) { existing.quantity += 1; showToast(`Jumlah pesanan ${product.name} (${variant.name}) ditambah.`); } 
-        else { showToast('Batas stok varian tercapai!', 'error'); }
+        existing.quantity += 1;
+        showToast(`Jumlah pesanan ${product.name} (${variant.name}) ditambah.`);
       } else {
-        cart.push({ cartId: cartItemId, id: product.id, name: `${product.name} (${variant.name})`, price: variant.price, stock: variant.stock, image: product.image, quantity: 1 });
+        cart.push({ cartId: cartItemId, id: product.id, name: `${product.name} (${variant.name})`, price: variant.price, image: product.image, quantity: 1 });
         showToast(`Berhasil masuk ke keranjang!`);
       }
       renderCart();
@@ -295,7 +475,6 @@
     function changeQuantity(cartId, delta) {
       const target = cart.find(c => c.cartId === cartId);
       if (!target) return;
-      if (delta > 0 && target.quantity >= target.stock) return showToast('Stok varian tidak mencukupi!', 'error');
       target.quantity += delta;
       if (target.quantity <= 0) cart = cart.filter(c => c.cartId !== cartId);
       renderCart();
@@ -322,7 +501,7 @@
       } else {
         container.innerHTML = cart.map(item => `
           <div class="flex items-center justify-between gap-2.5 p-2.5 bg-slate-50 rounded-2xl border border-slate-100">
-            <img src="${item.image}" class="w-10 h-10 rounded-xl object-cover bg-white" />
+            <img src="${item.image}" class="w-10 h-10 rounded-xl object-contain bg-white" />
             <div class="min-w-0 flex-1"><h4 class="text-xs font-semibold text-slate-800 truncate">${item.name}</h4><p class="text-xs text-blue-600 font-bold">${formatIDR(item.price)}</p></div>
             <div class="flex items-center gap-1 bg-white border border-slate-200 rounded-lg p-0.5">
               <button onclick="changeQuantity('${item.cartId}', -1)" class="p-1 hover:text-red-500 text-slate-500"><i data-lucide="minus" class="w-3 h-3"></i></button>
@@ -337,13 +516,14 @@
       lucide.createIcons();
     }
 
-    function processWhatsAppCheckout() {
+    function processCartQRIS() {
       if (cart.length === 0) return;
       const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-      let message = `*Halo Admin, saya ingin checkout pesanan berikut:*%0A%0A`;
-      cart.forEach((item, index) => { message += `${index + 1}. *${item.name}*%0A   Jumlah: ${item.quantity}x%0A   Subtotal: ${formatIDR(item.price * item.quantity)}%0A%0A`; });
-      message += `*Total Pembayaran: ${formatIDR(totalPrice)}*%0A%0AMohon instruksi pembayaran & nomor rekening/QRIS. Terima kasih!`;
-      window.open(`https://wa.me/6281234567890?text=${message}`, '_blank');
+      toggleCart(false);
+      openPaymentModal({
+        type: 'cart',
+        amount: totalPrice
+      });
     }
 
     loadProducts();
