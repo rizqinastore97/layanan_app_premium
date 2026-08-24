@@ -142,10 +142,6 @@
 
       <!-- Action Buttons -->
       <div class="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
-        <button id="pwa-header-install-btn" onclick="triggerPwaPromptUI()" class="hidden md:flex items-center gap-1.5 text-xs font-bold text-white bg-gradient-to-r from-[#f5125e] to-[#ff2b56] hover:opacity-95 px-3 py-2 rounded-xl shadow-xs transition-all">
-          <i data-lucide="download" class="w-3.5 h-3.5"></i>
-          <span>Install App</span>
-        </button>
 
         <button onclick="openHistoryModal()" class="hidden md:flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-rose-50 hover:text-[#f5125e] border border-slate-200 hover:border-rose-200 px-3.5 py-2.5 rounded-xl transition-all">
           <i data-lucide="receipt" class="w-4 h-4 text-[#f5125e]"></i>
@@ -599,48 +595,44 @@
     }
 
     // ================= PWA INSTALLATION =================
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPwaPrompt = e;
-      const headerBtn = document.getElementById('pwa-header-install-btn');
-      if (headerBtn) headerBtn.classList.remove('hidden');
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPwaPrompt = e;
 
-      const hasDismissed = sessionStorage.getItem('pwa_popup_dismissed');
-      if (!hasDismissed) {
-        setTimeout(() => { triggerPwaPromptUI(); }, 2000);
-      }
-    });
+  // Tampilkan popup otomatis setelah 2 detik
+  const hasDismissed = sessionStorage.getItem('pwa_popup_dismissed');
+  if (!hasDismissed) {
+    setTimeout(() => { triggerPwaPromptUI(); }, 2000);
+  }
+});
 
-    function triggerPwaPromptUI() {
-      const popup = document.getElementById('pwa-install-popup');
-      if (popup) popup.classList.remove('hidden');
-    }
+function triggerPwaPromptUI() {
+  const popup = document.getElementById('pwa-install-popup');
+  if (popup) popup.classList.remove('hidden');
+}
 
-    function dismissPwaPopup() {
-      const popup = document.getElementById('pwa-install-popup');
-      if (popup) popup.classList.add('hidden');
-      sessionStorage.setItem('pwa_popup_dismissed', 'true');
-    }
+function dismissPwaPopup() {
+  const popup = document.getElementById('pwa-install-popup');
+  if (popup) popup.classList.add('hidden');
+  sessionStorage.setItem('pwa_popup_dismissed', 'true');
+}
 
-    async function executePwaInstall() {
-      if (!deferredPwaPrompt) {
-        dismissPwaPopup();
-        showToast('Untuk install: Klik ikon titik 3 browser > Tambahkan ke Layar Utama');
-        return;
-      }
-      deferredPwaPrompt.prompt();
-      const { outcome } = await deferredPwaPrompt.userChoice;
-      deferredPwaPrompt = null;
-      dismissPwaPopup();
-    }
+async function executePwaInstall() {
+  if (!deferredPwaPrompt) {
+    dismissPwaPopup();
+    showToast('Untuk install: Klik ikon titik 3 browser > Tambahkan ke Layar Utama');
+    return;
+  }
+  deferredPwaPrompt.prompt();
+  const { outcome } = await deferredPwaPrompt.userChoice;
+  deferredPwaPrompt = null;
+  dismissPwaPopup();
+}
 
-    window.addEventListener('appinstalled', () => {
-      dismissPwaPopup();
-      const headerBtn = document.getElementById('pwa-header-install-btn');
-      if (headerBtn) headerBtn.classList.add('hidden');
-      showToast('Aplikasi berhasil dipasang di HP / Laptop!');
-    });
-
+window.addEventListener('appinstalled', () => {
+  dismissPwaPopup();
+  showToast('Aplikasi berhasil dipasang di HP!');
+});
     // ================= SINKRONISASI BANNER DARI KV DATABASE =================
     function applyBannerConfig(config) {
       const wrapper = document.getElementById('store-banner-wrapper');
