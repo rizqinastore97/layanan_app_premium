@@ -39,6 +39,11 @@
         <span>Katalog & Produk</span>
       </button>
 
+      <button onclick="switchTab('banner')" id="tab-btn-banner" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left">
+        <i data-lucide="image" class="w-5 h-5 text-sky-400"></i>
+        <span>Banner & Promo</span>
+      </button>
+
       <button onclick="switchTab('reviews')" id="tab-btn-reviews" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left">
         <i data-lucide="star" class="w-5 h-5 text-amber-400"></i>
         <span>Kelola Ulasan ⭐</span>
@@ -81,7 +86,6 @@
   <!-- Main Central Area & Live Phone Preview -->
   <div class="flex-1 flex flex-col xl:flex-row min-w-0 overflow-hidden">
     
-    <!-- Bagian Tengah: Manajemen Konten -->
     <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto max-w-4xl space-y-5">
       
       <!-- Top Bar Dashboard -->
@@ -90,7 +94,7 @@
           <h2 class="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
             <span id="view-title">Manajemen Produk</span>
           </h2>
-          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Atur urutan posisi, label Best Seller & HOT, stok otomatis, dan ulasan</p>
+          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Atur urutan posisi, upload logo/banner, stok otomatis, dan ulasan</p>
         </div>
         <div class="flex items-center gap-2">
           <button onclick="openProductModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-2xl shadow-sm transition-all flex items-center gap-1.5">
@@ -102,7 +106,6 @@
 
       <!-- TAB 1: DAFTAR PRODUK -->
       <section id="section-products" class="space-y-4">
-        <!-- Filter & Search Bar -->
         <div class="flex items-center gap-2">
           <div class="relative flex-1">
             <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3"></i>
@@ -114,7 +117,6 @@
           </button>
         </div>
 
-        <!-- Info Card Panduan Urutan -->
         <div class="bg-slate-100 border border-slate-200 rounded-2xl p-3 text-xs text-slate-700 flex items-center justify-between">
           <span class="flex items-center gap-1.5 font-medium">
             <i data-lucide="info" class="w-4 h-4 text-indigo-600"></i>
@@ -122,7 +124,6 @@
           </span>
         </div>
 
-        <!-- Product Block List -->
         <div id="admin-product-list" class="space-y-3">
           <div class="p-8 text-center text-slate-400 text-xs">
             <i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto mb-2 text-indigo-600"></i>
@@ -131,7 +132,82 @@
         </div>
       </section>
 
-      <!-- TAB 2: MANAJEMEN ULASAN / REVIEW PEMBELI -->
+      <!-- TAB 2: PENGATURAN BANNER & PROMO (BARU) -->
+      <section id="section-banner" class="space-y-4 hidden">
+        <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-xs space-y-5">
+          <div>
+            <h3 class="font-bold text-sm sm:text-base text-slate-800 flex items-center gap-2">
+              <i data-lucide="image" class="w-5 h-5 text-indigo-600"></i>
+              <span>Pengaturan Banner Promo Toko</span>
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5">Aktifkan/nonaktifkan banner dan ganti tampilan dengan gambar kustom</p>
+          </div>
+
+          <!-- Switch Status Banner (ON / OFF) -->
+          <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl flex items-center justify-between">
+            <div>
+              <p class="font-bold text-slate-800 text-xs sm:text-sm">Status Tampilan Banner:</p>
+              <p class="text-[11px] text-slate-500 mt-0.5">Tampilkan atau sembunyikan banner promo di halaman utama</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="banner-toggle-active" onchange="toggleBannerActive(this.checked)" class="sr-only peer" checked>
+              <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+            </label>
+          </div>
+
+          <!-- Pilihan Tipe Banner -->
+          <div class="space-y-3">
+            <label class="text-xs font-bold text-slate-700 block">Pilih Tipe Tampilan Banner:</label>
+            <div class="grid grid-cols-2 gap-3">
+              <label class="border-2 border-slate-200 p-3 rounded-2xl flex items-center gap-2.5 cursor-pointer hover:border-indigo-500 transition-colors" id="label-type-custom">
+                <input type="radio" name="banner_type" value="image" onchange="setBannerType('image')" class="accent-indigo-600" checked />
+                <div>
+                  <p class="font-bold text-xs text-slate-800">Gambar Banner Kustom</p>
+                  <p class="text-[10px] text-slate-400">Upload gambar desain banner sendiri</p>
+                </div>
+              </label>
+
+              <label class="border-2 border-slate-200 p-3 rounded-2xl flex items-center gap-2.5 cursor-pointer hover:border-indigo-500 transition-colors" id="label-type-text">
+                <input type="radio" name="banner_type" value="text" onchange="setBannerType('text')" class="accent-indigo-600" />
+                <div>
+                  <p class="font-bold text-xs text-slate-800">LazFlash Teks Bawaan</p>
+                  <p class="text-[10px] text-slate-400">Gradasi merah & countdown timer</p>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Form Upload Gambar Banner Kustom -->
+          <div id="banner-image-form-box" class="space-y-3 pt-2 border-t border-slate-100">
+            <label class="text-xs font-bold text-slate-700 block">Upload Gambar Banner (Disarankan Rasio 16:6 atau 3:1):</label>
+            
+            <div class="w-full aspect-[16/6] bg-slate-100 rounded-2xl border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden relative">
+              <img id="banner-preview-img" src="https://i.ibb.co.com/PGRmz0G8/Whats-App-Image-2026-08-24-at-12-25-05.jpg" class="w-full h-full object-cover" />
+              <div id="banner-placeholder-icon" class="hidden flex-col items-center justify-center text-slate-400 text-xs">
+                <i data-lucide="image" class="w-8 h-8 mb-1"></i>
+                <span>Belum ada gambar banner</span>
+              </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center gap-2">
+              <label for="banner-file-input" class="w-full sm:w-auto bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-bold px-4 py-2.5 rounded-xl text-xs cursor-pointer transition-colors flex items-center justify-center gap-1.5 flex-shrink-0">
+                <i data-lucide="upload" class="w-4 h-4"></i>
+                <span>Pilih Gambar dari Device</span>
+              </label>
+              <input type="file" id="banner-file-input" accept="image/*" onchange="handleBannerFileUpload(event)" class="hidden" />
+
+              <input type="text" id="banner-url-input" oninput="updateBannerPreviewFromUrl(this.value)" placeholder="Atau masukkan URL gambar banner..." class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+            </div>
+          </div>
+
+          <button onclick="saveBannerSettings()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-2xl text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-1.5">
+            <i data-lucide="save" class="w-4 h-4 text-emerald-400"></i>
+            <span>Simpan Pengaturan Banner</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- TAB 3: MANAJEMEN ULASAN -->
       <section id="section-reviews" class="space-y-4 hidden">
         <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs space-y-3">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3.5">
@@ -157,7 +233,7 @@
         <div id="admin-reviews-container" class="space-y-3"></div>
       </section>
 
-      <!-- TAB 3: RIWAYAT PESANAN -->
+      <!-- TAB 4: RIWAYAT PESANAN -->
       <section id="section-orders" class="space-y-4 hidden">
         <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs">
           <h3 class="font-bold text-sm sm:text-base text-slate-800 mb-1">Riwayat Transaksi TriPay & Akun</h3>
@@ -196,9 +272,9 @@
 
   </div>
 
-  <!-- MODAL: TAMBAH / EDIT PRODUK LENGKAP DENGAN PENGATURAN BEST SELLER & HOT -->
+  <!-- MODAL: TAMBAH / EDIT PRODUK -->
   <div id="product-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
-    <div onclick="closeProductModal()" class="absolute inset-0 bg-black/50 backdrop-blur-2xs"></div>
+    <div onclick="closeProductModal()" class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
     <div class="fixed inset-0 flex items-center justify-center p-4">
       <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl p-5 sm:p-6 flex flex-col max-h-[92vh] overflow-y-auto">
         <div class="flex justify-between items-center pb-3 border-b border-slate-100">
@@ -235,38 +311,35 @@
             </div>
           </div>
 
-          <!-- KOTAK PENGATURAN LENCANA (BEST SELLER, HOT & ANGKA PENJUALAN) -->
+          <!-- KOTAK PENGATURAN LENCANA -->
           <div class="bg-gradient-to-br from-amber-50/80 to-rose-50/40 border border-amber-200/80 rounded-2xl p-3.5 space-y-3">
-            <span class="text-xs font-bold text-amber-950 block uppercase tracking-wider">🏷️ Pengaturan Lencana & Tampilan Toko:</span>
+            <span class="text-xs font-bold text-amber-950 block uppercase tracking-wider">🏷️ Pengaturan Lencana & Tampilan:</span>
             
             <div class="grid grid-cols-2 gap-2.5">
-              <!-- Checkbox Best Seller -->
               <label class="flex items-center gap-2 bg-white p-2.5 rounded-xl border border-amber-200 cursor-pointer hover:border-amber-400 transition-colors">
                 <input type="checkbox" id="prod-form-bestseller" class="w-4 h-4 accent-amber-600 rounded" />
                 <div class="text-[11px] leading-tight">
                   <p class="font-bold text-amber-900 flex items-center gap-0.5"><i data-lucide="flame" class="w-3.5 h-3.5 text-amber-600"></i> Best Seller</p>
-                  <p class="text-[9.5px] text-slate-500">Masuk seksi teratas</p>
+                  <p class="text-[9.5px] text-slate-500">Seksi teratas</p>
                 </div>
               </label>
 
-              <!-- Checkbox HOT Badge -->
               <label class="flex items-center gap-2 bg-white p-2.5 rounded-xl border border-rose-200 cursor-pointer hover:border-rose-400 transition-colors">
                 <input type="checkbox" id="prod-form-hot" class="w-4 h-4 accent-rose-600 rounded" />
                 <div class="text-[11px] leading-tight">
                   <p class="font-bold text-rose-900 flex items-center gap-0.5"><i data-lucide="zap" class="w-3.5 h-3.5 text-rose-600"></i> Label HOT</p>
-                  <p class="text-[9.5px] text-slate-500">Badge merah di kartu</p>
+                  <p class="text-[9.5px] text-slate-500">Badge di kartu</p>
                 </div>
               </label>
             </div>
 
-            <!-- Input Angka Terjual & Rating -->
             <div class="grid grid-cols-2 gap-2.5 pt-1">
               <div>
-                <label class="text-[10.5px] font-bold text-slate-700 block mb-0.5">Jumlah Terjual (Manual):</label>
+                <label class="text-[10.5px] font-bold text-slate-700 block mb-0.5">Jumlah Terjual:</label>
                 <input type="number" id="prod-form-sold" placeholder="Contoh: 500" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
               </div>
               <div>
-                <label class="text-[10.5px] font-bold text-slate-700 block mb-0.5">Rating Bintang (1.0 - 5.0):</label>
+                <label class="text-[10.5px] font-bold text-slate-700 block mb-0.5">Rating Bintang:</label>
                 <input type="text" id="prod-form-rating" placeholder="5.0" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
               </div>
             </div>
@@ -288,7 +361,7 @@
                   <span>Pilih Gambar dari Device / HP</span>
                 </label>
                 <input type="file" id="prod-form-file" accept="image/*" onchange="handleImageFileUpload(event)" class="hidden" />
-                <p class="text-[10px] text-slate-400">Mendukung format PNG, JPG, JPEG, WEBP (Otomatis kompres)</p>
+                <p class="text-[10px] text-slate-400">Format PNG, JPG, JPEG, WEBP (Otomatis kompres)</p>
               </div>
             </div>
 
@@ -329,9 +402,9 @@
     </div>
   </div>
 
-  <!-- MODAL: TAMBAH / EDIT ULASAN KOMENTAR -->
+  <!-- MODAL: TAMBAH / EDIT ULASAN -->
   <div id="review-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
-    <div onclick="closeReviewModal()" class="absolute inset-0 bg-black/50 backdrop-blur-2xs"></div>
+    <div onclick="closeReviewModal()" class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
     <div class="fixed inset-0 flex items-center justify-center p-4">
       <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl p-5 sm:p-6 flex flex-col max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center pb-3 border-b border-slate-100">
@@ -345,8 +418,8 @@
           <input type="hidden" id="rev-form-index" />
 
           <div>
-            <label class="font-bold text-slate-700 block mb-1">Nama Pembeli (Bisa disamarkan):</label>
-            <input type="text" id="rev-form-user" required placeholder="Contoh: b***9 atau Rian Pratama" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+            <label class="font-bold text-slate-700 block mb-1">Nama Pembeli:</label>
+            <input type="text" id="rev-form-user" required placeholder="Contoh: b***9" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
           </div>
 
           <div class="grid grid-cols-2 gap-2">
@@ -359,7 +432,7 @@
               </select>
             </div>
             <div>
-              <label class="font-bold text-slate-700 block mb-1">Kategori Tag Ulasan:</label>
+              <label class="font-bold text-slate-700 block mb-1">Kategori Tag:</label>
               <select id="rev-form-tag" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                 <option value="instant">⚡ Kirim Instan</option>
                 <option value="service">🛡️ Garansi Aman</option>
@@ -370,7 +443,7 @@
 
           <div class="grid grid-cols-2 gap-2">
             <div>
-              <label class="font-bold text-slate-700 block mb-1">Varian yang Dibeli:</label>
+              <label class="font-bold text-slate-700 block mb-1">Varian:</label>
               <input type="text" id="rev-form-variant" placeholder="Contoh: 1 Bulan" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
             </div>
             <div>
@@ -398,6 +471,13 @@
     let products = [];
     let currentEditingProductId = null;
 
+    // Data Pengaturan Banner
+    let bannerSettings = JSON.parse(localStorage.getItem('my_banner_settings') || JSON.stringify({
+      active: true,
+      type: 'image', // 'image' atau 'text'
+      imageUrl: 'https://i.ibb.co.com/PGRmz0G8/Whats-App-Image-2026-08-24-at-12-25-05.jpg'
+    }));
+
     function showToast(message, type = 'info') {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
@@ -424,10 +504,12 @@
 
     function switchTab(tab) {
       document.getElementById('section-products').classList.add('hidden');
+      document.getElementById('section-banner').classList.add('hidden');
       document.getElementById('section-reviews').classList.add('hidden');
       document.getElementById('section-orders').classList.add('hidden');
 
       document.getElementById('tab-btn-products').className = 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left';
+      document.getElementById('tab-btn-banner').className = 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left';
       document.getElementById('tab-btn-reviews').className = 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left';
       document.getElementById('tab-btn-orders').className = 'w-full flex items-center justify-between px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left';
 
@@ -435,6 +517,11 @@
         document.getElementById('section-products').classList.remove('hidden');
         document.getElementById('tab-btn-products').className = 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl bg-indigo-600 text-white font-extrabold text-sm sm:text-base shadow-sm text-left';
         document.getElementById('view-title').innerText = 'Manajemen Produk';
+      } else if (tab === 'banner') {
+        document.getElementById('section-banner').classList.remove('hidden');
+        document.getElementById('tab-btn-banner').className = 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl bg-indigo-600 text-white font-extrabold text-sm sm:text-base shadow-sm text-left';
+        document.getElementById('view-title').innerText = 'Pengaturan Banner & Promo';
+        loadBannerSettingsToUI();
       } else if (tab === 'reviews') {
         document.getElementById('section-reviews').classList.remove('hidden');
         document.getElementById('tab-btn-reviews').className = 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl bg-indigo-600 text-white font-extrabold text-sm sm:text-base shadow-sm text-left';
@@ -448,12 +535,99 @@
       lucide.createIcons();
     }
 
+    // ================= PENGATURAN BANNER =================
+    function loadBannerSettingsToUI() {
+      document.getElementById('banner-toggle-active').checked = bannerSettings.active;
+      const typeRadios = document.getElementsByName('banner_type');
+      for (const r of typeRadios) {
+        r.checked = (r.value === bannerSettings.type);
+      }
+      document.getElementById('banner-url-input').value = bannerSettings.imageUrl || '';
+      updateBannerPreview(bannerSettings.imageUrl);
+      setBannerType(bannerSettings.type);
+    }
+
+    function toggleBannerActive(isActive) {
+      bannerSettings.active = isActive;
+      showToast(isActive ? 'Banner diaktifkan' : 'Banner disembunyikan');
+    }
+
+    function setBannerType(type) {
+      bannerSettings.type = type;
+      const imgBox = document.getElementById('banner-image-form-box');
+      if (type === 'image') {
+        imgBox.classList.remove('hidden');
+      } else {
+        imgBox.classList.add('hidden');
+      }
+    }
+
+    function handleBannerFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      showToast('Mengompres gambar banner...');
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const maxDim = 900;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > maxDim) {
+            height *= maxDim / width;
+            width = maxDim;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          const compressed = canvas.toDataURL('image/webp', 0.85);
+          bannerSettings.imageUrl = compressed;
+          document.getElementById('banner-url-input').value = compressed;
+          updateBannerPreview(compressed);
+          showToast('Gambar banner siap digunakan!');
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function updateBannerPreviewFromUrl(url) {
+      bannerSettings.imageUrl = url.trim();
+      updateBannerPreview(url.trim());
+    }
+
+    function updateBannerPreview(src) {
+      const img = document.getElementById('banner-preview-img');
+      const icon = document.getElementById('banner-placeholder-icon');
+      if (src && src.length > 5) {
+        img.src = src;
+        img.classList.remove('hidden');
+        icon.classList.add('hidden');
+      } else {
+        img.src = '';
+        img.classList.add('hidden');
+        icon.classList.remove('hidden');
+      }
+    }
+
+    function saveBannerSettings() {
+      localStorage.setItem('my_banner_settings', JSON.stringify(bannerSettings));
+      showToast('Pengaturan banner berhasil disimpan!');
+      refreshPhonePreview();
+    }
+
     // ================= HANDLER UPLOAD GAMBAR DEVICE =================
     function handleImageFileUpload(event) {
       const file = event.target.files[0];
       if (!file) return;
 
-      showToast('Memproses & mengompres gambar...');
+      showToast('Memproses gambar...');
       const reader = new FileReader();
       reader.onload = (e) => {
         const img = new Image();
@@ -464,15 +638,9 @@
           let height = img.height;
 
           if (width > height) {
-            if (width > maxDim) {
-              height *= maxDim / width;
-              width = maxDim;
-            }
+            if (width > maxDim) { height *= maxDim / width; width = maxDim; }
           } else {
-            if (height > maxDim) {
-              width *= maxDim / height;
-              height = maxDim;
-            }
+            if (height > maxDim) { width *= maxDim / height; height = maxDim; }
           }
 
           canvas.width = width;
@@ -480,25 +648,21 @@
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
 
-          const compressedDataUrl = canvas.toDataURL('image/webp', 0.85) || canvas.toDataURL('image/jpeg', 0.85);
-          
-          document.getElementById('prod-form-image').value = compressedDataUrl;
-          updateImagePreview(compressedDataUrl);
-          showToast('Gambar berhasil diunggah!');
+          const compressed = canvas.toDataURL('image/webp', 0.85);
+          document.getElementById('prod-form-image').value = compressed;
+          updateImagePreview(compressed);
+          showToast('Gambar logo berhasil diunggah!');
         };
         img.src = e.target.result;
       };
       reader.readAsDataURL(file);
     }
 
-    function updateImagePreviewFromInput(url) {
-      updateImagePreview(url.trim());
-    }
+    function updateImagePreviewFromInput(url) { updateImagePreview(url.trim()); }
 
     function updateImagePreview(src) {
       const imgElem = document.getElementById('prod-img-preview');
       const iconElem = document.getElementById('prod-img-placeholder-icon');
-
       if (src && src.length > 5) {
         imgElem.src = src;
         imgElem.classList.remove('hidden');
@@ -510,20 +674,16 @@
       }
     }
 
-    // ================= PINDAH URUTAN PRODUK =================
     function moveProduct(index, direction) {
       const targetIndex = index + direction;
       if (targetIndex < 0 || targetIndex >= products.length) return;
-
       const temp = products[index];
       products[index] = products[targetIndex];
       products[targetIndex] = temp;
-
       renderAdminProductsList(products);
-      showToast(`Posisi "${temp.name}" berhasil dipindahkan`);
+      showToast(`Posisi "${temp.name}" dipindahkan`);
     }
 
-    // ================= RENDER DAFTAR PRODUK =================
     function renderAdminProductsList(list) {
       const container = document.getElementById('admin-product-list');
       if (list.length === 0) {
@@ -542,7 +702,6 @@
         return `
           <div class="bg-white rounded-3xl p-3.5 sm:p-4 border border-slate-200 shadow-2xs hover:border-indigo-500 transition-all flex items-center justify-between gap-3 group">
             
-            <!-- Tombol Urutan Naik & Turun -->
             <div class="flex flex-col items-center gap-1 pr-1 border-r border-slate-100 flex-shrink-0">
               <button onclick="moveProduct(${pIdx}, -1)" ${pIdx === 0 ? 'disabled class="opacity-20 cursor-not-allowed"' : 'class="hover:text-indigo-600 hover:bg-indigo-50"'} p-1 rounded-md text-slate-500 font-bold" title="Pindah ke Atas">
                 <i data-lucide="chevron-up" class="w-4 h-4"></i>
@@ -553,7 +712,6 @@
               </button>
             </div>
 
-            <!-- Detail Produk -->
             <div class="flex items-center gap-3 min-w-0 flex-1">
               <img src="${prod.image}" class="w-12 h-12 rounded-2xl object-contain bg-slate-50 p-1 border border-slate-100 flex-shrink-0" />
               <div class="min-w-0 flex-1">
@@ -568,13 +726,12 @@
               </div>
             </div>
 
-            <!-- Action Buttons -->
             <div class="flex items-center gap-1.5 flex-shrink-0">
               <button onclick="manageReviewsForProduct(${prod.id})" title="Kelola Ulasan Produk Ini" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-bold px-2.5 py-1.5 rounded-xl flex items-center gap-1">
                 <i data-lucide="star" class="w-3.5 h-3.5 text-amber-500"></i>
                 <span class="hidden sm:inline">Ulasan (${reviewsCount})</span>
               </button>
-              <button onclick="editProduct(${prod.id})" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold p-2 rounded-xl" title="Edit Produk & Lencana"><i data-lucide="edit" class="w-3.5 h-3.5"></i></button>
+              <button onclick="editProduct(${prod.id})" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold p-2 rounded-xl" title="Edit Produk"><i data-lucide="edit" class="w-3.5 h-3.5"></i></button>
               <button onclick="deleteProduct(${prod.id})" class="bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold p-2 rounded-xl" title="Hapus Produk"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
             </div>
           </div>
@@ -619,13 +776,10 @@
       document.getElementById('prod-form-name').value = p.name;
       document.getElementById('prod-form-category').value = p.category;
       document.getElementById('prod-form-warranty').value = p.warranty || 'Resmi';
-      
-      // Ambil nilai Best Seller, HOT, dan Penjualan
       document.getElementById('prod-form-bestseller').checked = Boolean(p.isBestSeller);
       document.getElementById('prod-form-hot').checked = Boolean(p.isHot || Number(p.sold || 0) >= 100);
       document.getElementById('prod-form-sold').value = p.sold || '0';
       document.getElementById('prod-form-rating').value = p.rating || '5.0';
-
       document.getElementById('prod-form-image').value = p.image || '';
       updateImagePreview(p.image || '');
       document.getElementById('prod-form-desc').value = p.description || '';
@@ -660,9 +814,7 @@
       container.appendChild(div);
     }
 
-    function closeProductModal() {
-      document.getElementById('product-modal').classList.add('hidden');
-    }
+    function closeProductModal() { document.getElementById('product-modal').classList.add('hidden'); }
 
     async function handleSaveProduct(e) {
       e.preventDefault();
@@ -674,15 +826,10 @@
         const price = Number(row.querySelector('.var-price-input').value) || 0;
         const rawItems = row.querySelector('.var-items-input').value.trim();
         const items = rawItems ? rawItems.split('\n').map(i => i.trim()).filter(Boolean) : [];
-        if (name) {
-          variants.push({ name, price, stock: items.length, items });
-        }
+        if (name) { variants.push({ name, price, stock: items.length, items }); }
       });
 
-      if (variants.length === 0) {
-        showToast('Minimal harus ada 1 paket varian produk', 'error');
-        return;
-      }
+      if (variants.length === 0) { showToast('Minimal harus ada 1 paket varian produk', 'error'); return; }
 
       const isBest = document.getElementById('prod-form-bestseller').checked;
       const isHot = document.getElementById('prod-form-hot').checked;
@@ -736,17 +883,11 @@
           body: JSON.stringify(products),
         });
         const data = await res.json();
-        if (data.success) {
-          showToast('Semua data KV & posisi produk berhasil diperbarui!');
-        } else {
-          showToast('Gagal menyimpan ke KV', 'error');
-        }
-      } catch (err) {
-        showToast('Gagal terhubung ke Cloudflare Worker', 'error');
-      }
+        if (data.success) { showToast('Semua data KV berhasil diperbarui!'); }
+      } catch (err) { showToast('Gagal terhubung ke Cloudflare', 'error'); }
     }
 
-    // ================= MANAJEMEN ULASAN KOMENTAR =================
+    // ================= MANAJEMEN ULASAN =================
     let selectedReviewProductId = null;
 
     function populateReviewProductSelector() {
@@ -771,10 +912,7 @@
       const container = document.getElementById('admin-reviews-container');
       const badge = document.getElementById('review-count-badge');
 
-      if (!product) {
-        container.innerHTML = `<div class="p-6 text-center text-slate-400 text-xs">Pilih produk terlebih dahulu.</div>`;
-        return;
-      }
+      if (!product) { container.innerHTML = `<div class="p-6 text-center text-slate-400 text-xs">Pilih produk terlebih dahulu.</div>`; return; }
 
       if (!product.customReviews) product.customReviews = [];
       badge.innerText = `Total: ${product.customReviews.length} Ulasan Kustom`;
@@ -795,14 +933,10 @@
         <div class="bg-white border border-slate-200 rounded-3xl p-4 space-y-2 shadow-2xs hover:border-indigo-500 transition-all">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2.5">
-              <div class="w-8 h-8 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center justify-center font-bold text-xs">
-                ${rev.user.charAt(0).toUpperCase()}
-              </div>
+              <div class="w-8 h-8 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center justify-center font-bold text-xs">${rev.user.charAt(0).toUpperCase()}</div>
               <div>
                 <p class="font-bold text-xs sm:text-sm text-slate-800 leading-tight">${rev.user}</p>
-                <div class="flex items-center gap-0.5 text-amber-400 text-xs">
-                  ${'★'.repeat(Number(rev.rating) || 5)}
-                </div>
+                <div class="flex items-center gap-0.5 text-amber-400 text-xs">${'★'.repeat(Number(rev.rating) || 5)}</div>
               </div>
             </div>
             <div class="flex items-center gap-1.5">
@@ -838,7 +972,6 @@
       const product = products.find(p => p.id === selectedReviewProductId);
       if (!product || !product.customReviews[index]) return;
       const rev = product.customReviews[index];
-
       document.getElementById('modal-review-title').innerHTML = `<i data-lucide="edit" class="w-4 h-4 text-amber-500"></i> Edit Ulasan Pembeli`;
       document.getElementById('rev-form-index').value = index;
       document.getElementById('rev-form-user').value = rev.user;
@@ -847,14 +980,11 @@
       document.getElementById('rev-form-variant').value = rev.variant || '1 Bulan';
       document.getElementById('rev-form-date').value = rev.date || '';
       document.getElementById('rev-form-comment').value = rev.comment;
-
       document.getElementById('review-modal').classList.remove('hidden');
       lucide.createIcons();
     }
 
-    function closeReviewModal() {
-      document.getElementById('review-modal').classList.add('hidden');
-    }
+    function closeReviewModal() { document.getElementById('review-modal').classList.add('hidden'); }
 
     async function handleSaveReview(e) {
       e.preventDefault();
@@ -873,26 +1003,18 @@
       };
 
       if (!product.customReviews) product.customReviews = [];
-
-      if (rIndex >= 0) {
-        product.customReviews[rIndex] = reviewData;
-        showToast('Ulasan berhasil diperbarui!');
-      } else {
-        product.customReviews.unshift(reviewData);
-        showToast('Ulasan baru berhasil ditambahkan!');
-      }
+      if (rIndex >= 0) { product.customReviews[rIndex] = reviewData; } else { product.customReviews.unshift(reviewData); }
 
       closeReviewModal();
       renderReviewsForSelectedProduct(selectedReviewProductId);
       await saveAllProductsToKV();
       refreshPhonePreview();
+      showToast('Ulasan berhasil disimpan!');
     }
 
     async function deleteReview(index) {
       const product = products.find(p => p.id === selectedReviewProductId);
-      if (!product) return;
-      if (!confirm('Hapus komentar/ulasan ini?')) return;
-
+      if (!product || !confirm('Hapus komentar ini?')) return;
       product.customReviews.splice(index, 1);
       renderReviewsForSelectedProduct(selectedReviewProductId);
       await saveAllProductsToKV();
@@ -905,9 +1027,7 @@
       if (iframe) iframe.src = iframe.src;
     }
 
-    function toggleMobileSidebar() {
-      document.querySelector('aside').classList.toggle('hidden');
-    }
+    function toggleMobileSidebar() { document.querySelector('aside').classList.toggle('hidden'); }
 
     loadProductsFromKV();
     lucide.createIcons();
