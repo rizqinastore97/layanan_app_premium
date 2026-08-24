@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Cloudflare API</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen">
+
+  <div id="toast-container" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none w-full max-w-xs px-4"></div>
+
+  <div class="max-w-4xl mx-auto p-4 sm:p-6">
+    <div class="flex items-center justify-between bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-6">
+      <div>
+        <h1 class="text-lg sm:text-xl font-bold text-slate-800 flex items-center gap-2">
+          Dashboard <i data-lucide="cloud-check" class="w-5 h-5 text-blue-500"></i>
+        </h1>
+        <p class="text-[10px] sm:text-xs text-slate-500">Katalog Tersinkronisasi via Cloudflare KV</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="index.html" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-semibold px-3.5 py-2 rounded-xl transition-all flex items-center gap-1">
+          <i data-lucide="external-link" class="w-4 h-4"></i> Lihat Toko
+        </a>
+        <button onclick="openModal()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-xl flex items-center gap-1.5 shadow-sm transition-all">
+          <i data-lucide="plus" class="w-4 h-4"></i> Tambah
+        </button>
+      </div>
+    </div>
+
+    <!-- Statistik -->
+    <div class="grid grid-cols-3 gap-3 mb-6">
+      <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm text-center">
+        <p class="text-xs text-slate-500">Total Produk</p>
+        <p id="stat-total" class="text-lg font-bold text-slate-800 mt-0.5">0</p>
+      </div>
+      <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm text-center">
+        <p class="text-xs text-slate-500">Total Terjual</p>
+        <p id="stat-sold" class="text-lg font-bold text-emerald-600 mt-0.5">0</p>
+      </div>
+      <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm text-center">
+        <p class="text-xs text-slate-500">Stok Menipis</p>
+        <p id="stat-low" class="text-lg font-bold text-amber-600 mt-0.5">0</p>
+      </div>
+    </div>
+
+    <!-- Loading Data Info -->
+    <div id="admin-loading" class="flex items-center justify-center py-10 text-blue-600 font-semibold text-xs">
+      <i data-lucide="loader" class="w-6 h-6 animate-spin mr-2"></i> Sinkronisasi dengan Database Cloudflare...
+    </div>
+
+    <div id="admin-container" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden hidden">
+      <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+        <h2 class="font-bold text-sm text-slate-800">Daftar Produk Cloud</h2>
+      </div>
+      <div id="admin-product-list" class="divide-y divide-slate-100 p-2"></div>
+    </div>
+  </div>
+
+  <!-- Modal Tambah/Edit Produk -->
+  <div id="product-modal" class="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-5 shadow-2xl border border-slate-100 max-h-[92vh] overflow-y-auto">
+      <div class="flex justify-between items-center pb-3 border-b border-slate-100 mb-4">
+        <h3 id="modal-title" class="font-bold text-slate-800 text-sm sm:text-base">Tambah Produk Baru</h3>
+        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <form id="product-form" onsubmit="handleSaveProduct(event)" class="space-y-3.5 text-xs sm:text-sm">
+        <input type="hidden" id="form-id" />
+        <div class="grid grid-cols-3 gap-3">
+          <div class="col-span-2">
+            <label class="block font-medium text-slate-700 mb-1">Nama Produk Digital</label>
+            <input type="text" id="form-name" required placeholder="Contoh: Google Gemini Pro" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+          </div>
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">Kategori</label>
+            <select id="form-category" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
+              <option value="AI">AI</option><option value="Editor">Editor</option><option value="Design">Design</option>
+              <option value="Music">Music</option><option value="Stream">Stream</option><option value="VPN">VPN</option><option value="Edu">Edu</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="block font-medium text-slate-700 mb-1">Angka Terjual</label><input type="number" id="form-sold" required placeholder="120" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" /></div>
+          <div><label class="block font-medium text-slate-700 mb-1">Rating (★ 1.0 - 5.0)</label><input type="number" step="0.1" min="1" max="5" id="form-rating" required placeholder="4.9" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" /></div>
+        </div>
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">URL Gambar Logo (Link/URL)</label>
+          <input type="url" id="form-image" required placeholder="https://..." class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+        </div>
+        
+        <!-- Varian Dinamis -->
+        <div class="border border-blue-100 bg-blue-50/40 p-3 rounded-xl space-y-2.5">
+          <div class="flex items-center justify-between">
+            <label class="font-bold text-slate-800 text-xs">Varian Paket (Durasi & Harga):</label>
+            <button type="button" onclick="addVariantRow()" class="text-[11px] bg-blue-600 text-white font-semibold px-2.5 py-1 rounded-lg hover:bg-blue-700 flex items-center gap-1"><i data-lucide="plus" class="w-3 h-3"></i> Varian</button>
+          </div>
+          <div id="variants-container" class="space-y-2"></div>
+        </div>
+        
+        <div><label class="block font-medium text-slate-700 mb-1">Garansi Produk</label><input type="text" id="form-warranty" placeholder="Contoh: Garansi Full Sesuai Durasi" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none" /></div>
+        <div><label class="block font-medium text-slate-700 mb-1">Deskripsi Singkat</label><textarea id="form-desc" rows="2" placeholder="Detail cara pakai..." class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea></div>
+        
+        <div class="pt-2 flex justify-end gap-2 border-t border-slate-100">
+          <button type="button" onclick="closeModal()" class="px-4 py-2 border border-slate-200 rounded-xl font-medium text-slate-600 hover:bg-slate-50">Batal</button>
+          <button type="submit" id="save-btn" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold shadow-sm flex items-center gap-1.5"><i data-lucide="cloud-upload" class="w-4 h-4"></i> Simpan ke Cloud</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // URL CLOUDFLARE WORKER 
+    const API_URL = "https://toko-digital-api.rizqinastore97.workers.dev";
+    
+    let products = [];
+    const formatIDR = (val) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(val);
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const bg = type === 'error' ? 'bg-red-600' : 'bg-slate-900';
+      toast.className = `${bg} text-white text-xs font-semibold px-4 py-3 rounded-2xl shadow-xl flex items-center justify-between pointer-events-auto transform transition-all duration-300 opacity-0 translate-y-2`;
+      toast.innerHTML = `<span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => toast.classList.remove('opacity-0', 'translate-y-2'), 10);
+      setTimeout(() => { toast.classList.add('opacity-0', '-translate-y-2'); setTimeout(() => toast.remove(), 300); }, 2500);
+    }
+
+    // Ambil Data Pertama Kali dari Cloudflare
+    async function fetchProducts() {
+      try {
+        const response = await fetch(API_URL);
+        const data = await response.json();
+        products = Array.isArray(data) ? data : [];
+      } catch (err) {
+        showToast("Gagal mengambil data dari Server Cloudflare!", "error");
+        console.error(err);
+      } finally {
+        document.getElementById('admin-loading').classList.add('hidden');
+        document.getElementById('admin-container').classList.remove('hidden');
+        renderList();
+      }
+    }
+
+    // Fungsi Upload Data ke Cloudflare
+    async function syncToCloudflare() {
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(products)
+        });
+        const res = await response.json();
+        if(res.success) {
+          showToast('Berhasil sinkronisasi ke Cloudflare KV!');
+        }
+      } catch (err) {
+        showToast('Gagal terhubung ke Cloudflare saat menyimpan', 'error');
+        console.error(err);
+      }
+    }
+
+    function renderList() {
+      const list = document.getElementById('admin-product-list');
+      document.getElementById('stat-total').innerText = products.length;
+      document.getElementById('stat-sold').innerText = products.reduce((a, b) => a + Number(b.sold || 0), 0);
+      document.getElementById('stat-low').innerText = products.filter(p => p.variants.reduce((sum, v) => sum + Number(v.stock || 0), 0) <= 5).length;
+
+      if (products.length === 0) {
+        list.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs">Belum ada data di Cloudflare.</div>`;
+        return;
+      }
+
+      list.innerHTML = products.map(item => {
+        const totalStock = item.variants.reduce((sum, v) => sum + Number(v.stock || 0), 0);
+        const prices = item.variants.map(v => Number(v.price || 0));
+        const minPrice = Math.min(...prices);
+
+        return `
+          <div class="flex items-center justify-between p-3 sm:p-4 hover:bg-slate-50 rounded-xl transition-colors">
+            <div class="flex items-center gap-3 min-w-0">
+              <img src="${item.image}" alt="${item.name}" class="w-12 h-12 rounded-xl object-cover bg-slate-100 flex-shrink-0" />
+              <div class="min-w-0">
+                <div class="flex items-center gap-2">
+                  <span class="text-[9px] uppercase font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded">${item.category}</span>
+                  <h4 class="text-xs sm:text-sm font-semibold text-slate-800 truncate">${item.name}</h4>
+                </div>
+                <div class="flex flex-wrap items-center gap-2 mt-1 text-[11px] text-slate-500">
+                  <span class="font-bold text-blue-600">Mulai ${formatIDR(minPrice)}</span>
+                  <span>•</span><span>Stok: <b>${totalStock}</b></span>
+                  <span>•</span><span class="text-yellow-500 font-bold">★ ${item.rating || '5.0'}</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button onclick="editProduct(${item.id})" class="p-2 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+              <button onclick="deleteProduct(${item.id})" class="p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            </div>
+          </div>
+        `;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    function addVariantRow(name = '', price = '', stock = '') {
+      const container = document.getElementById('variants-container');
+      const rowId = `var-row-${Date.now()}`;
+      const div = document.createElement('div');
+      div.id = rowId;
+      div.className = 'grid grid-cols-12 gap-2 items-center bg-white p-2 rounded-xl border border-slate-200';
+      div.innerHTML = `
+        <div class="col-span-5"><input type="text" placeholder="Nama Paket" value="${name}" required class="variant-name w-full px-2 py-1.5 border border-slate-200 rounded-lg text-xs focus:ring-1 focus:ring-blue-500" /></div>
+        <div class="col-span-4"><input type="number" placeholder="Harga" value="${price}" required class="variant-price w-full px-2 py-1.5 border border-slate-200 rounded-lg text-xs focus:ring-1 focus:ring-blue-500" /></div>
+        <div class="col-span-2"><input type="number" placeholder="Stok" value="${stock}" required class="variant-stock w-full px-2 py-1.5 border border-slate-200 rounded-lg text-xs focus:ring-1 focus:ring-blue-500" /></div>
+        <div class="col-span-1 text-center"><button type="button" onclick="removeVariantRow('${rowId}')" class="text-slate-400 hover:text-red-500 p-1"><i data-lucide="trash" class="w-3.5 h-3.5"></i></button></div>
+      `;
+      container.appendChild(div);
+      lucide.createIcons();
+    }
+
+    function removeVariantRow(rowId) {
+      if (document.getElementById('variants-container').children.length <= 1) return showToast('Minimal 1 varian!', 'error');
+      document.getElementById(rowId)?.remove();
+    }
+
+    function openModal() {
+      document.getElementById('product-form').reset();
+      document.getElementById('form-id').value = '';
+      document.getElementById('form-rating').value = '5.0';
+      document.getElementById('modal-title').innerText = 'Tambah Produk Baru';
+      document.getElementById('variants-container').innerHTML = '';
+      addVariantRow('Standar', '0', '10');
+      document.getElementById('product-modal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeModal() { document.getElementById('product-modal').classList.add('hidden'); }
+
+    function editProduct(id) {
+      const p = products.find(i => i.id === id);
+      if (!p) return;
+      document.getElementById('form-id').value = p.id;
+      document.getElementById('form-name').value = p.name;
+      document.getElementById('form-category').value = p.category;
+      document.getElementById('form-sold').value = p.sold || 0;
+      document.getElementById('form-rating').value = p.rating || '5.0';
+      document.getElementById('form-image').value = p.image;
+      document.getElementById('form-warranty').value = p.warranty || '';
+      document.getElementById('form-desc').value = p.description || '';
+      document.getElementById('modal-title').innerText = 'Edit Produk';
+      
+      const container = document.getElementById('variants-container');
+      container.innerHTML = '';
+      p.variants.forEach(v => addVariantRow(v.name, v.price, v.stock));
+
+      document.getElementById('product-modal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    async function handleSaveProduct(e) {
+      e.preventDefault();
+      
+      const btn = document.getElementById('save-btn');
+      btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Menyimpan...`;
+      btn.disabled = true;
+
+      const id = document.getElementById('form-id').value;
+      const names = document.querySelectorAll('.variant-name');
+      const prices = document.querySelectorAll('.variant-price');
+      const stocks = document.querySelectorAll('.variant-stock');
+
+      const collectedVariants = [];
+      for (let i = 0; i < names.length; i++) {
+        collectedVariants.push({
+          name: names[i].value.trim(),
+          price: Number(prices[i].value),
+          stock: Number(stocks[i].value)
+        });
+      }
+
+      const productData = {
+        id: id ? Number(id) : Date.now(),
+        name: document.getElementById('form-name').value.trim(),
+        category: document.getElementById('form-category').value,
+        sold: Number(document.getElementById('form-sold').value),
+        rating: parseFloat(document.getElementById('form-rating').value) || 5.0,
+        image: document.getElementById('form-image').value.trim(),
+        warranty: document.getElementById('form-warranty').value.trim(),
+        description: document.getElementById('form-desc').value.trim(),
+        variants: collectedVariants
+      };
+
+      if (id) {
+        products = products.map(p => p.id === Number(id) ? productData : p);
+      } else {
+        products.unshift(productData);
+      }
+
+      // Sync ke Cloudflare 
+      await syncToCloudflare();
+      renderList();
+      closeModal();
+
+      btn.innerHTML = `<i data-lucide="cloud-upload" class="w-4 h-4"></i> Simpan ke Cloud`;
+      btn.disabled = false;
+      lucide.createIcons();
+    }
+
+    async function deleteProduct(id) {
+      if (confirm('Yakin menghapus data produk ini dari Cloudflare?')) {
+        products = products.filter(p => p.id !== id);
+        renderList();
+        await syncToCloudflare(); // Hapus di Cloudflare
+      }
+    }
+
+    fetchProducts();
+    lucide.createIcons();
+  </script>
+</body>
+</html>
