@@ -544,6 +544,14 @@
     let deferredPwaPrompt = null;
     let activeReviewFilter = 'all';
 
+    // FUNGSI FORMAT SOLD (10.000 -> 10RB+)
+    function formatSoldCount(sold) {
+      const num = Number(sold) || 0;
+      if (num < 1000) return num.toString();
+      const rbValue = Math.floor(num / 1000);
+      return rbValue + "RB+";
+    }
+
     const formatIDR = (val) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(val);
 
     function showToast(msg) {
@@ -746,7 +754,7 @@
     function renderPopularSection() {
       const popSec = document.getElementById('popular-section');
       const popGrid = document.getElementById('popular-grid');
-      // Hanya tampilkan jika Best Seller ATAU HOT dicentang di Admin (Sesuai Aturan Baru)
+      // Hanya tampilkan jika Best Seller ATAU HOT dicentang di Admin
       const bestProducts = products.filter(p => p.isBestSeller || p.isHot);
       if (bestProducts.length === 0) { popSec.classList.add('hidden'); return; }
 
@@ -765,7 +773,7 @@
             </div>
             <div class="mt-2 pt-1 border-t border-slate-100 flex items-center justify-between">
               <span class="text-xs font-black text-[#f5125e]">${formatIDR(Math.min(...prices))}</span>
-              <span class="text-[9px] text-slate-400">${item.sold || 0} Terjual</span>
+              <span class="text-[9px] text-slate-400">${formatSoldCount(item.sold)} Terjual</span>
             </div>
           </div>
         `;
@@ -834,7 +842,6 @@
         const prices = item.variants.map(v => Number(v.price || 0));
         const minPrice = Math.min(...prices);
         
-        // Render Bintang Sesuai Angka Inputan (Aturan Baru)
         const ratingNum = Math.round(Number(item.rating || 5));
         const starsHtml = '★'.repeat(ratingNum);
 
@@ -853,7 +860,7 @@
               <p class="text-xs sm:text-sm font-extrabold text-[#f5125e]">${formatIDR(minPrice)}</p>
               <div class="flex items-center justify-between text-[10px] text-slate-400 mt-1">
                 <span class="text-amber-500 font-bold">${starsHtml} <span class="text-slate-400 font-medium">${item.rating || '5.0'}</span></span>
-                <span>${item.sold || 0} Terjual</span>
+                <span>${formatSoldCount(item.sold)} Terjual</span>
               </div>
             </div>
           </div>
@@ -948,7 +955,7 @@
       document.getElementById('modal-img').src = p.image;
       document.getElementById('modal-name').innerText = p.name;
       document.getElementById('modal-category').innerText = p.category;
-      document.getElementById('modal-sold').innerText = `${p.sold || 0}`;
+      document.getElementById('modal-sold').innerText = formatSoldCount(p.sold);
       
       const ratingNum = Math.round(Number(p.rating || 5));
       document.getElementById('modal-rating').innerHTML = `<span class="text-amber-500">${'★'.repeat(ratingNum)}</span>`;
@@ -969,12 +976,10 @@
         <button onclick="selectVariant(${idx})" class="px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${idx === activeIndex ? 'bg-rose-50 border-[#f5125e] text-[#f5125e]' : 'bg-white border-slate-200 text-slate-600 hover:border-rose-200'}">${v.name}</button>
       `).join('');
       
-      // Update Harga, Deskripsi & S&K secara Real-Time tanpa memuat ulang modal (Aturan Baru)
       document.getElementById('modal-price').innerText = formatIDR(currentSelectedVariant.price);
       document.getElementById('modal-desc').innerText = currentSelectedVariant.desc || currentSelectedProduct.description || 'Tidak ada deskripsi.';
       document.getElementById('modal-terms').innerText = currentSelectedVariant.terms || currentSelectedProduct.terms || 'Mengikuti kebijakan garansi toko.';
 
-      // Perbarui Tombol Aksi Bawah
       document.getElementById('modal-btn-chat').onclick = () => {
         closeDetailModal();
         openChatModalWithProduct(currentSelectedProduct.name, currentSelectedVariant.name, currentSelectedVariant.price);
@@ -985,7 +990,7 @@
 
     function selectVariant(idx) {
       currentSelectedVariant = currentSelectedProduct.variants[idx];
-      renderVariantSelection(idx); // Update tampilan langsung tanpa close modal
+      renderVariantSelection(idx); 
     }
 
     function closeDetailModal() { document.getElementById('detail-modal').classList.add('hidden'); }
@@ -1110,7 +1115,6 @@
       document.getElementById('pay-total-amount').innerText = formatIDR(variant.price);
       document.getElementById('qris-img').src = QRIS_STATIC_URL;
       
-      // Menggunakan S&K Khusus Varian jika ada, jika tidak gunakan fallback
       document.getElementById('terms-data').innerText = variant.terms || product.terms || '1. Dilarang mengganti password akun.\n2. Garansi full resmi toko.';
       
       lucide.createIcons();
