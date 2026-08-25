@@ -325,7 +325,7 @@
         <div class="p-4 overflow-y-auto space-y-4 text-xs sm:text-sm flex-1">
           <div>
             <h4 class="font-bold text-slate-800 mb-1.5 flex items-center justify-between text-xs">
-              <span>Pilihan Varian / Layanan:</span><span id="modal-variant-stock" class="text-slate-500 font-normal"></span>
+              <span>Pilihan Varian / Layanan:</span>
             </h4>
             <div id="modal-variants-list" class="flex flex-wrap gap-2"></div>
           </div>
@@ -341,6 +341,11 @@
           <div>
             <h4 class="font-bold text-slate-800 mb-1">Deskripsi Layanan</h4>
             <p id="modal-desc" class="text-slate-600 leading-relaxed whitespace-pre-line text-xs"></p>
+          </div>
+          
+          <div class="bg-amber-50 border border-amber-200 rounded-xl p-3">
+            <h4 class="font-bold text-amber-900 mb-1 flex items-center gap-1.5 text-xs"><i data-lucide="shield-alert" class="w-4 h-4"></i> Syarat & Ketentuan</h4>
+            <p id="modal-terms" class="text-amber-800 leading-relaxed whitespace-pre-line text-[11px]"></p>
           </div>
 
           <!-- SEKSI PENILAIAN & ULASAN PEMBELI -->
@@ -595,44 +600,45 @@
     }
 
     // ================= PWA INSTALLATION =================
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPwaPrompt = e;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPwaPrompt = e;
 
-  // Tampilkan popup otomatis setelah 2 detik
-  const hasDismissed = sessionStorage.getItem('pwa_popup_dismissed');
-  if (!hasDismissed) {
-    setTimeout(() => { triggerPwaPromptUI(); }, 2000);
-  }
-});
+      // Tampilkan popup otomatis setelah 2 detik
+      const hasDismissed = sessionStorage.getItem('pwa_popup_dismissed');
+      if (!hasDismissed) {
+        setTimeout(() => { triggerPwaPromptUI(); }, 2000);
+      }
+    });
 
-function triggerPwaPromptUI() {
-  const popup = document.getElementById('pwa-install-popup');
-  if (popup) popup.classList.remove('hidden');
-}
+    function triggerPwaPromptUI() {
+      const popup = document.getElementById('pwa-install-popup');
+      if (popup) popup.classList.remove('hidden');
+    }
 
-function dismissPwaPopup() {
-  const popup = document.getElementById('pwa-install-popup');
-  if (popup) popup.classList.add('hidden');
-  sessionStorage.setItem('pwa_popup_dismissed', 'true');
-}
+    function dismissPwaPopup() {
+      const popup = document.getElementById('pwa-install-popup');
+      if (popup) popup.classList.add('hidden');
+      sessionStorage.setItem('pwa_popup_dismissed', 'true');
+    }
 
-async function executePwaInstall() {
-  if (!deferredPwaPrompt) {
-    dismissPwaPopup();
-    showToast('Untuk install: Klik ikon titik 3 browser > Tambahkan ke Layar Utama');
-    return;
-  }
-  deferredPwaPrompt.prompt();
-  const { outcome } = await deferredPwaPrompt.userChoice;
-  deferredPwaPrompt = null;
-  dismissPwaPopup();
-}
+    async function executePwaInstall() {
+      if (!deferredPwaPrompt) {
+        dismissPwaPopup();
+        showToast('Untuk install: Klik ikon titik 3 browser > Tambahkan ke Layar Utama');
+        return;
+      }
+      deferredPwaPrompt.prompt();
+      const { outcome } = await deferredPwaPrompt.userChoice;
+      deferredPwaPrompt = null;
+      dismissPwaPopup();
+    }
 
-window.addEventListener('appinstalled', () => {
-  dismissPwaPopup();
-  showToast('Aplikasi berhasil dipasang di HP!');
-});
+    window.addEventListener('appinstalled', () => {
+      dismissPwaPopup();
+      showToast('Aplikasi berhasil dipasang di HP!');
+    });
+
     // ================= SINKRONISASI BANNER DARI KV DATABASE =================
     function applyBannerConfig(config) {
       const wrapper = document.getElementById('store-banner-wrapper');
@@ -740,16 +746,18 @@ window.addEventListener('appinstalled', () => {
     function renderPopularSection() {
       const popSec = document.getElementById('popular-section');
       const popGrid = document.getElementById('popular-grid');
-      const bestProducts = products.filter(p => p.isBestSeller || Number(p.sold || 0) >= 100);
+      // Hanya tampilkan jika Best Seller ATAU HOT dicentang di Admin (Sesuai Aturan Baru)
+      const bestProducts = products.filter(p => p.isBestSeller || p.isHot);
       if (bestProducts.length === 0) { popSec.classList.add('hidden'); return; }
 
       popSec.classList.remove('hidden');
       popGrid.innerHTML = bestProducts.slice(0, 4).map(item => {
         const prices = item.variants.map(v => Number(v.price || 0));
         return `
-          <div onclick="openDetailModal(${item.id})" class="bg-white rounded-2xl p-2.5 border border-rose-200/90 shadow-2xs hover:border-[#f5125e] transition-all cursor-pointer group flex flex-col justify-between">
+          <div onclick="openDetailModal(${item.id})" class="bg-white rounded-2xl p-2.5 border border-rose-200/90 shadow-2xs hover:border-[#f5125e] transition-all cursor-pointer group flex flex-col justify-between relative">
             <div>
-              <span class="bg-[#f5125e] text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-xs mb-1 inline-block">🔥 BEST SELLER</span>
+              ${item.isBestSeller ? `<span class="absolute top-2 left-2 bg-[#f5125e] text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-xs z-10">🔥 BEST SELLER</span>` : ''}
+              ${item.isHot ? `<span class="absolute top-2 right-2 bg-rose-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-xs z-10">HOT</span>` : ''}
               <div class="w-full aspect-square rounded-xl bg-slate-50 flex items-center justify-center p-2 mb-1.5 border border-slate-100">
                 <img src="${item.image}" class="w-full h-full object-contain" />
               </div>
@@ -825,12 +833,16 @@ window.addEventListener('appinstalled', () => {
       grid.innerHTML = filtered.map(item => {
         const prices = item.variants.map(v => Number(v.price || 0));
         const minPrice = Math.min(...prices);
-        const isHot = Boolean(item.isHot || Number(item.sold || 0) >= 100);
+        
+        // Render Bintang Sesuai Angka Inputan (Aturan Baru)
+        const ratingNum = Math.round(Number(item.rating || 5));
+        const starsHtml = '★'.repeat(ratingNum);
 
         return `
           <div onclick="openDetailModal(${item.id})" class="bg-white rounded-2xl p-2.5 sm:p-3 border border-slate-200/90 shadow-2xs flex flex-col justify-between cursor-pointer hover:border-[#f5125e] hover:shadow-md transition-all group relative">
             <div>
-              ${isHot ? `<span class="absolute top-2 right-2 bg-amber-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded shadow-xs z-10">HOT</span>` : ''}
+              ${item.isBestSeller ? `<span class="absolute top-2 left-2 bg-[#f5125e] text-white text-[8px] font-bold px-1.5 py-0.5 rounded shadow-xs z-10">BEST SELLER</span>` : ''}
+              ${item.isHot ? `<span class="absolute top-2 right-2 bg-amber-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded shadow-xs z-10">HOT</span>` : ''}
               <div class="w-full aspect-square rounded-xl overflow-hidden bg-slate-50 flex items-center justify-center p-2 mb-2 border border-slate-100 group-hover:scale-[1.02] transition-transform">
                 <img src="${item.image}" alt="${item.name}" class="w-full h-full object-contain" loading="lazy" />
               </div>
@@ -840,7 +852,7 @@ window.addEventListener('appinstalled', () => {
             <div class="mt-2.5 pt-2 border-t border-slate-100">
               <p class="text-xs sm:text-sm font-extrabold text-[#f5125e]">${formatIDR(minPrice)}</p>
               <div class="flex items-center justify-between text-[10px] text-slate-400 mt-1">
-                <span class="text-yellow-500 font-bold">★ ${item.rating || '5.0'}</span>
+                <span class="text-amber-500 font-bold">${starsHtml} <span class="text-slate-400 font-medium">${item.rating || '5.0'}</span></span>
                 <span>${item.sold || 0} Terjual</span>
               </div>
             </div>
@@ -911,7 +923,7 @@ window.addEventListener('appinstalled', () => {
               </div>
               <div>
                 <p class="font-bold text-[11px] text-slate-800 leading-tight">${rev.user}</p>
-                <div class="flex items-center gap-0.5 text-yellow-400 text-[10px]">
+                <div class="flex items-center gap-0.5 text-amber-500 text-[10px]">
                   ${'★'.repeat(Number(rev.rating) || 5)}
                 </div>
               </div>
@@ -937,35 +949,48 @@ window.addEventListener('appinstalled', () => {
       document.getElementById('modal-name').innerText = p.name;
       document.getElementById('modal-category').innerText = p.category;
       document.getElementById('modal-sold').innerText = `${p.sold || 0}`;
-      document.getElementById('modal-rating').innerHTML = `★ ${p.rating || '5.0'}`;
+      
+      const ratingNum = Math.round(Number(p.rating || 5));
+      document.getElementById('modal-rating').innerHTML = `<span class="text-amber-500">${'★'.repeat(ratingNum)}</span>`;
+      
       document.getElementById('modal-warranty').innerText = p.warranty || 'Resmi';
-      document.getElementById('modal-desc').innerText = p.description || 'Tidak ada deskripsi.';
 
-      document.getElementById('modal-variants-list').innerHTML = p.variants.map((v, idx) => `
-        <button onclick="selectVariant(${idx})" class="px-3 py-1.5 rounded-xl text-xs font-semibold border ${currentSelectedVariant.name === v.name ? 'bg-rose-50 border-[#f5125e] text-[#f5125e]' : 'bg-white border-slate-200'}">${v.name}</button>
-      `).join('');
-
-      document.getElementById('modal-price').innerText = formatIDR(currentSelectedVariant.price);
-      document.getElementById('modal-btn-chat').onclick = () => {
-        closeDetailModal();
-        openChatModalWithProduct(p.name, currentSelectedVariant.name, currentSelectedVariant.price);
-      };
-      document.getElementById('modal-btn-cart').onclick = () => { addToCart(p, currentSelectedVariant); closeDetailModal(); };
-      document.getElementById('modal-btn-buy').onclick = () => { closeDetailModal(); startCheckoutProcess(p, currentSelectedVariant); };
+      // Load Variant Pertama Secara Default
+      renderVariantSelection(0);
       
       setReviewFilter('all');
       document.getElementById('detail-modal').classList.remove('hidden');
       lucide.createIcons();
     }
 
+    function renderVariantSelection(activeIndex) {
+      const container = document.getElementById('modal-variants-list');
+      container.innerHTML = currentSelectedProduct.variants.map((v, idx) => `
+        <button onclick="selectVariant(${idx})" class="px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${idx === activeIndex ? 'bg-rose-50 border-[#f5125e] text-[#f5125e]' : 'bg-white border-slate-200 text-slate-600 hover:border-rose-200'}">${v.name}</button>
+      `).join('');
+      
+      // Update Harga, Deskripsi & S&K secara Real-Time tanpa memuat ulang modal (Aturan Baru)
+      document.getElementById('modal-price').innerText = formatIDR(currentSelectedVariant.price);
+      document.getElementById('modal-desc').innerText = currentSelectedVariant.desc || currentSelectedProduct.description || 'Tidak ada deskripsi.';
+      document.getElementById('modal-terms').innerText = currentSelectedVariant.terms || currentSelectedProduct.terms || 'Mengikuti kebijakan garansi toko.';
+
+      // Perbarui Tombol Aksi Bawah
+      document.getElementById('modal-btn-chat').onclick = () => {
+        closeDetailModal();
+        openChatModalWithProduct(currentSelectedProduct.name, currentSelectedVariant.name, currentSelectedVariant.price);
+      };
+      document.getElementById('modal-btn-cart').onclick = () => { addToCart(currentSelectedProduct, currentSelectedVariant); closeDetailModal(); };
+      document.getElementById('modal-btn-buy').onclick = () => { closeDetailModal(); startCheckoutProcess(currentSelectedProduct, currentSelectedVariant); };
+    }
+
     function selectVariant(idx) {
       currentSelectedVariant = currentSelectedProduct.variants[idx];
-      openDetailModal(currentSelectedProduct.id);
+      renderVariantSelection(idx); // Update tampilan langsung tanpa close modal
     }
 
     function closeDetailModal() { document.getElementById('detail-modal').classList.add('hidden'); }
 
-    // ================= FITUR LIVE CHAT CS ASISTEN (LENGKAP DIKEMBALIKAN) =================
+    // ================= FITUR LIVE CHAT CS ASISTEN =================
     function openChatModal() {
       document.getElementById('chat-modal').classList.remove('hidden');
       setTimeout(() => document.getElementById('chat-drawer').classList.remove('translate-x-full'), 10);
@@ -1084,7 +1109,10 @@ window.addEventListener('appinstalled', () => {
       document.getElementById('pay-item-name').innerText = `${product.name} (${variant.name})`;
       document.getElementById('pay-total-amount').innerText = formatIDR(variant.price);
       document.getElementById('qris-img').src = QRIS_STATIC_URL;
-      document.getElementById('terms-data').innerText = product.terms || '1. Dilarang mengganti password akun.\n2. Garansi full resmi toko.';
+      
+      // Menggunakan S&K Khusus Varian jika ada, jika tidak gunakan fallback
+      document.getElementById('terms-data').innerText = variant.terms || product.terms || '1. Dilarang mengganti password akun.\n2. Garansi full resmi toko.';
+      
       lucide.createIcons();
     }
 
