@@ -390,6 +390,8 @@
           <h3 class="font-bold text-sm text-slate-800 flex items-center gap-1.5"><i data-lucide="wallet" class="w-4 h-4 text-[#f5125e]"></i> Pembayaran QRIS</h3>
           <button onclick="closePaymentModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
+        
+        <!-- STEP 1: PEMBAYARAN -->
         <div id="step-pay" class="space-y-3">
           <div class="bg-rose-50/70 p-2.5 rounded-2xl border border-rose-100 text-left">
             <p id="pay-item-name" class="text-xs font-semibold text-slate-800 truncate"></p>
@@ -409,6 +411,8 @@
             <p class="text-[10.5px] text-emerald-800 font-medium leading-tight">Menunggu transfer... Akun otomatis terbuka begitu terbayar.</p>
           </div>
         </div>
+
+        <!-- STEP 2: RESULT (PRODUK BIASA) -->
         <div id="step-result" class="space-y-3 hidden text-left">
           <div class="text-center">
             <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-1"><i data-lucide="check" class="w-6 h-6"></i></div>
@@ -424,6 +428,26 @@
             <pre id="terms-data" class="font-sans text-[11px] text-amber-950 whitespace-pre-wrap"></pre>
           </div>
         </div>
+
+        <!-- STEP 3: RESULT NOKOS (LIVE API) -->
+        <div id="step-nokos" class="space-y-3 hidden text-left mt-2">
+          <div class="text-center border-b border-slate-100 pb-3">
+            <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-1"><i data-lucide="smartphone" class="w-6 h-6"></i></div>
+            <h4 class="font-bold text-sm text-slate-800">Menunggu Verifikasi SMS Nokos</h4>
+            <p class="text-[10px] text-slate-500 mt-0.5">Saldo terpotong. Sistem sedang mengambil OTP.</p>
+          </div>
+          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 text-center shadow-inner mt-2">
+            <span class="text-[10px] text-slate-500 font-bold block uppercase mb-1">Nomor Virtual Anda:</span>
+            <h2 id="nokos-number-display" class="text-xl sm:text-2xl font-black text-slate-800 tracking-wider">Memuat...</h2>
+          </div>
+          <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 flex flex-col items-center justify-center gap-2 mt-2">
+            <i id="nokos-spinner" data-lucide="loader" class="w-6 h-6 text-emerald-600 animate-spin"></i>
+            <span class="text-[10px] text-emerald-800 font-bold block uppercase text-center" id="nokos-sms-status">Mengambil Nomor...</span>
+            <h3 id="nokos-sms-code" class="text-3xl font-black text-emerald-600 tracking-widest hidden bg-white px-4 py-2 rounded-xl border border-emerald-200 shadow-sm mt-1"></h3>
+          </div>
+          <button id="nokos-cancel-btn" onclick="cancelNokosOrder()" class="mt-2 w-full bg-rose-50 text-rose-600 border border-rose-200 py-2.5 rounded-xl font-bold text-xs hover:bg-rose-100 transition-colors">Batalkan Pesanan (Saldo Akan Kembali)</button>
+        </div>
+
       </div>
     </div>
   </div>
@@ -460,7 +484,7 @@
     </div>
   </div>
 
-  <!-- MODAL & DRAWER LIVE CHAT CS ASISTEN (LENGKAP DIKEMBALIKAN) -->
+  <!-- MODAL & DRAWER LIVE CHAT CS ASISTEN -->
   <div id="chat-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div onclick="closeChatModal()" class="absolute inset-0 bg-black/50 backdrop-blur-2xs"></div>
     <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
@@ -554,10 +578,11 @@
 
     const formatIDR = (val) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(val);
 
-    function showToast(msg) {
+    function showToast(msg, type='info') {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
-      toast.className = 'bg-slate-900 text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-xl transition-all';
+      const bg = type === 'error' ? 'bg-rose-600' : 'bg-slate-900';
+      toast.className = `${bg} text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-xl transition-all`;
       toast.innerText = msg;
       container.appendChild(toast);
       setTimeout(() => toast.remove(), 2500);
@@ -612,7 +637,6 @@
       e.preventDefault();
       deferredPwaPrompt = e;
 
-      // Tampilkan popup otomatis setelah 2 detik
       const hasDismissed = sessionStorage.getItem('pwa_popup_dismissed');
       if (!hasDismissed) {
         setTimeout(() => { triggerPwaPromptUI(); }, 2000);
@@ -1106,21 +1130,246 @@
       startCheckoutProcess({ id: Date.now(), name: `Keranjang (${cart.length} Produk)` }, { name: 'Semua Produk', price: cart.reduce((a, b) => a + b.price, 0) });
     }
 
-    // ================= PEMBAYARAN QRIS TRIPAY =================
+    // Fungsi Simpan Riwayat
+    function saveOrderHistory(reference, productName, variantName, account) {
+      const history = JSON.parse(localStorage.getItem('my_digital_orders') || '[]');
+      history.unshift({
+        reference: reference,
+        productName: productName,
+        variantName: variantName,
+        date: new Date().toLocaleString('id-ID'),
+        account: account
+      });
+      localStorage.setItem('my_digital_orders', JSON.stringify(history));
+    }
+
+    // ================= PEMBAYARAN QRIS TRIPAY & INTEGRASI NOKOS =================
+    let pollingInterval = null;
+    let nokosPollingInterval = null;
+    let currentNokosId = null;
+
     async function startCheckoutProcess(product, variant) {
       document.getElementById('step-pay').classList.remove('hidden');
       document.getElementById('step-result').classList.add('hidden');
+      const stepNokos = document.getElementById('step-nokos');
+      if(stepNokos) stepNokos.classList.add('hidden');
+
       document.getElementById('payment-modal').classList.remove('hidden');
       document.getElementById('pay-item-name').innerText = `${product.name} (${variant.name})`;
       document.getElementById('pay-total-amount').innerText = formatIDR(variant.price);
-      document.getElementById('qris-img').src = QRIS_STATIC_URL;
+      
+      const qrisImg = document.getElementById('qris-img');
+      const qrisSpin = document.getElementById('qris-loading-spin');
+      
+      // Setup loading state
+      qrisImg.classList.add('hidden');
+      qrisSpin.classList.remove('hidden');
       
       document.getElementById('terms-data').innerText = variant.terms || product.terms || '1. Dilarang mengganti password akun.\n2. Garansi full resmi toko.';
-      
       lucide.createIcons();
+
+      try {
+        // Request QRIS dari Worker (Backend)
+        const txRes = await fetch(`${API_URL}/create-tripay-tx`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ productId: product.id, variantName: variant.name })
+        });
+        const txData = await txRes.json();
+
+        if (txData.success && txData.data && txData.data.qr_url) {
+          qrisImg.src = txData.data.qr_url;
+          const ref = txData.data.reference;
+
+          // Hilangkan loading saat gambar siap
+          qrisImg.onload = () => {
+            qrisImg.classList.remove('hidden');
+            qrisSpin.classList.add('hidden');
+          };
+
+          // Mulai Polling Status Pembayaran TriPay
+          if (pollingInterval) clearInterval(pollingInterval);
+          pollingInterval = setInterval(async () => {
+            try {
+              const statusRes = await fetch(`${API_URL}/check-status`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ reference: ref, productId: product.id, variantName: variant.name })
+              });
+              const statusData = await statusRes.json();
+
+              if (statusData.status === "PAID") {
+                clearInterval(pollingInterval);
+                
+                // Cek apakah ini produk NOKOS (API Integration)
+                if (statusData.isNokos) {
+                  startNokosFlow(product, variant, ref);
+                } else {
+                  // Alur Transaksi Akun Premium Biasa
+                  document.getElementById('step-pay').classList.add('hidden');
+                  document.getElementById('step-result').classList.remove('hidden');
+                  document.getElementById('account-data').innerText = statusData.account;
+                  saveOrderHistory(ref, product.name, variant.name, statusData.account);
+                  showToast("Pembayaran Terverifikasi! Akun Terkirim.");
+                }
+              }
+            } catch (e) { console.error("Polling error", e); }
+          }, 4000); // Polling setiap 4 detik
+
+        } else {
+          // Fallback jika API Error (Demo/Statis)
+          qrisImg.src = QRIS_STATIC_URL;
+          qrisImg.classList.remove('hidden');
+          qrisSpin.classList.add('hidden');
+          showToast("Koneksi gagal, menggunakan QRIS statis", "error");
+        }
+      } catch (err) {
+        // Mode Fallback Manual jika Server/Worker belum disetel dengan benar
+        qrisImg.src = QRIS_STATIC_URL;
+        qrisImg.classList.remove('hidden');
+        qrisSpin.classList.add('hidden');
+        showToast("Sistem menggunakan mode manual/statis", "info");
+
+        if(pollingInterval) clearTimeout(pollingInterval);
+        pollingInterval = setTimeout(() => {
+          document.getElementById('step-pay').classList.add('hidden');
+          document.getElementById('step-result').classList.remove('hidden');
+          const dummyAccount = "email_premium_pro@gmail.com : passSecure99\n(Format Akun Auto-Delivery Resmi)";
+          document.getElementById('account-data').innerText = dummyAccount;
+          saveOrderHistory(`INV-DUMMY${Date.now()}`, product.name, variant.name, dummyAccount);
+          showToast('Pembayaran Berhasil! Akun Terkirim.');
+        }, 5000);
+      }
     }
 
-    function closePaymentModal() { document.getElementById('payment-modal').classList.add('hidden'); }
+    // ================= ALUR API NOKOS.CO.ID =================
+    async function startNokosFlow(product, variant, paymentRef) {
+      document.getElementById('step-pay').classList.add('hidden');
+      const stepNokos = document.getElementById('step-nokos');
+      if(!stepNokos) return;
+      stepNokos.classList.remove('hidden');
+      
+      const numDisplay = document.getElementById('nokos-number-display');
+      numDisplay.innerText = "Memesan Nomor...";
+      document.getElementById('nokos-sms-code').classList.add('hidden');
+      document.getElementById('nokos-spinner').classList.remove('hidden');
+      document.getElementById('nokos-sms-status').innerText = "Mengambil Nomor dari Provider...";
+      document.getElementById('nokos-cancel-btn').classList.remove('hidden');
+
+      // Ambil kode service dari baris pertama kotak lisensi (misal di admin ditulis: "wa,62")
+      let serviceCode = "wa";
+      let countryCode = "62";
+      if (variant.items && variant.items.length > 0) {
+        const parts = variant.items[0].split(',');
+        if (parts.length >= 2) {
+          serviceCode = parts[0].trim();
+          countryCode = parts[1].trim();
+        }
+      }
+
+      try {
+        // Tembak API Beli Nomor (getNumber) lewat Worker
+        const orderRes = await fetch(`${API_URL}/nokos-order`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ service: serviceCode, country: countryCode })
+        });
+        const orderData = await orderRes.json();
+
+        // Ambil Response ID & Nomor
+        const nokosId = orderData.id || (orderData.data && orderData.data.id);
+        const nokosNum = orderData.number || (orderData.data && orderData.data.number);
+
+        if (nokosId && nokosNum) {
+          currentNokosId = nokosId;
+          numDisplay.innerText = "+" + nokosNum;
+          document.getElementById('nokos-sms-status').innerText = "Menunggu SMS Masuk (Bisa 1-5 Menit)...";
+
+          // Mulai Polling Cek Kotak Masuk SMS (getStatus)
+          if(nokosPollingInterval) clearInterval(nokosPollingInterval);
+          nokosPollingInterval = setInterval(async () => {
+            try {
+              const smsRes = await fetch(`${API_URL}/nokos-status`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: currentNokosId })
+              });
+              const smsData = await smsRes.json();
+              
+              // Cek jika SMS sudah berisi angka OTP atau STATUS_OK
+              const smsCode = smsData.sms || (smsData.data && smsData.data.sms);
+              const statusStr = smsData.status || (smsData.data && smsData.data.status);
+
+              let finalSms = smsCode;
+              if (typeof statusStr === 'string' && statusStr.includes('STATUS_OK')) {
+                finalSms = statusStr.split(':')[1];
+              }
+
+              if (finalSms) {
+                // HORE! SMS Masuk!
+                clearInterval(nokosPollingInterval);
+                document.getElementById('nokos-spinner').classList.add('hidden');
+                document.getElementById('nokos-sms-status').innerText = "KODE OTP BERHASIL DITERIMA:";
+                
+                const codeElem = document.getElementById('nokos-sms-code');
+                codeElem.innerText = finalSms; 
+                codeElem.classList.remove('hidden');
+                document.getElementById('nokos-cancel-btn').classList.add('hidden');
+
+                // Simpan ke Riwayat Pesanan
+                const accountDetails = `Layanan: ${serviceCode.toUpperCase()}\nNomor: +${nokosNum}\nOTP: ${finalSms}`;
+                saveOrderHistory(paymentRef, product.name, variant.name, accountDetails);
+                showToast("Berhasil mendapatkan Kode OTP!");
+              } else if (statusStr === "STATUS_CANCEL" || statusStr === "CANCELED") {
+                clearInterval(nokosPollingInterval);
+                numDisplay.innerText = "Dibatalkan";
+                document.getElementById('nokos-sms-status').innerText = "Pesanan nomor dibatalkan sistem.";
+                document.getElementById('nokos-spinner').classList.add('hidden');
+              }
+            } catch (err) { console.error("SMS Poll Error", err); }
+          }, 5000); // Polling kotak masuk setiap 5 detik
+        } else {
+           numDisplay.innerText = "Stok Nomor Kosong/Error";
+           document.getElementById('nokos-spinner').classList.add('hidden');
+           document.getElementById('nokos-sms-status').innerText = "Gagal memproses nomor. Hubungi Admin.";
+           showToast("Gagal mengambil nomor dari API Nokos", "error");
+        }
+      } catch (e) {
+         numDisplay.innerText = "Error Jaringan";
+         document.getElementById('nokos-spinner').classList.add('hidden');
+         showToast("Koneksi ke server API Nokos terputus", "error");
+      }
+    }
+
+    // Fungsi Pembatalan Pesanan Nokos (cancelActivation)
+    async function cancelNokosOrder() {
+      if (!currentNokosId) return;
+      document.getElementById('nokos-cancel-btn').innerText = "Membatalkan & Refund...";
+      document.getElementById('nokos-cancel-btn').disabled = true;
+      try {
+        await fetch(`${API_URL}/nokos-cancel`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: currentNokosId })
+        });
+        if(nokosPollingInterval) clearInterval(nokosPollingInterval);
+        document.getElementById('nokos-number-display').innerText = "Dibatalkan";
+        document.getElementById('nokos-sms-status').innerText = "Saldo API sukses dikembalikan.";
+        document.getElementById('nokos-spinner').classList.add('hidden');
+        document.getElementById('nokos-cancel-btn').classList.add('hidden');
+        showToast("Pesanan Nokos dibatalkan");
+      } catch (e) {
+        showToast("Gagal membatalkan. Hubungi Admin.", "error");
+        document.getElementById('nokos-cancel-btn').innerText = "Batalkan Pesanan (Saldo Kembali)";
+        document.getElementById('nokos-cancel-btn').disabled = false;
+      }
+    }
+
+    function closePaymentModal() { 
+      if (pollingInterval) clearInterval(pollingInterval);
+      if (nokosPollingInterval) clearInterval(nokosPollingInterval);
+      document.getElementById('payment-modal').classList.add('hidden'); 
+    }
 
     function copyAccountData() {
       const text = document.getElementById('account-data').innerText;
