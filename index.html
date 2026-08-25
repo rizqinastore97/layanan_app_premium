@@ -4,18 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Digital Store - Marketplace Produk & Jasa Digital</title>
-
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#f5125e" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="DigitalHub" />
   <link rel="icon" type="image/png" href="https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png" />
-  <link rel="apple-touch-icon" href="https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png" />
-
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <style>
     * { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; -webkit-touch-callout: none; }
     input, textarea, select { -webkit-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; user-select: text !important; }
@@ -24,10 +17,6 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    @keyframes fadeInReview { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-    .animate-review { animation: fadeInReview 0.25s ease-out forwards; }
-    @keyframes bounceSoft { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-    .animate-bounce-soft { animation: bounceSoft 2s infinite ease-in-out; }
     .bg-icon-0 { background: linear-gradient(135deg, #10b981, #059669); color: white; }
     .bg-icon-1 { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; }
     .bg-icon-2 { background: linear-gradient(135deg, #f43f5e, #e11d48); color: white; }
@@ -35,107 +24,70 @@
     .bg-icon-4 { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen pb-20 md:pb-10 font-sans antialiased selection:bg-[#f5125e] selection:text-white">
+<body class="bg-slate-50 text-slate-800 min-h-screen pb-20 md:pb-10 font-sans antialiased">
 
   <div id="toast-container" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none w-full max-w-xs px-4"></div>
 
-  <!-- POPUP INSTALL PWA -->
-  <div id="pwa-install-popup" class="fixed inset-0 bg-black/75 z-[9999] hidden flex items-center justify-center p-5 backdrop-blur-2xs transition-opacity duration-300">
-    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center shadow-2xl transform transition-all space-y-4">
-      <div class="w-20 h-20 bg-rose-50 text-[#f5125e] rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner border-4 border-white outline outline-4 outline-rose-100">
-        <i data-lucide="download" class="w-9 h-9 animate-bounce-soft"></i>
-      </div>
-      <div>
-        <h3 class="text-lg sm:text-xl font-black text-slate-900 uppercase italic tracking-tight">Pasang Aplikasi</h3>
-        <p class="text-xs font-semibold text-slate-500 mt-1.5 leading-relaxed">Agar lebih cepat belanja, pasang aplikasi DigitalHub di layar utama Anda!</p>
-      </div>
-      <div class="flex flex-col gap-2.5 pt-2">
-        <button onclick="executePwaInstall()" class="w-full py-3.5 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] hover:opacity-95 text-white font-black text-xs uppercase tracking-wider rounded-2xl shadow-lg active:scale-95 transition flex items-center justify-center gap-2">
-          <i data-lucide="download" class="w-4 h-4"></i><span>Ya, Pasang Sekarang</span>
-        </button>
-        <button onclick="dismissPwaPopup()" class="w-full py-3 bg-slate-100 text-slate-500 font-bold uppercase rounded-2xl active:scale-95 transition text-[11px] hover:bg-slate-200">Mungkin Nanti</button>
-      </div>
-    </div>
-  </div>
-
+  <!-- Header -->
   <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-rose-100/80 shadow-xs px-3 sm:px-8 py-3">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-2.5 sm:gap-6">
       <div class="flex items-center gap-2.5 cursor-pointer flex-shrink-0" onclick="setCategory('Semua')">
-        <img src="https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png" alt="Logo DigitalHub" class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl object-contain bg-white shadow-xs border border-slate-100" />
+        <img src="https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png" alt="Logo" class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl object-contain bg-white shadow-xs border border-slate-100" />
         <div class="hidden sm:block">
           <h1 class="text-base sm:text-lg font-black tracking-tight text-slate-900 leading-tight">DIGITAL<span class="text-[#f5125e]">HUB</span></h1>
-          <p class="text-[10px] text-slate-400 font-medium">Aplikasi Premium, Template & Jasa Sosmed</p>
+          <p class="text-[10px] text-slate-400 font-medium">Aplikasi Premium & Jasa Sosmed</p>
         </div>
       </div>
       <div class="relative flex-1 max-w-2xl">
         <form onsubmit="event.preventDefault(); handleSearch(document.getElementById('search-input').value);" class="flex items-center bg-white border-2 border-[#f5125e] rounded-full p-0.5 sm:p-1 shadow-xs transition-all focus-within:ring-2 focus-within:ring-[#f5125e]/30">
           <i data-lucide="search" class="w-4 h-4 text-slate-400 ml-3 mr-1 flex-shrink-0"></i>
-          <input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="Cari Nokos, Template, Followers, AI..." class="w-full bg-transparent text-slate-800 text-xs sm:text-sm font-medium focus:outline-none placeholder:text-slate-400 px-1" />
-          <button type="submit" class="bg-gradient-to-r from-[#f5125e] to-[#ff2b56] hover:opacity-95 text-white text-xs sm:text-sm font-bold px-3.5 sm:px-5 py-1.5 rounded-full transition-all flex-shrink-0">Search</button>
+          <input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="Cari Produk / Nokos..." class="w-full bg-transparent text-slate-800 text-xs sm:text-sm font-medium focus:outline-none placeholder:text-slate-400 px-1" />
+          <button type="submit" class="bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white text-xs sm:text-sm font-bold px-3.5 sm:px-5 py-1.5 rounded-full flex-shrink-0">Search</button>
         </form>
       </div>
       <div class="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
-        <button onclick="openHistoryModal()" class="hidden md:flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-rose-50 hover:text-[#f5125e] border border-slate-200 px-3.5 py-2.5 rounded-xl transition-all">
-          <i data-lucide="receipt" class="w-4 h-4 text-[#f5125e]"></i><span>Riwayat Pesanan</span>
-        </button>
-        <button onclick="toggleCart(true)" class="relative w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-slate-700 bg-slate-100 border border-slate-200 rounded-xl transition-all flex-shrink-0">
-          <i data-lucide="shopping-cart" class="w-4 h-4 sm:w-5 sm:h-5"></i><span id="cart-badge" class="hidden absolute -top-1 -right-1 bg-[#f5125e] text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">0</span>
-        </button>
-        <button onclick="openChatModal()" class="relative w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-slate-700 bg-slate-100 border border-slate-200 rounded-xl transition-all flex-shrink-0">
-          <i data-lucide="message-square-more" class="w-4 h-4 sm:w-5 sm:h-5"></i><span class="absolute -top-1 -right-1 bg-emerald-500 text-white text-[8px] font-bold px-1 rounded-full border-2 border-white">CS</span>
-        </button>
+        <button onclick="openHistoryModal()" class="hidden md:flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-slate-100 px-3.5 py-2.5 rounded-xl"><i data-lucide="receipt" class="w-4 h-4 text-[#f5125e]"></i><span>Pesanan</span></button>
+        <button onclick="toggleCart(true)" class="relative w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-slate-700 bg-slate-100 rounded-xl flex-shrink-0"><i data-lucide="shopping-cart" class="w-4 h-4 sm:w-5 sm:h-5"></i><span id="cart-badge" class="hidden absolute -top-1 -right-1 bg-[#f5125e] text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">0</span></button>
+        <button onclick="openChatModal()" class="relative w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-slate-700 bg-slate-100 rounded-xl flex-shrink-0"><i data-lucide="message-square-more" class="w-4 h-4 sm:w-5 sm:h-5"></i><span class="absolute -top-1 -right-1 bg-emerald-500 text-white text-[8px] font-bold px-1 rounded-full border-2 border-white">CS</span></button>
       </div>
     </div>
   </header>
 
   <main class="max-w-7xl mx-auto px-3 sm:px-8 py-4 sm:py-6 space-y-5 sm:space-y-6">
+    <!-- Trust Bar -->
     <div class="bg-white rounded-2xl p-3 sm:p-4 shadow-2xs border border-rose-100/60 grid grid-cols-3 gap-2 text-center text-xs">
-      <div class="flex items-center justify-center gap-2.5 border-r border-slate-100 cursor-pointer">
-        <div class="w-8 h-8 rounded-xl bg-rose-50 text-[#f5125e] flex items-center justify-center flex-shrink-0"><i data-lucide="qr-code" class="w-4 h-4"></i></div>
-        <div class="text-left hidden sm:block"><p class="font-bold text-slate-800 leading-tight">Auto QRIS</p><p class="text-[10px] text-slate-400">Verifikasi instan</p></div>
-      </div>
-      <div class="flex items-center justify-center gap-2.5 border-r border-slate-100 cursor-pointer" onclick="openHistoryModal()">
-        <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0"><i data-lucide="receipt" class="w-4 h-4"></i></div>
-        <div class="text-left hidden sm:block"><p class="font-bold text-slate-800 leading-tight">Cek Transaksi</p><p class="text-[10px] text-slate-400">Riwayat belanja</p></div>
-      </div>
-      <div class="flex items-center justify-center gap-2.5 cursor-pointer">
-        <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0"><i data-lucide="shield-check" class="w-4 h-4"></i></div>
-        <div class="text-left hidden sm:block"><p class="font-bold text-slate-800 leading-tight">Garansi 100%</p><p class="text-[10px] text-slate-400">Resmi & Aman</p></div>
-      </div>
+      <div class="flex items-center justify-center gap-2.5 border-r border-slate-100 cursor-pointer"><div class="w-8 h-8 rounded-xl bg-rose-50 text-[#f5125e] flex items-center justify-center flex-shrink-0"><i data-lucide="qr-code" class="w-4 h-4"></i></div><div class="text-left hidden sm:block"><p class="font-bold text-slate-800 leading-tight">Auto QRIS</p><p class="text-[10px] text-slate-400">Verifikasi instan</p></div></div>
+      <div class="flex items-center justify-center gap-2.5 border-r border-slate-100 cursor-pointer" onclick="openHistoryModal()"><div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0"><i data-lucide="receipt" class="w-4 h-4"></i></div><div class="text-left hidden sm:block"><p class="font-bold text-slate-800 leading-tight">Transaksi</p><p class="text-[10px] text-slate-400">Riwayat akun</p></div></div>
+      <div class="flex items-center justify-center gap-2.5 cursor-pointer"><div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0"><i data-lucide="shield-check" class="w-4 h-4"></i></div><div class="text-left hidden sm:block"><p class="font-bold text-slate-800 leading-tight">Garansi 100%</p><p class="text-[10px] text-slate-400">Resmi & Aman</p></div></div>
     </div>
 
-    <!-- Menu Kategori Grid -->
+    <!-- Kategori Menu -->
     <div class="bg-white rounded-2xl p-3.5 sm:p-5 shadow-2xs border border-slate-200/80">
       <div id="category-buttons-grid" class="grid grid-cols-4 sm:grid-cols-8 gap-3 sm:gap-4 text-center text-[11px] font-semibold text-slate-700">
-        <div onclick="setCategory('AI')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="AI"><div class="cat-icon-box w-12 h-12 bg-rose-50 text-[#f5125e] rounded-2xl flex items-center justify-center border border-rose-100 group-hover:scale-105 group-hover:bg-[#f5125e] group-hover:text-white transition-all shadow-2xs"><i data-lucide="bot" class="w-5 h-5"></i></div><span class="truncate w-full">Akun AI</span></div>
-        <div onclick="setCategory('Editor')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Editor"><div class="cat-icon-box w-12 h-12 bg-pink-50 text-pink-600 rounded-2xl flex items-center justify-center border border-pink-100 group-hover:scale-105 group-hover:bg-pink-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="video" class="w-5 h-5"></i></div><span class="truncate w-full">App Pro</span></div>
-        <div onclick="setCategory('Blogger')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Blogger"><div class="cat-icon-box w-12 h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center border border-amber-100 group-hover:scale-105 group-hover:bg-amber-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="layout" class="w-5 h-5"></i></div><span class="truncate w-full">Blogger</span></div>
-        <div onclick="setCategory('Landing')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Landing"><div class="cat-icon-box w-12 h-12 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center border border-sky-100 group-hover:scale-105 group-hover:bg-sky-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="globe" class="w-5 h-5"></i></div><span class="truncate w-full">Landing Page</span></div>
-        <div onclick="setCategory('Sosmed')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Sosmed"><div class="cat-icon-box w-12 h-12 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center border border-purple-100 group-hover:scale-105 group-hover:bg-purple-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="users" class="w-5 h-5"></i></div><span class="truncate w-full">Followers</span></div>
-        <div onclick="openNokosModal()" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Nokos"><div class="cat-icon-box w-12 h-12 bg-[#f5125e] text-white rounded-2xl flex items-center justify-center shadow-md ring-2 ring-rose-200 transition-transform hover:scale-105 active:scale-95"><i data-lucide="smartphone" class="w-5 h-5"></i></div><span class="truncate w-full font-black text-[#f5125e]">Nokos OTP</span></div>
-        <div onclick="setCategory('Stream')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Stream"><div class="cat-icon-box w-12 h-12 bg-violet-50 text-violet-600 rounded-2xl flex items-center justify-center border border-violet-100 group-hover:scale-105 group-hover:bg-violet-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="play-square" class="w-5 h-5"></i></div><span class="truncate w-full">Streaming</span></div>
-        <div onclick="setCategory('Semua')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group active-cat" data-cat="Semua"><div class="cat-icon-box w-12 h-12 bg-[#f5125e] text-white rounded-2xl flex items-center justify-center border border-[#f5125e] shadow-2xs"><i data-lucide="grid" class="w-5 h-5"></i></div><span class="truncate w-full font-bold text-[#f5125e]">Semua</span></div>
+        <div onclick="setCategory('AI')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="AI"><div class="cat-icon-box w-12 h-12 bg-rose-50 text-[#f5125e] rounded-2xl flex items-center justify-center border border-rose-100 group-hover:bg-[#f5125e] group-hover:text-white transition-all"><i data-lucide="bot" class="w-5 h-5"></i></div><span class="truncate w-full">Akun AI</span></div>
+        <div onclick="setCategory('Editor')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Editor"><div class="cat-icon-box w-12 h-12 bg-pink-50 text-pink-600 rounded-2xl flex items-center justify-center border border-pink-100 group-hover:bg-pink-600 group-hover:text-white transition-all"><i data-lucide="video" class="w-5 h-5"></i></div><span class="truncate w-full">App Pro</span></div>
+        
+        <!-- TOMBOL NOKOS -->
+        <div onclick="openNokosModal()" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Nokos">
+          <div class="cat-icon-box w-12 h-12 bg-[#f5125e] text-white rounded-2xl flex items-center justify-center border border-[#f5125e] shadow-md ring-2 ring-rose-200 transition-transform hover:scale-105 active:scale-95"><i data-lucide="smartphone" class="w-5 h-5"></i></div>
+          <span class="truncate w-full font-black text-[#f5125e]">Nokos OTP</span>
+        </div>
+
+        <div onclick="setCategory('Stream')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Stream"><div class="cat-icon-box w-12 h-12 bg-violet-50 text-violet-600 rounded-2xl flex items-center justify-center border border-violet-100 group-hover:bg-violet-600 group-hover:text-white transition-all"><i data-lucide="play-square" class="w-5 h-5"></i></div><span class="truncate w-full">Streaming</span></div>
+        <div onclick="setCategory('Semua')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group active-cat" data-cat="Semua"><div class="cat-icon-box w-12 h-12 bg-[#f5125e] text-white rounded-2xl flex items-center justify-center border border-[#f5125e]"><i data-lucide="grid" class="w-5 h-5"></i></div><span class="truncate w-full font-bold text-[#f5125e]">Semua</span></div>
       </div>
     </div>
 
-    <!-- BANNER DINAMIS -->
-    <div id="store-banner-wrapper" class="hidden">
-      <div id="banner-image-container" class="w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm border border-slate-200/80 hidden"><img id="main-banner-image" src="" alt="Banner" class="w-full h-auto max-h-56 sm:max-h-72 object-cover" /></div>
-      <div id="banner-text-container" class="hidden bg-gradient-to-r from-[#f5125e] via-[#ff2b56] to-[#ff6b8b] rounded-2xl p-4 sm:p-6 text-white shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div class="space-y-1.5"><div class="flex items-center gap-1 text-[10px] sm:text-xs font-black uppercase tracking-wider bg-white/20 backdrop-blur-xs px-2.5 py-1 rounded-full w-max"><i data-lucide="flame" class="w-3.5 h-3.5 text-yellow-300"></i> LAZFLASH PROMO HARI INI</div><h3 class="font-black text-sm sm:text-2xl tracking-tight">Katalog Produk Terlengkap</h3></div>
-      </div>
-    </div>
-
+    <!-- Katalog Produk -->
     <div id="product-catalog-section" class="space-y-3">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-1">
         <div class="flex items-center gap-2">
           <h2 class="text-sm sm:text-base font-extrabold text-slate-800 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4 text-[#f5125e]"></i> Daftar Produk</h2>
-          <span id="active-category-badge" class="text-[10px] uppercase font-bold text-[#f5125e] bg-rose-50 px-2 py-0.5 rounded-md border border-rose-100">Semua</span>
           <span id="product-count" class="text-xs text-slate-500 font-semibold">(0 Produk)</span>
         </div>
       </div>
       <div id="loading-indicator" class="flex flex-col items-center justify-center py-12 text-[#f5125e]"><i data-lucide="loader-2" class="w-8 h-8 animate-spin mb-2"></i><span class="text-xs font-semibold text-slate-500">Memuat Katalog...</span></div>
-      <div id="product-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2.5 sm:gap-4 hidden"></div>
+      <div id="product-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5 sm:gap-4 hidden"></div>
     </div>
   </main>
 
@@ -144,12 +96,10 @@
     <button onclick="setCategory('Semua')" class="flex flex-col items-center gap-0.5 text-[#f5125e]"><i data-lucide="home" class="w-4 h-4"></i><span>Beranda</span></button>
     <button onclick="openNokosModal()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="smartphone" class="w-4 h-4 text-emerald-600"></i><span>Nokos OTP</span></button>
     <button onclick="openHistoryModal()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="receipt" class="w-4 h-4"></i><span>Pesanan</span></button>
-    <button onclick="toggleCart(true)" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="shopping-bag" class="w-4 h-4"></i><span>Keranjang</span></button>
-    <button onclick="openChatModal()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="message-square-more" class="w-4 h-4"></i><span>Chat CS</span></button>
   </div>
 
   <!-- ======================================================== -->
-  <!-- MODAL NOKOS DINAMIS (PILIH NEGARA, PROVIDER)             -->
+  <!-- MODAL NOKOS DINAMIS (PILIH NEGARA, PROVIDER & LOGO ASLI) -->
   <!-- ======================================================== -->
   <div id="nokos-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div onclick="closeNokosModal()" class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
@@ -179,21 +129,20 @@
           </div>
         </div>
 
-        <div class="p-4 overflow-y-auto flex-1 bg-slate-50/50">
+        <div class="p-4 overflow-y-auto flex-1 bg-slate-50/50 relative">
           <div id="nokos-loading" class="flex flex-col items-center justify-center py-10 text-slate-400">
             <i data-lucide="loader-2" class="w-8 h-8 animate-spin text-[#f5125e] mb-2"></i>
             <span class="text-xs font-semibold mt-2 text-center px-4">Menarik harga dan layanan terkini...</span>
           </div>
-
           <div id="nokos-services-grid" class="grid grid-cols-4 sm:grid-cols-5 gap-3 hidden"></div>
-
+          
           <div id="nokos-selected-info" class="hidden mt-6 bg-gradient-to-br from-rose-50 to-white border border-rose-200 rounded-2xl p-4 flex items-center justify-between shadow-sm sticky bottom-2">
             <div>
               <p class="text-[9px] text-rose-600 font-black uppercase tracking-wider mb-0.5">Layanan Terpilih</p>
               <h4 id="nokos-selected-name" class="text-sm font-bold text-slate-800 leading-tight">WhatsApp</h4>
             </div>
             <div class="text-right">
-              <p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider mb-0.5">Total Harga</p>
+              <p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider mb-0.5">Harga Final</p>
               <h4 id="nokos-selected-price" class="text-base font-black text-[#f5125e] leading-tight">Rp 0</h4>
             </div>
           </div>
@@ -210,16 +159,16 @@
 
   <!-- MODAL PEMBAYARAN QRIS (ALUR BARU: AMBIL NOMOR DULU BARU BAYAR) -->
   <div id="payment-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
-    <!-- Overlay tidak memanggil closePaymentModal langsung untuk mencegah cancel tidak sengaja -->
+    <!-- Overlay sengaja kosong agar user tidak tidak sengaja menutup saat QRIS dimuat -->
     <div class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
     <div class="fixed inset-0 flex items-center justify-center p-4 z-50">
       <div id="payment-modal-card" class="bg-white w-full max-w-sm sm:max-w-md rounded-3xl shadow-2xl overflow-hidden p-5 flex flex-col text-center max-h-[92vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-2">
-          <h3 class="font-bold text-sm text-slate-800 flex items-center gap-1.5"><i data-lucide="wallet" class="w-4 h-4 text-[#f5125e]"></i> Pembayaran QRIS</h3>
-          <button onclick="closePaymentModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+          <h3 class="font-bold text-sm text-slate-800 flex items-center gap-1.5"><i data-lucide="wallet" class="w-4 h-4 text-[#f5125e]"></i> Pembayaran & Aktivasi</h3>
+          <!-- Tombol silang untuk cancel diletakkan manual -->
         </div>
         
-        <!-- STEP 1: PEMBAYARAN & LOADING NOMOR -->
+        <!-- STEP 1: LOADING & QRIS -->
         <div id="step-pay" class="space-y-3">
           <div class="bg-rose-50/70 p-2.5 rounded-2xl border border-rose-100 text-left">
             <p id="pay-item-name" class="text-xs font-semibold text-slate-800 truncate"></p>
@@ -238,8 +187,8 @@
             <p class="text-[10.5px] text-emerald-800 font-medium leading-tight">Harap tunggu, jangan tutup halaman ini.</p>
           </div>
 
-          <!-- TOMBOL BATAL KHUSUS NOKOS SEBELUM BAYAR -->
-          <button id="nokos-cancel-qris-btn" onclick="closePaymentModal()" class="hidden w-full mt-2 bg-rose-50 text-rose-600 border border-rose-200 py-2.5 rounded-xl text-xs font-bold hover:bg-rose-100 transition-colors">Batalkan Pesanan (Refund Saldo Admin)</button>
+          <!-- TOMBOL BATAL KHUSUS NOKOS SEBELUM BAYAR (AGAR SALDO REFUND) -->
+          <button id="nokos-cancel-qris-btn" onclick="cancelAndClosePaymentModal()" class="hidden w-full mt-2 bg-rose-50 text-rose-600 border border-rose-200 py-2.5 rounded-xl text-xs font-bold hover:bg-rose-100 transition-colors">Batal & Tutup (Refund Otomatis)</button>
         </div>
 
         <!-- STEP 2: RESULT (PRODUK BIASA) -->
@@ -253,14 +202,15 @@
             <pre id="account-data" class="font-mono text-xs text-slate-800 whitespace-pre-wrap select-all"></pre>
             <button onclick="copyAccountData()" class="mt-2 w-full bg-[#f5125e] text-white py-2 rounded-xl font-bold text-xs">Salin Data</button>
           </div>
+          <button onclick="forceClosePaymentModal()" class="w-full mt-2 bg-slate-100 text-slate-600 py-2.5 rounded-xl text-xs font-bold hover:bg-slate-200">Tutup</button>
         </div>
 
-        <!-- STEP 3: RESULT NOKOS (TUNGGU SMS) -->
+        <!-- STEP 3: RESULT NOKOS (TUNGGU SMS SETELAH BAYAR) -->
         <div id="step-nokos" class="space-y-3 hidden text-left mt-2">
           <div class="text-center border-b border-slate-100 pb-3">
             <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-1"><i data-lucide="message-square" class="w-6 h-6"></i></div>
             <h4 class="font-bold text-sm text-slate-800">Menunggu Verifikasi SMS</h4>
-            <p class="text-[10px] text-slate-500 mt-0.5">Sistem sedang menunggu OTP masuk dari pusat.</p>
+            <p class="text-[10px] text-slate-500 mt-0.5">Sistem sedang mengecek OTP dari pusat.</p>
           </div>
           <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 text-center shadow-inner mt-2">
             <span class="text-[10px] text-slate-500 font-bold block uppercase mb-1">Nomor Virtual Anda:</span>
@@ -271,7 +221,8 @@
             <span class="text-[10px] text-emerald-800 font-bold block uppercase text-center" id="nokos-sms-status">Mengecek Kotak Masuk...</span>
             <h3 id="nokos-sms-code" class="text-3xl font-black text-emerald-600 tracking-widest hidden bg-white px-4 py-2 rounded-xl border border-emerald-200 shadow-sm mt-1"></h3>
           </div>
-          <button id="nokos-cancel-btn" onclick="reportNokosIssue()" class="mt-2 w-full bg-slate-100 text-slate-600 border border-slate-200 py-2.5 rounded-xl font-bold text-xs hover:bg-slate-200 transition-colors">SMS Tidak Masuk? (Lapor Admin / Refund)</button>
+          <button id="nokos-finish-btn" onclick="forceClosePaymentModal()" class="mt-2 w-full bg-emerald-100 text-emerald-700 border border-emerald-200 py-2.5 rounded-xl font-bold text-xs hover:bg-emerald-200 transition-colors hidden">Selesai & Tutup</button>
+          <button id="nokos-cancel-btn" onclick="reportNokosIssue()" class="mt-2 w-full bg-slate-100 text-slate-600 border border-slate-200 py-2.5 rounded-xl font-bold text-xs hover:bg-slate-200 transition-colors hidden">SMS Tidak Masuk? (Batalkan & Lapor Admin)</button>
         </div>
       </div>
     </div>
@@ -293,75 +244,12 @@
         </div>
         <div class="p-4 overflow-y-auto space-y-4 text-xs sm:text-sm flex-1">
           <div><h4 class="font-bold text-slate-800 mb-1.5 text-xs">Pilihan Varian / Layanan:</h4><div id="modal-variants-list" class="flex flex-wrap gap-2"></div></div>
-          <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex items-center justify-around text-center">
-            <div><span class="text-[10px] text-slate-400 block">Terjual</span><span id="modal-sold" class="font-bold text-slate-800"></span></div><div class="w-px h-5 bg-slate-200"></div>
-            <div><span class="text-[10px] text-slate-400 block">Rating</span><span id="modal-rating" class="font-bold text-slate-800"></span></div><div class="w-px h-5 bg-slate-200"></div>
-            <div><span class="text-[10px] text-slate-400 block">Garansi</span><span id="modal-warranty" class="font-bold text-emerald-600"></span></div>
-          </div>
           <div><h4 class="font-bold text-slate-800 mb-1">Deskripsi Layanan</h4><p id="modal-desc" class="text-slate-600 leading-relaxed whitespace-pre-line text-xs"></p></div>
-          <div class="bg-amber-50 border border-amber-200 rounded-xl p-3"><h4 class="font-bold text-amber-900 mb-1 flex items-center gap-1.5 text-xs"><i data-lucide="shield-alert" class="w-4 h-4"></i> Syarat & Ketentuan</h4><p id="modal-terms" class="text-amber-800 leading-relaxed whitespace-pre-line text-[11px]"></p></div>
         </div>
         <div class="p-3.5 bg-slate-50 border-t border-slate-100 grid grid-cols-5 gap-2">
           <button id="modal-btn-chat" class="col-span-1 border border-rose-200 bg-rose-50 hover:bg-rose-100 text-[#f5125e] rounded-xl flex flex-col items-center justify-center p-2"><i data-lucide="message-square-more" class="w-4 h-4"></i><span class="text-[9px] font-bold">Chat</span></button>
           <button id="modal-btn-cart" class="col-span-2 bg-rose-50 text-[#f5125e] border border-rose-200 font-bold rounded-xl text-xs py-2.5">+ Keranjang</button>
           <button id="modal-btn-buy" class="col-span-2 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white font-bold rounded-xl text-xs py-2.5 shadow-xs">Beli Sekarang</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL RIWAYAT PESANAN -->
-  <div id="history-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
-    <div onclick="closeHistoryModal()" class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
-    <div class="fixed inset-0 flex items-center justify-center p-4 z-50">
-      <div id="history-modal-card" class="bg-white w-full max-w-lg rounded-3xl shadow-2xl p-5 flex flex-col max-h-[90vh]">
-        <div class="flex justify-between items-center pb-3 border-b border-slate-100">
-          <h3 class="font-bold text-sm sm:text-base text-slate-800 flex items-center gap-2"><i data-lucide="history" class="w-5 h-5 text-[#f5125e]"></i> Riwayat Pesanan</h3>
-          <button onclick="closeHistoryModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
-        </div>
-        <div id="history-list" class="flex-1 overflow-y-auto space-y-3 pr-1 mt-3"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- CART DRAWER -->
-  <div id="cart-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
-    <div onclick="toggleCart(false)" class="absolute inset-0 bg-black/40 backdrop-blur-2xs"></div>
-    <div class="fixed inset-y-0 right-0 max-w-full flex pl-10 z-50">
-      <div id="cart-drawer" class="w-screen max-w-sm bg-white shadow-xl flex flex-col translate-x-full transition-transform">
-        <div class="px-4 py-4 border-b border-slate-100 flex items-center justify-between">
-          <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2"><i data-lucide="shopping-cart" class="w-4 h-4 text-[#f5125e]"></i> Keranjang Belanja (<span id="cart-title-count">0</span>)</h3>
-          <button onclick="toggleCart(false)" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
-        </div>
-        <div id="cart-items" class="flex-1 overflow-y-auto p-4 space-y-2.5"></div>
-        <div id="cart-footer" class="p-4 border-t border-slate-100 bg-slate-50 space-y-3 hidden">
-          <div class="flex justify-between items-center text-xs sm:text-sm"><span class="text-slate-500 font-medium">Total:</span><span id="cart-total-price" class="font-black text-[#f5125e] text-base">Rp 0</span></div>
-          <button onclick="processCartCheckout()" class="w-full bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white py-3 rounded-xl font-bold text-xs sm:text-sm shadow-md">Checkout QRIS Sekarang</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL LIVE CHAT CS ASISTEN -->
-  <div id="chat-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
-    <div onclick="closeChatModal()" class="absolute inset-0 bg-black/50 backdrop-blur-2xs"></div>
-    <div class="fixed inset-y-0 right-0 max-w-full flex pl-10 z-50">
-      <div id="chat-drawer" class="w-screen max-w-sm sm:max-w-md bg-white shadow-2xl flex flex-col translate-x-full transition-transform duration-300">
-        <div class="p-3.5 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white flex items-center justify-between shadow-xs">
-          <div class="flex items-center gap-2.5">
-            <div class="relative"><div class="w-9 h-9 bg-white text-[#f5125e] rounded-full flex items-center justify-center font-bold text-sm shadow-xs"><i data-lucide="headset" class="w-5 h-5"></i></div><span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 border-2 border-white rounded-full"></span></div>
-            <div><h3 class="text-xs sm:text-sm font-bold leading-tight">Customer Support</h3><p class="text-[10px] text-rose-100">Online & Siap Membantu 24 Jam</p></div>
-          </div>
-          <button onclick="closeChatModal()" class="text-white/80 hover:text-white p-1 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
-        </div>
-        <div id="chat-messages-container" class="flex-1 p-3.5 overflow-y-auto space-y-3 bg-slate-50 text-xs">
-          <div class="flex items-start gap-2"><div class="w-7 h-7 rounded-full bg-rose-100 text-[#f5125e] flex items-center justify-center flex-shrink-0 text-xs font-bold">CS</div><div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs space-y-1.5 max-w-[85%] text-slate-800"><p class="font-semibold text-slate-800">Halo Kak! 👋 Ada yang bisa dibantu?</p></div></div>
-        </div>
-        <div class="p-2.5 border-t border-slate-200 bg-white">
-          <form onsubmit="handleUserChatSubmit(event)" class="flex items-center gap-1.5">
-            <input type="text" id="user-chat-input" placeholder="Ketik pertanyaan..." class="flex-1 bg-slate-100 text-slate-800 text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#f5125e]" />
-            <button type="submit" class="bg-[#f5125e] text-white p-2.5 rounded-xl"><i data-lucide="send" class="w-4 h-4"></i></button>
-          </form>
         </div>
       </div>
     </div>
@@ -373,37 +261,36 @@
     const QRIS_STATIC_URL = "https://i.ibb.co.com/PGRmz0G8/Whats-App-Image-2026-08-24-at-12-25-05.jpg"; 
 
     const APP_LOGOS = {
-      "wa": "https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg",
-      "tg": "https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg",
-      "ig": "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png",
-      "fb": "https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg",
-      "go": "https://upload.wikimedia.org/wikipedia/commons/9/99/Gojek_logo_2019.svg",
-      "sh": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg",
-      "gr": "https://upload.wikimedia.org/wikipedia/commons/0/07/Grab_Logo.svg",
-      "nf": "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
-      "tt": "https://upload.wikimedia.org/wikipedia/en/a/a9/TikTok_logo.svg",
-      "tw": "https://upload.wikimedia.org/wikipedia/commons/c/ce/X_logo_2023.svg",
-      "li": "https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg",
-      "ds": "https://upload.wikimedia.org/wikipedia/en/9/98/Discord_logo.svg",
-      "sp": "https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg",
-      "am": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
-      "gl": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg"
+      "wa": "https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg", "whatsapp": "https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg",
+      "tg": "https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg", "telegram": "https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg",
+      "ig": "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png", "instagram": "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png",
+      "fb": "https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg", "facebook": "https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg",
+      "go": "https://upload.wikimedia.org/wikipedia/commons/9/99/Gojek_logo_2019.svg", "gojek": "https://upload.wikimedia.org/wikipedia/commons/9/99/Gojek_logo_2019.svg",
+      "sh": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg", "shopee": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg",
+      "gr": "https://upload.wikimedia.org/wikipedia/commons/0/07/Grab_Logo.svg", "grab": "https://upload.wikimedia.org/wikipedia/commons/0/07/Grab_Logo.svg",
+      "nf": "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg", "netflix": "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
+      "tt": "https://upload.wikimedia.org/wikipedia/en/a/a9/TikTok_logo.svg", "tiktok": "https://upload.wikimedia.org/wikipedia/en/a/a9/TikTok_logo.svg",
+      "tw": "https://upload.wikimedia.org/wikipedia/commons/c/ce/X_logo_2023.svg", "twitter": "https://upload.wikimedia.org/wikipedia/commons/c/ce/X_logo_2023.svg",
+      "li": "https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg", "line": "https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg",
+      "ds": "https://upload.wikimedia.org/wikipedia/en/9/98/Discord_logo.svg", "discord": "https://upload.wikimedia.org/wikipedia/en/9/98/Discord_logo.svg",
+      "sp": "https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg", "spotify": "https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg",
+      "am": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg", "amazon": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
+      "gl": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg", "google": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg"
     };
 
     let products = [];
-    let cart = JSON.parse(localStorage.getItem('my_digital_cart') || '[]');
     let activeCategory = 'Semua';
     let searchQuery = '';
     
-    // Variabel Nokos API
+    // Variabel Nokos
     let allNokosServices = [];
     let selectedNokosService = null;
-    let currentNokosCountry = "6"; 
+    let currentNokosCountry = "6"; // ID Indonesia API
     let currentNokosOperator = "any";
     let pollingInterval = null;
     let nokosPollingInterval = null;
     let currentNokosId = null;
-    let isNokosPaid = false; // FLAG PENGAMAN PEMBAYARAN
+    let isNokosPaid = false; 
 
     const formatIDR = (val) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(val);
 
@@ -424,7 +311,7 @@
       } catch (e) { products = []; }
       document.getElementById('loading-indicator').classList.add('hidden');
       document.getElementById('product-grid').classList.remove('hidden');
-      renderProducts(); renderCart();
+      renderProducts();
     }
 
     function setCategory(cat) {
@@ -443,7 +330,6 @@
     }
 
     function handleSearch(q) { searchQuery = (q || '').toLowerCase(); renderProducts(); }
-    function handleSortChange(s) { renderProducts(); }
 
     function renderProducts() {
       const grid = document.getElementById('product-grid');
@@ -462,7 +348,7 @@
       }).join('');
     }
 
-    // ================= FUNGSI LAYAR NOKOS =================
+    // ================= FUNGSI LAYAR NOKOS (ANTI ERROR PUSAT) =================
     async function openNokosModal() {
       document.getElementById('nokos-modal').classList.remove('hidden');
       document.getElementById('nokos-selected-info').classList.add('hidden');
@@ -541,62 +427,68 @@
       btnBuy.disabled = false;
       btnBuy.className = "w-full py-3.5 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white shadow-lg shadow-rose-500/30 font-black rounded-2xl hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 text-sm cursor-pointer";
       btnBuy.innerHTML = `Bayar ${formatIDR(price)} <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
-      btnBuy.onclick = () => { closeNokosModal(); startDynamicNokosCheckout(selectedNokosService); };
+      btnBuy.onclick = () => { startDynamicNokosCheckout(selectedNokosService); };
     }
 
     function closeNokosModal() { document.getElementById('nokos-modal').classList.add('hidden'); }
 
-    // ================== ALUR BARU: AMBIL NOMOR DULU, BARU MUNCUL QRIS ==================
+    // ================== ALUR SMM PANEL: AMBIL NOMOR -> BARU MUNCUL QRIS ==================
     async function startDynamicNokosCheckout(serviceObj) {
-      isNokosPaid = false;
-      document.getElementById('step-pay').classList.remove('hidden');
-      document.getElementById('step-result').classList.add('hidden');
-      document.getElementById('step-nokos').classList.add('hidden');
-      
-      document.getElementById('nokos-cancel-qris-btn').classList.add('hidden');
-      document.getElementById('payment-modal').classList.remove('hidden');
-      
-      document.getElementById('pay-item-name').innerText = `Nokos OTP - ${serviceObj.name}`;
-      document.getElementById('pay-total-amount').innerText = formatIDR(serviceObj.price);
-      
-      const qrisImg = document.getElementById('qris-img');
-      const qrisSpin = document.getElementById('qris-loading-spin');
-      const qrisText = document.getElementById('qris-loading-text');
-      
-      qrisImg.classList.add('hidden');
-      qrisSpin.classList.remove('hidden');
-      qrisText.innerHTML = "Memeriksa ketersediaan nomor di pusat...<br>Mohon tunggu.";
-      document.getElementById('auto-polling-indicator').innerHTML = `<i data-lucide="loader" class="w-4 h-4 text-emerald-600 animate-spin flex-shrink-0"></i><p class="text-[10.5px] text-emerald-800 font-medium leading-tight">Mencari nomor...</p>`;
+      const btnBuy = document.getElementById('nokos-btn-buy');
+      btnBuy.disabled = true;
+      btnBuy.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Mengecek & Booking Nomor...`;
       lucide.createIcons();
 
       try {
-        // 1. TEMBAK API ORDER NOMOR DULUAN
+        // 1. ORDER NOMOR DARI PUSAT (SESUAI DOKUMENTASI TERBARU)
         const orderRes = await fetch(`${API_URL}/nokos-order`, {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ service: serviceObj.code, country: currentNokosCountry, operator: currentNokosOperator })
         });
         const orderData = await orderRes.json();
         
-        const nokosId = orderData.id || (orderData.data && orderData.data.id);
-        const nokosNum = orderData.number || (orderData.data && orderData.data.number);
+        // Sesuai Screenshot Nokos API Kakak: {"data": {"activation_id": 123, "phone": "628..."}}
+        const nokosId = orderData.data?.activation_id || orderData.activation_id || orderData.id;
+        const nokosNum = orderData.data?.phone || orderData.phone || orderData.number;
 
         if (!nokosId || !nokosNum) {
             // JIKA KOSONG, BERHENTI DISINI. QRIS TIDAK DIBUAT.
-            qrisSpin.innerHTML = `<i data-lucide="x-circle" class="w-8 h-8 text-rose-500 mb-2"></i><span class="text-[11px] font-bold text-rose-600 text-center">Stok Nomor Kosong / Saldo Admin Habis.<br>Silakan tutup dan pilih negara lain.</span>`;
-            document.getElementById('auto-polling-indicator').innerHTML = `<p class="text-[10px] text-rose-600 font-bold">Transaksi Dibatalkan Otomatis.</p>`;
+            const errMsg = orderData.message || "Stok Nomor Kosong / Saldo Provider Pusat Habis.";
+            showToast(errMsg, "error");
+            btnBuy.disabled = false;
+            btnBuy.innerHTML = `Bayar ${formatIDR(serviceObj.price)} <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
             lucide.createIcons();
             return;
         }
 
-        // 2. JIKA NOMOR BERHASIL DIAMANKAN, BARU BUAT QRIS TRIPAY
+        // 2. NOMOR BERHASIL DIAMANKAN! SEKARANG BUKA QRIS
         currentNokosId = nokosId;
-        qrisText.innerHTML = `Nomor <b>+${nokosNum}</b> berhasil diamankan!<br>Sedang membuat QRIS...`;
+        isNokosPaid = false;
+        closeNokosModal(); 
+        
+        document.getElementById('step-pay').classList.remove('hidden');
+        document.getElementById('step-result').classList.add('hidden');
+        document.getElementById('step-nokos').classList.add('hidden');
+        document.getElementById('nokos-cancel-qris-btn').classList.remove('hidden'); // Munculkan tombol batal
+        document.getElementById('payment-modal').classList.remove('hidden');
+        
+        document.getElementById('pay-item-name').innerText = `Nokos OTP - ${serviceObj.name}`;
+        document.getElementById('pay-total-amount').innerText = formatIDR(serviceObj.price);
+        
+        const qrisImg = document.getElementById('qris-img');
+        const qrisSpin = document.getElementById('qris-loading-spin');
+        const qrisText = document.getElementById('qris-loading-text');
+        
+        qrisImg.classList.add('hidden');
+        qrisSpin.classList.remove('hidden');
+        qrisText.innerHTML = `Nomor <b>+${nokosNum}</b> berhasil dibooking!<br>Sedang membuat QRIS...`;
+        document.getElementById('auto-polling-indicator').innerHTML = `<i data-lucide="loader" class="w-4 h-4 text-emerald-600 animate-spin flex-shrink-0"></i><p class="text-[10.5px] text-emerald-800 font-medium leading-tight">Harap tunggu, sistem sedang membuat link pembayaran.</p>`;
+        lucide.createIcons();
 
+        // 3. BUAT QRIS TRIPAY
         const txRes = await fetch(`${API_URL}/create-tripay-tx`, {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-             productId: "DYNAMIC_NOKOS", nokosServiceCode: serviceObj.code, nokosPrice: serviceObj.price
-          })
+          body: JSON.stringify({ productId: "DYNAMIC_NOKOS", nokosServiceCode: serviceObj.code, nokosPrice: serviceObj.price })
         });
         const txData = await txRes.json();
 
@@ -607,7 +499,6 @@
           qrisImg.onload = () => { 
               qrisImg.classList.remove('hidden'); 
               qrisSpin.classList.add('hidden'); 
-              document.getElementById('nokos-cancel-qris-btn').classList.remove('hidden');
               document.getElementById('auto-polling-indicator').innerHTML = `<i data-lucide="loader" class="w-4 h-4 text-emerald-600 animate-spin flex-shrink-0"></i><p class="text-[10.5px] text-emerald-800 font-medium leading-tight">Nomor <b>+${nokosNum}</b> sudah disiapkan.<br>Segera bayar agar OTP masuk.</p>`;
               lucide.createIcons();
           };
@@ -630,12 +521,16 @@
           }, 4000); 
 
         } else {
-          showToast("Gagal membuat pesanan QRIS.", "error");
+          showToast("Gagal membuat QRIS TriPay.", "error");
           await fetch(`${API_URL}/nokos-cancel`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: currentNokosId }) });
-          qrisSpin.innerHTML = `<span class="text-rose-500 font-bold text-xs">Gagal QRIS. Dibatalkan.</span>`;
+          currentNokosId = null;
+          forceClosePaymentModal();
         }
       } catch (err) { 
-          qrisSpin.innerHTML = `<span class="text-rose-500 font-bold text-xs">Sistem Pusat Sibuk/Error.</span>`; 
+        showToast("Koneksi gagal. Coba lagi.", "error");
+        btnBuy.disabled = false;
+        btnBuy.innerHTML = `Bayar ${formatIDR(serviceObj.price)} <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+        lucide.createIcons();
       }
     }
 
@@ -672,6 +567,7 @@
             const codeElem = document.getElementById('nokos-sms-code');
             codeElem.innerText = finalSms; codeElem.classList.remove('hidden');
             btnCancel.classList.add('hidden');
+            document.getElementById('nokos-finish-btn').classList.remove('hidden');
 
             const accountDetails = `Layanan: ${serviceName}\nNomor: +${nokosNum}\nOTP: ${finalSms}`;
             saveOrderHistory(paymentRef, `Nokos ${serviceName}`, "OTP Instan", accountDetails);
@@ -688,17 +584,22 @@
       }, 5000); 
     }
 
-    async function closePaymentModal() { 
-      document.getElementById('payment-modal').classList.add('hidden'); 
-      if (pollingInterval) clearInterval(pollingInterval);
-      if (nokosPollingInterval) clearInterval(nokosPollingInterval);
-      
-      // AUTO REFUND ADMIN JIKA USER CLOSE MODAL SEBELUM BAYAR
-      if (currentNokosId && !isNokosPaid) {
-          fetch(`${API_URL}/nokos-cancel`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: currentNokosId }) });
-          currentNokosId = null;
-          showToast("Pesanan Nokos otomatis dibatalkan karena Anda menutup layar.", "info");
-      }
+    // Fungsi Batal Khusus Saat Menunggu QRIS
+    async function cancelAndClosePaymentModal() {
+        document.getElementById('nokos-cancel-qris-btn').innerText = "Membatalkan...";
+        if (currentNokosId && !isNokosPaid) {
+            await fetch(`${API_URL}/nokos-cancel`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: currentNokosId }) });
+            currentNokosId = null;
+            showToast("Pesanan Nokos berhasil dibatalkan (Refund sukses).", "info");
+        }
+        forceClosePaymentModal();
+    }
+
+    // Fungsi Tutup Paksa Modal
+    function forceClosePaymentModal() {
+        document.getElementById('payment-modal').classList.add('hidden'); 
+        if (pollingInterval) clearInterval(pollingInterval);
+        if (nokosPollingInterval) clearInterval(nokosPollingInterval);
     }
 
     async function reportNokosIssue() {
@@ -711,6 +612,7 @@
         document.getElementById('nokos-sms-status').innerText = "Dibatalkan. Harap Chat Admin membawa screenshot ini untuk pengembalian dana.";
         document.getElementById('nokos-spinner').classList.add('hidden');
         document.getElementById('nokos-cancel-btn').classList.add('hidden');
+        document.getElementById('nokos-finish-btn').classList.remove('hidden');
         currentNokosId = null;
       } catch (e) { showToast("Gagal membatalkan.", "error"); }
     }
@@ -719,22 +621,14 @@
     function openDetailModal(id) {
       const p = products.find(i => i.id === id); if (!p) return; currentSelectedProduct = p; currentSelectedVariant = p.variants[0];
       document.getElementById('modal-img').src = p.image; document.getElementById('modal-name').innerText = p.name; document.getElementById('modal-category').innerText = p.category;
-      document.getElementById('modal-sold').innerText = formatSoldCount(p.sold);
-      document.getElementById('modal-rating').innerHTML = `<span class="text-amber-500">${'★'.repeat(Math.round(Number(p.rating || 5)))}</span>`;
-      document.getElementById('modal-warranty').innerText = p.warranty || 'Resmi';
       renderVariantSelection(0); document.getElementById('detail-modal').classList.remove('hidden'); lucide.createIcons();
     }
-
     function renderVariantSelection(activeIndex) {
-      const container = document.getElementById('modal-variants-list');
-      container.innerHTML = currentSelectedProduct.variants.map((v, idx) => `<button onclick="selectVariant(${idx})" class="px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${idx === activeIndex ? 'bg-rose-50 border-[#f5125e] text-[#f5125e]' : 'bg-white border-slate-200 text-slate-600'}">${v.name}</button>`).join('');
+      document.getElementById('modal-variants-list').innerHTML = currentSelectedProduct.variants.map((v, idx) => `<button onclick="selectVariant(${idx})" class="px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${idx === activeIndex ? 'bg-rose-50 border-[#f5125e] text-[#f5125e]' : 'bg-white border-slate-200 text-slate-600'}">${v.name}</button>`).join('');
       document.getElementById('modal-price').innerText = formatIDR(currentSelectedVariant.price);
       document.getElementById('modal-desc').innerText = currentSelectedVariant.desc || currentSelectedProduct.description || 'Tidak ada deskripsi.';
-      document.getElementById('modal-btn-chat').onclick = () => { closeDetailModal(); openChatModalWithProduct(currentSelectedProduct.name, currentSelectedVariant.name, currentSelectedVariant.price); };
-      document.getElementById('modal-btn-cart').onclick = () => { addToCart(currentSelectedProduct, currentSelectedVariant); closeDetailModal(); };
       document.getElementById('modal-btn-buy').onclick = () => { closeDetailModal(); startNormalCheckout(currentSelectedProduct, currentSelectedVariant); };
     }
-
     function selectVariant(idx) { currentSelectedVariant = currentSelectedProduct.variants[idx]; renderVariantSelection(idx); }
     function closeDetailModal() { document.getElementById('detail-modal').classList.add('hidden'); }
 
@@ -767,7 +661,7 @@
             }
           }, 4000); 
         }
-      } catch (err) { showToast("Sistem menggunakan statis", "info"); }
+      } catch (err) { showToast("Gagal membuat QRIS", "error"); forceClosePaymentModal(); }
     }
 
     function copyAccountData() { navigator.clipboard.writeText(document.getElementById('account-data').innerText).then(() => showToast('Data disalin!')); }
@@ -782,27 +676,6 @@
     function saveOrderHistory(ref, pName, vName, acc) {
       const h = JSON.parse(localStorage.getItem('my_digital_orders') || '[]'); h.unshift({ reference: ref, productName: pName, variantName: vName, date: new Date().toLocaleString('id-ID'), account: acc }); localStorage.setItem('my_digital_orders', JSON.stringify(h));
     }
-
-    function toggleCart(open) {
-      if (open) { document.getElementById('cart-modal').classList.remove('hidden'); setTimeout(() => document.getElementById('cart-drawer').classList.remove('translate-x-full'), 10); } 
-      else { document.getElementById('cart-drawer').classList.add('translate-x-full'); setTimeout(() => document.getElementById('cart-modal').classList.add('hidden'), 250); }
-    }
-    function addToCart(p, v) { cart.push({ id: p.id, name: `${p.name} (${v.name})`, price: v.price, image: p.image, quantity: 1 }); localStorage.setItem('my_digital_cart', JSON.stringify(cart)); renderCart(); showToast('Masuk ke keranjang!'); }
-    function renderCart() {
-      document.getElementById('cart-title-count').innerText = cart.length; document.getElementById('cart-badge').innerText = cart.length;
-      if (cart.length > 0) { document.getElementById('cart-badge').classList.remove('hidden'); document.getElementById('cart-footer').classList.remove('hidden'); } else { document.getElementById('cart-badge').classList.add('hidden'); document.getElementById('cart-footer').classList.add('hidden'); }
-      document.getElementById('cart-items').innerHTML = cart.map((i, idx) => `<div class="flex items-center justify-between gap-2 p-2 bg-slate-50 rounded-xl border"><img src="${i.image}" class="w-10 h-10 rounded-lg object-contain bg-white border" /><div class="flex-1 min-w-0"><h4 class="text-xs font-bold truncate">${i.name}</h4><p class="text-xs text-[#f5125e] font-black">${formatIDR(i.price)}</p></div><button onclick="cart.splice(${idx}, 1); localStorage.setItem('my_digital_cart', JSON.stringify(cart)); renderCart();" class="text-slate-400 hover:text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`).join('');
-      document.getElementById('cart-total-price').innerText = formatIDR(cart.reduce((a, b) => a + b.price, 0)); lucide.createIcons();
-    }
-    function processCartCheckout() { if (cart.length === 0) return; toggleCart(false); startNormalCheckout({ id: Date.now(), name: `Keranjang (${cart.length} Produk)` }, { name: 'Semua Produk', price: cart.reduce((a, b) => a + b.price, 0) }); }
-
-    function openChatModal() { document.getElementById('chat-modal').classList.remove('hidden'); setTimeout(() => document.getElementById('chat-drawer').classList.remove('translate-x-full'), 10); }
-    function closeChatModal() { document.getElementById('chat-drawer').classList.add('translate-x-full'); setTimeout(() => document.getElementById('chat-modal').classList.add('hidden'), 250); }
-    function openChatModalWithProduct(prodName, varName, price) { openChatModal(); appendUserChatMessage(`Halo Admin CS, saya ingin tanya produk *${prodName}* (${varName}) seharga ${formatIDR(price)}.`); setTimeout(() => { appendBotChatMessage(`Hai Kak! Produk **${prodName} (${varName})** stoknya ready dan dikirim instan otomatis via QRIS TriPay. Kakak bisa langsung klik **Beli Sekarang** di katalog ya! 🚀`); }, 700); }
-    function sendQuickReply(question) { appendUserChatMessage(question); setTimeout(() => { appendBotChatMessage(`Pesanan otomatis dikirim kurang dari 5 detik setelah pembayaran terverifikasi sistem.`); }, 600); }
-    function handleUserChatSubmit(e) { e.preventDefault(); const input = document.getElementById('user-chat-input'); const text = input.value.trim(); if (!text) return; input.value = ''; appendUserChatMessage(text); setTimeout(() => { appendBotChatMessage(`Pesan Anda: "${text}". Admin CS siap membantu!`); }, 700); }
-    function appendUserChatMessage(text) { const container = document.getElementById('chat-messages-container'); const div = document.createElement('div'); div.className = 'flex items-end justify-end gap-2'; div.innerHTML = `<div class="bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white p-3 rounded-2xl rounded-tr-none shadow-2xs max-w-[85%] leading-relaxed text-xs">${text.replace(/\n/g, '<br>')}</div>`; container.appendChild(div); container.scrollTop = container.scrollHeight; }
-    function appendBotChatMessage(text) { const container = document.getElementById('chat-messages-container'); const div = document.createElement('div'); div.className = 'flex items-start gap-2'; div.innerHTML = `<div class="w-7 h-7 rounded-full bg-rose-100 text-[#f5125e] flex items-center justify-center flex-shrink-0 text-xs font-bold">CS</div><div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs space-y-1 max-w-[85%] text-slate-800 leading-relaxed text-xs"><p>${text.replace(/\n/g, '<br>')}</p></div>`; container.appendChild(div); container.scrollTop = container.scrollHeight; lucide.createIcons(); }
 
     loadProducts(); lucide.createIcons();
   </script>
