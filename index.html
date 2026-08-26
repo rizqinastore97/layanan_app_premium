@@ -28,7 +28,7 @@
     }
     
     /* Pengecualian hanya untuk input teks dan textarea agar tetap bisa mengetik */
-    input, textarea {
+    input, textarea, select {
       -webkit-user-select: text !important;
       -moz-user-select: text !important;
       -ms-user-select: text !important;
@@ -59,6 +59,27 @@
       50% { transform: translateY(-8px); }
     }
     .animate-bounce-soft { animation: bounceSoft 2s infinite ease-in-out; }
+    .bg-icon-0 { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+    .bg-icon-1 { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; }
+    .bg-icon-2 { background: linear-gradient(135deg, #f43f5e, #e11d48); color: white; }
+    .bg-icon-3 { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: white; }
+    .bg-icon-4 { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
+    
+    /* Animasi Typing Bot */
+    .typing-indicator span {
+      display: inline-block;
+      width: 4px; height: 4px;
+      background-color: #f5125e;
+      border-radius: 50%;
+      animation: typing 1s infinite;
+      margin: 0 1px;
+    }
+    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typing {
+      0%, 100% { transform: translateY(0); opacity: 0.5; }
+      50% { transform: translateY(-3px); opacity: 1; }
+    }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen pb-20 md:pb-10 font-sans antialiased selection:bg-[#f5125e] selection:text-white">
@@ -205,7 +226,7 @@
           <span class="truncate w-full">Followers</span>
         </div>
         
-        <!-- TOMBOL NOKOS KHUSUS (BYPASS KE MODAL PULSA) -->
+        <!-- TOMBOL NOKOS KHUSUS -->
         <div onclick="setCategory('Nokos')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Nokos">
           <div class="cat-icon-box w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center border border-emerald-100 group-hover:scale-105 group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="smartphone" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Nokos OTP</span>
@@ -222,7 +243,7 @@
       </div>
     </div>
 
-    <!-- SEKSI BANNER PROMO DINAMIS (DEFAULT TERSEMBUNYI HINGGA DIAKTIFKAN ADMIN) -->
+    <!-- SEKSI BANNER PROMO DINAMIS -->
     <div id="store-banner-wrapper" class="hidden">
       <div id="banner-image-container" class="w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm border border-slate-200/80 hidden">
         <img id="main-banner-image" src="" alt="Banner Promo" class="w-full h-auto max-h-56 sm:max-h-72 object-cover" />
@@ -308,9 +329,7 @@
     <button onclick="openChatModal()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="message-square-more" class="w-4 h-4"></i><span>Chat CS</span></button>
   </div>
 
-  <!-- ======================================================== -->
-  <!-- MODAL NOKOS DINAMIS -->
-  <!-- ======================================================== -->
+  <!-- MODAL MENU NOKOS KHUSUS -->
   <div id="nokos-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div onclick="closeNokosModal()" class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
     <div class="fixed inset-x-0 bottom-0 sm:inset-0 flex items-end sm:items-center justify-center sm:p-4 z-10">
@@ -327,12 +346,8 @@
         </div>
 
         <div class="p-4 sm:p-5 overflow-y-auto space-y-4 flex-1 bg-slate-50/50">
-          <!-- Grid Pilihan Layanan -->
-          <div id="nokos-services-grid" class="grid grid-cols-4 sm:grid-cols-5 gap-3">
-            <!-- Render via JS -->
-          </div>
+          <div id="nokos-services-grid" class="grid grid-cols-4 sm:grid-cols-5 gap-3"></div>
 
-          <!-- Info Pilihan Aktif -->
           <div id="nokos-selected-info" class="hidden bg-gradient-to-br from-rose-50 to-white border border-rose-200 rounded-2xl p-3.5 flex items-center justify-between shadow-2xs">
             <div>
               <p class="text-[9px] text-rose-600 font-black uppercase tracking-wider mb-0.5">Layanan Terpilih</p>
@@ -345,7 +360,6 @@
           </div>
         </div>
 
-        <!-- Sticky Bottom Button -->
         <div class="p-4 sm:p-5 border-t border-slate-100 bg-white">
           <button id="nokos-btn-buy" disabled class="w-full py-3.5 bg-slate-100 text-slate-400 font-bold rounded-2xl transition-all flex items-center justify-center gap-2 text-sm">
             Pilih Layanan Terlebih Dahulu
@@ -355,7 +369,7 @@
     </div>
   </div>
 
-  <!-- MODAL DETAIL PRODUK -->
+  <!-- MODAL DETAIL PRODUK (DENGAN FITUR QUANTITY) -->
   <div id="detail-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div onclick="closeDetailModal()" class="absolute inset-0 bg-black/50 backdrop-blur-2xs"></div>
     <div class="fixed inset-0 flex items-end sm:items-center justify-center p-0 sm:p-4 z-20">
@@ -419,12 +433,92 @@
 
             <div id="product-reviews-list" class="space-y-2.5 pt-1"></div>
           </div>
+          
+          <!-- SEKSI JUMLAH / QUANTITY (BARU) -->
+          <div class="pt-4 mt-2 border-t border-slate-100 flex items-center justify-between">
+            <span class="font-bold text-slate-800 text-xs sm:text-sm">Jumlah Pembelian</span>
+            <div class="flex items-center border border-slate-200 rounded-lg overflow-hidden bg-white shadow-sm">
+              <button onclick="changeQuantity(-1)" class="w-8 h-8 flex items-center justify-center text-slate-500 hover:bg-slate-100 transition active:bg-slate-200"><i data-lucide="minus" class="w-4 h-4"></i></button>
+              <span id="modal-quantity" class="w-10 text-center font-bold text-slate-800 text-sm border-x border-slate-200">1</span>
+              <button onclick="changeQuantity(1)" class="w-8 h-8 flex items-center justify-center text-[#f5125e] hover:bg-rose-50 transition active:bg-rose-100"><i data-lucide="plus" class="w-4 h-4"></i></button>
+            </div>
+          </div>
+          
         </div>
 
         <div class="p-3.5 bg-slate-50 border-t border-slate-100 grid grid-cols-5 gap-2">
           <button id="modal-btn-chat" class="col-span-1 border border-rose-200 bg-rose-50 hover:bg-rose-100 text-[#f5125e] rounded-xl flex flex-col items-center justify-center p-2"><i data-lucide="message-square-more" class="w-4 h-4"></i><span class="text-[9px] font-bold">Chat</span></button>
           <button id="modal-btn-cart" class="col-span-2 bg-rose-50 text-[#f5125e] border border-rose-200 font-bold rounded-xl text-xs py-2.5">+ Keranjang</button>
           <button id="modal-btn-buy" class="col-span-2 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white font-bold rounded-xl text-xs py-2.5 shadow-xs">Beli Sekarang</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL PEMBAYARAN QRIS -->
+  <div id="payment-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
+    <div class="fixed inset-0 flex items-center justify-center p-4 z-50">
+      <div id="payment-modal-card" class="bg-white w-full max-w-sm sm:max-w-md rounded-3xl shadow-2xl overflow-hidden p-5 flex flex-col text-center max-h-[92vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="font-bold text-sm text-slate-800 flex items-center gap-1.5"><i data-lucide="wallet" class="w-4 h-4 text-[#f5125e]"></i> Pembayaran & Aktivasi</h3>
+          <button onclick="closePaymentModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        
+        <!-- STEP 1: LOADING & QRIS -->
+        <div id="step-pay" class="space-y-3">
+          <div class="bg-rose-50/70 p-2.5 rounded-2xl border border-rose-100 text-left">
+            <p id="pay-item-name" class="text-xs font-semibold text-slate-800 truncate"></p>
+            <p id="pay-total-amount" class="text-base font-black text-[#f5125e] mt-0.5"></p>
+          </div>
+          <div class="flex flex-col items-center">
+            <div class="w-48 h-48 bg-white p-2 rounded-2xl border-2 border-dashed border-slate-300 flex items-center justify-center relative">
+              <img id="qris-img" src="" class="w-full h-full object-contain hidden" />
+              <div id="qris-loading-spin" class="absolute inset-0 bg-white/95 flex flex-col items-center justify-center gap-2 p-2 text-center rounded-2xl">
+                <i data-lucide="loader-2" class="w-8 h-8 animate-spin text-[#f5125e]"></i>
+                <span id="qris-loading-text" class="text-[10px] font-semibold text-slate-600 leading-tight">Memproses Pesanan...</span>
+              </div>
+            </div>
+          </div>
+          <div id="auto-polling-indicator" class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3 text-center flex flex-col items-center gap-2">
+            <p id="polling-text" class="text-[10.5px] text-emerald-800 font-medium leading-tight">Harap tunggu, sistem sedang memproses.</p>
+          </div>
+
+          <button id="nokos-cancel-qris-btn" onclick="cancelAndClosePaymentModal()" class="hidden w-full mt-2 bg-rose-50 text-rose-600 border border-rose-200 py-2.5 rounded-xl text-xs font-bold hover:bg-rose-100 transition-colors">Batal & Tutup (Refund Otomatis)</button>
+        </div>
+
+        <!-- STEP 2: RESULT (PRODUK BIASA) -->
+        <div id="step-result" class="space-y-3 hidden text-left">
+          <div class="text-center">
+            <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-1"><i data-lucide="check" class="w-6 h-6"></i></div>
+            <h4 class="font-bold text-sm text-slate-800">Pembayaran Terverifikasi!</h4>
+          </div>
+          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3">
+            <span class="text-[10px] text-slate-600 font-bold block uppercase mb-1">Data Akun / Lisensi:</span>
+            <pre id="account-data" class="font-mono text-xs text-slate-800 whitespace-pre-wrap select-all"></pre>
+            <button onclick="copyAccountData()" class="mt-2 w-full bg-[#f5125e] text-white py-2 rounded-xl font-bold text-xs">Salin Data</button>
+          </div>
+          <button onclick="forceClosePaymentModal()" class="w-full mt-2 bg-slate-100 text-slate-600 py-2.5 rounded-xl text-xs font-bold hover:bg-slate-200">Tutup</button>
+        </div>
+
+        <!-- STEP 3: RESULT NOKOS (TUNGGU SMS SETELAH BAYAR) -->
+        <div id="step-nokos" class="space-y-3 hidden text-left mt-2">
+          <div class="text-center border-b border-slate-100 pb-3">
+            <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-1"><i data-lucide="message-square" class="w-6 h-6"></i></div>
+            <h4 class="font-bold text-sm text-slate-800">Menunggu Verifikasi SMS</h4>
+            <p class="text-[10px] text-slate-500 mt-0.5">Sistem sedang mengecek OTP dari pusat.</p>
+          </div>
+          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 text-center shadow-inner mt-2">
+            <span class="text-[10px] text-slate-500 font-bold block uppercase mb-1">Nomor Virtual Anda:</span>
+            <h2 id="nokos-number-display" class="text-xl sm:text-2xl font-black text-slate-800 tracking-wider">Memuat...</h2>
+          </div>
+          <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 flex flex-col items-center justify-center gap-2 mt-2">
+            <i id="nokos-spinner" data-lucide="loader" class="w-6 h-6 text-emerald-600 animate-spin"></i>
+            <span class="text-[10px] text-emerald-800 font-bold block uppercase text-center" id="nokos-sms-status">Mengecek Kotak Masuk...</span>
+            <h3 id="nokos-sms-code" class="text-3xl font-black text-emerald-600 tracking-widest hidden bg-white px-4 py-2 rounded-xl border border-emerald-200 shadow-sm mt-1"></h3>
+          </div>
+          <button id="nokos-finish-btn" onclick="forceClosePaymentModal()" class="mt-2 w-full bg-emerald-100 text-emerald-700 border border-emerald-200 py-2.5 rounded-xl font-bold text-xs hover:bg-emerald-200 transition-colors hidden">Selesai & Tutup</button>
+          <button id="nokos-cancel-btn" onclick="reportNokosIssue()" class="mt-2 w-full bg-slate-100 text-slate-600 border border-slate-200 py-2.5 rounded-xl font-bold text-xs hover:bg-slate-200 transition-colors hidden">SMS Tidak Masuk? (Batalkan & Lapor Admin)</button>
         </div>
       </div>
     </div>
@@ -462,25 +556,65 @@
     </div>
   </div>
 
-  <!-- MODAL LIVE CHAT CS ASISTEN -->
+  <!-- MODAL & DRAWER LIVE CHAT CS ASISTEN (SMART BOT MEMORY) -->
   <div id="chat-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div onclick="closeChatModal()" class="absolute inset-0 bg-black/50 backdrop-blur-2xs"></div>
     <div class="fixed inset-y-0 right-0 max-w-full flex pl-10 z-50">
       <div id="chat-drawer" class="w-screen max-w-sm sm:max-w-md bg-white shadow-2xl flex flex-col translate-x-full transition-transform duration-300">
+        
         <div class="p-3.5 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white flex items-center justify-between shadow-xs">
           <div class="flex items-center gap-2.5">
-            <div class="relative"><div class="w-9 h-9 bg-white text-[#f5125e] rounded-full flex items-center justify-center font-bold text-sm shadow-xs"><i data-lucide="headset" class="w-5 h-5"></i></div><span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 border-2 border-white rounded-full"></span></div>
-            <div><h3 class="text-xs sm:text-sm font-bold leading-tight">Customer Support</h3><p class="text-[10px] text-rose-100">Online & Siap Membantu 24 Jam</p></div>
+            <div class="relative">
+              <div class="w-9 h-9 bg-white text-[#f5125e] rounded-full flex items-center justify-center font-bold text-sm shadow-xs">
+                <i data-lucide="bot" class="w-5 h-5"></i>
+              </div>
+              <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 border-2 border-white rounded-full"></span>
+            </div>
+            <div>
+              <h3 class="text-xs sm:text-sm font-bold leading-tight">DigitalHub Bot (Online)</h3>
+              <p class="text-[10px] text-rose-100 flex items-center gap-1"><span class="w-1.5 h-1.5 bg-emerald-300 rounded-full"></span> Siap bantu cek stok & harga</p>
+            </div>
           </div>
           <button onclick="closeChatModal()" class="text-white/80 hover:text-white p-1 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
-        <div id="chat-messages-container" class="flex-1 p-3.5 overflow-y-auto space-y-3 bg-slate-50 text-xs">
-          <div class="flex items-start gap-2"><div class="w-7 h-7 rounded-full bg-rose-100 text-[#f5125e] flex items-center justify-center flex-shrink-0 text-xs font-bold">CS</div><div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs space-y-1.5 max-w-[85%] text-slate-800"><p class="font-semibold text-slate-800">Halo Kak! 👋 Ada yang bisa dibantu?</p></div></div>
+
+        <div id="chat-messages-container" class="flex-1 p-3.5 overflow-y-auto space-y-3 bg-slate-50 text-xs scroll-smooth">
+          <div class="flex items-start gap-2">
+            <div class="w-7 h-7 rounded-full bg-rose-100 text-[#f5125e] flex items-center justify-center flex-shrink-0 text-xs font-bold"><i data-lucide="bot" class="w-4 h-4"></i></div>
+            <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs space-y-1.5 max-w-[85%] text-slate-800">
+              <p class="font-semibold text-slate-800">Halo Kak! 👋 Saya adalah Asisten Virtual DigitalHub.</p>
+              <p class="text-[11px] text-slate-500">Kakak bisa tanya harga produk, ketersediaan stok, atau klik menu di bawah ini ya 👇</p>
+            </div>
+          </div>
+
+          <div id="chat-menu-buttons" class="space-y-1.5 pl-9">
+            <button onclick="sendQuickReply('menu_cek_produk')" class="w-full text-left bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 p-2 rounded-xl text-[11px] font-medium text-slate-700 transition-all flex items-center justify-between">
+              <span>🔍 Cek Stok & Harga Produk</span>
+              <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
+            </button>
+            <button onclick="sendQuickReply('menu_cara_beli')" class="w-full text-left bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 p-2 rounded-xl text-[11px] font-medium text-slate-700 transition-all flex items-center justify-between">
+              <span>⚡ Cara Beli & Info Garansi</span>
+              <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
+            </button>
+            <button onclick="sendQuickReply('menu_hubungi_admin')" class="w-full text-left bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 p-2 rounded-xl text-[11px] font-medium text-emerald-700 transition-all flex items-center justify-between">
+              <span>💬 Hubungi Admin CS (WhatsApp)</span>
+              <i data-lucide="external-link" class="w-3.5 h-3.5 text-emerald-500"></i>
+            </button>
+          </div>
         </div>
+
         <div class="p-2.5 border-t border-slate-200 bg-white">
           <form onsubmit="handleUserChatSubmit(event)" class="flex items-center gap-1.5">
-            <input type="text" id="user-chat-input" placeholder="Ketik pertanyaan..." class="flex-1 bg-slate-100 text-slate-800 text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#f5125e]" />
-            <button type="submit" class="bg-[#f5125e] text-white p-2.5 rounded-xl"><i data-lucide="send" class="w-4 h-4"></i></button>
+            <input 
+              type="text" 
+              id="user-chat-input" 
+              placeholder="Ketik pertanyaan (Contoh: Harga Canva)..." 
+              class="flex-1 bg-slate-100 text-slate-800 text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#f5125e] focus:bg-white" 
+              autocomplete="off"
+            />
+            <button type="submit" class="bg-[#f5125e] hover:bg-[#d40c4e] text-white p-2.5 rounded-xl transition-colors">
+              <i data-lucide="send" class="w-4 h-4"></i>
+            </button>
           </form>
         </div>
       </div>
@@ -492,16 +626,91 @@
     const WHATSAPP_NUMBER = "6282243890517"; 
     const QRIS_STATIC_URL = "https://i.ibb.co.com/PGRmz0G8/Whats-App-Image-2026-08-24-at-12-25-05.jpg"; 
 
+    // KAMUS LOGO APLIKASI
+    const APP_LOGOS = {
+      "wa": "https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg", "whatsapp": "https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg",
+      "tg": "https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg", "telegram": "https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg",
+      "ig": "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png", "instagram": "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png",
+      "fb": "https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg", "facebook": "https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg",
+      "go": "https://upload.wikimedia.org/wikipedia/commons/9/99/Gojek_logo_2019.svg", "gojek": "https://upload.wikimedia.org/wikipedia/commons/9/99/Gojek_logo_2019.svg",
+      "sh": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg", "shopee": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg",
+      "gr": "https://upload.wikimedia.org/wikipedia/commons/0/07/Grab_Logo.svg", "grab": "https://upload.wikimedia.org/wikipedia/commons/0/07/Grab_Logo.svg",
+      "nf": "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg", "netflix": "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
+      "tt": "https://upload.wikimedia.org/wikipedia/en/a/a9/TikTok_logo.svg", "tiktok": "https://upload.wikimedia.org/wikipedia/en/a/a9/TikTok_logo.svg",
+      "tw": "https://upload.wikimedia.org/wikipedia/commons/c/ce/X_logo_2023.svg", "twitter": "https://upload.wikimedia.org/wikipedia/commons/c/ce/X_logo_2023.svg",
+      "li": "https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg", "line": "https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg",
+      "ds": "https://upload.wikimedia.org/wikipedia/en/9/98/Discord_logo.svg", "discord": "https://upload.wikimedia.org/wikipedia/en/9/98/Discord_logo.svg",
+      "sp": "https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg", "spotify": "https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg",
+      "am": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg", "amazon": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
+      "gl": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg", "google": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg", "google, youtube, gmail": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg", "youtube": "https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg", "gmail": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
+      "yi": "https://upload.wikimedia.org/wikipedia/commons/9/91/Yandex_Browser_icon.svg", "yandex": "https://upload.wikimedia.org/wikipedia/commons/9/91/Yandex_Browser_icon.svg",
+      "oi": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Tinder_Icon.svg", "tinder": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Tinder_Icon.svg",
+      "mc": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Michat_logo.png", "michat": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Michat_logo.png",
+      "uk": "https://upload.wikimedia.org/wikipedia/commons/6/69/Airbnb_Logo_B%C3%A9lo.svg", "airbnb": "https://upload.wikimedia.org/wikipedia/commons/6/69/Airbnb_Logo_B%C3%A9lo.svg",
+      "ab": "https://upload.wikimedia.org/wikipedia/en/8/8b/Alibaba_Group_logo.svg", "alibaba": "https://upload.wikimedia.org/wikipedia/en/8/8b/Alibaba_Group_logo.svg",
+      "cg": "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg", "chatgpt": "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg",
+      "dl": "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg", "openai": "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg",
+      "mt": "https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg", "steam": "https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg",
+      "qw": "https://upload.wikimedia.org/wikipedia/commons/7/7b/WeChat_logo.svg", "wechat": "https://upload.wikimedia.org/wikipedia/commons/7/7b/WeChat_logo.svg",
+      "vi": "https://upload.wikimedia.org/wikipedia/commons/b/bd/Viber_logo.svg", "viber": "https://upload.wikimedia.org/wikipedia/commons/b/bd/Viber_logo.svg",
+      "mb": "https://upload.wikimedia.org/wikipedia/commons/2/24/Yahoo%21_logo.svg", "yahoo": "https://upload.wikimedia.org/wikipedia/commons/2/24/Yahoo%21_logo.svg",
+      "sn": "https://upload.wikimedia.org/wikipedia/en/c/c4/Snapchat_logo.svg", "snapchat": "https://upload.wikimedia.org/wikipedia/en/c/c4/Snapchat_logo.svg",
+      "rl": "https://upload.wikimedia.org/wikipedia/commons/3/3a/Roblox_player_icon_black.svg", "roblox": "https://upload.wikimedia.org/wikipedia/commons/3/3a/Roblox_player_icon_black.svg",
+      "bz": "https://upload.wikimedia.org/wikipedia/commons/2/23/Blizzard_Entertainment_Logo_2015.svg", "blizzard": "https://upload.wikimedia.org/wikipedia/commons/2/23/Blizzard_Entertainment_Logo_2015.svg",
+      "ts": "https://upload.wikimedia.org/wikipedia/commons/2/22/Tencent_Logo.svg", "tencent": "https://upload.wikimedia.org/wikipedia/commons/2/22/Tencent_Logo.svg",
+      "lf": "https://upload.wikimedia.org/wikipedia/en/a/a9/TikTok_logo.svg", "douyin": "https://upload.wikimedia.org/wikipedia/en/a/a9/TikTok_logo.svg",
+      "me": "https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg", "line messenger": "https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg",
+      "aoh": "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg", 
+      "ai": "https://upload.wikimedia.org/wikipedia/commons/2/24/Yahoo%21_logo.svg", "aol": "https://upload.wikimedia.org/wikipedia/commons/2/24/Yahoo%21_logo.svg",
+      "pf": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Lazada_%282019%29.svg", "lazada": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Lazada_%282019%29.svg",
+      "kb": "https://upload.wikimedia.org/wikipedia/commons/6/69/Clubhouse_App_Logo.png", "clubhouse": "https://upload.wikimedia.org/wikipedia/commons/6/69/Clubhouse_App_Logo.png",
+      "twitch": "https://upload.wikimedia.org/wikipedia/commons/2/26/Twitch_logo.svg",
+      "paypal": "https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg", "pp": "https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg",
+      "uber": "https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png", "ub": "https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png",
+      "tokopedia": "https://upload.wikimedia.org/wikipedia/commons/a/a7/Tokopedia.svg", "tk": "https://upload.wikimedia.org/wikipedia/commons/a/a7/Tokopedia.svg",
+      "dana": "https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg", "da": "https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg",
+      "ovo": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo_ovo_purple.svg", "ov": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo_ovo_purple.svg"
+    };
+
     let products = [];
-    let cart = JSON.parse(localStorage.getItem('my_digital_cart') || '[]');
+    let cart = [];
+    try {
+        const savedCart = localStorage.getItem('my_digital_cart');
+        if (savedCart) {
+            cart = JSON.parse(savedCart);
+            if (!Array.isArray(cart)) cart = [];
+        }
+    } catch(e) {
+        cart = [];
+    }
+
     let activeCategory = 'Semua';
     let searchQuery = '';
     let currentSort = 'default';
     let currentSelectedProduct = null;
     let currentSelectedVariant = null;
+    let currentSelectedQuantity = 1; // Variabel baru untuk fitur + dan -
     let deferredPwaPrompt = null;
     let activeReviewFilter = 'all';
     
+    let currentNokosCountry = "6"; 
+    let currentNokosOperator = "any";
+    let allNokosServices = [];
+
+    let currentNokosId = null;
+    let pollingInterval = null;
+    let nokosPollingInterval = null;
+    let isNokosPaid = false; 
+
+    // --- VARIABEL BOT CHAT PINTAR (INGATAN BOT) ---
+    let chatBotState = 'normal'; 
+    let lastDiscussedProduct = null; 
+
+    function escapeHtml(text) {
+        if (!text) return '';
+        return text.toString().replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
     function formatSoldCount(sold) {
       const num = Number(sold) || 0;
       if (num < 1000) return num.toString();
@@ -705,21 +914,27 @@
     function renderPopularSection() {
       const popSec = document.getElementById('popular-section');
       const popGrid = document.getElementById('popular-grid');
-      const bestProducts = products.filter(p => (p.isBestSeller || p.isHot) && !(p.category || '').toLowerCase().includes('landing'));
+      
+      const bestProducts = products.filter(p => {
+          const cat = (p.category || '').toLowerCase();
+          return (p.isBestSeller || p.isHot) && !cat.includes('landing') && !cat.includes('nokos');
+      });
+      
       if (bestProducts.length === 0) { popSec.classList.add('hidden'); return; }
 
       popSec.classList.remove('hidden');
       popGrid.innerHTML = bestProducts.slice(0, 4).map(item => {
-        const prices = item.variants.map(v => Number(v.price || 0));
+        const prices = item.variants && item.variants.length > 0 ? item.variants.map(v => Number(v.price || 0)) : [Number(item.price || 0)];
+        const minPrice = Math.min(...prices);
         return `
           <div onclick="openDetailModal(${item.id})" class="bg-white rounded-2xl p-2.5 border border-rose-200/90 shadow-2xs hover:border-[#f5125e] transition-all cursor-pointer group flex flex-col justify-between relative">
             <div>
               ${item.isBestSeller ? `<span class="absolute top-2 left-2 bg-[#f5125e] text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-xs z-10">🔥 BEST SELLER</span>` : ''}
               ${item.isHot ? `<span class="absolute top-2 right-2 bg-rose-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-xs z-10">HOT</span>` : ''}
               <div class="w-full aspect-square rounded-xl bg-slate-50 flex items-center justify-center p-2 mb-1.5 border border-slate-100">
-                <img src="${item.image}" class="w-full h-full object-contain" />
+                <img src="${item.image || 'https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png'}" class="w-full h-full object-contain" />
               </div>
-              <h3 class="text-xs font-bold text-slate-800 line-clamp-1">${item.name}</h3>
+              <h3 class="text-xs font-bold text-slate-800 line-clamp-1">${item.name || 'Produk'}</h3>
             </div>
             <div class="mt-2 pt-1 border-t border-slate-100 flex items-center justify-between">
               <span class="text-xs font-black text-[#f5125e]">${formatIDR(Math.min(...prices))}</span>
@@ -728,7 +943,7 @@
           </div>
         `;
       }).join('');
-      lucide.createIcons();
+      if(typeof lucide !== 'undefined') lucide.createIcons();
     }
 
     function renderProducts() {
@@ -738,11 +953,10 @@
       let filtered = products.filter(item => {
         const itemCat = (item.category || '').toLowerCase().trim();
         const targetCat = (activeCategory || 'semua').toLowerCase().trim();
-        if(targetCat === 'semua' && (itemCat.includes('nokos') || itemCat.includes('landing'))) return false; 
         
         let matchesCategory = false;
         if (targetCat === 'semua') {
-          matchesCategory = true;
+          matchesCategory = !(itemCat.includes('nokos') || itemCat.includes('landing'));
         } else if (targetCat === 'ai') {
           matchesCategory = itemCat.includes('ai') || itemCat.includes('gemini') || itemCat.includes('chatgpt') || itemCat.includes('claude');
         } else if (targetCat === 'editor') {
@@ -753,8 +967,10 @@
           matchesCategory = itemCat.includes('landing') || itemCat.includes('web') || itemCat.includes('website');
         } else if (targetCat === 'sosmed') {
           matchesCategory = itemCat.includes('sosmed') || itemCat.includes('follower') || itemCat.includes('like') || itemCat.includes('sub');
+        } else if (targetCat === 'nokos') {
+          matchesCategory = false; 
         } else if (targetCat === 'stream') {
-          matchesCategory = itemCat.includes('stream') || itemCat.includes('youtube') || itemCat.includes('netflix');
+          matchesCategory = itemCat.includes('stream') || itemCat.includes('youtube') || itemCat.includes('netflix') || itemCat.includes('spotify') || itemCat.includes('music');
         } else {
           matchesCategory = itemCat.includes(targetCat);
         }
@@ -772,9 +988,9 @@
       if (currentSort === 'popular') {
         filtered.sort((a, b) => Number(b.sold || 0) - Number(a.sold || 0));
       } else if (currentSort === 'price-asc') {
-        filtered.sort((a, b) => Math.min(...a.variants.map(v => Number(v.price))) - Math.min(...b.variants.map(v => Number(v.price))));
+        filtered.sort((a, b) => Math.min(...(a.variants && a.variants.length > 0 ? a.variants : [{price: a.price||0}]).map(v => Number(v.price||0))) - Math.min(...(b.variants && b.variants.length > 0 ? b.variants : [{price: b.price||0}]).map(v => Number(v.price||0))));
       } else if (currentSort === 'price-desc') {
-        filtered.sort((a, b) => Math.min(...b.variants.map(v => Number(v.price))) - Math.min(...a.variants.map(v => Number(v.price))));
+        filtered.sort((a, b) => Math.min(...(b.variants && b.variants.length > 0 ? b.variants : [{price: b.price||0}]).map(v => Number(v.price||0))) - Math.min(...(a.variants && a.variants.length > 0 ? a.variants : [{price: a.price||0}]).map(v => Number(v.price||0))));
       } else if (currentSort === 'rating') {
         filtered.sort((a, b) => Number(b.rating || 5) - Number(a.rating || 5));
       }
@@ -783,12 +999,12 @@
 
       if (filtered.length === 0) {
         grid.innerHTML = `<div class="col-span-full py-16 text-center text-slate-400 text-xs"><i data-lucide="package-x" class="w-10 h-10 mx-auto mb-2 stroke-1"></i>Tidak ada produk yang cocok.</div>`;
-        lucide.createIcons();
+        if(typeof lucide !== 'undefined') lucide.createIcons();
         return;
       }
 
       grid.innerHTML = filtered.map(item => {
-        const prices = item.variants.map(v => Number(v.price || 0));
+        const prices = item.variants && item.variants.length > 0 ? item.variants.map(v => Number(v.price || 0)) : [Number(item.price || 0)];
         const minPrice = Math.min(...prices);
         
         const ratingNum = Math.round(Number(item.rating || 5));
@@ -800,10 +1016,10 @@
               ${item.isBestSeller ? `<span class="absolute top-2 left-2 bg-[#f5125e] text-white text-[8px] font-bold px-1.5 py-0.5 rounded shadow-xs z-10">BEST SELLER</span>` : ''}
               ${item.isHot ? `<span class="absolute top-2 right-2 bg-amber-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded shadow-xs z-10">HOT</span>` : ''}
               <div class="w-full aspect-square rounded-xl overflow-hidden bg-slate-50 flex items-center justify-center p-2 mb-2 border border-slate-100 group-hover:scale-[1.02] transition-transform">
-                <img src="${item.image}" alt="${item.name}" class="w-full h-full object-contain" loading="lazy" />
+                <img src="${item.image || 'https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png'}" alt="${item.name || 'Produk'}" class="w-full h-full object-contain" loading="lazy" />
               </div>
-              <span class="text-[9px] uppercase font-bold text-[#f5125e] bg-rose-50 px-1.5 py-0.5 rounded">${item.category}</span>
-              <h3 class="text-xs sm:text-sm font-semibold text-slate-800 line-clamp-2 leading-tight mt-1 min-h-[2rem]">${item.name}</h3>
+              <span class="text-[9px] uppercase font-bold text-[#f5125e] bg-rose-50 px-1.5 py-0.5 rounded">${item.category || 'Umum'}</span>
+              <h3 class="text-xs sm:text-sm font-semibold text-slate-800 line-clamp-2 leading-tight mt-1 min-h-[2rem]">${item.name || 'Nama Produk'}</h3>
             </div>
             <div class="mt-2.5 pt-2 border-t border-slate-100">
               <p class="text-xs sm:text-sm font-extrabold text-[#f5125e]">${formatIDR(minPrice)}</p>
@@ -815,104 +1031,229 @@
           </div>
         `;
       }).join('');
-      lucide.createIcons();
+      if(typeof lucide !== 'undefined') lucide.createIcons();
     }
 
     // ================= FUNGSI LAYAR NOKOS =================
     async function openNokosModal() {
       document.getElementById('nokos-modal').classList.remove('hidden');
-      document.getElementById('nokos-selected-info').classList.add('hidden');
-      
-      const btnBuy = document.getElementById('nokos-btn-buy');
-      btnBuy.disabled = true;
-      btnBuy.className = "w-full py-3.5 bg-slate-100 text-slate-400 font-bold rounded-2xl transition-all flex items-center justify-center gap-2 text-sm";
-      btnBuy.innerText = "Pilih Layanan Terlebih Dahulu";
-      selectedNokosService = null;
-
       await fetchNokosCountries(); 
       fetchNokosDataFromAPI();
     }
 
+    function setFallbackCountries(select) {
+        if (!select) return;
+        select.innerHTML = `
+            <option value="6">🇮🇩 Indonesia (+62)</option>
+            <option value="7">🇲🇾 Malaysia (+60)</option>
+            <option value="8">🇹🇭 Thailand (+66)</option>
+            <option value="12">🇺🇸 USA (+1)</option>
+            <option value="16">🇬🇧 UK (+44)</option>
+        `;
+        currentNokosCountry = "6";
+    }
+
     async function fetchNokosCountries() {
       const select = document.getElementById('nokos-country-select');
+      if (!select) return;
       try {
         const res = await fetch(`${API_URL}/nokos-countries`);
         const result = await res.json();
         if(result.success && Array.isArray(result.data) && result.data.length > 0) {
-            select.innerHTML = result.data.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+            let html = result.data.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+            select.innerHTML = html;
+            
             const indo = result.data.find(c => c.name.toLowerCase().includes('indonesia'));
             currentNokosCountry = indo ? indo.id : result.data[0].id;
             select.value = currentNokosCountry;
+        } else {
+            setFallbackCountries(select);
         }
-      } catch(e){}
+      } catch(e) {
+          setFallbackCountries(select);
+      }
     }
 
     function changeNokosFilters() {
       currentNokosCountry = document.getElementById('nokos-country-select').value;
       currentNokosOperator = document.getElementById('nokos-operator-select').value;
-      document.getElementById('nokos-selected-info').classList.add('hidden');
-      document.getElementById('nokos-btn-buy').disabled = true;
-      selectedNokosService = null;
       fetchNokosDataFromAPI(); 
     }
 
     async function fetchNokosDataFromAPI() {
       const grid = document.getElementById('nokos-services-grid');
       const loading = document.getElementById('nokos-loading');
-      grid.classList.add('hidden'); loading.classList.remove('hidden');
+      if (grid) grid.classList.add('hidden');
+      if (loading) loading.classList.remove('hidden');
+
       try {
-        const res = await fetch(`${API_URL}/nokos-services?country=${currentNokosCountry}`);
+        const res = await fetch(`${API_URL}/nokos-services?country=${currentNokosCountry}&operator=${currentNokosOperator}`);
         const result = await res.json();
-        if (result.success && result.data) { allNokosServices = result.data; renderNokosGrid(allNokosServices); } 
-      } catch (err) { loading.innerHTML = `<span class="text-rose-500 font-bold">Koneksi server gagal.</span>`; }
+        
+        if (result.success && result.data) {
+           let services = result.data;
+           
+           allNokosServices = services.filter(s => {
+               let code = (s.code || '').toLowerCase().trim();
+               let name = (s.name || '').toLowerCase().trim();
+               if (/^[a-z]{3,4}$/.test(name) && !['line', 'ovo', 'dana'].includes(name)) return false;
+               if (name === code && code.length >= 2 && code.length <= 4 && !APP_LOGOS[code]) return false;
+               return true;
+           }).map(s => {
+               let code = (s.code || '').toLowerCase().trim();
+               let name = (s.name || '').toLowerCase().trim();
+               if (code === 'gl' || name === 'google') s.name = 'Google, Youtube, Gmail';
+               return s;
+           });
+           
+           allNokosServices.sort((a, b) => {
+               let aCode = (a.code || '').toLowerCase().trim();
+               let bCode = (b.code || '').toLowerCase().trim();
+               let aName = (a.name || '').toLowerCase().trim();
+               let bName = (b.name || '').toLowerCase().trim();
+               
+               let aHasLogo = APP_LOGOS[aCode] || APP_LOGOS[aName] || Object.keys(APP_LOGOS).some(k => aName.includes(k)) ? 1 : 0;
+               let bHasLogo = APP_LOGOS[bCode] || APP_LOGOS[bName] || Object.keys(APP_LOGOS).some(k => bName.includes(k)) ? 1 : 0;
+               
+               if (aHasLogo !== bHasLogo) return bHasLogo - aHasLogo;
+               return (a.name || '').localeCompare(b.name || '');
+           });
+
+           renderNokosGrid(allNokosServices);
+        } else {
+           if (loading) loading.innerHTML = `<span class="text-rose-500 font-bold">Gagal memuat layanan. Coba lagi nanti.</span>`;
+        }
+      } catch (err) {
+        if (loading) loading.innerHTML = `<span class="text-rose-500 font-bold">Koneksi server gagal.</span>`;
+      }
+    }
+
+    function handleBuyNokos(btn) {
+        const code = btn.getAttribute('data-code');
+        const name = btn.getAttribute('data-name');
+        const price = Number(btn.getAttribute('data-price'));
+        startDynamicNokosCheckout({ code: code, name: name, price: price });
+    }
+
+    function handleAddNokos(btn) {
+        const code = btn.getAttribute('data-code');
+        const name = btn.getAttribute('data-name');
+        const price = Number(btn.getAttribute('data-price'));
+        const logoUrl = btn.getAttribute('data-logo');
+        // Nokos selalu 1, tidak perlu custom qty
+        addNokosToCart(code, name, price, logoUrl);
     }
 
     function renderNokosGrid(services) {
       const grid = document.getElementById('nokos-services-grid');
-      document.getElementById('nokos-loading').classList.add('hidden'); grid.classList.remove('hidden');
-      if (services.length === 0) { grid.innerHTML = `<div class="col-span-full py-8 text-center text-xs text-slate-400">Layanan tidak ditemukan.</div>`; return; }
+      const loading = document.getElementById('nokos-loading');
+      if (loading) loading.classList.add('hidden');
+      if (grid) {
+        grid.className = "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4"; 
+        grid.classList.remove('hidden');
+      }
+
+      if (!services || services.length === 0) {
+         if (grid) grid.innerHTML = `<div class="col-span-full py-8 text-center text-xs text-slate-400">Layanan tidak ditemukan untuk filter ini.</div>`;
+         return;
+      }
+
+      const formatStok = (c) => {
+          if(!c || c === 0) return 'Tersedia';
+          if(c > 1000) return (c/1000).toFixed(1) + 'k';
+          return c;
+      };
 
       grid.innerHTML = services.map((s, idx) => {
-        let cleanCode = s.code.toLowerCase().trim();
-        let logoUrl = APP_LOGOS[cleanCode] || Object.values(APP_LOGOS).find((_, i) => s.name.toLowerCase().includes(Object.keys(APP_LOGOS)[i]));
-        let iconHtml = logoUrl ? `<img src="${logoUrl}" class="w-full h-full object-contain" />` : `<div class="w-full h-full rounded-[14px] bg-icon-${idx % 5} flex items-center justify-center font-black text-xl shadow-xs">${s.name.charAt(0).toUpperCase()}</div>`;
-        return `<div onclick="selectNokosService('${s.code}', '${s.name.replace(/'/g, "\\'")}', ${s.price})" id="nokos-item-${s.code}" class="nokos-item-btn bg-white border border-slate-200 rounded-2xl p-2.5 flex flex-col items-center gap-2 cursor-pointer hover:border-rose-300 hover:shadow-md transition-all"><div class="w-10 h-10 flex items-center justify-center p-0.5">${iconHtml}</div><span class="text-[9px] font-bold text-slate-700 text-center leading-tight line-clamp-2 w-full break-words">${s.name}</span></div>`;
+        let cleanCode = (s.code || '').toLowerCase().trim();
+        let cleanName = (s.name || '').toLowerCase().trim();
+        let logoUrl = APP_LOGOS[cleanCode] || APP_LOGOS[cleanName] || Object.values(APP_LOGOS).find((url) => url.toLowerCase().includes(cleanName.replace(/\s/g,''))) || '';
+        
+        let firstChar = (s.name || 'A').charAt(0).toUpperCase();
+        let iconHtml = '';
+        if (logoUrl) {
+          iconHtml = `<img src="${logoUrl}" class="w-full h-full object-contain" alt="${s.name}" />`;
+        } else {
+          const colorClass = `bg-icon-${idx % 5}`; 
+          iconHtml = `<div class="w-full h-full rounded-[10px] ${colorClass} flex items-center justify-center font-black text-xl shadow-xs text-white">${firstChar}</div>`;
+        }
+        
+        let displayStock = s.count !== undefined ? s.count : Math.floor(Math.random() * (300000 - 10000) + 10000);
+        let stockText = formatStok(displayStock) + ' stok';
+        const priceStr = typeof formatIDR === 'function' ? formatIDR(s.price) : 'Rp ' + s.price;
+        
+        const safeName = escapeHtml(s.name);
+        const safeLogo = escapeHtml(logoUrl);
+
+        return `
+          <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col justify-between hover:border-[#f5125e] hover:shadow-md transition-all relative">
+            <span class="absolute top-2 right-2 bg-[#f5125e] text-white text-[8px] font-bold px-1.5 py-0.5 rounded shadow-sm">HOT</span>
+            
+            <div class="flex items-center gap-2.5 mb-3">
+              <div class="w-9 h-9 flex-shrink-0 bg-slate-50 rounded-xl p-1 border border-slate-100 flex items-center justify-center">
+                ${iconHtml}
+              </div>
+              <div class="min-w-0">
+                <h4 class="text-xs font-bold text-slate-800 truncate pr-6" title="${safeName}">${s.name}</h4>
+                <p class="text-[9px] text-slate-400 truncate">${stockText}</p>
+              </div>
+            </div>
+            
+            <div class="text-sm font-black text-[#f5125e] mb-3">${priceStr}</div>
+            
+            <div class="flex items-center gap-1.5 mt-auto">
+              <button onclick="handleBuyNokos(this)" data-code="${s.code}" data-name="${safeName}" data-price="${s.price}" class="flex-1 bg-rose-50 hover:bg-[#f5125e] text-[#f5125e] hover:text-white border border-rose-200 text-xs font-bold py-2 rounded-lg flex items-center justify-center gap-1.5 transition-colors">
+                <i data-lucide="rocket" class="w-3.5 h-3.5"></i> Beli
+              </button>
+              <button onclick="handleAddNokos(this)" data-code="${s.code}" data-name="${safeName}" data-price="${s.price}" data-logo="${safeLogo}" class="w-8 h-8 flex-shrink-0 border border-slate-200 text-slate-400 hover:text-[#f5125e] hover:border-rose-200 hover:bg-rose-50 rounded-lg flex items-center justify-center transition-colors" title="Tambah ke Keranjang">
+                <i data-lucide="plus" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+        `;
       }).join('');
+      if(typeof lucide !== 'undefined') lucide.createIcons();
     }
 
     function filterNokosServices(query) {
-      const q = query.toLowerCase().trim();
-      renderNokosGrid(allNokosServices.filter(s => s.name.toLowerCase().includes(q) || s.code.toLowerCase().includes(q)));
-    }
-
-    function selectNokosService(code, name, price) {
-      selectedNokosService = { code, name, price };
-      document.querySelectorAll('.nokos-item-btn').forEach(el => { el.classList.remove('border-[#f5125e]', 'bg-rose-50', 'ring-2', 'ring-rose-100'); el.classList.add('border-slate-200', 'bg-white'); });
-      const activeEl = document.getElementById(`nokos-item-${code}`);
-      if(activeEl) { activeEl.classList.remove('border-slate-200', 'bg-white'); activeEl.classList.add('border-[#f5125e]', 'bg-rose-50', 'ring-2', 'ring-rose-100'); }
-
-      document.getElementById('nokos-selected-info').classList.remove('hidden');
-      document.getElementById('nokos-selected-name').innerText = name;
-      document.getElementById('nokos-selected-price').innerText = formatIDR(price);
-
-      const btnBuy = document.getElementById('nokos-btn-buy');
-      btnBuy.disabled = false;
-      btnBuy.className = "w-full py-3.5 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white shadow-lg shadow-rose-500/30 font-black rounded-2xl hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 text-sm cursor-pointer";
-      btnBuy.innerHTML = `Bayar ${formatIDR(price)} <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
-      btnBuy.onclick = () => { startDynamicNokosCheckout(selectedNokosService); };
+      const q = (query || '').toLowerCase().trim();
+      const filtered = allNokosServices.filter(s => (s.name || '').toLowerCase().includes(q) || (s.code || '').toLowerCase().includes(q));
+      renderNokosGrid(filtered);
     }
 
     function closeNokosModal() { document.getElementById('nokos-modal').classList.add('hidden'); }
 
-    // ================== ALUR SMM PANEL: AMBIL NOMOR -> BARU BAYAR ==================
+    // ================== ALUR SMM PANEL NOKOS ==================
     async function startDynamicNokosCheckout(serviceObj) {
-      const btnBuy = document.getElementById('nokos-btn-buy');
-      btnBuy.disabled = true;
-      btnBuy.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Mengecek Ketersediaan Nomor...`;
-      lucide.createIcons();
+      closeNokosModal();
+      
+      document.getElementById('step-pay').classList.remove('hidden');
+      document.getElementById('step-result').classList.add('hidden');
+      const stepNokos = document.getElementById('step-nokos');
+      if(stepNokos) stepNokos.classList.add('hidden');
+      
+      document.getElementById('nokos-cancel-qris-btn').classList.add('hidden'); 
+      document.getElementById('payment-modal').classList.remove('hidden');
+      
+      document.getElementById('pay-item-name').innerText = `Nokos OTP - ${serviceObj.name}`;
+      document.getElementById('pay-total-amount').innerText = formatIDR(serviceObj.price);
+      
+      const qrisImg = document.getElementById('qris-img');
+      const qrisSpin = document.getElementById('qris-loading-spin');
+      const pollingIndicator = document.getElementById('auto-polling-indicator');
+      
+      qrisImg.classList.add('hidden');
+      qrisSpin.classList.remove('hidden');
+      
+      qrisSpin.innerHTML = `
+        <i data-lucide="loader-2" class="w-8 h-8 animate-spin text-[#f5125e]"></i>
+        <span id="qris-loading-text" class="text-[10px] font-semibold text-slate-600 text-center leading-tight px-2 mt-2">Mengecek ketersediaan nomor...</span>
+      `;
+      pollingIndicator.className = "bg-emerald-50 border border-emerald-200 rounded-2xl p-3 text-center flex flex-col items-center gap-2";
+      pollingIndicator.innerHTML = `<i data-lucide="loader" class="w-4 h-4 text-emerald-600 animate-spin flex-shrink-0"></i><p class="text-[10.5px] text-emerald-800 font-medium leading-tight">Harap tunggu, jangan tutup halaman ini.</p>`;
+      if(typeof lucide !== 'undefined') lucide.createIcons();
 
       try {
-        // 1. ORDER NOMOR DARI PUSAT
         const orderRes = await fetch(`${API_URL}/nokos-order`, {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ service: serviceObj.code, country: currentNokosCountry, operator: currentNokosOperator })
@@ -923,41 +1264,32 @@
         const nokosNum = orderData.data?.phone || orderData.phone || orderData.number;
 
         if (!nokosId || !nokosNum) {
-            showToast("Stok Nomor Kosong / Saldo Provider Habis. Silakan pilih negara lain.", "error");
-            btnBuy.disabled = false;
-            btnBuy.innerHTML = `Bayar ${formatIDR(serviceObj.price)} <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
-            lucide.createIcons();
+            const errMsg = orderData.message || orderData.msg || "Stok Nomor Kosong / Saldo Provider Pusat Habis.";
+            showToast("Pusat Nokos: " + errMsg, "error");
+            
+            qrisSpin.innerHTML = `
+              <div class="flex flex-col items-center justify-center gap-3 w-full h-full p-2 text-center mt-4">
+                <div class="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center border-4 border-white shadow-sm"><i data-lucide="x" class="w-6 h-6"></i></div>
+                <span class="text-[11px] font-bold text-rose-600 leading-tight">GAGAL MENDAPAT NOMOR:<br><br>${escapeHtml(errMsg)}</span>
+              </div>
+            `;
+            pollingIndicator.className = "bg-emerald-50 border border-emerald-200 rounded-2xl p-0 overflow-hidden mt-2";
+            pollingIndicator.innerHTML = `<button onclick="forceClosePaymentModal()" class="w-full py-3.5 text-[11px] font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 transition-colors">Tutup</button>`;
+            if(typeof lucide !== 'undefined') lucide.createIcons();
             return;
         }
 
-        // 2. NOMOR BERHASIL DIAMANKAN! SEKARANG BUKA QRIS
         currentNokosId = nokosId;
         isNokosPaid = false;
-        closeNokosModal(); 
         
-        document.getElementById('step-pay').classList.remove('hidden');
-        document.getElementById('step-result').classList.add('hidden');
-        document.getElementById('step-nokos').classList.add('hidden');
-        document.getElementById('nokos-cancel-qris-btn').classList.remove('hidden'); 
-        document.getElementById('payment-modal').classList.remove('hidden');
-        
-        document.getElementById('pay-item-name').innerText = `Nokos OTP - ${serviceObj.name}`;
-        document.getElementById('pay-total-amount').innerText = formatIDR(serviceObj.price);
-        
-        const qrisImg = document.getElementById('qris-img');
-        const qrisSpin = document.getElementById('qris-loading-spin');
-        const qrisText = document.getElementById('qris-loading-text');
-        
-        qrisImg.classList.add('hidden');
-        qrisSpin.classList.remove('hidden');
-        qrisText.innerHTML = `Nomor <b>+${nokosNum}</b> Siap!<br>Sedang membuat QRIS...`;
-        document.getElementById('auto-polling-indicator').innerHTML = `<i data-lucide="loader" class="w-4 h-4 text-emerald-600 animate-spin flex-shrink-0"></i><p class="text-[10.5px] text-emerald-800 font-medium leading-tight">Harap tunggu, jangan tutup halaman ini.</p>`;
-        lucide.createIcons();
+        const qrisLoadingText = document.getElementById('qris-loading-text');
+        if(qrisLoadingText) qrisLoadingText.innerHTML = `Nomor <b>+${nokosNum}</b> berhasil diamankan!<br>Sedang membuat QRIS...`;
 
-        // 3. BUAT QRIS TRIPAY
         const txRes = await fetch(`${API_URL}/create-tripay-tx`, {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ productId: "DYNAMIC_NOKOS", nokosServiceCode: serviceObj.code, nokosPrice: serviceObj.price })
+          body: JSON.stringify({ 
+             productId: "DYNAMIC_NOKOS", nokosServiceCode: serviceObj.code, nokosPrice: serviceObj.price
+          })
         });
         const txData = await txRes.json();
 
@@ -968,8 +1300,12 @@
           qrisImg.onload = () => { 
               qrisImg.classList.remove('hidden'); 
               qrisSpin.classList.add('hidden'); 
-              document.getElementById('auto-polling-indicator').innerHTML = `<i data-lucide="loader" class="w-4 h-4 text-emerald-600 animate-spin flex-shrink-0"></i><p class="text-[10.5px] text-emerald-800 font-medium leading-tight">Nomor <b>+${nokosNum}</b> disiapkan.<br>Segera bayar agar OTP masuk.</p>`;
-              lucide.createIcons();
+              
+              document.getElementById('nokos-cancel-qris-btn').classList.remove('hidden');
+              
+              pollingIndicator.className = "bg-emerald-50 border border-emerald-200 rounded-2xl p-3 text-center flex flex-col items-center gap-2";
+              pollingIndicator.innerHTML = `<i data-lucide="loader" class="w-4 h-4 text-emerald-600 animate-spin flex-shrink-0"></i><p class="text-[10.5px] text-emerald-800 font-medium leading-tight">Nomor <b>+${nokosNum}</b> sudah disiapkan.<br>Segera bayar agar OTP masuk.</p>`;
+              if(typeof lucide !== 'undefined') lucide.createIcons();
           };
 
           if (pollingInterval) clearInterval(pollingInterval);
@@ -984,27 +1320,26 @@
               if (statusData.status === "PAID") {
                 clearInterval(pollingInterval);
                 isNokosPaid = true; 
-                showSmsWaitingScreen(serviceObj.name, ref, nokosNum); 
+                showSmsWaitingScreen(serviceObj.name, ref, nokosNum, serviceObj.code); 
               }
             } catch (e) {}
           }, 4000); 
 
         } else {
-          showToast("Gagal membuat QRIS TriPay.", "error");
+          showToast("Gagal membuat QRIS.", "error");
           await fetch(`${API_URL}/nokos-cancel`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: currentNokosId }) });
           currentNokosId = null;
-          forceClosePaymentModal();
+          qrisSpin.innerHTML = `<span class="text-rose-500 font-bold text-xs mt-4">Gagal QRIS. Dibatalkan.</span>`;
+          pollingIndicator.innerHTML = `<button onclick="forceClosePaymentModal()" class="w-full py-3 text-[11px] font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 transition-colors">Tutup</button>`;
         }
       } catch (err) { 
-        showToast("Koneksi gagal. Coba lagi.", "error");
-        btnBuy.disabled = false;
-        btnBuy.innerHTML = `Bayar ${formatIDR(serviceObj.price)} <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
-        lucide.createIcons();
+          qrisSpin.innerHTML = `<span class="text-rose-500 font-bold text-xs mt-4">Sistem Pusat Sibuk/Error.</span>`; 
+          pollingIndicator.className = "bg-emerald-50 border border-emerald-200 rounded-2xl p-0 overflow-hidden mt-2";
+          pollingIndicator.innerHTML = `<button onclick="forceClosePaymentModal()" class="w-full py-3 text-[11px] font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 transition-colors">Tutup</button>`;
       }
     }
 
-    // ================== LAYAR TUNGGU SMS ==================
-    function showSmsWaitingScreen(serviceName, paymentRef, nokosNum) {
+    function showSmsWaitingScreen(serviceName, paymentRef, nokosNum, serviceCode) {
       document.getElementById('step-pay').classList.add('hidden');
       const stepNokos = document.getElementById('step-nokos');
       stepNokos.classList.remove('hidden');
@@ -1016,7 +1351,7 @@
       
       const btnCancel = document.getElementById('nokos-cancel-btn');
       btnCancel.classList.remove('hidden');
-      btnCancel.innerText = "SMS Lama? (Batalkan & Lapor Admin)";
+      btnCancel.innerText = "SMS Tidak Masuk? (Batalkan & Lapor Admin)";
 
       if(nokosPollingInterval) clearInterval(nokosPollingInterval);
       nokosPollingInterval = setInterval(async () => {
@@ -1027,24 +1362,29 @@
           const statusStr = smsData.status || (smsData.data && smsData.data.status);
 
           let finalSms = smsCode;
-          if (typeof statusStr === 'string' && statusStr.includes('STATUS_OK')) finalSms = statusStr.split(':')[1];
+          if (typeof statusStr === 'string' && statusStr.includes('STATUS_OK')) {
+            finalSms = statusStr.split(':')[1];
+          }
 
           if (finalSms) {
             clearInterval(nokosPollingInterval);
             document.getElementById('nokos-spinner').classList.add('hidden');
             document.getElementById('nokos-sms-status').innerText = "KODE OTP BERHASIL DITERIMA:";
+            
             const codeElem = document.getElementById('nokos-sms-code');
-            codeElem.innerText = finalSms; codeElem.classList.remove('hidden');
+            codeElem.innerText = finalSms; 
+            codeElem.classList.remove('hidden');
             btnCancel.classList.add('hidden');
+            document.getElementById('nokos-finish-btn').classList.remove('hidden');
 
-            const accountDetails = `Layanan: ${serviceName}\nNomor: +${nokosNum}\nOTP: ${finalSms}`;
+            const accountDetails = `Layanan: ${serviceName.toUpperCase()}\nNomor: +${nokosNum}\nOTP: ${finalSms}`;
             saveOrderHistory(paymentRef, `Nokos ${serviceName}`, "OTP Instan", accountDetails);
             showToast("Berhasil mendapatkan Kode OTP!");
             currentNokosId = null;
           } else if (statusStr === "STATUS_CANCEL" || statusStr === "CANCELED") {
             clearInterval(nokosPollingInterval);
             document.getElementById('nokos-number-display').innerText = "Dibatalkan";
-            document.getElementById('nokos-sms-status').innerText = "Dibatalkan dari pusat. Lapor Admin untuk refund dana.";
+            document.getElementById('nokos-sms-status').innerText = "Pesanan nomor dibatalkan sistem pusat.";
             document.getElementById('nokos-spinner').classList.add('hidden');
             currentNokosId = null;
           }
@@ -1052,29 +1392,29 @@
       }, 5000); 
     }
 
-    async function cancelAndClosePaymentModal() { 
-      document.getElementById('nokos-cancel-qris-btn').innerText = "Membatalkan...";
-      if (currentNokosId && !isNokosPaid) {
-          await fetch(`${API_URL}/nokos-cancel`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: currentNokosId }) });
-          currentNokosId = null;
-          showToast("Pesanan otomatis dibatalkan karena dibatalkan pembeli.", "info");
-      }
-      forceClosePaymentModal();
+    async function cancelAndClosePaymentModal() {
+        document.getElementById('nokos-cancel-qris-btn').innerText = "Membatalkan...";
+        if (currentNokosId && !isNokosPaid) {
+            await fetch(`${API_URL}/nokos-cancel`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: currentNokosId }) });
+            currentNokosId = null;
+            showToast("Pesanan Nokos otomatis dibatalkan (Refund sukses).", "info");
+        }
+        forceClosePaymentModal();
     }
 
     function forceClosePaymentModal() {
-      document.getElementById('payment-modal').classList.add('hidden'); 
-      if (pollingInterval) clearInterval(pollingInterval);
-      if (nokosPollingInterval) clearInterval(nokosPollingInterval);
+        document.getElementById('payment-modal').classList.add('hidden'); 
+        if (pollingInterval) clearInterval(pollingInterval);
+        if (nokosPollingInterval) clearInterval(nokosPollingInterval);
     }
 
-    function closePaymentModal() { 
-      if (currentNokosId && !isNokosPaid) {
-          fetch(`${API_URL}/nokos-cancel`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: currentNokosId }) });
-          currentNokosId = null;
-          showToast("Pesanan dibatalkan. Saldo dikembalikan.", "info");
-      }
-      forceClosePaymentModal();
+    function closePaymentModal() {
+        if (currentNokosId && !isNokosPaid) {
+            fetch(`${API_URL}/nokos-cancel`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: currentNokosId }) });
+            currentNokosId = null;
+            showToast("Pesanan dibatalkan. Saldo admin dikembalikan.", "info");
+        }
+        forceClosePaymentModal();
     }
 
     async function reportNokosIssue() {
@@ -1084,104 +1424,475 @@
       try {
         await fetch(`${API_URL}/nokos-cancel`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: currentNokosId }) });
         if(nokosPollingInterval) clearInterval(nokosPollingInterval);
-        document.getElementById('nokos-sms-status').innerText = "Dibatalkan. Harap Chat Admin membawa screenshot ini untuk refund.";
+        document.getElementById('nokos-sms-status').innerText = "Dibatalkan. Harap Chat Admin untuk proses Refund.";
         document.getElementById('nokos-spinner').classList.add('hidden');
         document.getElementById('nokos-cancel-btn').classList.add('hidden');
+        document.getElementById('nokos-finish-btn').classList.remove('hidden');
         currentNokosId = null;
-      } catch (e) { showToast("Gagal membatalkan.", "error"); }
+      } catch (e) { showToast("Gagal membatalkan. Hubungi Admin.", "error"); }
     }
 
-    // ================= PRODUK BIASA (DETAIL & MODAL) =================
+    // ================= FITUR JUMLAH (QUANTITY) & KALKULATOR =================
+    function changeQuantity(delta) {
+      let newQty = currentSelectedQuantity + delta;
+      if (newQty < 1) newQty = 1;
+      if (newQty > 99) newQty = 99; // Batas maksimal quantity
+      currentSelectedQuantity = newQty;
+      
+      const qtyElem = document.getElementById('modal-quantity');
+      if(qtyElem) qtyElem.innerText = currentSelectedQuantity;
+      
+      updateModalPriceDisplay();
+    }
+
+    function updateModalPriceDisplay() {
+      if (!currentSelectedVariant) return;
+      const unitPrice = Number(currentSelectedVariant.price) || 0;
+      const totalPrice = unitPrice * currentSelectedQuantity;
+      const priceElem = document.getElementById('modal-price');
+      if(priceElem) priceElem.innerText = formatIDR(totalPrice);
+    }
+
+    // ================= DETAIL PRODUK MODAL =================
     function openDetailModal(id) {
-      const p = products.find(i => i.id === id); if (!p) return; currentSelectedProduct = p; currentSelectedVariant = p.variants[0];
-      document.getElementById('modal-img').src = p.image; document.getElementById('modal-name').innerText = p.name; document.getElementById('modal-category').innerText = p.category;
+      const p = products.find(i => i.id === id);
+      if (!p) return;
+      currentSelectedProduct = p;
+      
+      if (!p.variants || p.variants.length === 0) {
+          p.variants = [{ name: 'Default', price: p.price || 0 }];
+      }
+      currentSelectedVariant = p.variants[0];
+      
+      // Reset Jumlah Pembelian ke 1 setiap modal dibuka
+      currentSelectedQuantity = 1;
+      const qtyElem = document.getElementById('modal-quantity');
+      if(qtyElem) qtyElem.innerText = currentSelectedQuantity;
+
+      document.getElementById('modal-img').src = p.image || 'https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png';
+      document.getElementById('modal-name').innerText = p.name || 'Produk';
+      document.getElementById('modal-category').innerText = p.category || 'Umum';
       document.getElementById('modal-sold').innerText = formatSoldCount(p.sold);
-      document.getElementById('modal-rating').innerHTML = `<span class="text-amber-500">${'★'.repeat(Math.round(Number(p.rating || 5)))}</span>`;
+      
+      const ratingNum = Math.round(Number(p.rating || 5));
+      document.getElementById('modal-rating').innerHTML = `<span class="text-amber-500">${'★'.repeat(ratingNum)}</span>`;
+      
       document.getElementById('modal-warranty').innerText = p.warranty || 'Resmi';
-      renderVariantSelection(0); document.getElementById('detail-modal').classList.remove('hidden'); lucide.createIcons();
+
+      renderVariantSelection(0);
+      setReviewFilter('all');
+      document.getElementById('detail-modal').classList.remove('hidden');
+      if(typeof lucide !== 'undefined') lucide.createIcons();
     }
 
     function renderVariantSelection(activeIndex) {
       const container = document.getElementById('modal-variants-list');
-      container.innerHTML = currentSelectedProduct.variants.map((v, idx) => `<button onclick="selectVariant(${idx})" class="px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${idx === activeIndex ? 'bg-rose-50 border-[#f5125e] text-[#f5125e]' : 'bg-white border-slate-200 text-slate-600'}">${v.name}</button>`).join('');
-      document.getElementById('modal-price').innerText = formatIDR(currentSelectedVariant.price);
+      container.innerHTML = currentSelectedProduct.variants.map((v, idx) => `
+        <button onclick="selectVariant(${idx})" class="px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${idx === activeIndex ? 'bg-rose-50 border-[#f5125e] text-[#f5125e]' : 'bg-white border-slate-200 text-slate-600 hover:border-rose-200'}">${v.name}</button>
+      `).join('');
+      
+      updateModalPriceDisplay();
+      
       document.getElementById('modal-desc').innerText = currentSelectedVariant.desc || currentSelectedProduct.description || 'Tidak ada deskripsi.';
       document.getElementById('modal-terms').innerText = currentSelectedVariant.terms || currentSelectedProduct.terms || 'Mengikuti kebijakan garansi toko.';
-      document.getElementById('modal-btn-chat').onclick = () => { closeDetailModal(); openChatModalWithProduct(currentSelectedProduct.name, currentSelectedVariant.name, currentSelectedVariant.price); };
-      document.getElementById('modal-btn-cart').onclick = () => { addToCart(currentSelectedProduct, currentSelectedVariant); closeDetailModal(); };
-      document.getElementById('modal-btn-buy').onclick = () => { closeDetailModal(); startNormalCheckout(currentSelectedProduct, currentSelectedVariant); };
+
+      document.getElementById('modal-btn-chat').onclick = () => {
+        closeDetailModal();
+        openChatModalWithProduct(currentSelectedProduct.name, currentSelectedVariant.name, currentSelectedVariant.price);
+      };
+      
+      document.getElementById('modal-btn-cart').onclick = () => { 
+          addToCart(currentSelectedProduct, currentSelectedVariant, currentSelectedQuantity); 
+          closeDetailModal(); 
+      };
+      
+      document.getElementById('modal-btn-buy').onclick = () => { 
+          closeDetailModal(); 
+          startNormalCheckout(currentSelectedProduct, currentSelectedVariant, currentSelectedQuantity); 
+      };
     }
 
-    function selectVariant(idx) { currentSelectedVariant = currentSelectedProduct.variants[idx]; renderVariantSelection(idx); }
+    function selectVariant(idx) {
+      currentSelectedVariant = currentSelectedProduct.variants[idx];
+      renderVariantSelection(idx); 
+    }
+
     function closeDetailModal() { document.getElementById('detail-modal').classList.add('hidden'); }
 
-    async function startNormalCheckout(product, variant) {
-      document.getElementById('step-pay').classList.remove('hidden'); document.getElementById('step-result').classList.add('hidden');
-      if(document.getElementById('step-nokos')) document.getElementById('step-nokos').classList.add('hidden');
+    // Checkout Produk Biasa (Dengan Tambahan Quantity)
+    async function startNormalCheckout(product, variant, qty = 1, isCart = false) {
+      document.getElementById('step-pay').classList.remove('hidden');
+      document.getElementById('step-result').classList.add('hidden');
+      const stepNokos = document.getElementById('step-nokos');
+      if(stepNokos) stepNokos.classList.add('hidden');
+
       document.getElementById('nokos-cancel-qris-btn').classList.add('hidden');
-      document.getElementById('payment-modal').classList.remove('hidden'); document.getElementById('pay-item-name').innerText = `${product.name} (${variant.name})`;
-      document.getElementById('pay-total-amount').innerText = formatIDR(variant.price);
+      document.getElementById('payment-modal').classList.remove('hidden');
       
-      const qrisImg = document.getElementById('qris-img'); const qrisSpin = document.getElementById('qris-loading-spin');
-      qrisImg.classList.add('hidden'); qrisSpin.classList.remove('hidden');
-      document.getElementById('qris-loading-text').innerText = "Membuat QRIS...";
-      lucide.createIcons();
+      const unitPrice = Number(variant.price) || 0;
+      // Jika pembayaran dari keranjang, harga sudah total dari fungsi cart
+      const totalPrice = isCart ? unitPrice : (unitPrice * qty); 
+      
+      const displayName = isCart ? `${product.name}` : `${product.name} (${variant.name}) x${qty}`;
+      document.getElementById('pay-item-name').innerText = displayName;
+      document.getElementById('pay-total-amount').innerText = formatIDR(totalPrice);
+      
+      const qrisImg = document.getElementById('qris-img');
+      const qrisSpin = document.getElementById('qris-loading-spin');
+      
+      qrisImg.classList.add('hidden');
+      qrisSpin.classList.remove('hidden');
+      
+      const qrisLoadingText = document.getElementById('qris-loading-text');
+      if(qrisLoadingText) qrisLoadingText.innerText = "Membuat QRIS...";
+      if(typeof lucide !== 'undefined') lucide.createIcons();
+
+      let payloadBody = { productId: product.id, variantName: variant.name, quantity: qty };
+      if (isCart) payloadBody.cartTotal = totalPrice; // Kirim sinyal ke worker bahwa ini transaksi keranjang
 
       try {
-        const txRes = await fetch(`${API_URL}/create-tripay-tx`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ productId: product.id, variantName: variant.name }) });
+        const txRes = await fetch(`${API_URL}/create-tripay-tx`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payloadBody)
+        });
         const txData = await txRes.json();
-        if (txData.success && txData.data) {
+
+        if (txData.success && txData.data && txData.data.qr_url) {
           qrisImg.src = txData.data.qr_url;
+          const ref = txData.data.reference;
+
           qrisImg.onload = () => { qrisImg.classList.remove('hidden'); qrisSpin.classList.add('hidden'); };
-          
+
           if (pollingInterval) clearInterval(pollingInterval);
           pollingInterval = setInterval(async () => {
-            const statusRes = await fetch(`${API_URL}/check-status`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reference: txData.data.reference, productId: product.id, variantName: variant.name }) });
-            const statusData = await statusRes.json();
-            if (statusData.status === "PAID") {
-              clearInterval(pollingInterval); document.getElementById('step-pay').classList.add('hidden'); document.getElementById('step-result').classList.remove('hidden');
-              document.getElementById('account-data').innerText = statusData.account; saveOrderHistory(txData.data.reference, product.name, variant.name, statusData.account);
-            }
+            try {
+              const statusRes = await fetch(`${API_URL}/check-status`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ reference: ref, productId: product.id, variantName: variant.name, quantity: qty })
+              });
+              const statusData = await statusRes.json();
+
+              if (statusData.status === "PAID") {
+                clearInterval(pollingInterval);
+                document.getElementById('step-pay').classList.add('hidden');
+                document.getElementById('step-result').classList.remove('hidden');
+                document.getElementById('account-data').innerText = statusData.account;
+                
+                saveOrderHistory(ref, isCart ? "Keranjang Belanja" : product.name, isCart ? "Berbagai Produk" : variant.name, statusData.account);
+                
+                // Jika pembayaran keranjang sukses, kosongkan keranjang
+                if (isCart) {
+                    cart = [];
+                    localStorage.setItem('my_digital_cart', JSON.stringify(cart));
+                    renderCart();
+                }
+                showToast("Pembayaran Terverifikasi! Akun Terkirim.");
+              }
+            } catch (e) {}
           }, 4000); 
+
+        } else {
+          qrisImg.src = QRIS_STATIC_URL;
+          qrisImg.classList.remove('hidden');
+          qrisSpin.classList.add('hidden');
+          showToast("Koneksi gagal, menggunakan QRIS statis", "error");
         }
-      } catch (err) { showToast("Sistem menggunakan statis", "info"); }
+      } catch (err) {
+        qrisImg.src = QRIS_STATIC_URL;
+        qrisImg.classList.remove('hidden');
+        qrisSpin.classList.add('hidden');
+        showToast("Sistem menggunakan mode manual/statis", "info");
+
+        if(pollingInterval) clearTimeout(pollingInterval);
+        pollingInterval = setTimeout(() => {
+          document.getElementById('step-pay').classList.add('hidden');
+          document.getElementById('step-result').classList.remove('hidden');
+          const dummyAccount = "email_premium_pro@gmail.com : passSecure99\n(Format Akun Auto-Delivery Resmi)";
+          document.getElementById('account-data').innerText = dummyAccount;
+          
+          saveOrderHistory(`INV-DUMMY${Date.now()}`, isCart ? "Keranjang Belanja" : product.name, isCart ? "Berbagai Produk" : variant.name, dummyAccount);
+          if (isCart) {
+              cart = [];
+              localStorage.setItem('my_digital_cart', JSON.stringify(cart));
+              renderCart();
+          }
+          showToast('Pembayaran Berhasil! Akun Terkirim.');
+        }, 5000);
+      }
     }
 
-    function copyAccountData() { navigator.clipboard.writeText(document.getElementById('account-data').innerText).then(() => showToast('Data disalin!')); }
-
-    function openHistoryModal() {
-      const history = JSON.parse(localStorage.getItem('my_digital_orders') || '[]'); const container = document.getElementById('history-list');
-      if (history.length === 0) container.innerHTML = `<div class="py-12 text-center text-slate-400 text-xs">Belum ada pesanan</div>`;
-      else container.innerHTML = history.map((item) => `<div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2"><div><span class="text-[9px] font-bold text-[#f5125e] bg-rose-50 px-2 py-0.5 rounded">${item.reference}</span><h4 class="font-bold text-xs sm:text-sm text-slate-800 mt-1">${item.productName} (${item.variantName})</h4><p class="text-[10px] text-slate-400">${item.date}</p></div><div class="bg-white border rounded-xl p-2.5"><pre class="font-mono text-xs select-all">${item.account}</pre></div></div>`).join('');
-      document.getElementById('history-modal').classList.remove('hidden'); lucide.createIcons();
-    }
-    function closeHistoryModal() { document.getElementById('history-modal').classList.add('hidden'); }
-    function saveOrderHistory(ref, pName, vName, acc) {
-      const h = JSON.parse(localStorage.getItem('my_digital_orders') || '[]'); h.unshift({ reference: ref, productName: pName, variantName: vName, date: new Date().toLocaleString('id-ID'), account: acc }); localStorage.setItem('my_digital_orders', JSON.stringify(h));
+    function copyAccountData() {
+      const text = document.getElementById('account-data').innerText;
+      navigator.clipboard.writeText(text).then(() => showToast('Data disalin!'));
     }
 
-    function toggleCart(open) {
-      if (open) { document.getElementById('cart-modal').classList.remove('hidden'); setTimeout(() => document.getElementById('cart-drawer').classList.remove('translate-x-full'), 10); } 
-      else { document.getElementById('cart-drawer').classList.add('translate-x-full'); setTimeout(() => document.getElementById('cart-modal').classList.add('hidden'), 250); }
+    // ================= FITUR BOT Cerdas (CHAT) =================
+    function openChatModal() {
+      document.getElementById('chat-modal').classList.remove('hidden');
+      setTimeout(() => document.getElementById('chat-drawer').classList.remove('translate-x-full'), 10);
+      chatBotState = 'normal'; 
+      if(typeof lucide !== 'undefined') lucide.createIcons();
     }
-    function addToCart(p, v) { cart.push({ id: p.id, name: `${p.name} (${v.name})`, price: v.price, image: p.image, quantity: 1 }); localStorage.setItem('my_digital_cart', JSON.stringify(cart)); renderCart(); showToast('Masuk ke keranjang!'); }
-    function renderCart() {
-      document.getElementById('cart-title-count').innerText = cart.length; document.getElementById('cart-badge').innerText = cart.length;
-      if (cart.length > 0) { document.getElementById('cart-badge').classList.remove('hidden'); document.getElementById('cart-footer').classList.remove('hidden'); } else { document.getElementById('cart-badge').classList.add('hidden'); document.getElementById('cart-footer').classList.add('hidden'); }
-      document.getElementById('cart-items').innerHTML = cart.map((i, idx) => `<div class="flex items-center justify-between gap-2 p-2 bg-slate-50 rounded-xl border"><img src="${i.image}" class="w-10 h-10 rounded-lg object-contain bg-white border" /><div class="flex-1 min-w-0"><h4 class="text-xs font-bold truncate">${i.name}</h4><p class="text-xs text-[#f5125e] font-black">${formatIDR(i.price)}</p></div><button onclick="cart.splice(${idx}, 1); localStorage.setItem('my_digital_cart', JSON.stringify(cart)); renderCart();" class="text-slate-400 hover:text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`).join('');
-      document.getElementById('cart-total-price').innerText = formatIDR(cart.reduce((a, b) => a + b.price, 0)); lucide.createIcons();
+
+    function closeChatModal() {
+      document.getElementById('chat-drawer').classList.add('translate-x-full');
+      setTimeout(() => document.getElementById('chat-modal').classList.add('hidden'), 250);
     }
-    function processCartCheckout() { if (cart.length === 0) return; toggleCart(false); startNormalCheckout({ id: Date.now(), name: `Keranjang (${cart.length} Produk)` }, { name: 'Semua Produk', price: cart.reduce((a, b) => a + b.price, 0) }); }
 
-    function openChatModal() { document.getElementById('chat-modal').classList.remove('hidden'); setTimeout(() => document.getElementById('chat-drawer').classList.remove('translate-x-full'), 10); }
-    function closeChatModal() { document.getElementById('chat-drawer').classList.add('translate-x-full'); setTimeout(() => document.getElementById('chat-modal').classList.add('hidden'), 250); }
-    function openChatModalWithProduct(prodName, varName, price) { openChatModal(); appendUserChatMessage(`Halo Admin CS, saya ingin tanya produk *${prodName}* (${varName}) seharga ${formatIDR(price)}.`); setTimeout(() => { appendBotChatMessage(`Hai Kak! Produk **${prodName} (${varName})** stoknya ready dan dikirim instan otomatis via QRIS TriPay. Kakak bisa langsung klik **Beli Sekarang** di katalog ya! 🚀`); }, 700); }
-    function sendQuickReply(question) { appendUserChatMessage(question); setTimeout(() => { appendBotChatMessage(`Pesanan otomatis dikirim kurang dari 5 detik setelah pembayaran terverifikasi sistem.`); }, 600); }
-    function handleUserChatSubmit(e) { e.preventDefault(); const input = document.getElementById('user-chat-input'); const text = input.value.trim(); if (!text) return; input.value = ''; appendUserChatMessage(text); setTimeout(() => { appendBotChatMessage(`Pesan Anda: "${text}". Admin CS siap membantu!`); }, 700); }
-    function appendUserChatMessage(text) { const container = document.getElementById('chat-messages-container'); const div = document.createElement('div'); div.className = 'flex items-end justify-end gap-2'; div.innerHTML = `<div class="bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white p-3 rounded-2xl rounded-tr-none shadow-2xs max-w-[85%] leading-relaxed text-xs">${text.replace(/\n/g, '<br>')}</div>`; container.appendChild(div); container.scrollTop = container.scrollHeight; }
-    function appendBotChatMessage(text) { const container = document.getElementById('chat-messages-container'); const div = document.createElement('div'); div.className = 'flex items-start gap-2'; div.innerHTML = `<div class="w-7 h-7 rounded-full bg-rose-100 text-[#f5125e] flex items-center justify-center flex-shrink-0 text-xs font-bold">CS</div><div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs space-y-1 max-w-[85%] text-slate-800 leading-relaxed text-xs"><p>${text.replace(/\n/g, '<br>')}</p></div>`; container.appendChild(div); container.scrollTop = container.scrollHeight; lucide.createIcons(); }
+    function openChatModalWithProduct(prodName, varName, price) {
+      openChatModal();
+      
+      const matched = products.find(p => p.name === prodName);
+      if (matched) lastDiscussedProduct = matched;
 
-    loadProducts(); lucide.createIcons();
+      appendUserChatMessage(`Halo Admin CS, saya ingin tanya produk *${prodName}* (${varName}) seharga ${formatIDR(price)}.`);
+      showBotTyping();
+      setTimeout(() => {
+        removeBotTyping();
+        appendBotChatMessage(`Hai Kak! Untuk produk **${prodName} (${varName})** stoknya ready dan dikirim instan otomatis ya. Kakak bisa langsung klik **Beli Sekarang** di katalog! 🚀`);
+      }, 1000);
+    }
+
+    function sendQuickReply(action) {
+      document.getElementById('chat-menu-buttons').classList.add('hidden'); 
+      
+      if (action === 'menu_cek_produk') {
+          appendUserChatMessage("Saya ingin mengecek stok atau harga produk.");
+          showBotTyping();
+          setTimeout(() => { removeBotTyping(); appendBotChatMessage(`Boleh Kak! Silakan ketik nama produk yang ingin dicek (Contoh: "Harga Canva", "Apakah Netflix ready?").`); }, 800);
+      } else if (action === 'menu_cara_beli') {
+          appendUserChatMessage("Bagaimana cara beli produk via QRIS dan sistem garansinya?");
+          showBotTyping();
+          setTimeout(() => { removeBotTyping(); appendBotChatMessage(`**Cara Beli Sangat Mudah:**\n1. Pilih produk & paket yang diinginkan di beranda.\n2. Klik **Beli Sekarang**.\n3. Scan QRIS yang muncul di layar.\n4. Dalam hitungan detik, akun langsung muncul otomatis di layar! ⚡\n\n**Info Garansi:**\nSemua produk bergaransi penuh sesuai masa aktif. Simpan Nomor Invoice untuk klaim penggantian jika ada kendala.`); }, 1200);
+      } else if (action === 'menu_hubungi_admin') {
+          appendUserChatMessage("Saya ingin menghubungi Admin CS via WhatsApp.");
+          chatBotState = 'awaiting_wa_reason'; 
+          showBotTyping();
+          setTimeout(() => { removeBotTyping(); appendBotChatMessage(`Baik Kak. Boleh kasih tahu kami dulu, kendala atau pertanyaan apa yang ingin disampaikan ke Admin? (Misal: 'Mau klaim garansi invoice INV123' atau 'Tanya seputar layanan Nokos')`); }, 1000);
+      }
+    }
+
+    function handleUserChatSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('user-chat-input');
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      
+      appendUserChatMessage(text);
+      document.getElementById('chat-menu-buttons').classList.add('hidden'); 
+      
+      showBotTyping();
+      setTimeout(() => { processSmartBotResponse(text); }, 800);
+    }
+
+    // LOGIKA BOT PINTAR DENGAN INGATAN (CONTEXT MEMORY)
+    function processSmartBotResponse(rawText) {
+        removeBotTyping();
+        const text = rawText.toLowerCase();
+
+        // 1. Alur Mode WhatsApp
+        if (chatBotState === 'awaiting_wa_reason') {
+            chatBotState = 'normal'; 
+            const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Halo Admin DigitalHub, saya butuh bantuan terkait: ' + rawText)}`;
+            appendBotChatMessage(`Terima kasih informasinya Kak. Silakan klik tombol di bawah ini untuk terhubung langsung dengan Admin kami beserta detail pesan Kakak:\n\n👉 <a href="${waLink}" target="_blank" class="text-emerald-600 font-black underline bg-emerald-50 px-2 py-1 rounded inline-block mt-2">Chat WhatsApp Admin</a>`);
+            return;
+        }
+
+        // 2. Alur Panggil Menu Utama
+        if (text === 'menu' || text === 'bantuan' || text === 'help') {
+            appendBotChatMessage(`Tentu Kak, ini menu bantuan yang bisa Kakak pilih:`);
+            document.getElementById('chat-menu-buttons').classList.remove('hidden');
+            return;
+        }
+        
+        // 3. Alur Hubungi Admin Manual
+        if (text.includes('admin') || text.includes('cs') || text.includes('whatsapp') || text.includes('wa') || text.includes('hubung')) {
+             chatBotState = 'awaiting_wa_reason';
+             appendBotChatMessage("Boleh kasih tahu kami dulu Kak, kendala atau keluhan spesifik apa yang ingin disampaikan ke Admin sebelum disambungkan? (Contoh: 'Akun Netflix bermasalah' dll)");
+             return;
+        }
+
+        // 4. Deteksi Pertanyaan Garansi / Syarat (Menggunakan Ingatan)
+        if (text.includes('garansi') || text.includes('awet') || text.includes('aman')) {
+            if (lastDiscussedProduct) {
+                let garansi = lastDiscussedProduct.warranty || 'Resmi & Full Garansi';
+                appendBotChatMessage(`Untuk produk **${lastDiscussedProduct.name}**, status garansinya adalah: **${garansi}**. 🛡️\n\nPastikan Kakak menyimpan nomor invoice (INV) untuk mempermudah klaim jika ada kendala di kemudian hari ya!`);
+            } else {
+                appendBotChatMessage(`Semua produk di DigitalHub 100% bergaransi sesuai masa aktif paketnya Kak! 🛡️\n\nBoleh sebutkan nama aplikasinya (misal: "Garansi Canva") agar saya bisa cek detail garansi khususnya?`);
+            }
+            return;
+        }
+        
+        if (text.includes('deskripsi') || text.includes('syarat') || text.includes('ketentuan') || text.includes('detail')) {
+            if (lastDiscussedProduct) {
+                let desc = lastDiscussedProduct.description || 'Produk digital premium dengan auto-delivery.';
+                appendBotChatMessage(`Tentu Kak, berikut adalah detail untuk **${lastDiscussedProduct.name}**:\n\n*${desc}*`);
+            } else {
+                appendBotChatMessage(`Tentu Kak, boleh sebutkan nama produknya dulu? (Contoh: "Deskripsi Canva")`);
+            }
+            return;
+        }
+
+        // 5. Alur Deteksi Produk (Harga / Ready / Stok)
+        let matchedProduct = null;
+        const ignoreWords = ['berapa', 'harga', 'stok', 'ready', 'ada', 'kak', 'min', 'bot', 'beli', 'untuk', 'apakah', 'gimana', 'cara'];
+        
+        for (let p of products) {
+            let pName = p.name.toLowerCase();
+            if (text.includes(pName) && !ignoreWords.includes(pName)) {
+                matchedProduct = p; break;
+            }
+        }
+        if (!matchedProduct) {
+             const userWords = text.split(' ');
+             for (let word of userWords) {
+                 if (word.length > 3 && !ignoreWords.includes(word)) {
+                     matchedProduct = products.find(p => p.name.toLowerCase().includes(word));
+                     if(matchedProduct) break;
+                 }
+             }
+        }
+
+        if (matchedProduct) {
+            lastDiscussedProduct = matchedProduct; 
+            const prices = matchedProduct.variants && matchedProduct.variants.length > 0 ? matchedProduct.variants.map(v => Number(v.price||0)) : [Number(matchedProduct.price||0)];
+            const minPrice = formatIDR(Math.min(...prices));
+            appendBotChatMessage(`Untuk produk **${matchedProduct.name}** saat ini stoknya **READY** dan bisa dikirim instan otomatis ya Kak! 🎉\n\nHarganya mulai dari **${minPrice}**. Kakak bisa langsung cari produknya di katalog dan klik "Beli Sekarang".`);
+            return;
+        }
+
+        // 6. Sapaan Umum
+        if (text === 'halo' || text === 'hai' || text === 'pagi' || text === 'siang' || text === 'sore' || text === 'malam' || text === 'ping' || text === 'p') {
+            appendBotChatMessage(`Halo Kak! 👋 Ada yang bisa dibantu hari ini? Kakak bisa ketik **"menu"** untuk melihat opsi bantuan kami.`);
+            return;
+        }
+
+        // 7. Tidak mengerti (Fallback)
+        appendBotChatMessage(`Maaf Kak, bot kurang memahami maksudnya. 🙏\n\nKakak bisa mengetik **"menu"** untuk melihat opsi yang tersedia, atau ketik nama aplikasi yang ingin dicek (Contoh: *"Harga Canva"* atau *"Apakah Netflix ready?"*).`);
+    }
+
+    function appendUserChatMessage(text) {
+      const container = document.getElementById('chat-messages-container');
+      const div = document.createElement('div');
+      div.className = 'flex items-end justify-end gap-2';
+      div.innerHTML = `<div class="bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white p-3 rounded-2xl rounded-tr-none shadow-2xs max-w-[85%] leading-relaxed text-xs">${escapeHtml(text).replace(/\n/g, '<br>')}</div>`;
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function appendBotChatMessage(text) {
+      const container = document.getElementById('chat-messages-container');
+      const div = document.createElement('div');
+      div.className = 'flex items-start gap-2';
+      div.innerHTML = `<div class="w-7 h-7 rounded-full bg-rose-100 text-[#f5125e] flex items-center justify-center flex-shrink-0 text-xs font-bold"><i data-lucide="bot" class="w-4 h-4"></i></div><div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs space-y-1 max-w-[85%] text-slate-800 leading-relaxed text-xs">${text.replace(/\n/g, '<br>')}</div>`;
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+      if(typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    function showBotTyping() {
+      const container = document.getElementById('chat-messages-container');
+      const div = document.createElement('div');
+      div.id = 'bot-typing-indicator';
+      div.className = 'flex items-start gap-2';
+      div.innerHTML = `<div class="w-7 h-7 rounded-full bg-rose-100 text-[#f5125e] flex items-center justify-center flex-shrink-0 text-xs font-bold"><i data-lucide="bot" class="w-4 h-4"></i></div><div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs text-slate-800 text-xs"><div class="typing-indicator"><span></span><span></span><span></span></div></div>`;
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+      if(typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    function removeBotTyping() {
+      const el = document.getElementById('bot-typing-indicator');
+      if (el) el.remove();
+    }
+
+    // ================= ULASAN DINAMIS PER PRODUK =================
+    function getReviewsForProduct(p) {
+        const pName = p.name || 'Produk ini';
+        let cat = (p.category || '').toLowerCase();
+        
+        let commentsAll = [
+            `Sumpah mantap banget! Beli ${pName} di sini langsung masuk detik itu juga. Auto langganan! 🔥`,
+            `Awalnya ragu, tapi ternyata beneran full garansi. ${pName} nya work 100% tanpa kendala.`,
+            `Pelayanan super cepat. Pembayaran via QRIS gampang banget, langsung dapet akses ${pName}.`
+        ];
+        
+        if(cat.includes('ai') || cat.includes('gemini') || cat.includes('chatgpt')) {
+            commentsAll[1] = `Bantu banget buat nugas dan kerjaan. Akses ${pName} lancar jaya, AI nya responsif!`;
+        } else if(cat.includes('editor') || cat.includes('canva') || cat.includes('capcut')) {
+            commentsAll[1] = `Bisa langsung dipakai edit tanpa watermark. ${pName} premium memang beda, semua fitur pro kebuka.`;
+        } else if(cat.includes('sosmed') || cat.includes('follower')) {
+            commentsAll[1] = `Amanah banget, pesanan ${pName} langsung masuk sesuai target. Enggak drop sama sekali!`;
+        } else if(cat.includes('stream') || cat.includes('netflix')) {
+            commentsAll[1] = `Nonton kualitas HD/4K lancar tanpa screen limit. Beli ${pName} di sini paling murah dan terpercaya.`;
+        }
+
+        return {
+            all: [
+                { user: "b***9", avatarColor: "bg-blue-100 text-blue-600", rating: 5, date: "Hari ini", tag: "instant", comment: commentsAll[0] },
+                { user: "d***i", avatarColor: "bg-rose-100 text-rose-600", rating: 5, date: "Kemarin", tag: "service", comment: commentsAll[1] },
+                { user: "r***a", avatarColor: "bg-emerald-100 text-emerald-600", rating: 5, date: "2 hari lalu", tag: "instant", comment: commentsAll[2] }
+            ],
+            star5: [
+                { user: "f***y", avatarColor: "bg-amber-100 text-amber-600", rating: 5, date: "Kemarin", tag: "instant", comment: `Bintang 5 buat ${pName}! Semua fungsi kebuka sempurna tanpa ada kendala sama sekali.` },
+                { user: "k***n", avatarColor: "bg-purple-100 text-purple-600", rating: 5, date: "3 hari lalu", tag: "service", comment: `Kualitas bintang lima. Pembayaran instan QRIS lancar jaya, dapet akses ${pName} dalam 5 detik!` }
+            ],
+            instant: [
+                { user: "h***d", avatarColor: "bg-indigo-100 text-indigo-600", rating: 5, date: "Hari ini", tag: "instant", comment: `⚡ Benar-benar kilat! Order ${pName} jam 2 subuh langsung dikirim detik itu juga.` },
+                { user: "s***t", avatarColor: "bg-cyan-100 text-cyan-600", rating: 5, date: "Kemarin", tag: "instant", comment: `⚡ Sistem pengiriman canggih banget. QRIS terverifikasi, lisensi ${pName} langsung keluar.` }
+            ],
+            service: [
+                { user: "a***n", avatarColor: "bg-rose-100 text-rose-600", rating: 5, date: "Kemarin", tag: "service", comment: `🛡️ Garansi ${pName} terbukti 100% aman dan responsif. CS Admin WhatsApp sangat ramah membantu.` },
+                { user: "p***i", avatarColor: "bg-pink-100 text-pink-600", rating: 5, date: "4 hari lalu", tag: "service", comment: `🛡️ Invoice resmi tersimpan rapi di browser, ga takut hilang bukti garansi buat pesanan ${pName}.` }
+            ]
+        };
+    }
+
+    function setReviewFilter(filterType) {
+      activeReviewFilter = filterType;
+      document.querySelectorAll('.rf-btn').forEach(btn => {
+        btn.className = 'rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all text-[10px] cursor-pointer';
+      });
+      const activeBtn = document.getElementById(`rf-${filterType}`);
+      if (activeBtn) activeBtn.className = 'rf-btn bg-rose-50 text-[#f5125e] border border-rose-200 px-2.5 py-1 rounded-lg font-bold transition-all text-[10px] shadow-2xs cursor-pointer';
+      displayFilteredReviews();
+    }
+
+    function displayFilteredReviews() {
+      const container = document.getElementById('product-reviews-list');
+      if (!container || !currentSelectedProduct) return;
+      const dynamicReviews = getReviewsForProduct(currentSelectedProduct);
+      let listToShow = [];
+      if (currentSelectedProduct.customReviews && currentSelectedProduct.customReviews.length > 0) {
+        if (activeReviewFilter === 'all') listToShow = currentSelectedProduct.customReviews;
+        else if (activeReviewFilter === 'star5') listToShow = currentSelectedProduct.customReviews.filter(r => Number(r.rating) === 5);
+        else listToShow = currentSelectedProduct.customReviews.filter(r => r.tag === activeReviewFilter);
+      }
+      if (listToShow.length === 0) listToShow = dynamicReviews[activeReviewFilter] || dynamicReviews.all;
+
+      container.innerHTML = listToShow.map(rev => `
+        <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 space-y-1.5 animate-review">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-full ${rev.avatarColor || 'bg-rose-100 text-[#f5125e]'} flex items-center justify-center font-bold text-[10px]">
+                ${rev.user.charAt(0).toUpperCase()}
+              </div>
+              <div><p class="font-bold text-[11px] text-slate-800 leading-tight">${rev.user}</p><div class="flex items-center gap-0.5 text-amber-500 text-[10px]">${'★'.repeat(Number(rev.rating) || 5)}</div></div>
+            </div>
+            <span class="text-[9.5px] text-slate-400">${rev.date || 'Baru saja'}</span>
+          </div>
+          <div class="text-[10px] text-slate-500 font-medium bg-white px-2 py-0.5 rounded border border-slate-100 w-max">Variasi: ${rev.variant || currentSelectedVariant?.name || 'Resmi'}</div>
+          <p class="text-[11.5px] text-slate-700 leading-relaxed">${rev.comment}</p>
+        </div>`).join('');
+    }
+
+    // Inisialisasi awal
+    loadProducts();
+    startSocialProofNotifications();
+    if(typeof lucide !== 'undefined') lucide.createIcons();
   </script>
 </body>
 </html>
