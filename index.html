@@ -27,7 +27,6 @@
       -webkit-touch-callout: none;
     }
     
-    /* Pengecualian hanya untuk input teks dan textarea agar tetap bisa mengetik */
     input, textarea, select {
       -webkit-user-select: text !important;
       -moz-user-select: text !important;
@@ -35,20 +34,13 @@
       user-select: text !important;
     }
 
-    /* Proteksi Gambar tidak bisa ditarik/drag */
-    img {
-      -webkit-user-drag: none;
-      user-drag: none;
-      pointer-events: none;
-    }
-    
-    button img, a img, .cursor-pointer img {
-      pointer-events: auto;
-    }
+    img { -webkit-user-drag: none; user-drag: none; pointer-events: none; }
+    button img, a img, .cursor-pointer img { pointer-events: auto; }
 
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    
     @keyframes fadeInReview {
       from { opacity: 0; transform: translateY(6px); }
       to { opacity: 1; transform: translateY(0); }
@@ -59,11 +51,6 @@
       50% { transform: translateY(-8px); }
     }
     .animate-bounce-soft { animation: bounceSoft 2s infinite ease-in-out; }
-    .bg-icon-0 { background: linear-gradient(135deg, #10b981, #059669); color: white; }
-    .bg-icon-1 { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; }
-    .bg-icon-2 { background: linear-gradient(135deg, #f43f5e, #e11d48); color: white; }
-    .bg-icon-3 { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: white; }
-    .bg-icon-4 { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
     
     /* Animasi Typing Bot */
     .typing-indicator span {
@@ -139,15 +126,15 @@
         </div>
       </div>
 
-      <!-- Search Bar -->
-      <div class="relative flex-1 max-w-2xl">
-        <form onsubmit="event.preventDefault(); handleSearch(document.getElementById('search-input').value);" class="flex items-center bg-white border-2 border-[#f5125e] rounded-full p-0.5 sm:p-1 shadow-xs transition-all focus-within:ring-2 focus-within:ring-[#f5125e]/30">
+      <!-- Search Bar & Tombol Install PC -->
+      <div class="relative flex-1 max-w-2xl flex items-center gap-2">
+        <form onsubmit="event.preventDefault(); handleSearch(document.getElementById('search-input').value);" class="flex-1 flex items-center bg-white border-2 border-[#f5125e] rounded-full p-0.5 sm:p-1 shadow-xs transition-all focus-within:ring-2 focus-within:ring-[#f5125e]/30">
           <i data-lucide="search" class="w-4 h-4 text-slate-400 ml-3 mr-1 flex-shrink-0"></i>
           <input 
             type="text" 
             id="search-input" 
             oninput="handleSearch(this.value)" 
-            placeholder="Cari Nokos, Template, Followers, AI..." 
+            placeholder="Cari Template, Followers, AI..." 
             class="w-full bg-transparent text-slate-800 text-xs sm:text-sm font-medium focus:outline-none placeholder:text-slate-400 px-1" 
           />
           <label for="camera-search-input" class="p-1.5 text-slate-400 hover:text-[#f5125e] cursor-pointer rounded-full transition-colors flex items-center justify-center flex-shrink-0" title="Cari dengan Gambar">
@@ -159,6 +146,11 @@
             Search
           </button>
         </form>
+        
+        <!-- TOMBOL INSTALL APP PC -->
+        <button onclick="triggerPwaPromptUI()" class="hidden sm:flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 bg-slate-100 text-slate-500 hover:text-[#f5125e] hover:bg-rose-50 border border-slate-200 hover:border-rose-200 rounded-full transition-all flex-shrink-0" title="Install Aplikasi">
+          <i data-lucide="arrow-down" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+        </button>
       </div>
 
       <!-- Action Buttons -->
@@ -204,7 +196,7 @@
 
     <!-- Menu Kategori Grid -->
     <div class="bg-white rounded-2xl p-3.5 sm:p-5 shadow-2xs border border-slate-200/80">
-      <div id="category-buttons-grid" class="grid grid-cols-4 sm:grid-cols-8 gap-3 sm:gap-4 text-center text-[11px] font-semibold text-slate-700">
+      <div id="category-buttons-grid" class="grid grid-cols-4 sm:grid-cols-7 gap-3 sm:gap-4 text-center text-[11px] font-semibold text-slate-700">
         <div onclick="setCategory('AI')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="AI">
           <div class="cat-icon-box w-12 h-12 bg-rose-50 text-[#f5125e] rounded-2xl flex items-center justify-center border border-rose-100 group-hover:scale-105 group-hover:bg-[#f5125e] group-hover:text-white transition-all shadow-2xs"><i data-lucide="bot" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Akun AI</span>
@@ -225,13 +217,6 @@
           <div class="cat-icon-box w-12 h-12 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center border border-purple-100 group-hover:scale-105 group-hover:bg-purple-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="users" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Followers</span>
         </div>
-        
-        <!-- TOMBOL NOKOS KHUSUS -->
-        <div onclick="setCategory('Nokos')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Nokos">
-          <div class="cat-icon-box w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center border border-emerald-100 group-hover:scale-105 group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="smartphone" class="w-5 h-5"></i></div>
-          <span class="truncate w-full">Nokos OTP</span>
-        </div>
-
         <div onclick="setCategory('Stream')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Stream">
           <div class="cat-icon-box w-12 h-12 bg-violet-50 text-violet-600 rounded-2xl flex items-center justify-center border border-violet-100 group-hover:scale-105 group-hover:bg-violet-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="play-square" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Streaming</span>
@@ -323,50 +308,10 @@
   <!-- Mobile Bottom Nav -->
   <div class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200/80 z-40 py-2 px-6 flex md:hidden items-center justify-between text-slate-500 text-[10px] font-medium shadow-lg">
     <button onclick="setCategory('Semua')" class="flex flex-col items-center gap-0.5 text-[#f5125e]"><i data-lucide="home" class="w-4 h-4"></i><span>Beranda</span></button>
-    <button onclick="openNokosModal()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="smartphone" class="w-4 h-4 text-emerald-600"></i><span>Nokos OTP</span></button>
+    <button onclick="triggerPwaPromptUI()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="download" class="w-4 h-4 text-emerald-600"></i><span>App</span></button>
     <button onclick="openHistoryModal()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="receipt" class="w-4 h-4"></i><span>Pesanan</span></button>
     <button onclick="toggleCart(true)" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="shopping-bag" class="w-4 h-4"></i><span>Keranjang</span></button>
     <button onclick="openChatModal()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="message-square-more" class="w-4 h-4"></i><span>Chat CS</span></button>
-  </div>
-
-  <!-- MODAL MENU NOKOS KHUSUS -->
-  <div id="nokos-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
-    <div onclick="closeNokosModal()" class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
-    <div class="fixed inset-x-0 bottom-0 sm:inset-0 flex items-end sm:items-center justify-center sm:p-4 z-10">
-      <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col max-h-[90vh] transition-transform transform translate-y-0">
-        
-        <div class="flex justify-between items-center p-4 sm:p-5 border-b border-slate-100">
-          <div>
-            <h3 class="font-black text-base text-slate-800 flex items-center gap-2">
-              <i data-lucide="smartphone" class="w-5 h-5 text-[#f5125e]"></i> Layanan Nomor Virtual
-            </h3>
-            <p class="text-[10px] text-slate-500 font-medium mt-0.5">Pilih aplikasi untuk menerima kode OTP otomatis</p>
-          </div>
-          <button onclick="closeNokosModal()" class="text-slate-400 hover:text-slate-600 bg-slate-100 p-1.5 rounded-full transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
-        </div>
-
-        <div class="p-4 sm:p-5 overflow-y-auto space-y-4 flex-1 bg-slate-50/50">
-          <div id="nokos-services-grid" class="grid grid-cols-4 sm:grid-cols-5 gap-3"></div>
-
-          <div id="nokos-selected-info" class="hidden bg-gradient-to-br from-rose-50 to-white border border-rose-200 rounded-2xl p-3.5 flex items-center justify-between shadow-2xs">
-            <div>
-              <p class="text-[9px] text-rose-600 font-black uppercase tracking-wider mb-0.5">Layanan Terpilih</p>
-              <h4 id="nokos-selected-name" class="text-sm font-bold text-slate-800 leading-tight">WhatsApp</h4>
-            </div>
-            <div class="text-right">
-              <p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider mb-0.5">Harga</p>
-              <h4 id="nokos-selected-price" class="text-sm font-black text-[#f5125e] leading-tight">Rp 0</h4>
-            </div>
-          </div>
-        </div>
-
-        <div class="p-4 sm:p-5 border-t border-slate-100 bg-white">
-          <button id="nokos-btn-buy" disabled class="w-full py-3.5 bg-slate-100 text-slate-400 font-bold rounded-2xl transition-all flex items-center justify-center gap-2 text-sm">
-            Pilih Layanan Terlebih Dahulu
-          </button>
-        </div>
-      </div>
-    </div>
   </div>
 
   <!-- MODAL DETAIL PRODUK (DENGAN FITUR QUANTITY) -->
@@ -483,8 +428,6 @@
           <div id="auto-polling-indicator" class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3 text-center flex flex-col items-center gap-2">
             <p id="polling-text" class="text-[10.5px] text-emerald-800 font-medium leading-tight">Harap tunggu, sistem sedang memproses.</p>
           </div>
-
-          <button id="nokos-cancel-qris-btn" onclick="cancelAndClosePaymentModal()" class="hidden w-full mt-2 bg-rose-50 text-rose-600 border border-rose-200 py-2.5 rounded-xl text-xs font-bold hover:bg-rose-100 transition-colors">Batal & Tutup (Refund Otomatis)</button>
         </div>
 
         <!-- STEP 2: RESULT (PRODUK BIASA) -->
@@ -499,26 +442,6 @@
             <button onclick="copyAccountData()" class="mt-2 w-full bg-[#f5125e] text-white py-2 rounded-xl font-bold text-xs">Salin Data</button>
           </div>
           <button onclick="forceClosePaymentModal()" class="w-full mt-2 bg-slate-100 text-slate-600 py-2.5 rounded-xl text-xs font-bold hover:bg-slate-200">Tutup</button>
-        </div>
-
-        <!-- STEP 3: RESULT NOKOS (TUNGGU SMS SETELAH BAYAR) -->
-        <div id="step-nokos" class="space-y-3 hidden text-left mt-2">
-          <div class="text-center border-b border-slate-100 pb-3">
-            <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-1"><i data-lucide="message-square" class="w-6 h-6"></i></div>
-            <h4 class="font-bold text-sm text-slate-800">Menunggu Verifikasi SMS</h4>
-            <p class="text-[10px] text-slate-500 mt-0.5">Sistem sedang mengecek OTP dari pusat.</p>
-          </div>
-          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 text-center shadow-inner mt-2">
-            <span class="text-[10px] text-slate-500 font-bold block uppercase mb-1">Nomor Virtual Anda:</span>
-            <h2 id="nokos-number-display" class="text-xl sm:text-2xl font-black text-slate-800 tracking-wider">Memuat...</h2>
-          </div>
-          <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 flex flex-col items-center justify-center gap-2 mt-2">
-            <i id="nokos-spinner" data-lucide="loader" class="w-6 h-6 text-emerald-600 animate-spin"></i>
-            <span class="text-[10px] text-emerald-800 font-bold block uppercase text-center" id="nokos-sms-status">Mengecek Kotak Masuk...</span>
-            <h3 id="nokos-sms-code" class="text-3xl font-black text-emerald-600 tracking-widest hidden bg-white px-4 py-2 rounded-xl border border-emerald-200 shadow-sm mt-1"></h3>
-          </div>
-          <button id="nokos-finish-btn" onclick="forceClosePaymentModal()" class="mt-2 w-full bg-emerald-100 text-emerald-700 border border-emerald-200 py-2.5 rounded-xl font-bold text-xs hover:bg-emerald-200 transition-colors hidden">Selesai & Tutup</button>
-          <button id="nokos-cancel-btn" onclick="reportNokosIssue()" class="mt-2 w-full bg-slate-100 text-slate-600 border border-slate-200 py-2.5 rounded-xl font-bold text-xs hover:bg-slate-200 transition-colors hidden">SMS Tidak Masuk? (Batalkan & Lapor Admin)</button>
         </div>
       </div>
     </div>
@@ -626,52 +549,6 @@
     const WHATSAPP_NUMBER = "6282243890517"; 
     const QRIS_STATIC_URL = "https://i.ibb.co.com/PGRmz0G8/Whats-App-Image-2026-08-24-at-12-25-05.jpg"; 
 
-    // KAMUS LOGO APLIKASI
-    const APP_LOGOS = {
-      "wa": "https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg", "whatsapp": "https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg",
-      "tg": "https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg", "telegram": "https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg",
-      "ig": "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png", "instagram": "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png",
-      "fb": "https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg", "facebook": "https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg",
-      "go": "https://upload.wikimedia.org/wikipedia/commons/9/99/Gojek_logo_2019.svg", "gojek": "https://upload.wikimedia.org/wikipedia/commons/9/99/Gojek_logo_2019.svg",
-      "sh": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg", "shopee": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg",
-      "gr": "https://upload.wikimedia.org/wikipedia/commons/0/07/Grab_Logo.svg", "grab": "https://upload.wikimedia.org/wikipedia/commons/0/07/Grab_Logo.svg",
-      "nf": "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg", "netflix": "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
-      "tt": "https://upload.wikimedia.org/wikipedia/en/a/a9/TikTok_logo.svg", "tiktok": "https://upload.wikimedia.org/wikipedia/en/a/a9/TikTok_logo.svg",
-      "tw": "https://upload.wikimedia.org/wikipedia/commons/c/ce/X_logo_2023.svg", "twitter": "https://upload.wikimedia.org/wikipedia/commons/c/ce/X_logo_2023.svg",
-      "li": "https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg", "line": "https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg",
-      "ds": "https://upload.wikimedia.org/wikipedia/en/9/98/Discord_logo.svg", "discord": "https://upload.wikimedia.org/wikipedia/en/9/98/Discord_logo.svg",
-      "sp": "https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg", "spotify": "https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg",
-      "am": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg", "amazon": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
-      "gl": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg", "google": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg", "google, youtube, gmail": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg", "youtube": "https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg", "gmail": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
-      "yi": "https://upload.wikimedia.org/wikipedia/commons/9/91/Yandex_Browser_icon.svg", "yandex": "https://upload.wikimedia.org/wikipedia/commons/9/91/Yandex_Browser_icon.svg",
-      "oi": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Tinder_Icon.svg", "tinder": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Tinder_Icon.svg",
-      "mc": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Michat_logo.png", "michat": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Michat_logo.png",
-      "uk": "https://upload.wikimedia.org/wikipedia/commons/6/69/Airbnb_Logo_B%C3%A9lo.svg", "airbnb": "https://upload.wikimedia.org/wikipedia/commons/6/69/Airbnb_Logo_B%C3%A9lo.svg",
-      "ab": "https://upload.wikimedia.org/wikipedia/en/8/8b/Alibaba_Group_logo.svg", "alibaba": "https://upload.wikimedia.org/wikipedia/en/8/8b/Alibaba_Group_logo.svg",
-      "cg": "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg", "chatgpt": "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg",
-      "dl": "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg", "openai": "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg",
-      "mt": "https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg", "steam": "https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg",
-      "qw": "https://upload.wikimedia.org/wikipedia/commons/7/7b/WeChat_logo.svg", "wechat": "https://upload.wikimedia.org/wikipedia/commons/7/7b/WeChat_logo.svg",
-      "vi": "https://upload.wikimedia.org/wikipedia/commons/b/bd/Viber_logo.svg", "viber": "https://upload.wikimedia.org/wikipedia/commons/b/bd/Viber_logo.svg",
-      "mb": "https://upload.wikimedia.org/wikipedia/commons/2/24/Yahoo%21_logo.svg", "yahoo": "https://upload.wikimedia.org/wikipedia/commons/2/24/Yahoo%21_logo.svg",
-      "sn": "https://upload.wikimedia.org/wikipedia/en/c/c4/Snapchat_logo.svg", "snapchat": "https://upload.wikimedia.org/wikipedia/en/c/c4/Snapchat_logo.svg",
-      "rl": "https://upload.wikimedia.org/wikipedia/commons/3/3a/Roblox_player_icon_black.svg", "roblox": "https://upload.wikimedia.org/wikipedia/commons/3/3a/Roblox_player_icon_black.svg",
-      "bz": "https://upload.wikimedia.org/wikipedia/commons/2/23/Blizzard_Entertainment_Logo_2015.svg", "blizzard": "https://upload.wikimedia.org/wikipedia/commons/2/23/Blizzard_Entertainment_Logo_2015.svg",
-      "ts": "https://upload.wikimedia.org/wikipedia/commons/2/22/Tencent_Logo.svg", "tencent": "https://upload.wikimedia.org/wikipedia/commons/2/22/Tencent_Logo.svg",
-      "lf": "https://upload.wikimedia.org/wikipedia/en/a/a9/TikTok_logo.svg", "douyin": "https://upload.wikimedia.org/wikipedia/en/a/a9/TikTok_logo.svg",
-      "me": "https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg", "line messenger": "https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg",
-      "aoh": "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg", 
-      "ai": "https://upload.wikimedia.org/wikipedia/commons/2/24/Yahoo%21_logo.svg", "aol": "https://upload.wikimedia.org/wikipedia/commons/2/24/Yahoo%21_logo.svg",
-      "pf": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Lazada_%282019%29.svg", "lazada": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Lazada_%282019%29.svg",
-      "kb": "https://upload.wikimedia.org/wikipedia/commons/6/69/Clubhouse_App_Logo.png", "clubhouse": "https://upload.wikimedia.org/wikipedia/commons/6/69/Clubhouse_App_Logo.png",
-      "twitch": "https://upload.wikimedia.org/wikipedia/commons/2/26/Twitch_logo.svg",
-      "paypal": "https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg", "pp": "https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg",
-      "uber": "https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png", "ub": "https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png",
-      "tokopedia": "https://upload.wikimedia.org/wikipedia/commons/a/a7/Tokopedia.svg", "tk": "https://upload.wikimedia.org/wikipedia/commons/a/a7/Tokopedia.svg",
-      "dana": "https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg", "da": "https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg",
-      "ovo": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo_ovo_purple.svg", "ov": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo_ovo_purple.svg"
-    };
-
     let products = [];
     let cart = [];
     try {
@@ -689,18 +566,11 @@
     let currentSort = 'default';
     let currentSelectedProduct = null;
     let currentSelectedVariant = null;
-    let currentSelectedQuantity = 1; // Variabel baru untuk fitur + dan -
+    let currentSelectedQuantity = 1; 
     let deferredPwaPrompt = null;
     let activeReviewFilter = 'all';
-    
-    let currentNokosCountry = "6"; 
-    let currentNokosOperator = "any";
-    let allNokosServices = [];
 
-    let currentNokosId = null;
     let pollingInterval = null;
-    let nokosPollingInterval = null;
-    let isNokosPaid = false; 
 
     // --- VARIABEL BOT CHAT PINTAR (INGATAN BOT) ---
     let chatBotState = 'normal'; 
@@ -729,14 +599,6 @@
       container.appendChild(toast);
       setTimeout(() => toast.remove(), 2500);
     }
-
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    document.addEventListener('keydown', e => {
-      if (e.ctrlKey && (e.key === 'c' || e.key === 'u' || e.key === 's' || e.key === 'a' || e.key === 'p')) {
-        if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
-        e.preventDefault();
-      }
-    });
 
     const livePurchasesData = [
       { user: 'Budi S. (Surabaya)', product: 'Gemini Pro Advanced', time: '1 menit lalu' },
@@ -771,33 +633,31 @@
       e.preventDefault();
       deferredPwaPrompt = e;
       const hasDismissed = sessionStorage.getItem('pwa_popup_dismissed');
-      if (!hasDismissed) {
-        setTimeout(() => { triggerPwaPromptUI(); }, 2000);
-      }
+      if (!hasDismissed) { setTimeout(() => { triggerPwaPromptUI(); }, 2000); }
     });
 
-    function triggerPwaPromptUI() {
+    window.triggerPwaPromptUI = function() {
       const popup = document.getElementById('pwa-install-popup');
       if (popup) popup.classList.remove('hidden');
-    }
+    };
 
-    function dismissPwaPopup() {
+    window.dismissPwaPopup = function() {
       const popup = document.getElementById('pwa-install-popup');
       if (popup) popup.classList.add('hidden');
       sessionStorage.setItem('pwa_popup_dismissed', 'true');
-    }
+    };
 
-    async function executePwaInstall() {
+    window.executePwaInstall = async function() {
       if (!deferredPwaPrompt) {
         dismissPwaPopup();
         showToast('Untuk install: Klik ikon titik 3 browser > Tambahkan ke Layar Utama');
         return;
       }
       deferredPwaPrompt.prompt();
-      const { outcome } = await deferredPwaPrompt.userChoice;
+      await deferredPwaPrompt.userChoice;
       deferredPwaPrompt = null;
       dismissPwaPopup();
-    }
+    };
 
     window.addEventListener('appinstalled', () => {
       dismissPwaPopup();
@@ -832,11 +692,8 @@
         const data = await response.json();
         if (Array.isArray(data)) {
           const bannerObj = data.find(item => item._isBannerConfig || item.id === "__BANNER_CONFIG__");
-          if (bannerObj) {
-            applyBannerConfig(bannerObj);
-          } else {
-            applyBannerConfig({ active: false });
-          }
+          if (bannerObj) applyBannerConfig(bannerObj);
+          else applyBannerConfig({ active: false });
           products = data.filter(item => !item._isBannerConfig && item.id !== "__BANNER_CONFIG__");
         } else {
           products = [];
@@ -850,12 +707,7 @@
       renderCart();
     }
 
-    function setCategory(cat) {
-      if (cat === 'Nokos') {
-        openNokosModal();
-        return; 
-      }
-
+    window.setCategory = function(cat) {
       activeCategory = cat || 'Semua';
       const badge = document.getElementById('active-category-badge');
       if (badge) badge.innerText = activeCategory;
@@ -873,15 +725,14 @@
           label.className = 'truncate w-full text-slate-700 font-semibold';
         }
       });
-
       renderProducts();
-      lucide.createIcons();
-    }
+      if(typeof lucide !== 'undefined') lucide.createIcons();
+    };
 
-    function handleSearch(q) { searchQuery = (q || '').toLowerCase(); renderProducts(); }
-    function handleSortChange(s) { currentSort = s; renderProducts(); }
+    window.handleSearch = function(q) { searchQuery = (q || '').toLowerCase(); renderProducts(); };
+    window.handleSortChange = function(s) { currentSort = s; renderProducts(); };
 
-    async function handleCameraSearch(event) {
+    window.handleCameraSearch = async function(event) {
       const file = event.target.files[0];
       if (!file) return;
       const camIcon = document.getElementById('cam-icon');
@@ -909,7 +760,7 @@
         camLoading.classList.add('hidden');
         event.target.value = '';
       }
-    }
+    };
 
     function renderPopularSection() {
       const popSec = document.getElementById('popular-section');
@@ -917,7 +768,7 @@
       
       const bestProducts = products.filter(p => {
           const cat = (p.category || '').toLowerCase();
-          return (p.isBestSeller || p.isHot) && !cat.includes('landing') && !cat.includes('nokos');
+          return (p.isBestSeller || p.isHot) && !cat.includes('landing');
       });
       
       if (bestProducts.length === 0) { popSec.classList.add('hidden'); return; }
@@ -956,7 +807,7 @@
         
         let matchesCategory = false;
         if (targetCat === 'semua') {
-          matchesCategory = !(itemCat.includes('nokos') || itemCat.includes('landing'));
+          matchesCategory = !itemCat.includes('landing');
         } else if (targetCat === 'ai') {
           matchesCategory = itemCat.includes('ai') || itemCat.includes('gemini') || itemCat.includes('chatgpt') || itemCat.includes('claude');
         } else if (targetCat === 'editor') {
@@ -967,8 +818,6 @@
           matchesCategory = itemCat.includes('landing') || itemCat.includes('web') || itemCat.includes('website');
         } else if (targetCat === 'sosmed') {
           matchesCategory = itemCat.includes('sosmed') || itemCat.includes('follower') || itemCat.includes('like') || itemCat.includes('sub');
-        } else if (targetCat === 'nokos') {
-          matchesCategory = false; 
         } else if (targetCat === 'stream') {
           matchesCategory = itemCat.includes('stream') || itemCat.includes('youtube') || itemCat.includes('netflix') || itemCat.includes('spotify') || itemCat.includes('music');
         } else {
@@ -1034,406 +883,8 @@
       if(typeof lucide !== 'undefined') lucide.createIcons();
     }
 
-    // ================= FUNGSI LAYAR NOKOS =================
-    async function openNokosModal() {
-      document.getElementById('nokos-modal').classList.remove('hidden');
-      await fetchNokosCountries(); 
-      fetchNokosDataFromAPI();
-    }
-
-    function setFallbackCountries(select) {
-        if (!select) return;
-        select.innerHTML = `
-            <option value="6">🇮🇩 Indonesia (+62)</option>
-            <option value="7">🇲🇾 Malaysia (+60)</option>
-            <option value="8">🇹🇭 Thailand (+66)</option>
-            <option value="12">🇺🇸 USA (+1)</option>
-            <option value="16">🇬🇧 UK (+44)</option>
-        `;
-        currentNokosCountry = "6";
-    }
-
-    async function fetchNokosCountries() {
-      const select = document.getElementById('nokos-country-select');
-      if (!select) return;
-      try {
-        const res = await fetch(`${API_URL}/nokos-countries`);
-        const result = await res.json();
-        if(result.success && Array.isArray(result.data) && result.data.length > 0) {
-            let html = result.data.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
-            select.innerHTML = html;
-            
-            const indo = result.data.find(c => c.name.toLowerCase().includes('indonesia'));
-            currentNokosCountry = indo ? indo.id : result.data[0].id;
-            select.value = currentNokosCountry;
-        } else {
-            setFallbackCountries(select);
-        }
-      } catch(e) {
-          setFallbackCountries(select);
-      }
-    }
-
-    function changeNokosFilters() {
-      currentNokosCountry = document.getElementById('nokos-country-select').value;
-      currentNokosOperator = document.getElementById('nokos-operator-select').value;
-      fetchNokosDataFromAPI(); 
-    }
-
-    async function fetchNokosDataFromAPI() {
-      const grid = document.getElementById('nokos-services-grid');
-      const loading = document.getElementById('nokos-loading');
-      if (grid) grid.classList.add('hidden');
-      if (loading) loading.classList.remove('hidden');
-
-      try {
-        const res = await fetch(`${API_URL}/nokos-services?country=${currentNokosCountry}&operator=${currentNokosOperator}`);
-        const result = await res.json();
-        
-        if (result.success && result.data) {
-           let services = result.data;
-           
-           allNokosServices = services.filter(s => {
-               let code = (s.code || '').toLowerCase().trim();
-               let name = (s.name || '').toLowerCase().trim();
-               if (/^[a-z]{3,4}$/.test(name) && !['line', 'ovo', 'dana'].includes(name)) return false;
-               if (name === code && code.length >= 2 && code.length <= 4 && !APP_LOGOS[code]) return false;
-               return true;
-           }).map(s => {
-               let code = (s.code || '').toLowerCase().trim();
-               let name = (s.name || '').toLowerCase().trim();
-               if (code === 'gl' || name === 'google') s.name = 'Google, Youtube, Gmail';
-               return s;
-           });
-           
-           allNokosServices.sort((a, b) => {
-               let aCode = (a.code || '').toLowerCase().trim();
-               let bCode = (b.code || '').toLowerCase().trim();
-               let aName = (a.name || '').toLowerCase().trim();
-               let bName = (b.name || '').toLowerCase().trim();
-               
-               let aHasLogo = APP_LOGOS[aCode] || APP_LOGOS[aName] || Object.keys(APP_LOGOS).some(k => aName.includes(k)) ? 1 : 0;
-               let bHasLogo = APP_LOGOS[bCode] || APP_LOGOS[bName] || Object.keys(APP_LOGOS).some(k => bName.includes(k)) ? 1 : 0;
-               
-               if (aHasLogo !== bHasLogo) return bHasLogo - aHasLogo;
-               return (a.name || '').localeCompare(b.name || '');
-           });
-
-           renderNokosGrid(allNokosServices);
-        } else {
-           if (loading) loading.innerHTML = `<span class="text-rose-500 font-bold">Gagal memuat layanan. Coba lagi nanti.</span>`;
-        }
-      } catch (err) {
-        if (loading) loading.innerHTML = `<span class="text-rose-500 font-bold">Koneksi server gagal.</span>`;
-      }
-    }
-
-    function handleBuyNokos(btn) {
-        const code = btn.getAttribute('data-code');
-        const name = btn.getAttribute('data-name');
-        const price = Number(btn.getAttribute('data-price'));
-        startDynamicNokosCheckout({ code: code, name: name, price: price });
-    }
-
-    function handleAddNokos(btn) {
-        const code = btn.getAttribute('data-code');
-        const name = btn.getAttribute('data-name');
-        const price = Number(btn.getAttribute('data-price'));
-        const logoUrl = btn.getAttribute('data-logo');
-        // Nokos selalu 1, tidak perlu custom qty
-        addNokosToCart(code, name, price, logoUrl);
-    }
-
-    function renderNokosGrid(services) {
-      const grid = document.getElementById('nokos-services-grid');
-      const loading = document.getElementById('nokos-loading');
-      if (loading) loading.classList.add('hidden');
-      if (grid) {
-        grid.className = "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4"; 
-        grid.classList.remove('hidden');
-      }
-
-      if (!services || services.length === 0) {
-         if (grid) grid.innerHTML = `<div class="col-span-full py-8 text-center text-xs text-slate-400">Layanan tidak ditemukan untuk filter ini.</div>`;
-         return;
-      }
-
-      const formatStok = (c) => {
-          if(!c || c === 0) return 'Tersedia';
-          if(c > 1000) return (c/1000).toFixed(1) + 'k';
-          return c;
-      };
-
-      grid.innerHTML = services.map((s, idx) => {
-        let cleanCode = (s.code || '').toLowerCase().trim();
-        let cleanName = (s.name || '').toLowerCase().trim();
-        let logoUrl = APP_LOGOS[cleanCode] || APP_LOGOS[cleanName] || Object.values(APP_LOGOS).find((url) => url.toLowerCase().includes(cleanName.replace(/\s/g,''))) || '';
-        
-        let firstChar = (s.name || 'A').charAt(0).toUpperCase();
-        let iconHtml = '';
-        if (logoUrl) {
-          iconHtml = `<img src="${logoUrl}" class="w-full h-full object-contain" alt="${s.name}" />`;
-        } else {
-          const colorClass = `bg-icon-${idx % 5}`; 
-          iconHtml = `<div class="w-full h-full rounded-[10px] ${colorClass} flex items-center justify-center font-black text-xl shadow-xs text-white">${firstChar}</div>`;
-        }
-        
-        let displayStock = s.count !== undefined ? s.count : Math.floor(Math.random() * (300000 - 10000) + 10000);
-        let stockText = formatStok(displayStock) + ' stok';
-        const priceStr = typeof formatIDR === 'function' ? formatIDR(s.price) : 'Rp ' + s.price;
-        
-        const safeName = escapeHtml(s.name);
-        const safeLogo = escapeHtml(logoUrl);
-
-        return `
-          <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col justify-between hover:border-[#f5125e] hover:shadow-md transition-all relative">
-            <span class="absolute top-2 right-2 bg-[#f5125e] text-white text-[8px] font-bold px-1.5 py-0.5 rounded shadow-sm">HOT</span>
-            
-            <div class="flex items-center gap-2.5 mb-3">
-              <div class="w-9 h-9 flex-shrink-0 bg-slate-50 rounded-xl p-1 border border-slate-100 flex items-center justify-center">
-                ${iconHtml}
-              </div>
-              <div class="min-w-0">
-                <h4 class="text-xs font-bold text-slate-800 truncate pr-6" title="${safeName}">${s.name}</h4>
-                <p class="text-[9px] text-slate-400 truncate">${stockText}</p>
-              </div>
-            </div>
-            
-            <div class="text-sm font-black text-[#f5125e] mb-3">${priceStr}</div>
-            
-            <div class="flex items-center gap-1.5 mt-auto">
-              <button onclick="handleBuyNokos(this)" data-code="${s.code}" data-name="${safeName}" data-price="${s.price}" class="flex-1 bg-rose-50 hover:bg-[#f5125e] text-[#f5125e] hover:text-white border border-rose-200 text-xs font-bold py-2 rounded-lg flex items-center justify-center gap-1.5 transition-colors">
-                <i data-lucide="rocket" class="w-3.5 h-3.5"></i> Beli
-              </button>
-              <button onclick="handleAddNokos(this)" data-code="${s.code}" data-name="${safeName}" data-price="${s.price}" data-logo="${safeLogo}" class="w-8 h-8 flex-shrink-0 border border-slate-200 text-slate-400 hover:text-[#f5125e] hover:border-rose-200 hover:bg-rose-50 rounded-lg flex items-center justify-center transition-colors" title="Tambah ke Keranjang">
-                <i data-lucide="plus" class="w-4 h-4"></i>
-              </button>
-            </div>
-          </div>
-        `;
-      }).join('');
-      if(typeof lucide !== 'undefined') lucide.createIcons();
-    }
-
-    function filterNokosServices(query) {
-      const q = (query || '').toLowerCase().trim();
-      const filtered = allNokosServices.filter(s => (s.name || '').toLowerCase().includes(q) || (s.code || '').toLowerCase().includes(q));
-      renderNokosGrid(filtered);
-    }
-
-    function closeNokosModal() { document.getElementById('nokos-modal').classList.add('hidden'); }
-
-    // ================== ALUR SMM PANEL NOKOS ==================
-    async function startDynamicNokosCheckout(serviceObj) {
-      closeNokosModal();
-      
-      document.getElementById('step-pay').classList.remove('hidden');
-      document.getElementById('step-result').classList.add('hidden');
-      const stepNokos = document.getElementById('step-nokos');
-      if(stepNokos) stepNokos.classList.add('hidden');
-      
-      document.getElementById('nokos-cancel-qris-btn').classList.add('hidden'); 
-      document.getElementById('payment-modal').classList.remove('hidden');
-      
-      document.getElementById('pay-item-name').innerText = `Nokos OTP - ${serviceObj.name}`;
-      document.getElementById('pay-total-amount').innerText = formatIDR(serviceObj.price);
-      
-      const qrisImg = document.getElementById('qris-img');
-      const qrisSpin = document.getElementById('qris-loading-spin');
-      const pollingIndicator = document.getElementById('auto-polling-indicator');
-      
-      qrisImg.classList.add('hidden');
-      qrisSpin.classList.remove('hidden');
-      
-      qrisSpin.innerHTML = `
-        <i data-lucide="loader-2" class="w-8 h-8 animate-spin text-[#f5125e]"></i>
-        <span id="qris-loading-text" class="text-[10px] font-semibold text-slate-600 text-center leading-tight px-2 mt-2">Mengecek ketersediaan nomor...</span>
-      `;
-      pollingIndicator.className = "bg-emerald-50 border border-emerald-200 rounded-2xl p-3 text-center flex flex-col items-center gap-2";
-      pollingIndicator.innerHTML = `<i data-lucide="loader" class="w-4 h-4 text-emerald-600 animate-spin flex-shrink-0"></i><p class="text-[10.5px] text-emerald-800 font-medium leading-tight">Harap tunggu, jangan tutup halaman ini.</p>`;
-      if(typeof lucide !== 'undefined') lucide.createIcons();
-
-      try {
-        const orderRes = await fetch(`${API_URL}/nokos-order`, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ service: serviceObj.code, country: currentNokosCountry, operator: currentNokosOperator })
-        });
-        const orderData = await orderRes.json();
-        
-        const nokosId = orderData.data?.activation_id || orderData.activation_id || orderData.id;
-        const nokosNum = orderData.data?.phone || orderData.phone || orderData.number;
-
-        if (!nokosId || !nokosNum) {
-            const errMsg = orderData.message || orderData.msg || "Stok Nomor Kosong / Saldo Provider Pusat Habis.";
-            showToast("Pusat Nokos: " + errMsg, "error");
-            
-            qrisSpin.innerHTML = `
-              <div class="flex flex-col items-center justify-center gap-3 w-full h-full p-2 text-center mt-4">
-                <div class="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center border-4 border-white shadow-sm"><i data-lucide="x" class="w-6 h-6"></i></div>
-                <span class="text-[11px] font-bold text-rose-600 leading-tight">GAGAL MENDAPAT NOMOR:<br><br>${escapeHtml(errMsg)}</span>
-              </div>
-            `;
-            pollingIndicator.className = "bg-emerald-50 border border-emerald-200 rounded-2xl p-0 overflow-hidden mt-2";
-            pollingIndicator.innerHTML = `<button onclick="forceClosePaymentModal()" class="w-full py-3.5 text-[11px] font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 transition-colors">Tutup</button>`;
-            if(typeof lucide !== 'undefined') lucide.createIcons();
-            return;
-        }
-
-        currentNokosId = nokosId;
-        isNokosPaid = false;
-        
-        const qrisLoadingText = document.getElementById('qris-loading-text');
-        if(qrisLoadingText) qrisLoadingText.innerHTML = `Nomor <b>+${nokosNum}</b> berhasil diamankan!<br>Sedang membuat QRIS...`;
-
-        const txRes = await fetch(`${API_URL}/create-tripay-tx`, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-             productId: "DYNAMIC_NOKOS", nokosServiceCode: serviceObj.code, nokosPrice: serviceObj.price
-          })
-        });
-        const txData = await txRes.json();
-
-        if (txData.success && txData.data && txData.data.qr_url) {
-          qrisImg.src = txData.data.qr_url;
-          const ref = txData.data.reference;
-          
-          qrisImg.onload = () => { 
-              qrisImg.classList.remove('hidden'); 
-              qrisSpin.classList.add('hidden'); 
-              
-              document.getElementById('nokos-cancel-qris-btn').classList.remove('hidden');
-              
-              pollingIndicator.className = "bg-emerald-50 border border-emerald-200 rounded-2xl p-3 text-center flex flex-col items-center gap-2";
-              pollingIndicator.innerHTML = `<i data-lucide="loader" class="w-4 h-4 text-emerald-600 animate-spin flex-shrink-0"></i><p class="text-[10.5px] text-emerald-800 font-medium leading-tight">Nomor <b>+${nokosNum}</b> sudah disiapkan.<br>Segera bayar agar OTP masuk.</p>`;
-              if(typeof lucide !== 'undefined') lucide.createIcons();
-          };
-
-          if (pollingInterval) clearInterval(pollingInterval);
-          pollingInterval = setInterval(async () => {
-            try {
-              const statusRes = await fetch(`${API_URL}/check-status`, {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ reference: ref, productId: "DYNAMIC_NOKOS" })
-              });
-              const statusData = await statusRes.json();
-
-              if (statusData.status === "PAID") {
-                clearInterval(pollingInterval);
-                isNokosPaid = true; 
-                showSmsWaitingScreen(serviceObj.name, ref, nokosNum, serviceObj.code); 
-              }
-            } catch (e) {}
-          }, 4000); 
-
-        } else {
-          showToast("Gagal membuat QRIS.", "error");
-          await fetch(`${API_URL}/nokos-cancel`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: currentNokosId }) });
-          currentNokosId = null;
-          qrisSpin.innerHTML = `<span class="text-rose-500 font-bold text-xs mt-4">Gagal QRIS. Dibatalkan.</span>`;
-          pollingIndicator.innerHTML = `<button onclick="forceClosePaymentModal()" class="w-full py-3 text-[11px] font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 transition-colors">Tutup</button>`;
-        }
-      } catch (err) { 
-          qrisSpin.innerHTML = `<span class="text-rose-500 font-bold text-xs mt-4">Sistem Pusat Sibuk/Error.</span>`; 
-          pollingIndicator.className = "bg-emerald-50 border border-emerald-200 rounded-2xl p-0 overflow-hidden mt-2";
-          pollingIndicator.innerHTML = `<button onclick="forceClosePaymentModal()" class="w-full py-3 text-[11px] font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 transition-colors">Tutup</button>`;
-      }
-    }
-
-    function showSmsWaitingScreen(serviceName, paymentRef, nokosNum, serviceCode) {
-      document.getElementById('step-pay').classList.add('hidden');
-      const stepNokos = document.getElementById('step-nokos');
-      stepNokos.classList.remove('hidden');
-      
-      document.getElementById('nokos-number-display').innerText = "+" + nokosNum;
-      document.getElementById('nokos-sms-code').classList.add('hidden');
-      document.getElementById('nokos-spinner').classList.remove('hidden');
-      document.getElementById('nokos-sms-status').innerText = "Menunggu SMS Masuk (Bisa 1-5 Menit)...";
-      
-      const btnCancel = document.getElementById('nokos-cancel-btn');
-      btnCancel.classList.remove('hidden');
-      btnCancel.innerText = "SMS Tidak Masuk? (Batalkan & Lapor Admin)";
-
-      if(nokosPollingInterval) clearInterval(nokosPollingInterval);
-      nokosPollingInterval = setInterval(async () => {
-        try {
-          const smsRes = await fetch(`${API_URL}/nokos-status`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: currentNokosId }) });
-          const smsData = await smsRes.json();
-          const smsCode = smsData.sms || (smsData.data && smsData.data.sms);
-          const statusStr = smsData.status || (smsData.data && smsData.data.status);
-
-          let finalSms = smsCode;
-          if (typeof statusStr === 'string' && statusStr.includes('STATUS_OK')) {
-            finalSms = statusStr.split(':')[1];
-          }
-
-          if (finalSms) {
-            clearInterval(nokosPollingInterval);
-            document.getElementById('nokos-spinner').classList.add('hidden');
-            document.getElementById('nokos-sms-status').innerText = "KODE OTP BERHASIL DITERIMA:";
-            
-            const codeElem = document.getElementById('nokos-sms-code');
-            codeElem.innerText = finalSms; 
-            codeElem.classList.remove('hidden');
-            btnCancel.classList.add('hidden');
-            document.getElementById('nokos-finish-btn').classList.remove('hidden');
-
-            const accountDetails = `Layanan: ${serviceName.toUpperCase()}\nNomor: +${nokosNum}\nOTP: ${finalSms}`;
-            saveOrderHistory(paymentRef, `Nokos ${serviceName}`, "OTP Instan", accountDetails);
-            showToast("Berhasil mendapatkan Kode OTP!");
-            currentNokosId = null;
-          } else if (statusStr === "STATUS_CANCEL" || statusStr === "CANCELED") {
-            clearInterval(nokosPollingInterval);
-            document.getElementById('nokos-number-display').innerText = "Dibatalkan";
-            document.getElementById('nokos-sms-status').innerText = "Pesanan nomor dibatalkan sistem pusat.";
-            document.getElementById('nokos-spinner').classList.add('hidden');
-            currentNokosId = null;
-          }
-        } catch (err) {}
-      }, 5000); 
-    }
-
-    async function cancelAndClosePaymentModal() {
-        document.getElementById('nokos-cancel-qris-btn').innerText = "Membatalkan...";
-        if (currentNokosId && !isNokosPaid) {
-            await fetch(`${API_URL}/nokos-cancel`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: currentNokosId }) });
-            currentNokosId = null;
-            showToast("Pesanan Nokos otomatis dibatalkan (Refund sukses).", "info");
-        }
-        forceClosePaymentModal();
-    }
-
-    function forceClosePaymentModal() {
-        document.getElementById('payment-modal').classList.add('hidden'); 
-        if (pollingInterval) clearInterval(pollingInterval);
-        if (nokosPollingInterval) clearInterval(nokosPollingInterval);
-    }
-
-    function closePaymentModal() {
-        if (currentNokosId && !isNokosPaid) {
-            fetch(`${API_URL}/nokos-cancel`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: currentNokosId }) });
-            currentNokosId = null;
-            showToast("Pesanan dibatalkan. Saldo admin dikembalikan.", "info");
-        }
-        forceClosePaymentModal();
-    }
-
-    async function reportNokosIssue() {
-      if (!currentNokosId) return;
-      document.getElementById('nokos-cancel-btn').innerText = "Memproses...";
-      document.getElementById('nokos-cancel-btn').disabled = true;
-      try {
-        await fetch(`${API_URL}/nokos-cancel`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: currentNokosId }) });
-        if(nokosPollingInterval) clearInterval(nokosPollingInterval);
-        document.getElementById('nokos-sms-status').innerText = "Dibatalkan. Harap Chat Admin untuk proses Refund.";
-        document.getElementById('nokos-spinner').classList.add('hidden');
-        document.getElementById('nokos-cancel-btn').classList.add('hidden');
-        document.getElementById('nokos-finish-btn').classList.remove('hidden');
-        currentNokosId = null;
-      } catch (e) { showToast("Gagal membatalkan. Hubungi Admin.", "error"); }
-    }
-
     // ================= FITUR JUMLAH (QUANTITY) & KALKULATOR =================
-    function changeQuantity(delta) {
+    window.changeQuantity = function(delta) {
       let newQty = currentSelectedQuantity + delta;
       if (newQty < 1) newQty = 1;
       if (newQty > 99) newQty = 99; // Batas maksimal quantity
@@ -1442,19 +893,19 @@
       const qtyElem = document.getElementById('modal-quantity');
       if(qtyElem) qtyElem.innerText = currentSelectedQuantity;
       
-      updateModalPriceDisplay();
-    }
+      window.updateModalPriceDisplay();
+    };
 
-    function updateModalPriceDisplay() {
+    window.updateModalPriceDisplay = function() {
       if (!currentSelectedVariant) return;
       const unitPrice = Number(currentSelectedVariant.price) || 0;
       const totalPrice = unitPrice * currentSelectedQuantity;
       const priceElem = document.getElementById('modal-price');
       if(priceElem) priceElem.innerText = formatIDR(totalPrice);
-    }
+    };
 
     // ================= DETAIL PRODUK MODAL =================
-    function openDetailModal(id) {
+    window.openDetailModal = function(id) {
       const p = products.find(i => i.id === id);
       if (!p) return;
       currentSelectedProduct = p;
@@ -1479,19 +930,19 @@
       
       document.getElementById('modal-warranty').innerText = p.warranty || 'Resmi';
 
-      renderVariantSelection(0);
-      setReviewFilter('all');
+      window.renderVariantSelection(0);
+      window.setReviewFilter('all');
       document.getElementById('detail-modal').classList.remove('hidden');
       if(typeof lucide !== 'undefined') lucide.createIcons();
-    }
+    };
 
-    function renderVariantSelection(activeIndex) {
+    window.renderVariantSelection = function(activeIndex) {
       const container = document.getElementById('modal-variants-list');
       container.innerHTML = currentSelectedProduct.variants.map((v, idx) => `
         <button onclick="selectVariant(${idx})" class="px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${idx === activeIndex ? 'bg-rose-50 border-[#f5125e] text-[#f5125e]' : 'bg-white border-slate-200 text-slate-600 hover:border-rose-200'}">${v.name}</button>
       `).join('');
       
-      updateModalPriceDisplay();
+      window.updateModalPriceDisplay();
       
       document.getElementById('modal-desc').innerText = currentSelectedVariant.desc || currentSelectedProduct.description || 'Tidak ada deskripsi.';
       document.getElementById('modal-terms').innerText = currentSelectedVariant.terms || currentSelectedProduct.terms || 'Mengikuti kebijakan garansi toko.';
@@ -1502,7 +953,7 @@
       };
       
       document.getElementById('modal-btn-cart').onclick = () => { 
-          addToCart(currentSelectedProduct, currentSelectedVariant, currentSelectedQuantity); 
+          window.addToCart(currentSelectedProduct, currentSelectedVariant, currentSelectedQuantity); 
           closeDetailModal(); 
       };
       
@@ -1510,23 +961,21 @@
           closeDetailModal(); 
           startNormalCheckout(currentSelectedProduct, currentSelectedVariant, currentSelectedQuantity); 
       };
-    }
+    };
 
-    function selectVariant(idx) {
+    window.selectVariant = function(idx) {
       currentSelectedVariant = currentSelectedProduct.variants[idx];
-      renderVariantSelection(idx); 
-    }
+      window.renderVariantSelection(idx); 
+    };
 
-    function closeDetailModal() { document.getElementById('detail-modal').classList.add('hidden'); }
+    window.closeDetailModal = function() { 
+        document.getElementById('detail-modal').classList.add('hidden'); 
+    };
 
     // Checkout Produk Biasa (Dengan Tambahan Quantity)
     async function startNormalCheckout(product, variant, qty = 1, isCart = false) {
       document.getElementById('step-pay').classList.remove('hidden');
       document.getElementById('step-result').classList.add('hidden');
-      const stepNokos = document.getElementById('step-nokos');
-      if(stepNokos) stepNokos.classList.add('hidden');
-
-      document.getElementById('nokos-cancel-qris-btn').classList.add('hidden');
       document.getElementById('payment-modal').classList.remove('hidden');
       
       const unitPrice = Number(variant.price) || 0;
@@ -1580,7 +1029,7 @@
                 document.getElementById('step-result').classList.remove('hidden');
                 document.getElementById('account-data').innerText = statusData.account;
                 
-                saveOrderHistory(ref, isCart ? "Keranjang Belanja" : product.name, isCart ? "Berbagai Produk" : variant.name, statusData.account);
+                window.saveOrderHistory(ref, isCart ? "Keranjang Belanja" : product.name, isCart ? "Berbagai Produk" : variant.name, statusData.account);
                 
                 // Jika pembayaran keranjang sukses, kosongkan keranjang
                 if (isCart) {
@@ -1612,7 +1061,7 @@
           const dummyAccount = "email_premium_pro@gmail.com : passSecure99\n(Format Akun Auto-Delivery Resmi)";
           document.getElementById('account-data').innerText = dummyAccount;
           
-          saveOrderHistory(`INV-DUMMY${Date.now()}`, isCart ? "Keranjang Belanja" : product.name, isCart ? "Berbagai Produk" : variant.name, dummyAccount);
+          window.saveOrderHistory(`INV-DUMMY${Date.now()}`, isCart ? "Keranjang Belanja" : product.name, isCart ? "Berbagai Produk" : variant.name, dummyAccount);
           if (isCart) {
               cart = [];
               localStorage.setItem('my_digital_cart', JSON.stringify(cart));
@@ -1623,25 +1072,25 @@
       }
     }
 
-    function copyAccountData() {
+    window.copyAccountData = function() {
       const text = document.getElementById('account-data').innerText;
       navigator.clipboard.writeText(text).then(() => showToast('Data disalin!'));
-    }
+    };
 
     // ================= FITUR BOT Cerdas (CHAT) =================
-    function openChatModal() {
+    window.openChatModal = function() {
       document.getElementById('chat-modal').classList.remove('hidden');
       setTimeout(() => document.getElementById('chat-drawer').classList.remove('translate-x-full'), 10);
       chatBotState = 'normal'; 
       if(typeof lucide !== 'undefined') lucide.createIcons();
-    }
+    };
 
-    function closeChatModal() {
+    window.closeChatModal = function() {
       document.getElementById('chat-drawer').classList.add('translate-x-full');
       setTimeout(() => document.getElementById('chat-modal').classList.add('hidden'), 250);
-    }
+    };
 
-    function openChatModalWithProduct(prodName, varName, price) {
+    window.openChatModalWithProduct = function(prodName, varName, price) {
       openChatModal();
       
       const matched = products.find(p => p.name === prodName);
@@ -1653,9 +1102,9 @@
         removeBotTyping();
         appendBotChatMessage(`Hai Kak! Untuk produk **${prodName} (${varName})** stoknya ready dan dikirim instan otomatis ya. Kakak bisa langsung klik **Beli Sekarang** di katalog! 🚀`);
       }, 1000);
-    }
+    };
 
-    function sendQuickReply(action) {
+    window.sendQuickReply = function(action) {
       document.getElementById('chat-menu-buttons').classList.add('hidden'); 
       
       if (action === 'menu_cek_produk') {
@@ -1670,11 +1119,11 @@
           appendUserChatMessage("Saya ingin menghubungi Admin CS via WhatsApp.");
           chatBotState = 'awaiting_wa_reason'; 
           showBotTyping();
-          setTimeout(() => { removeBotTyping(); appendBotChatMessage(`Baik Kak. Boleh kasih tahu kami dulu, kendala atau pertanyaan apa yang ingin disampaikan ke Admin? (Misal: 'Mau klaim garansi invoice INV123' atau 'Tanya seputar layanan Nokos')`); }, 1000);
+          setTimeout(() => { removeBotTyping(); appendBotChatMessage(`Baik Kak. Boleh kasih tahu kami dulu, kendala atau pertanyaan apa yang ingin disampaikan ke Admin? (Misal: 'Mau klaim garansi invoice INV123')`); }, 1000);
       }
-    }
+    };
 
-    function handleUserChatSubmit(e) {
+    window.handleUserChatSubmit = function(e) {
       e.preventDefault();
       const input = document.getElementById('user-chat-input');
       const text = input.value.trim();
@@ -1686,14 +1135,13 @@
       
       showBotTyping();
       setTimeout(() => { processSmartBotResponse(text); }, 800);
-    }
+    };
 
     // LOGIKA BOT PINTAR DENGAN INGATAN (CONTEXT MEMORY)
     function processSmartBotResponse(rawText) {
         removeBotTyping();
         const text = rawText.toLowerCase();
 
-        // 1. Alur Mode WhatsApp
         if (chatBotState === 'awaiting_wa_reason') {
             chatBotState = 'normal'; 
             const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Halo Admin DigitalHub, saya butuh bantuan terkait: ' + rawText)}`;
@@ -1701,21 +1149,18 @@
             return;
         }
 
-        // 2. Alur Panggil Menu Utama
         if (text === 'menu' || text === 'bantuan' || text === 'help') {
             appendBotChatMessage(`Tentu Kak, ini menu bantuan yang bisa Kakak pilih:`);
             document.getElementById('chat-menu-buttons').classList.remove('hidden');
             return;
         }
         
-        // 3. Alur Hubungi Admin Manual
         if (text.includes('admin') || text.includes('cs') || text.includes('whatsapp') || text.includes('wa') || text.includes('hubung')) {
              chatBotState = 'awaiting_wa_reason';
              appendBotChatMessage("Boleh kasih tahu kami dulu Kak, kendala atau keluhan spesifik apa yang ingin disampaikan ke Admin sebelum disambungkan? (Contoh: 'Akun Netflix bermasalah' dll)");
              return;
         }
 
-        // 4. Deteksi Pertanyaan Garansi / Syarat (Menggunakan Ingatan)
         if (text.includes('garansi') || text.includes('awet') || text.includes('aman')) {
             if (lastDiscussedProduct) {
                 let garansi = lastDiscussedProduct.warranty || 'Resmi & Full Garansi';
@@ -1736,7 +1181,6 @@
             return;
         }
 
-        // 5. Alur Deteksi Produk (Harga / Ready / Stok)
         let matchedProduct = null;
         const ignoreWords = ['berapa', 'harga', 'stok', 'ready', 'ada', 'kak', 'min', 'bot', 'beli', 'untuk', 'apakah', 'gimana', 'cara'];
         
@@ -1764,13 +1208,11 @@
             return;
         }
 
-        // 6. Sapaan Umum
         if (text === 'halo' || text === 'hai' || text === 'pagi' || text === 'siang' || text === 'sore' || text === 'malam' || text === 'ping' || text === 'p') {
             appendBotChatMessage(`Halo Kak! 👋 Ada yang bisa dibantu hari ini? Kakak bisa ketik **"menu"** untuk melihat opsi bantuan kami.`);
             return;
         }
 
-        // 7. Tidak mengerti (Fallback)
         appendBotChatMessage(`Maaf Kak, bot kurang memahami maksudnya. 🙏\n\nKakak bisa mengetik **"menu"** untuk melihat opsi yang tersedia, atau ketik nama aplikasi yang ingin dicek (Contoh: *"Harga Canva"* atau *"Apakah Netflix ready?"*).`);
     }
 
@@ -1809,7 +1251,137 @@
       if (el) el.remove();
     }
 
-    // ================= ULASAN DINAMIS PER PRODUK =================
+    // ================= KERANJANG BELANJA (KEBAL ERROR) =================
+    window.toggleCart = function(open) {
+      if (open) { 
+        document.getElementById('cart-modal').classList.remove('hidden'); 
+        setTimeout(() => document.getElementById('cart-drawer').classList.remove('translate-x-full'), 10);
+      } else { 
+        document.getElementById('cart-drawer').classList.add('translate-x-full');
+        setTimeout(() => document.getElementById('cart-modal').classList.add('hidden'), 250);
+      }
+    };
+
+    window.addToCart = function(p, v, qty = 1) {
+      try {
+        if (!cart || !Array.isArray(cart)) cart = [];
+        const prodName = p && p.name ? p.name : 'Produk';
+        const varName = v && v.name ? v.name : '';
+        const finalName = varName ? `${prodName} (${varName}) x${qty}` : `${prodName} x${qty}`;
+        const unitPrice = v && v.price ? Number(v.price) : (p && p.price ? Number(p.price) : 0);
+        const finalPrice = unitPrice * qty; // Total harga dikali jumlah beli
+        const img = p && p.image ? p.image : 'https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png';
+        const id = p && p.id ? p.id : Date.now();
+
+        cart.push({ id: id, name: finalName, price: finalPrice, image: img, quantity: qty });
+        localStorage.setItem('my_digital_cart', JSON.stringify(cart));
+        renderCart();
+        showToast('Berhasil dimasukkan ke keranjang!');
+      } catch(e) {
+        console.error(e);
+        showToast('Gagal masuk ke keranjang', 'error');
+      }
+    };
+    
+    // Fungsi Hapus Item Keranjang Aman
+    window.removeItemFromCart = function(idx) {
+      if(Array.isArray(cart)) {
+         cart.splice(idx, 1);
+         localStorage.setItem('my_digital_cart', JSON.stringify(cart));
+         renderCart();
+      }
+    };
+
+    function renderCart() {
+      try {
+          if (!Array.isArray(cart)) cart = [];
+          
+          const titleCount = document.getElementById('cart-title-count');
+          if(titleCount) titleCount.innerText = cart.length;
+          
+          const badge = document.getElementById('cart-badge');
+          if(badge) {
+              badge.innerText = cart.length;
+              if (cart.length > 0) badge.classList.remove('hidden');
+              else badge.classList.add('hidden');
+          }
+
+          const footer = document.getElementById('cart-footer');
+          if(footer) {
+              if (cart.length > 0) footer.classList.remove('hidden');
+              else footer.classList.add('hidden');
+          }
+
+          const cartItems = document.getElementById('cart-items');
+          if(cartItems) {
+              cartItems.innerHTML = cart.map((i, idx) => `
+                <div class="flex items-center justify-between gap-3 p-2.5 bg-slate-50 rounded-xl border border-slate-100 shadow-sm">
+                  <img src="${i.image || 'https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png'}" onerror="this.src='https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png'" class="w-12 h-12 rounded-lg object-contain bg-white border p-1" />
+                  <div class="flex-1 min-w-0">
+                    <h4 class="text-xs font-bold text-slate-800 line-clamp-1">${i.name}</h4>
+                    <p class="text-xs text-[#f5125e] font-black mt-0.5">${formatIDR(Number(i.price) || 0)}</p>
+                  </div>
+                  <button onclick="removeItemFromCart(${idx})" class="text-slate-400 hover:text-rose-500 bg-white border border-slate-200 hover:border-rose-200 p-1.5 rounded-lg transition-colors">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                  </button>
+                </div>
+              `).join('');
+          }
+          
+          const totalPrice = document.getElementById('cart-total-price');
+          if(totalPrice) {
+              totalPrice.innerText = formatIDR(cart.reduce((a, b) => a + (Number(b.price) || 0), 0));
+          }
+          
+          if(typeof lucide !== 'undefined') lucide.createIcons();
+      } catch(e) {
+          console.error('Error renderCart:', e);
+      }
+    }
+
+    window.processCartCheckout = function() {
+      if (!cart || cart.length === 0) return;
+      toggleCart(false);
+      startNormalCheckout({ id: Date.now(), name: `Keranjang (${cart.length} Produk)` }, { name: 'Semua Produk', price: cart.reduce((a, b) => a + (Number(b.price) || 0), 0) }, 1, true);
+    };
+
+    window.saveOrderHistory = function(reference, productName, variantName, account) {
+      let history = [];
+      try { history = JSON.parse(localStorage.getItem('my_digital_orders')) || []; } catch(e){}
+      if(!Array.isArray(history)) history = [];
+      history.unshift({ reference: reference, productName: productName, variantName: variantName, date: new Date().toLocaleString('id-ID'), account: account });
+      localStorage.setItem('my_digital_orders', JSON.stringify(history));
+    };
+
+    // ================= RIWAYAT PESANAN =================
+    window.openHistoryModal = function() {
+      let history = [];
+      try { history = JSON.parse(localStorage.getItem('my_digital_orders')) || []; } catch(e){}
+      if(!Array.isArray(history)) history = [];
+      
+      const container = document.getElementById('history-list');
+      if (history.length === 0) {
+        container.innerHTML = `<div class="py-12 text-center text-slate-400 text-xs"><i data-lucide="receipt" class="w-8 h-8 mx-auto mb-1 stroke-1"></i>Belum ada riwayat pesanan</div>`;
+      } else {
+        container.innerHTML = history.map((item) => `
+          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="text-[9px] font-bold text-[#f5125e] bg-rose-50 px-2 py-0.5 rounded font-mono">${item.reference}</span>
+                <h4 class="font-bold text-xs sm:text-sm text-slate-800 mt-1">${item.productName} (${item.variantName})</h4>
+                <p class="text-[10px] text-slate-400">${item.date}</p>
+              </div>
+            </div>
+            <div class="bg-white border rounded-xl p-2.5"><pre class="font-mono text-xs text-slate-800 whitespace-pre-wrap select-all">${item.account}</pre></div>
+          </div>
+        `).join('');
+      }
+      document.getElementById('history-modal').classList.remove('hidden');
+      if(typeof lucide !== 'undefined') lucide.createIcons();
+    };
+
+    window.closeHistoryModal = function() { document.getElementById('history-modal').classList.add('hidden'); };
+
     function getReviewsForProduct(p) {
         const pName = p.name || 'Produk ini';
         let cat = (p.category || '').toLowerCase();
@@ -1851,7 +1423,7 @@
         };
     }
 
-    function setReviewFilter(filterType) {
+    window.setReviewFilter = function(filterType) {
       activeReviewFilter = filterType;
       document.querySelectorAll('.rf-btn').forEach(btn => {
         btn.className = 'rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all text-[10px] cursor-pointer';
@@ -1859,7 +1431,7 @@
       const activeBtn = document.getElementById(`rf-${filterType}`);
       if (activeBtn) activeBtn.className = 'rf-btn bg-rose-50 text-[#f5125e] border border-rose-200 px-2.5 py-1 rounded-lg font-bold transition-all text-[10px] shadow-2xs cursor-pointer';
       displayFilteredReviews();
-    }
+    };
 
     function displayFilteredReviews() {
       const container = document.getElementById('product-reviews-list');
