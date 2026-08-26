@@ -302,13 +302,15 @@
   <!-- Mobile Bottom Nav -->
   <div class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200/80 z-40 py-2 px-6 flex md:hidden items-center justify-between text-slate-500 text-[10px] font-medium shadow-lg">
     <button onclick="setCategory('Semua')" class="flex flex-col items-center gap-0.5 text-[#f5125e]"><i data-lucide="home" class="w-4 h-4"></i><span>Beranda</span></button>
-    <button onclick="triggerPwaPromptUI()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="download" class="w-4 h-4 text-emerald-600"></i><span>App</span></button>
+    <button onclick="openNokosModal()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="smartphone" class="w-4 h-4 text-emerald-600"></i><span>Nokos OTP</span></button>
     <button onclick="openHistoryModal()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="receipt" class="w-4 h-4"></i><span>Pesanan</span></button>
     <button onclick="toggleCart(true)" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="shopping-bag" class="w-4 h-4"></i><span>Keranjang</span></button>
     <button onclick="openChatModal()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="message-square-more" class="w-4 h-4"></i><span>Chat CS</span></button>
   </div>
 
-  <!-- MODAL MENU NOKOS KHUSUS (ALA SHOPEE PULSA) -->
+  <!-- ======================================================== -->
+  <!-- MODAL NOKOS DINAMIS -->
+  <!-- ======================================================== -->
   <div id="nokos-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div onclick="closeNokosModal()" class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
     <div class="fixed inset-x-0 bottom-0 sm:inset-0 flex items-end sm:items-center justify-center sm:p-4 z-10">
@@ -356,7 +358,7 @@
   <!-- MODAL DETAIL PRODUK -->
   <div id="detail-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div onclick="closeDetailModal()" class="absolute inset-0 bg-black/50 backdrop-blur-2xs"></div>
-    <div class="fixed inset-0 flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="fixed inset-0 flex items-end sm:items-center justify-center p-0 sm:p-4 z-20">
       <div id="detail-modal-card" class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
         
         <div class="relative p-4 border-b border-slate-100 flex items-center gap-3.5">
@@ -428,82 +430,10 @@
     </div>
   </div>
 
-  <!-- MODAL PEMBAYARAN QRIS -->
-  <div id="payment-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
-    <!-- Overlay tidak memanggil fungsi secara langsung agar user tidak menutup tanpa sadar saat menunggu loading -->
-    <div class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
-    <div class="fixed inset-0 flex items-center justify-center p-4">
-      <div id="payment-modal-card" class="bg-white w-full max-w-sm sm:max-w-md rounded-3xl shadow-2xl overflow-hidden p-5 flex flex-col text-center max-h-[92vh] overflow-y-auto">
-        <div class="flex justify-between items-center mb-2">
-          <h3 class="font-bold text-sm text-slate-800 flex items-center gap-1.5"><i data-lucide="wallet" class="w-4 h-4 text-[#f5125e]"></i> Pembayaran QRIS</h3>
-          <button onclick="closePaymentModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
-        </div>
-        
-        <!-- STEP 1: PEMBAYARAN -->
-        <div id="step-pay" class="space-y-3">
-          <div class="bg-rose-50/70 p-2.5 rounded-2xl border border-rose-100 text-left">
-            <p id="pay-item-name" class="text-xs font-semibold text-slate-800 truncate"></p>
-            <p id="pay-total-amount" class="text-base font-black text-[#f5125e] mt-0.5"></p>
-          </div>
-          <div class="flex flex-col items-center">
-            <div class="w-48 h-48 bg-white p-2 rounded-2xl border-2 border-dashed border-slate-300 flex items-center justify-center relative">
-              <img id="qris-img" src="" class="w-full h-full object-contain" />
-              <div id="qris-loading-spin" class="absolute inset-0 bg-white/80 flex flex-col items-center justify-center gap-1 hidden">
-                <i data-lucide="loader-2" class="w-6 h-6 animate-spin text-[#f5125e]"></i>
-                <span id="qris-loading-text" class="text-[10px] font-semibold text-slate-600 text-center px-2 mt-1">Membuat QRIS...</span>
-              </div>
-            </div>
-          </div>
-          <div id="auto-polling-indicator" class="bg-emerald-50 border border-emerald-200 rounded-2xl p-2.5 text-left flex items-center gap-2">
-            <i data-lucide="loader" class="w-4 h-4 text-emerald-600 animate-spin flex-shrink-0"></i>
-            <p class="text-[10.5px] text-emerald-800 font-medium leading-tight">Menunggu transfer... Akun otomatis terbuka begitu terbayar.</p>
-          </div>
-        </div>
-
-        <!-- STEP 2: RESULT (PRODUK BIASA) -->
-        <div id="step-result" class="space-y-3 hidden text-left">
-          <div class="text-center">
-            <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-1"><i data-lucide="check" class="w-6 h-6"></i></div>
-            <h4 class="font-bold text-sm text-slate-800">Pembayaran Terverifikasi!</h4>
-          </div>
-          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3">
-            <span class="text-[10px] text-slate-600 font-bold block uppercase mb-1">Data Akun / Lisensi:</span>
-            <pre id="account-data" class="font-mono text-xs text-slate-800 whitespace-pre-wrap select-all"></pre>
-            <button onclick="copyAccountData()" class="mt-2 w-full bg-[#f5125e] text-white py-2 rounded-xl font-bold text-xs">Salin Data Akun</button>
-          </div>
-          <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3">
-            <span class="text-[10px] text-amber-800 font-bold block uppercase mb-1">Syarat & Ketentuan:</span>
-            <pre id="terms-data" class="font-sans text-[11px] text-amber-950 whitespace-pre-wrap"></pre>
-          </div>
-        </div>
-
-        <!-- STEP 3: RESULT NOKOS (LIVE API) -->
-        <div id="step-nokos" class="space-y-3 hidden text-left mt-2">
-          <div class="text-center border-b border-slate-100 pb-3">
-            <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-1"><i data-lucide="smartphone" class="w-6 h-6"></i></div>
-            <h4 class="font-bold text-sm text-slate-800">Menunggu Verifikasi SMS Nokos</h4>
-            <p class="text-[10px] text-slate-500 mt-0.5">Saldo terpotong. Sistem sedang mengambil OTP.</p>
-          </div>
-          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 text-center shadow-inner mt-2">
-            <span class="text-[10px] text-slate-500 font-bold block uppercase mb-1">Nomor Virtual Anda:</span>
-            <h2 id="nokos-number-display" class="text-xl sm:text-2xl font-black text-slate-800 tracking-wider">Memuat...</h2>
-          </div>
-          <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 flex flex-col items-center justify-center gap-2 mt-2">
-            <i id="nokos-spinner" data-lucide="loader" class="w-6 h-6 text-emerald-600 animate-spin"></i>
-            <span class="text-[10px] text-emerald-800 font-bold block uppercase text-center" id="nokos-sms-status">Mengambil Nomor...</span>
-            <h3 id="nokos-sms-code" class="text-3xl font-black text-emerald-600 tracking-widest hidden bg-white px-4 py-2 rounded-xl border border-emerald-200 shadow-sm mt-1"></h3>
-          </div>
-          <button id="nokos-cancel-btn" onclick="cancelNokosOrder()" class="mt-2 w-full bg-rose-50 text-rose-600 border border-rose-200 py-2.5 rounded-xl font-bold text-xs hover:bg-rose-100 transition-colors">Batalkan Pesanan (Saldo Akan Kembali)</button>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
   <!-- MODAL RIWAYAT PESANAN -->
   <div id="history-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div onclick="closeHistoryModal()" class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
-    <div class="fixed inset-0 flex items-center justify-center p-4">
+    <div class="fixed inset-0 flex items-center justify-center p-4 z-50">
       <div id="history-modal-card" class="bg-white w-full max-w-lg rounded-3xl shadow-2xl p-5 flex flex-col max-h-[90vh]">
         <div class="flex justify-between items-center pb-3 border-b border-slate-100">
           <h3 class="font-bold text-sm sm:text-base text-slate-800 flex items-center gap-2"><i data-lucide="history" class="w-5 h-5 text-[#f5125e]"></i> Riwayat Pembelian Akun</h3>
@@ -517,7 +447,7 @@
   <!-- CART DRAWER -->
   <div id="cart-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div onclick="toggleCart(false)" class="absolute inset-0 bg-black/40 backdrop-blur-2xs"></div>
-    <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+    <div class="fixed inset-y-0 right-0 max-w-full flex pl-10 z-50">
       <div id="cart-drawer" class="w-screen max-w-sm bg-white shadow-xl flex flex-col translate-x-full transition-transform">
         <div class="px-4 py-4 border-b border-slate-100 flex items-center justify-between">
           <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2"><i data-lucide="shopping-cart" class="w-4 h-4 text-[#f5125e]"></i> Keranjang Belanja (<span id="cart-title-count">0</span>)</h3>
@@ -532,69 +462,25 @@
     </div>
   </div>
 
-  <!-- MODAL & DRAWER LIVE CHAT CS ASISTEN -->
+  <!-- MODAL LIVE CHAT CS ASISTEN -->
   <div id="chat-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div onclick="closeChatModal()" class="absolute inset-0 bg-black/50 backdrop-blur-2xs"></div>
-    <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+    <div class="fixed inset-y-0 right-0 max-w-full flex pl-10 z-50">
       <div id="chat-drawer" class="w-screen max-w-sm sm:max-w-md bg-white shadow-2xl flex flex-col translate-x-full transition-transform duration-300">
-        
-        <!-- Header Chat -->
         <div class="p-3.5 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white flex items-center justify-between shadow-xs">
           <div class="flex items-center gap-2.5">
-            <div class="relative">
-              <div class="w-9 h-9 bg-white text-[#f5125e] rounded-full flex items-center justify-center font-bold text-sm shadow-xs">
-                <i data-lucide="headset" class="w-5 h-5"></i>
-              </div>
-              <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 border-2 border-white rounded-full"></span>
-            </div>
-            <div>
-              <h3 class="text-xs sm:text-sm font-bold leading-tight">Customer Support DigitalHub</h3>
-              <p class="text-[10px] text-rose-100 flex items-center gap-1"><span class="w-1.5 h-1.5 bg-emerald-300 rounded-full"></span> Online & Siap Membantu 24 Jam</p>
-            </div>
+            <div class="relative"><div class="w-9 h-9 bg-white text-[#f5125e] rounded-full flex items-center justify-center font-bold text-sm shadow-xs"><i data-lucide="headset" class="w-5 h-5"></i></div><span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 border-2 border-white rounded-full"></span></div>
+            <div><h3 class="text-xs sm:text-sm font-bold leading-tight">Customer Support</h3><p class="text-[10px] text-rose-100">Online & Siap Membantu 24 Jam</p></div>
           </div>
           <button onclick="closeChatModal()" class="text-white/80 hover:text-white p-1 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
-
-        <!-- Chat Conversation Area -->
         <div id="chat-messages-container" class="flex-1 p-3.5 overflow-y-auto space-y-3 bg-slate-50 text-xs">
-          <!-- Pesan Sambutan CS -->
-          <div class="flex items-start gap-2">
-            <div class="w-7 h-7 rounded-full bg-rose-100 text-[#f5125e] flex items-center justify-center flex-shrink-0 text-xs font-bold">CS</div>
-            <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs space-y-1.5 max-w-[85%] text-slate-800">
-              <p class="font-semibold text-slate-800">Halo Kak! 👋 Ada yang bisa kami bantu seputar produk digital, aktivasi, atau pembayaran?</p>
-              <p class="text-[11px] text-slate-500">Pilih pertanyaan cepat di bawah untuk respon instan:</p>
-            </div>
-          </div>
-
-          <!-- Quick Action Buttons -->
-          <div class="space-y-1.5 pl-9">
-            <button onclick="sendQuickReply('Bagaimana cara beli produk via QRIS otomatis?')" class="w-full text-left bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 p-2 rounded-xl text-[11px] font-medium text-slate-700 transition-all flex items-center justify-between">
-              <span>⚡ Cara Beli & Auto Delivery</span>
-              <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
-            </button>
-            <button onclick="sendQuickReply('Apakah semua produk bergaransi resmi?')" class="w-full text-left bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 p-2 rounded-xl text-[11px] font-medium text-slate-700 transition-all flex items-center justify-between">
-              <span>🛡️ Info Garansi & Klaim Akun</span>
-              <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
-            </button>
-            <button onclick="sendQuickReply('Bisa minta bantuan langsung via WhatsApp Admin?')" class="w-full text-left bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 p-2 rounded-xl text-[11px] font-medium text-emerald-700 transition-all flex items-center justify-between">
-              <span>💬 Butuh Bantuan Khusus (WhatsApp)</span>
-              <i data-lucide="external-link" class="w-3.5 h-3.5 text-emerald-500"></i>
-            </button>
-          </div>
+          <div class="flex items-start gap-2"><div class="w-7 h-7 rounded-full bg-rose-100 text-[#f5125e] flex items-center justify-center flex-shrink-0 text-xs font-bold">CS</div><div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs space-y-1.5 max-w-[85%] text-slate-800"><p class="font-semibold text-slate-800">Halo Kak! 👋 Ada yang bisa dibantu?</p></div></div>
         </div>
-
-        <!-- Input Chat -->
         <div class="p-2.5 border-t border-slate-200 bg-white">
           <form onsubmit="handleUserChatSubmit(event)" class="flex items-center gap-1.5">
-            <input 
-              type="text" 
-              id="user-chat-input" 
-              placeholder="Ketik pertanyaan Kakak di sini..." 
-              class="flex-1 bg-slate-100 text-slate-800 text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#f5125e] focus:bg-white" 
-            />
-            <button type="submit" class="bg-[#f5125e] hover:bg-[#d40c4e] text-white p-2.5 rounded-xl transition-colors">
-              <i data-lucide="send" class="w-4 h-4"></i>
-            </button>
+            <input type="text" id="user-chat-input" placeholder="Ketik pertanyaan..." class="flex-1 bg-slate-100 text-slate-800 text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#f5125e]" />
+            <button type="submit" class="bg-[#f5125e] text-white p-2.5 rounded-xl"><i data-lucide="send" class="w-4 h-4"></i></button>
           </form>
         </div>
       </div>
@@ -616,14 +502,6 @@
     let deferredPwaPrompt = null;
     let activeReviewFilter = 'all';
     
-    // Variabel Khusus Nokos Pop-up
-    let selectedNokosItem = null;
-    let currentNokosId = null;
-    let pollingInterval = null;
-    let nokosPollingInterval = null;
-    let isNokosPaid = false; // Penanda agar otomatis ter-cancel jika window ditutup sebelum dibayar
-
-    // FUNGSI FORMAT SOLD (10.000 -> 10RB+)
     function formatSoldCount(sold) {
       const num = Number(sold) || 0;
       if (num < 1000) return num.toString();
@@ -643,7 +521,6 @@
       setTimeout(() => toast.remove(), 2500);
     }
 
-    // ================= PROTEKSI ANTI-COPY & ANTI-SELECT JS =================
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('keydown', e => {
       if (e.ctrlKey && (e.key === 'c' || e.key === 'u' || e.key === 's' || e.key === 'a' || e.key === 'p')) {
@@ -652,19 +529,13 @@
       }
     });
 
-    // ================= POPUP PEMBELI LIVE (SOCIAL PROOF) =================
     const livePurchasesData = [
       { user: 'Budi S. (Surabaya)', product: 'Gemini Pro Advanced', time: '1 menit lalu' },
       { user: 'Rian P. (Jakarta Selatan)', product: 'CapCut Pro 1 Tahun', time: '2 menit lalu' },
       { user: 'Dewi Anggraini (Bandung)', product: 'Alight Motion 1 Tahun', time: 'Baru saja' },
       { user: 'Andi Wibowo (Yogyakarta)', product: 'YouTube Premium 3 Bulan', time: '3 menit lalu' },
       { user: 'Siti Marwah (Semarang)', product: 'Template Blogger Toko Online', time: '5 menit lalu' },
-      { user: 'Dimas K. (Malang)', product: '1.000 Followers Instagram', time: '1 menit lalu' },
-      { user: 'Kevin Tan (Medan)', product: 'Nokos OTP WhatsApp Virtual', time: '4 menit lalu' },
-      { user: 'Putri N. (Makassar)', product: 'Gemini AI Pro 1 Bulan', time: 'Baru saja' },
-      { user: 'Fajar Pratama (Bekasi)', product: 'Landing Page Bisnis Pro', time: '6 menit lalu' },
-      { user: 'Eko Purnomo (Tangerang)', product: 'CapCut Pro 1 Tahun', time: '2 menit lalu' },
-      { user: 'Anisa Zahra (Denpasar)', product: '500 Followers TikTok Indo', time: '7 menit lalu' }
+      { user: 'Dimas K. (Malang)', product: '1.000 Followers Instagram', time: '1 menit lalu' }
     ];
 
     function startSocialProofNotifications() {
@@ -687,11 +558,9 @@
       }, 9000);
     }
 
-    // ================= PWA INSTALLATION =================
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPwaPrompt = e;
-
       const hasDismissed = sessionStorage.getItem('pwa_popup_dismissed');
       if (!hasDismissed) {
         setTimeout(() => { triggerPwaPromptUI(); }, 2000);
@@ -726,7 +595,6 @@
       showToast('Aplikasi berhasil dipasang di HP!');
     });
 
-    // ================= SINKRONISASI BANNER DARI KV DATABASE =================
     function applyBannerConfig(config) {
       const wrapper = document.getElementById('store-banner-wrapper');
       const imgBox = document.getElementById('banner-image-container');
@@ -749,7 +617,6 @@
       }
     }
 
-    // ================= LOAD PRODUK DARI KV WORKER =================
     async function loadProducts() {
       try {
         const response = await fetch(API_URL);
@@ -774,7 +641,6 @@
       renderCart();
     }
 
-    // ================= PENGATURAN KATEGORI =================
     function setCategory(cat) {
       if (cat === 'Nokos') {
         openNokosModal();
@@ -839,7 +705,7 @@
     function renderPopularSection() {
       const popSec = document.getElementById('popular-section');
       const popGrid = document.getElementById('popular-grid');
-      const bestProducts = products.filter(p => p.isBestSeller || p.isHot);
+      const bestProducts = products.filter(p => (p.isBestSeller || p.isHot) && !(p.category || '').toLowerCase().includes('landing'));
       if (bestProducts.length === 0) { popSec.classList.add('hidden'); return; }
 
       popSec.classList.remove('hidden');
@@ -872,6 +738,7 @@
       let filtered = products.filter(item => {
         const itemCat = (item.category || '').toLowerCase().trim();
         const targetCat = (activeCategory || 'semua').toLowerCase().trim();
+        if(targetCat === 'semua' && (itemCat.includes('nokos') || itemCat.includes('landing'))) return false; 
         
         let matchesCategory = false;
         if (targetCat === 'semua') {
@@ -886,10 +753,8 @@
           matchesCategory = itemCat.includes('landing') || itemCat.includes('web') || itemCat.includes('website');
         } else if (targetCat === 'sosmed') {
           matchesCategory = itemCat.includes('sosmed') || itemCat.includes('follower') || itemCat.includes('like') || itemCat.includes('sub');
-        } else if (targetCat === 'nokos') {
-          matchesCategory = false; 
         } else if (targetCat === 'stream') {
-          matchesCategory = itemCat.includes('stream') || itemCat.includes('youtube') || itemCat.includes('netflix') || itemCat.includes('spotify') || itemCat.includes('music');
+          matchesCategory = itemCat.includes('stream') || itemCat.includes('youtube') || itemCat.includes('netflix');
         } else {
           matchesCategory = itemCat.includes(targetCat);
         }
@@ -954,153 +819,145 @@
     }
 
     // ================= FUNGSI LAYAR NOKOS =================
-    function openNokosModal() {
-      const nokosProducts = products.filter(p => p.category && p.category.toLowerCase() === 'nokos');
-      const grid = document.getElementById('nokos-services-grid');
-      
-      if (nokosProducts.length === 0) {
-        grid.innerHTML = `<div class="col-span-full py-8 text-center text-xs text-slate-400">Belum ada layanan Nokos yang tersedia di katalog toko.</div>`;
-      } else {
-        grid.innerHTML = nokosProducts.map(p => {
-          const minPrice = p.variants[0] ? Number(p.variants[0].price || 0) : 0;
-          return `
-            <div onclick="selectNokosService(${p.id}, ${minPrice})" id="nokos-item-${p.id}" class="nokos-item-btn bg-white border border-slate-200 rounded-2xl p-2.5 flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-rose-300 hover:shadow-md transition-all h-full">
-              <div class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-50 p-1.5">
-                <img src="${p.image}" class="w-full h-full object-contain" alt="${p.name}" />
-              </div>
-              <span class="text-[9px] font-bold text-slate-700 text-center leading-tight line-clamp-2 w-full">${p.name}</span>
-            </div>
-          `;
-        }).join('');
-      }
-      
-      selectedNokosItem = null;
+    async function openNokosModal() {
+      document.getElementById('nokos-modal').classList.remove('hidden');
       document.getElementById('nokos-selected-info').classList.add('hidden');
       
       const btnBuy = document.getElementById('nokos-btn-buy');
       btnBuy.disabled = true;
       btnBuy.className = "w-full py-3.5 bg-slate-100 text-slate-400 font-bold rounded-2xl transition-all flex items-center justify-center gap-2 text-sm";
       btnBuy.innerText = "Pilih Layanan Terlebih Dahulu";
+      selectedNokosService = null;
 
-      document.getElementById('nokos-modal').classList.remove('hidden');
-      lucide.createIcons();
+      await fetchNokosCountries(); 
+      fetchNokosDataFromAPI();
     }
 
-    function selectNokosService(id, price) {
-      const p = products.find(i => i.id === id);
-      if(!p) return;
-      selectedNokosItem = p;
+    async function fetchNokosCountries() {
+      const select = document.getElementById('nokos-country-select');
+      try {
+        const res = await fetch(`${API_URL}/nokos-countries`);
+        const result = await res.json();
+        if(result.success && Array.isArray(result.data) && result.data.length > 0) {
+            select.innerHTML = result.data.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+            const indo = result.data.find(c => c.name.toLowerCase().includes('indonesia'));
+            currentNokosCountry = indo ? indo.id : result.data[0].id;
+            select.value = currentNokosCountry;
+        }
+      } catch(e){}
+    }
 
-      document.querySelectorAll('.nokos-item-btn').forEach(el => {
-        el.classList.remove('border-[#f5125e]', 'bg-rose-50', 'ring-2', 'ring-rose-100');
-        el.classList.add('border-slate-200', 'bg-white');
-      });
+    function changeNokosFilters() {
+      currentNokosCountry = document.getElementById('nokos-country-select').value;
+      currentNokosOperator = document.getElementById('nokos-operator-select').value;
+      document.getElementById('nokos-selected-info').classList.add('hidden');
+      document.getElementById('nokos-btn-buy').disabled = true;
+      selectedNokosService = null;
+      fetchNokosDataFromAPI(); 
+    }
 
-      const activeEl = document.getElementById(`nokos-item-${id}`);
-      activeEl.classList.remove('border-slate-200', 'bg-white');
-      activeEl.classList.add('border-[#f5125e]', 'bg-rose-50', 'ring-2', 'ring-rose-100');
+    async function fetchNokosDataFromAPI() {
+      const grid = document.getElementById('nokos-services-grid');
+      const loading = document.getElementById('nokos-loading');
+      grid.classList.add('hidden'); loading.classList.remove('hidden');
+      try {
+        const res = await fetch(`${API_URL}/nokos-services?country=${currentNokosCountry}`);
+        const result = await res.json();
+        if (result.success && result.data) { allNokosServices = result.data; renderNokosGrid(allNokosServices); } 
+      } catch (err) { loading.innerHTML = `<span class="text-rose-500 font-bold">Koneksi server gagal.</span>`; }
+    }
+
+    function renderNokosGrid(services) {
+      const grid = document.getElementById('nokos-services-grid');
+      document.getElementById('nokos-loading').classList.add('hidden'); grid.classList.remove('hidden');
+      if (services.length === 0) { grid.innerHTML = `<div class="col-span-full py-8 text-center text-xs text-slate-400">Layanan tidak ditemukan.</div>`; return; }
+
+      grid.innerHTML = services.map((s, idx) => {
+        let cleanCode = s.code.toLowerCase().trim();
+        let logoUrl = APP_LOGOS[cleanCode] || Object.values(APP_LOGOS).find((_, i) => s.name.toLowerCase().includes(Object.keys(APP_LOGOS)[i]));
+        let iconHtml = logoUrl ? `<img src="${logoUrl}" class="w-full h-full object-contain" />` : `<div class="w-full h-full rounded-[14px] bg-icon-${idx % 5} flex items-center justify-center font-black text-xl shadow-xs">${s.name.charAt(0).toUpperCase()}</div>`;
+        return `<div onclick="selectNokosService('${s.code}', '${s.name.replace(/'/g, "\\'")}', ${s.price})" id="nokos-item-${s.code}" class="nokos-item-btn bg-white border border-slate-200 rounded-2xl p-2.5 flex flex-col items-center gap-2 cursor-pointer hover:border-rose-300 hover:shadow-md transition-all"><div class="w-10 h-10 flex items-center justify-center p-0.5">${iconHtml}</div><span class="text-[9px] font-bold text-slate-700 text-center leading-tight line-clamp-2 w-full break-words">${s.name}</span></div>`;
+      }).join('');
+    }
+
+    function filterNokosServices(query) {
+      const q = query.toLowerCase().trim();
+      renderNokosGrid(allNokosServices.filter(s => s.name.toLowerCase().includes(q) || s.code.toLowerCase().includes(q)));
+    }
+
+    function selectNokosService(code, name, price) {
+      selectedNokosService = { code, name, price };
+      document.querySelectorAll('.nokos-item-btn').forEach(el => { el.classList.remove('border-[#f5125e]', 'bg-rose-50', 'ring-2', 'ring-rose-100'); el.classList.add('border-slate-200', 'bg-white'); });
+      const activeEl = document.getElementById(`nokos-item-${code}`);
+      if(activeEl) { activeEl.classList.remove('border-slate-200', 'bg-white'); activeEl.classList.add('border-[#f5125e]', 'bg-rose-50', 'ring-2', 'ring-rose-100'); }
 
       document.getElementById('nokos-selected-info').classList.remove('hidden');
-      document.getElementById('nokos-selected-name').innerText = p.name;
+      document.getElementById('nokos-selected-name').innerText = name;
       document.getElementById('nokos-selected-price').innerText = formatIDR(price);
 
       const btnBuy = document.getElementById('nokos-btn-buy');
       btnBuy.disabled = false;
       btnBuy.className = "w-full py-3.5 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white shadow-lg shadow-rose-500/30 font-black rounded-2xl hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 text-sm cursor-pointer";
-      btnBuy.innerHTML = `Lanjut Pembayaran <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
-      
-      btnBuy.onclick = () => {
-        startDynamicNokosCheckout(selectedNokosItem);
-      };
-      
-      lucide.createIcons();
+      btnBuy.innerHTML = `Bayar ${formatIDR(price)} <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+      btnBuy.onclick = () => { startDynamicNokosCheckout(selectedNokosService); };
     }
 
-    function closeNokosModal() {
-      document.getElementById('nokos-modal').classList.add('hidden');
-    }
+    function closeNokosModal() { document.getElementById('nokos-modal').classList.add('hidden'); }
 
-    // ================== ALUR SMM PANEL NOKOS: AMBIL NOMOR DULU BARU BAYAR ==================
-    async function startDynamicNokosCheckout(productObj) {
-      isNokosPaid = false;
-      closeNokosModal(); 
-      
-      document.getElementById('step-pay').classList.remove('hidden');
-      document.getElementById('step-result').classList.add('hidden');
-      const stepNokos = document.getElementById('step-nokos');
-      if(stepNokos) stepNokos.classList.add('hidden');
-      
-      document.getElementById('nokos-cancel-qris-btn').classList.add('hidden');
-      document.getElementById('payment-modal').classList.remove('hidden');
-      
-      const variantObj = productObj.variants[0];
-      document.getElementById('pay-item-name').innerText = `Nokos OTP - ${productObj.name}`;
-      document.getElementById('pay-total-amount').innerText = formatIDR(variantObj.price);
-      
-      const qrisImg = document.getElementById('qris-img');
-      const qrisSpin = document.getElementById('qris-loading-spin');
-      const pollingIndicator = document.getElementById('auto-polling-indicator');
-      
-      qrisImg.classList.add('hidden');
-      qrisSpin.classList.remove('hidden');
-      
-      // Tampilan Loading Default
-      qrisSpin.innerHTML = `
-        <i data-lucide="loader-2" class="w-8 h-8 animate-spin text-[#f5125e]"></i>
-        <span id="qris-loading-text" class="text-[10px] font-semibold text-slate-600 text-center leading-tight px-2 mt-2">Mengecek ketersediaan nomor...</span>
-      `;
-      pollingIndicator.className = "bg-emerald-50 border border-emerald-200 rounded-2xl p-3 text-center flex flex-col items-center gap-2";
-      pollingIndicator.innerHTML = `<i data-lucide="loader" class="w-4 h-4 text-emerald-600 animate-spin flex-shrink-0"></i><p class="text-[10.5px] text-emerald-800 font-medium leading-tight">Harap tunggu, jangan tutup halaman ini.</p>`;
+    // ================== ALUR SMM PANEL: AMBIL NOMOR -> BARU BAYAR ==================
+    async function startDynamicNokosCheckout(serviceObj) {
+      const btnBuy = document.getElementById('nokos-btn-buy');
+      btnBuy.disabled = true;
+      btnBuy.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Mengecek Ketersediaan Nomor...`;
       lucide.createIcons();
-
-      let serviceCode = "wa";
-      let countryCode = "62";
-      if (variantObj.items && variantObj.items.length > 0) {
-        const parts = variantObj.items[0].split(',');
-        if (parts.length >= 2) {
-          serviceCode = parts[0].trim();
-          countryCode = parts[1].trim();
-        }
-      }
 
       try {
-        // 1. TEMBAK API ORDER NOMOR DULU
+        // 1. ORDER NOMOR DARI PUSAT
         const orderRes = await fetch(`${API_URL}/nokos-order`, {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ service: serviceCode, country: countryCode })
+          body: JSON.stringify({ service: serviceObj.code, country: currentNokosCountry, operator: currentNokosOperator })
         });
         const orderData = await orderRes.json();
         
-        // Baca data dari struktur API Nokos.co.id { "data": {"activation_id": 123, "phone": "..."} }
         const nokosId = orderData.data?.activation_id || orderData.activation_id || orderData.id;
         const nokosNum = orderData.data?.phone || orderData.phone || orderData.number;
 
         if (!nokosId || !nokosNum) {
-            // JIKA KOSONG / ERROR, TAMPILKAN UI ERROR SESUAI GAMBAR
-            qrisSpin.innerHTML = `
-              <div class="flex flex-col items-center justify-center gap-3 w-full h-full p-2 text-center mt-4">
-                <div class="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center border-4 border-white shadow-sm"><i data-lucide="x" class="w-6 h-6"></i></div>
-                <span class="text-[11px] font-bold text-rose-600 leading-tight">Stok Nomor Kosong / Saldo Admin Habis.<br><br>Silakan tutup dan pilih layanan/negara lain.</span>
-              </div>
-            `;
-            
-            // Ubah auto-polling-indicator jadi tombol batal
-            pollingIndicator.className = "bg-emerald-50 border border-emerald-200 rounded-2xl p-0 overflow-hidden mt-2";
-            pollingIndicator.innerHTML = `<button onclick="forceClosePaymentModal()" class="w-full py-3.5 text-[11px] font-bold text-rose-600 bg-emerald-50 hover:bg-emerald-100 transition-colors">Transaksi Dibatalkan Otomatis.</button>`;
+            showToast("Stok Nomor Kosong / Saldo Provider Habis. Silakan pilih negara lain.", "error");
+            btnBuy.disabled = false;
+            btnBuy.innerHTML = `Bayar ${formatIDR(serviceObj.price)} <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
             lucide.createIcons();
             return;
         }
 
-        // 2. NOMOR BERHASIL DIAMANKAN! SEKARANG BUAT QRIS
+        // 2. NOMOR BERHASIL DIAMANKAN! SEKARANG BUKA QRIS
         currentNokosId = nokosId;
-        const qrisLoadingText = document.getElementById('qris-loading-text');
-        if(qrisLoadingText) qrisLoadingText.innerHTML = `Nomor <b>+${nokosNum}</b> berhasil diamankan!<br>Sedang membuat QRIS...`;
+        isNokosPaid = false;
+        closeNokosModal(); 
+        
+        document.getElementById('step-pay').classList.remove('hidden');
+        document.getElementById('step-result').classList.add('hidden');
+        document.getElementById('step-nokos').classList.add('hidden');
+        document.getElementById('nokos-cancel-qris-btn').classList.remove('hidden'); 
+        document.getElementById('payment-modal').classList.remove('hidden');
+        
+        document.getElementById('pay-item-name').innerText = `Nokos OTP - ${serviceObj.name}`;
+        document.getElementById('pay-total-amount').innerText = formatIDR(serviceObj.price);
+        
+        const qrisImg = document.getElementById('qris-img');
+        const qrisSpin = document.getElementById('qris-loading-spin');
+        const qrisText = document.getElementById('qris-loading-text');
+        
+        qrisImg.classList.add('hidden');
+        qrisSpin.classList.remove('hidden');
+        qrisText.innerHTML = `Nomor <b>+${nokosNum}</b> Siap!<br>Sedang membuat QRIS...`;
+        document.getElementById('auto-polling-indicator').innerHTML = `<i data-lucide="loader" class="w-4 h-4 text-emerald-600 animate-spin flex-shrink-0"></i><p class="text-[10.5px] text-emerald-800 font-medium leading-tight">Harap tunggu, jangan tutup halaman ini.</p>`;
+        lucide.createIcons();
 
+        // 3. BUAT QRIS TRIPAY
         const txRes = await fetch(`${API_URL}/create-tripay-tx`, {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-             productId: "DYNAMIC_NOKOS", nokosServiceCode: serviceCode, nokosPrice: variantObj.price
-          })
+          body: JSON.stringify({ productId: "DYNAMIC_NOKOS", nokosServiceCode: serviceObj.code, nokosPrice: serviceObj.price })
         });
         const txData = await txRes.json();
 
@@ -1111,12 +968,7 @@
           qrisImg.onload = () => { 
               qrisImg.classList.remove('hidden'); 
               qrisSpin.classList.add('hidden'); 
-              
-              // Munculkan tombol batal (auto refund)
-              document.getElementById('nokos-cancel-qris-btn').classList.remove('hidden');
-              
-              pollingIndicator.className = "bg-emerald-50 border border-emerald-200 rounded-2xl p-3 text-center flex flex-col items-center gap-2";
-              pollingIndicator.innerHTML = `<i data-lucide="loader" class="w-4 h-4 text-emerald-600 animate-spin flex-shrink-0"></i><p class="text-[10.5px] text-emerald-800 font-medium leading-tight">Nomor <b>+${nokosNum}</b> sudah disiapkan.<br>Segera bayar agar OTP masuk.</p>`;
+              document.getElementById('auto-polling-indicator').innerHTML = `<i data-lucide="loader" class="w-4 h-4 text-emerald-600 animate-spin flex-shrink-0"></i><p class="text-[10.5px] text-emerald-800 font-medium leading-tight">Nomor <b>+${nokosNum}</b> disiapkan.<br>Segera bayar agar OTP masuk.</p>`;
               lucide.createIcons();
           };
 
@@ -1132,27 +984,27 @@
               if (statusData.status === "PAID") {
                 clearInterval(pollingInterval);
                 isNokosPaid = true; 
-                showSmsWaitingScreen(productObj.name, ref, nokosNum, serviceCode); 
+                showSmsWaitingScreen(serviceObj.name, ref, nokosNum); 
               }
             } catch (e) {}
           }, 4000); 
 
         } else {
-          showToast("Gagal membuat QRIS.", "error");
+          showToast("Gagal membuat QRIS TriPay.", "error");
           await fetch(`${API_URL}/nokos-cancel`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: currentNokosId }) });
           currentNokosId = null;
-          qrisSpin.innerHTML = `<span class="text-rose-500 font-bold text-xs mt-4">Gagal QRIS. Dibatalkan.</span>`;
-          pollingIndicator.innerHTML = `<button onclick="forceClosePaymentModal()" class="w-full py-3 text-[11px] font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 transition-colors">Tutup</button>`;
+          forceClosePaymentModal();
         }
       } catch (err) { 
-          qrisSpin.innerHTML = `<span class="text-rose-500 font-bold text-xs mt-4">Sistem Pusat Sibuk/Error.</span>`; 
-          pollingIndicator.className = "bg-emerald-50 border border-emerald-200 rounded-2xl p-0 overflow-hidden mt-2";
-          pollingIndicator.innerHTML = `<button onclick="forceClosePaymentModal()" class="w-full py-3 text-[11px] font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 transition-colors">Tutup</button>`;
+        showToast("Koneksi gagal. Coba lagi.", "error");
+        btnBuy.disabled = false;
+        btnBuy.innerHTML = `Bayar ${formatIDR(serviceObj.price)} <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+        lucide.createIcons();
       }
     }
 
     // ================== LAYAR TUNGGU SMS ==================
-    function showSmsWaitingScreen(serviceName, paymentRef, nokosNum, serviceCode) {
+    function showSmsWaitingScreen(serviceName, paymentRef, nokosNum) {
       document.getElementById('step-pay').classList.add('hidden');
       const stepNokos = document.getElementById('step-nokos');
       stepNokos.classList.remove('hidden');
@@ -1164,7 +1016,7 @@
       
       const btnCancel = document.getElementById('nokos-cancel-btn');
       btnCancel.classList.remove('hidden');
-      btnCancel.innerText = "SMS Tidak Masuk? (Batalkan & Lapor Admin)";
+      btnCancel.innerText = "SMS Lama? (Batalkan & Lapor Admin)";
 
       if(nokosPollingInterval) clearInterval(nokosPollingInterval);
       nokosPollingInterval = setInterval(async () => {
@@ -1175,28 +1027,24 @@
           const statusStr = smsData.status || (smsData.data && smsData.data.status);
 
           let finalSms = smsCode;
-          if (typeof statusStr === 'string' && statusStr.includes('STATUS_OK')) {
-            finalSms = statusStr.split(':')[1];
-          }
+          if (typeof statusStr === 'string' && statusStr.includes('STATUS_OK')) finalSms = statusStr.split(':')[1];
 
           if (finalSms) {
             clearInterval(nokosPollingInterval);
             document.getElementById('nokos-spinner').classList.add('hidden');
             document.getElementById('nokos-sms-status').innerText = "KODE OTP BERHASIL DITERIMA:";
-            
             const codeElem = document.getElementById('nokos-sms-code');
-            codeElem.innerText = finalSms; 
-            codeElem.classList.remove('hidden');
+            codeElem.innerText = finalSms; codeElem.classList.remove('hidden');
             btnCancel.classList.add('hidden');
 
-            const accountDetails = `Layanan: ${serviceName.toUpperCase()}\nNomor: +${nokosNum}\nOTP: ${finalSms}`;
+            const accountDetails = `Layanan: ${serviceName}\nNomor: +${nokosNum}\nOTP: ${finalSms}`;
             saveOrderHistory(paymentRef, `Nokos ${serviceName}`, "OTP Instan", accountDetails);
             showToast("Berhasil mendapatkan Kode OTP!");
             currentNokosId = null;
           } else if (statusStr === "STATUS_CANCEL" || statusStr === "CANCELED") {
             clearInterval(nokosPollingInterval);
             document.getElementById('nokos-number-display').innerText = "Dibatalkan";
-            document.getElementById('nokos-sms-status').innerText = "Pesanan nomor dibatalkan sistem pusat.";
+            document.getElementById('nokos-sms-status').innerText = "Dibatalkan dari pusat. Lapor Admin untuk refund dana.";
             document.getElementById('nokos-spinner').classList.add('hidden');
             currentNokosId = null;
           }
@@ -1204,33 +1052,29 @@
       }, 5000); 
     }
 
-    // Fungsi Batal Khusus Saat Menunggu QRIS
-    async function cancelAndClosePaymentModal() {
-        document.getElementById('nokos-cancel-qris-btn').innerText = "Membatalkan...";
-        if (currentNokosId && !isNokosPaid) {
-            await fetch(`${API_URL}/nokos-cancel`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: currentNokosId }) });
-            currentNokosId = null;
-            showToast("Pesanan Nokos otomatis dibatalkan (Refund sukses).", "info");
-        }
-        forceClosePaymentModal();
+    async function cancelAndClosePaymentModal() { 
+      document.getElementById('nokos-cancel-qris-btn').innerText = "Membatalkan...";
+      if (currentNokosId && !isNokosPaid) {
+          await fetch(`${API_URL}/nokos-cancel`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: currentNokosId }) });
+          currentNokosId = null;
+          showToast("Pesanan otomatis dibatalkan karena dibatalkan pembeli.", "info");
+      }
+      forceClosePaymentModal();
     }
 
-    // Fungsi Tutup Paksa Modal
     function forceClosePaymentModal() {
-        document.getElementById('payment-modal').classList.add('hidden'); 
-        if (pollingInterval) clearInterval(pollingInterval);
-        if (nokosPollingInterval) clearInterval(nokosPollingInterval);
+      document.getElementById('payment-modal').classList.add('hidden'); 
+      if (pollingInterval) clearInterval(pollingInterval);
+      if (nokosPollingInterval) clearInterval(nokosPollingInterval);
     }
 
-    // Dipanggil saat klik "X" di pojok kanan atas modal QRIS
-    function closePaymentModal() {
-        // Jika sedang dalam proses Nokos dan belum dibayar, batalkan order ke pusat
-        if (currentNokosId && !isNokosPaid) {
-            fetch(`${API_URL}/nokos-cancel`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: currentNokosId }) });
-            currentNokosId = null;
-            showToast("Pesanan dibatalkan. Saldo admin dikembalikan.", "info");
-        }
-        forceClosePaymentModal();
+    function closePaymentModal() { 
+      if (currentNokosId && !isNokosPaid) {
+          fetch(`${API_URL}/nokos-cancel`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: currentNokosId }) });
+          currentNokosId = null;
+          showToast("Pesanan dibatalkan. Saldo dikembalikan.", "info");
+      }
+      forceClosePaymentModal();
     }
 
     async function reportNokosIssue() {
@@ -1240,378 +1084,104 @@
       try {
         await fetch(`${API_URL}/nokos-cancel`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: currentNokosId }) });
         if(nokosPollingInterval) clearInterval(nokosPollingInterval);
-        document.getElementById('nokos-sms-status').innerText = "Dibatalkan. Harap Chat Admin untuk proses Refund.";
+        document.getElementById('nokos-sms-status').innerText = "Dibatalkan. Harap Chat Admin membawa screenshot ini untuk refund.";
         document.getElementById('nokos-spinner').classList.add('hidden');
         document.getElementById('nokos-cancel-btn').classList.add('hidden');
         currentNokosId = null;
-      } catch (e) { showToast("Gagal membatalkan. Hubungi Admin.", "error"); }
+      } catch (e) { showToast("Gagal membatalkan.", "error"); }
     }
 
-    // ================= ULASAN DINAMIS PER PRODUK =================
-    const defaultSampleReviews = {
-      all: [
-        { user: "b***9", avatarColor: "bg-blue-100 text-blue-600", rating: 5, date: "2026-08-23 20:14", tag: "instant", comment: "Mantap banget! Begitu transfer QRIS hitungan 3 detik akun langsung muncul di layar. Fitur work 100% full garansi!" },
-        { user: "d***i", avatarColor: "bg-rose-100 text-rose-600", rating: 5, date: "2026-08-22 15:40", tag: "service", comment: "Pelayanan super cepat tanpa ribet nunggu admin. Akun awet dan sangat membantu pekerjaan." },
-        { user: "r***a", avatarColor: "bg-emerald-100 text-emerald-600", rating: 5, date: "2026-08-21 11:05", tag: "instant", comment: "Harga paling murah kualitas nomor satu. Nomor invoice otomatis tersimpan di riwayat pesanan." }
-      ],
-      star5: [
-        { user: "f***y", avatarColor: "bg-amber-100 text-amber-600", rating: 5, date: "2026-08-24 18:22", tag: "instant", comment: "Bintang 5 tanpa ragu! Semua fungsi premium terbuka sempurna tanpa ada kendala sama sekali." },
-        { user: "k***n", avatarColor: "bg-purple-100 text-purple-600", rating: 5, date: "2026-08-23 21:05", tag: "service", comment: "Kualitas bintang lima. Pembayaran instan QRIS lancar jaya, dapet akun dalam 5 detik!" }
-      ],
-      instant: [
-        { user: "h***d", avatarColor: "bg-indigo-100 text-indigo-600", rating: 5, date: "2026-08-24 19:45", tag: "instant", comment: "⚡ Benar-benar auto delivery kilat! Bayar jam 2 subuh langsung dikirim detik itu juga." },
-        { user: "s***t", avatarColor: "bg-cyan-100 text-cyan-600", rating: 5, date: "2026-08-23 16:30", tag: "instant", comment: "⚡ Sistem pengiriman canggih banget. QRIS terverifikasi lisensi langsung keluar." }
-      ],
-      service: [
-        { user: "a***n", avatarColor: "bg-rose-100 text-rose-600", rating: 5, date: "2026-08-24 14:10", tag: "service", comment: "🛡️ Garansi terbukti 100% aman dan responsif. CS Admin WhatsApp sangat ramah membantu." },
-        { user: "p***i", avatarColor: "bg-pink-100 text-pink-600", rating: 5, date: "2026-08-22 17:50", tag: "service", comment: "🛡️ Invoice resmi tersimpan rapi di browser, ga takut hilang bukti garansi." }
-      ]
-    };
-
-    function setReviewFilter(filterType) {
-      activeReviewFilter = filterType;
-
-      const buttons = document.querySelectorAll('.rf-btn');
-      buttons.forEach(btn => {
-        btn.className = 'rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all text-[10px] cursor-pointer';
-      });
-
-      const activeBtn = document.getElementById(`rf-${filterType}`);
-      if (activeBtn) {
-        activeBtn.className = 'rf-btn bg-rose-50 text-[#f5125e] border border-rose-200 px-2.5 py-1 rounded-lg font-bold transition-all text-[10px] shadow-2xs cursor-pointer';
-      }
-
-      displayFilteredReviews();
-    }
-
-    function displayFilteredReviews() {
-      const container = document.getElementById('product-reviews-list');
-      if (!container || !currentSelectedProduct) return;
-
-      let listToShow = [];
-      if (currentSelectedProduct.customReviews && currentSelectedProduct.customReviews.length > 0) {
-        if (activeReviewFilter === 'all') listToShow = currentSelectedProduct.customReviews;
-        else if (activeReviewFilter === 'star5') listToShow = currentSelectedProduct.customReviews.filter(r => Number(r.rating) === 5);
-        else listToShow = currentSelectedProduct.customReviews.filter(r => r.tag === activeReviewFilter);
-      }
-
-      if (listToShow.length === 0) {
-        listToShow = defaultSampleReviews[activeReviewFilter] || defaultSampleReviews.all;
-      }
-
-      container.innerHTML = listToShow.map(rev => `
-        <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 space-y-1.5 animate-review">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <div class="w-7 h-7 rounded-full ${rev.avatarColor || 'bg-rose-100 text-[#f5125e]'} flex items-center justify-center font-bold text-[10px]">
-                ${rev.user.charAt(0).toUpperCase()}
-              </div>
-              <div>
-                <p class="font-bold text-[11px] text-slate-800 leading-tight">${rev.user}</p>
-                <div class="flex items-center gap-0.5 text-amber-500 text-[10px]">
-                  ${'★'.repeat(Number(rev.rating) || 5)}
-                </div>
-              </div>
-            </div>
-            <span class="text-[9.5px] text-slate-400">${rev.date || 'Baru saja'}</span>
-          </div>
-          <div class="text-[10px] text-slate-500 font-medium bg-white px-2 py-0.5 rounded border border-slate-100 w-max">
-            Variasi: ${rev.variant || 'Resmi'}
-          </div>
-          <p class="text-[11.5px] text-slate-700 leading-relaxed">${rev.comment}</p>
-        </div>
-      `).join('');
-    }
-
-    // ================= DETAIL PRODUK MODAL (UNTUK PRODUK BIASA) =================
+    // ================= PRODUK BIASA (DETAIL & MODAL) =================
     function openDetailModal(id) {
-      const p = products.find(i => i.id === id);
-      if (!p) return;
-      currentSelectedProduct = p;
-      currentSelectedVariant = p.variants[0];
-
-      document.getElementById('modal-img').src = p.image;
-      document.getElementById('modal-name').innerText = p.name;
-      document.getElementById('modal-category').innerText = p.category;
+      const p = products.find(i => i.id === id); if (!p) return; currentSelectedProduct = p; currentSelectedVariant = p.variants[0];
+      document.getElementById('modal-img').src = p.image; document.getElementById('modal-name').innerText = p.name; document.getElementById('modal-category').innerText = p.category;
       document.getElementById('modal-sold').innerText = formatSoldCount(p.sold);
-      
-      const ratingNum = Math.round(Number(p.rating || 5));
-      document.getElementById('modal-rating').innerHTML = `<span class="text-amber-500">${'★'.repeat(ratingNum)}</span>`;
-      
+      document.getElementById('modal-rating').innerHTML = `<span class="text-amber-500">${'★'.repeat(Math.round(Number(p.rating || 5)))}</span>`;
       document.getElementById('modal-warranty').innerText = p.warranty || 'Resmi';
-
-      // Load Variant Pertama Secara Default
-      renderVariantSelection(0);
-      
-      setReviewFilter('all');
-      document.getElementById('detail-modal').classList.remove('hidden');
-      lucide.createIcons();
+      renderVariantSelection(0); document.getElementById('detail-modal').classList.remove('hidden'); lucide.createIcons();
     }
 
     function renderVariantSelection(activeIndex) {
       const container = document.getElementById('modal-variants-list');
-      container.innerHTML = currentSelectedProduct.variants.map((v, idx) => `
-        <button onclick="selectVariant(${idx})" class="px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${idx === activeIndex ? 'bg-rose-50 border-[#f5125e] text-[#f5125e]' : 'bg-white border-slate-200 text-slate-600 hover:border-rose-200'}">${v.name}</button>
-      `).join('');
-      
+      container.innerHTML = currentSelectedProduct.variants.map((v, idx) => `<button onclick="selectVariant(${idx})" class="px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${idx === activeIndex ? 'bg-rose-50 border-[#f5125e] text-[#f5125e]' : 'bg-white border-slate-200 text-slate-600'}">${v.name}</button>`).join('');
       document.getElementById('modal-price').innerText = formatIDR(currentSelectedVariant.price);
       document.getElementById('modal-desc').innerText = currentSelectedVariant.desc || currentSelectedProduct.description || 'Tidak ada deskripsi.';
       document.getElementById('modal-terms').innerText = currentSelectedVariant.terms || currentSelectedProduct.terms || 'Mengikuti kebijakan garansi toko.';
-
-      document.getElementById('modal-btn-chat').onclick = () => {
-        closeDetailModal();
-        openChatModalWithProduct(currentSelectedProduct.name, currentSelectedVariant.name, currentSelectedVariant.price);
-      };
+      document.getElementById('modal-btn-chat').onclick = () => { closeDetailModal(); openChatModalWithProduct(currentSelectedProduct.name, currentSelectedVariant.name, currentSelectedVariant.price); };
       document.getElementById('modal-btn-cart').onclick = () => { addToCart(currentSelectedProduct, currentSelectedVariant); closeDetailModal(); };
-      document.getElementById('modal-btn-buy').onclick = () => { closeDetailModal(); startCheckoutProcess(currentSelectedProduct, currentSelectedVariant); };
+      document.getElementById('modal-btn-buy').onclick = () => { closeDetailModal(); startNormalCheckout(currentSelectedProduct, currentSelectedVariant); };
     }
 
-    function selectVariant(idx) {
-      currentSelectedVariant = currentSelectedProduct.variants[idx];
-      renderVariantSelection(idx); 
-    }
-
+    function selectVariant(idx) { currentSelectedVariant = currentSelectedProduct.variants[idx]; renderVariantSelection(idx); }
     function closeDetailModal() { document.getElementById('detail-modal').classList.add('hidden'); }
 
-    // ================= FITUR LIVE CHAT CS ASISTEN =================
-    function openChatModal() {
-      document.getElementById('chat-modal').classList.remove('hidden');
-      setTimeout(() => document.getElementById('chat-drawer').classList.remove('translate-x-full'), 10);
-      lucide.createIcons();
-    }
-
-    function closeChatModal() {
-      document.getElementById('chat-drawer').classList.add('translate-x-full');
-      setTimeout(() => document.getElementById('chat-modal').classList.add('hidden'), 250);
-    }
-
-    function openChatModalWithProduct(prodName, varName, price) {
-      openChatModal();
-      appendUserChatMessage(`Halo Admin CS, saya ingin tanya produk *${prodName}* (${varName}) seharga ${formatIDR(price)}.`);
-      setTimeout(() => {
-        appendBotChatMessage(`Hai Kak! Produk **${prodName} (${varName})** stoknya ready dan dikirim instan otomatis via QRIS TriPay. Kakak bisa langsung klik **Beli Sekarang** di katalog ya! 🚀`);
-      }, 700);
-    }
-
-    function sendQuickReply(question) {
-      appendUserChatMessage(question);
-      setTimeout(() => {
-        if (question.includes('Cara Beli')) {
-          appendBotChatMessage(`Cara pesan sangat mudah Kak:\n1. Pilih produk & paket yang diinginkan.\n2. Klik **Beli Sekarang**.\n3. Scan QRIS yang muncul di layar.\n4. Dalam 3-5 detik akun langsung muncul otomatis di layar! ⚡`);
-        } else if (question.includes('Garansi')) {
-          appendBotChatMessage(`Semua produk bergaransi penuh sesuai masa aktif Kak! 🛡️ Simpan Nomor Invoice yang muncul setelah checkout untuk klaim penggantian akun baru jika sewaktu-waktu ada kendala.`);
-        } else if (question.includes('WhatsApp')) {
-          appendBotChatMessage(`Untuk bantuan langsung dengan Admin Toko, silakan hubungi WhatsApp kami:\n👉 <a href="https://wa.me/${WHATSAPP_NUMBER}" target="_blank" class="text-emerald-600 font-bold underline">Klik Chat WhatsApp Admin</a>`);
-        } else {
-          appendBotChatMessage(`Pesanan otomatis dikirim kurang dari 5 detik setelah pembayaran terverifikasi sistem.`);
-        }
-      }, 600);
-    }
-
-    function handleUserChatSubmit(e) {
-      e.preventDefault();
-      const input = document.getElementById('user-chat-input');
-      const text = input.value.trim();
-      if (!text) return;
-      input.value = '';
-      appendUserChatMessage(text);
-      setTimeout(() => {
-        appendBotChatMessage(`Pesan Anda: "${text}". Admin CS siap membantu, untuk order cepat bisa langsung checkout QRIS di katalog ya Kak! 🚀`);
-      }, 700);
-    }
-
-    function appendUserChatMessage(text) {
-      const container = document.getElementById('chat-messages-container');
-      const div = document.createElement('div');
-      div.className = 'flex items-end justify-end gap-2';
-      div.innerHTML = `<div class="bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white p-3 rounded-2xl rounded-tr-none shadow-2xs max-w-[85%] leading-relaxed text-xs">${text.replace(/\n/g, '<br>')}</div>`;
-      container.appendChild(div);
-      container.scrollTop = container.scrollHeight;
-    }
-
-    function appendBotChatMessage(text) {
-      const container = document.getElementById('chat-messages-container');
-      const div = document.createElement('div');
-      div.className = 'flex items-start gap-2';
-      div.innerHTML = `<div class="w-7 h-7 rounded-full bg-rose-100 text-[#f5125e] flex items-center justify-center flex-shrink-0 text-xs font-bold">CS</div><div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs space-y-1 max-w-[85%] text-slate-800 leading-relaxed text-xs"><p>${text.replace(/\n/g, '<br>')}</p></div>`;
-      container.appendChild(div);
-      container.scrollTop = container.scrollHeight;
-      lucide.createIcons();
-    }
-
-    // ================= KERANJANG BELANJA =================
-    function toggleCart(open) {
-      if (open) { 
-        document.getElementById('cart-modal').classList.remove('hidden'); 
-        setTimeout(() => document.getElementById('cart-drawer').classList.remove('translate-x-full'), 10);
-      } else { 
-        document.getElementById('cart-drawer').classList.add('translate-x-full');
-        setTimeout(() => document.getElementById('cart-modal').classList.add('hidden'), 250);
-      }
-    }
-
-    function addToCart(p, v) {
-      cart.push({ id: p.id, name: `${p.name} (${v.name})`, price: v.price, image: p.image, quantity: 1 });
-      localStorage.setItem('my_digital_cart', JSON.stringify(cart));
-      renderCart();
-      showToast('Masuk ke keranjang!');
-    }
-
-    function renderCart() {
-      document.getElementById('cart-title-count').innerText = cart.length;
-      document.getElementById('cart-badge').innerText = cart.length;
-      if (cart.length > 0) {
-        document.getElementById('cart-badge').classList.remove('hidden');
-        document.getElementById('cart-footer').classList.remove('hidden');
-      } else {
-        document.getElementById('cart-badge').classList.add('hidden');
-        document.getElementById('cart-footer').classList.add('hidden');
-      }
-      document.getElementById('cart-items').innerHTML = cart.map((i, idx) => `
-        <div class="flex items-center justify-between gap-2 p-2 bg-slate-50 rounded-xl border">
-          <img src="${i.image}" class="w-10 h-10 rounded-lg object-contain bg-white border" />
-          <div class="flex-1 min-w-0"><h4 class="text-xs font-bold truncate">${i.name}</h4><p class="text-xs text-[#f5125e] font-black">${formatIDR(i.price)}</p></div>
-          <button onclick="cart.splice(${idx}, 1); localStorage.setItem('my_digital_cart', JSON.stringify(cart)); renderCart();" class="text-slate-400 hover:text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-        </div>
-      `).join('');
-      document.getElementById('cart-total-price').innerText = formatIDR(cart.reduce((a, b) => a + b.price, 0));
-      lucide.createIcons();
-    }
-
-    function processCartCheckout() {
-      if (cart.length === 0) return;
-      toggleCart(false);
-      startCheckoutProcess({ id: Date.now(), name: `Keranjang (${cart.length} Produk)` }, { name: 'Semua Produk', price: cart.reduce((a, b) => a + b.price, 0) });
-    }
-
-    function saveOrderHistory(reference, productName, variantName, account) {
-      const history = JSON.parse(localStorage.getItem('my_digital_orders') || '[]');
-      history.unshift({
-        reference: reference,
-        productName: productName,
-        variantName: variantName,
-        date: new Date().toLocaleString('id-ID'),
-        account: account
-      });
-      localStorage.setItem('my_digital_orders', JSON.stringify(history));
-    }
-
-    // ================= RIWAYAT PESANAN =================
-    function openHistoryModal() {
-      const history = JSON.parse(localStorage.getItem('my_digital_orders') || '[]');
-      const container = document.getElementById('history-list');
-      if (history.length === 0) {
-        container.innerHTML = `<div class="py-12 text-center text-slate-400 text-xs"><i data-lucide="receipt" class="w-8 h-8 mx-auto mb-1 stroke-1"></i>Belum ada riwayat pesanan</div>`;
-      } else {
-        container.innerHTML = history.map((item) => `
-          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
-            <div class="flex justify-between items-start">
-              <div>
-                <span class="text-[9px] font-bold text-[#f5125e] bg-rose-50 px-2 py-0.5 rounded font-mono">${item.reference}</span>
-                <h4 class="font-bold text-xs sm:text-sm text-slate-800 mt-1">${item.productName} (${item.variantName})</h4>
-                <p class="text-[10px] text-slate-400">${item.date}</p>
-              </div>
-            </div>
-            <div class="bg-white border rounded-xl p-2.5"><pre class="font-mono text-xs text-slate-800 whitespace-pre-wrap select-all">${item.account}</pre></div>
-          </div>
-        `).join('');
-      }
-      document.getElementById('history-modal').classList.remove('hidden');
-      lucide.createIcons();
-    }
-
-    function closeHistoryModal() { document.getElementById('history-modal').classList.add('hidden'); }
-
-    // Checkout Produk Biasa
-    async function startCheckoutProcess(product, variant) {
-      document.getElementById('step-pay').classList.remove('hidden');
-      document.getElementById('step-result').classList.add('hidden');
-      const stepNokos = document.getElementById('step-nokos');
-      if(stepNokos) stepNokos.classList.add('hidden');
-
+    async function startNormalCheckout(product, variant) {
+      document.getElementById('step-pay').classList.remove('hidden'); document.getElementById('step-result').classList.add('hidden');
+      if(document.getElementById('step-nokos')) document.getElementById('step-nokos').classList.add('hidden');
       document.getElementById('nokos-cancel-qris-btn').classList.add('hidden');
-      document.getElementById('payment-modal').classList.remove('hidden');
-      
-      document.getElementById('pay-item-name').innerText = `${product.name} (${variant.name})`;
+      document.getElementById('payment-modal').classList.remove('hidden'); document.getElementById('pay-item-name').innerText = `${product.name} (${variant.name})`;
       document.getElementById('pay-total-amount').innerText = formatIDR(variant.price);
       
-      const qrisImg = document.getElementById('qris-img');
-      const qrisSpin = document.getElementById('qris-loading-spin');
-      
-      qrisImg.classList.add('hidden');
-      qrisSpin.classList.remove('hidden');
-      
+      const qrisImg = document.getElementById('qris-img'); const qrisSpin = document.getElementById('qris-loading-spin');
+      qrisImg.classList.add('hidden'); qrisSpin.classList.remove('hidden');
       document.getElementById('qris-loading-text').innerText = "Membuat QRIS...";
       lucide.createIcons();
 
       try {
-        const txRes = await fetch(`${API_URL}/create-tripay-tx`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ productId: product.id, variantName: variant.name })
-        });
+        const txRes = await fetch(`${API_URL}/create-tripay-tx`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ productId: product.id, variantName: variant.name }) });
         const txData = await txRes.json();
-
-        if (txData.success && txData.data && txData.data.qr_url) {
+        if (txData.success && txData.data) {
           qrisImg.src = txData.data.qr_url;
-          const ref = txData.data.reference;
-
           qrisImg.onload = () => { qrisImg.classList.remove('hidden'); qrisSpin.classList.add('hidden'); };
-
+          
           if (pollingInterval) clearInterval(pollingInterval);
           pollingInterval = setInterval(async () => {
-            try {
-              const statusRes = await fetch(`${API_URL}/check-status`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ reference: ref, productId: product.id, variantName: variant.name })
-              });
-              const statusData = await statusRes.json();
-
-              if (statusData.status === "PAID") {
-                clearInterval(pollingInterval);
-                document.getElementById('step-pay').classList.add('hidden');
-                document.getElementById('step-result').classList.remove('hidden');
-                document.getElementById('account-data').innerText = statusData.account;
-                saveOrderHistory(ref, product.name, variant.name, statusData.account);
-                showToast("Pembayaran Terverifikasi! Akun Terkirim.");
-              }
-            } catch (e) {}
+            const statusRes = await fetch(`${API_URL}/check-status`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reference: txData.data.reference, productId: product.id, variantName: variant.name }) });
+            const statusData = await statusRes.json();
+            if (statusData.status === "PAID") {
+              clearInterval(pollingInterval); document.getElementById('step-pay').classList.add('hidden'); document.getElementById('step-result').classList.remove('hidden');
+              document.getElementById('account-data').innerText = statusData.account; saveOrderHistory(txData.data.reference, product.name, variant.name, statusData.account);
+            }
           }, 4000); 
-
-        } else {
-          qrisImg.src = QRIS_STATIC_URL;
-          qrisImg.classList.remove('hidden');
-          qrisSpin.classList.add('hidden');
-          showToast("Koneksi gagal, menggunakan QRIS statis", "error");
         }
-      } catch (err) {
-        qrisImg.src = QRIS_STATIC_URL;
-        qrisImg.classList.remove('hidden');
-        qrisSpin.classList.add('hidden');
-        showToast("Sistem menggunakan mode manual/statis", "info");
-
-        if(pollingInterval) clearTimeout(pollingInterval);
-        pollingInterval = setTimeout(() => {
-          document.getElementById('step-pay').classList.add('hidden');
-          document.getElementById('step-result').classList.remove('hidden');
-          const dummyAccount = "email_premium_pro@gmail.com : passSecure99\n(Format Akun Auto-Delivery Resmi)";
-          document.getElementById('account-data').innerText = dummyAccount;
-          saveOrderHistory(`INV-DUMMY${Date.now()}`, product.name, variant.name, dummyAccount);
-          showToast('Pembayaran Berhasil! Akun Terkirim.');
-        }, 5000);
-      }
+      } catch (err) { showToast("Sistem menggunakan statis", "info"); }
     }
 
-    function copyAccountData() {
-      const text = document.getElementById('account-data').innerText;
-      navigator.clipboard.writeText(text).then(() => showToast('Data disalin!'));
+    function copyAccountData() { navigator.clipboard.writeText(document.getElementById('account-data').innerText).then(() => showToast('Data disalin!')); }
+
+    function openHistoryModal() {
+      const history = JSON.parse(localStorage.getItem('my_digital_orders') || '[]'); const container = document.getElementById('history-list');
+      if (history.length === 0) container.innerHTML = `<div class="py-12 text-center text-slate-400 text-xs">Belum ada pesanan</div>`;
+      else container.innerHTML = history.map((item) => `<div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2"><div><span class="text-[9px] font-bold text-[#f5125e] bg-rose-50 px-2 py-0.5 rounded">${item.reference}</span><h4 class="font-bold text-xs sm:text-sm text-slate-800 mt-1">${item.productName} (${item.variantName})</h4><p class="text-[10px] text-slate-400">${item.date}</p></div><div class="bg-white border rounded-xl p-2.5"><pre class="font-mono text-xs select-all">${item.account}</pre></div></div>`).join('');
+      document.getElementById('history-modal').classList.remove('hidden'); lucide.createIcons();
+    }
+    function closeHistoryModal() { document.getElementById('history-modal').classList.add('hidden'); }
+    function saveOrderHistory(ref, pName, vName, acc) {
+      const h = JSON.parse(localStorage.getItem('my_digital_orders') || '[]'); h.unshift({ reference: ref, productName: pName, variantName: vName, date: new Date().toLocaleString('id-ID'), account: acc }); localStorage.setItem('my_digital_orders', JSON.stringify(h));
     }
 
-    // Inisialisasi awal
-    loadProducts();
-    startSocialProofNotifications();
-    lucide.createIcons();
+    function toggleCart(open) {
+      if (open) { document.getElementById('cart-modal').classList.remove('hidden'); setTimeout(() => document.getElementById('cart-drawer').classList.remove('translate-x-full'), 10); } 
+      else { document.getElementById('cart-drawer').classList.add('translate-x-full'); setTimeout(() => document.getElementById('cart-modal').classList.add('hidden'), 250); }
+    }
+    function addToCart(p, v) { cart.push({ id: p.id, name: `${p.name} (${v.name})`, price: v.price, image: p.image, quantity: 1 }); localStorage.setItem('my_digital_cart', JSON.stringify(cart)); renderCart(); showToast('Masuk ke keranjang!'); }
+    function renderCart() {
+      document.getElementById('cart-title-count').innerText = cart.length; document.getElementById('cart-badge').innerText = cart.length;
+      if (cart.length > 0) { document.getElementById('cart-badge').classList.remove('hidden'); document.getElementById('cart-footer').classList.remove('hidden'); } else { document.getElementById('cart-badge').classList.add('hidden'); document.getElementById('cart-footer').classList.add('hidden'); }
+      document.getElementById('cart-items').innerHTML = cart.map((i, idx) => `<div class="flex items-center justify-between gap-2 p-2 bg-slate-50 rounded-xl border"><img src="${i.image}" class="w-10 h-10 rounded-lg object-contain bg-white border" /><div class="flex-1 min-w-0"><h4 class="text-xs font-bold truncate">${i.name}</h4><p class="text-xs text-[#f5125e] font-black">${formatIDR(i.price)}</p></div><button onclick="cart.splice(${idx}, 1); localStorage.setItem('my_digital_cart', JSON.stringify(cart)); renderCart();" class="text-slate-400 hover:text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`).join('');
+      document.getElementById('cart-total-price').innerText = formatIDR(cart.reduce((a, b) => a + b.price, 0)); lucide.createIcons();
+    }
+    function processCartCheckout() { if (cart.length === 0) return; toggleCart(false); startNormalCheckout({ id: Date.now(), name: `Keranjang (${cart.length} Produk)` }, { name: 'Semua Produk', price: cart.reduce((a, b) => a + b.price, 0) }); }
+
+    function openChatModal() { document.getElementById('chat-modal').classList.remove('hidden'); setTimeout(() => document.getElementById('chat-drawer').classList.remove('translate-x-full'), 10); }
+    function closeChatModal() { document.getElementById('chat-drawer').classList.add('translate-x-full'); setTimeout(() => document.getElementById('chat-modal').classList.add('hidden'), 250); }
+    function openChatModalWithProduct(prodName, varName, price) { openChatModal(); appendUserChatMessage(`Halo Admin CS, saya ingin tanya produk *${prodName}* (${varName}) seharga ${formatIDR(price)}.`); setTimeout(() => { appendBotChatMessage(`Hai Kak! Produk **${prodName} (${varName})** stoknya ready dan dikirim instan otomatis via QRIS TriPay. Kakak bisa langsung klik **Beli Sekarang** di katalog ya! 🚀`); }, 700); }
+    function sendQuickReply(question) { appendUserChatMessage(question); setTimeout(() => { appendBotChatMessage(`Pesanan otomatis dikirim kurang dari 5 detik setelah pembayaran terverifikasi sistem.`); }, 600); }
+    function handleUserChatSubmit(e) { e.preventDefault(); const input = document.getElementById('user-chat-input'); const text = input.value.trim(); if (!text) return; input.value = ''; appendUserChatMessage(text); setTimeout(() => { appendBotChatMessage(`Pesan Anda: "${text}". Admin CS siap membantu!`); }, 700); }
+    function appendUserChatMessage(text) { const container = document.getElementById('chat-messages-container'); const div = document.createElement('div'); div.className = 'flex items-end justify-end gap-2'; div.innerHTML = `<div class="bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white p-3 rounded-2xl rounded-tr-none shadow-2xs max-w-[85%] leading-relaxed text-xs">${text.replace(/\n/g, '<br>')}</div>`; container.appendChild(div); container.scrollTop = container.scrollHeight; }
+    function appendBotChatMessage(text) { const container = document.getElementById('chat-messages-container'); const div = document.createElement('div'); div.className = 'flex items-start gap-2'; div.innerHTML = `<div class="w-7 h-7 rounded-full bg-rose-100 text-[#f5125e] flex items-center justify-center flex-shrink-0 text-xs font-bold">CS</div><div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs space-y-1 max-w-[85%] text-slate-800 leading-relaxed text-xs"><p>${text.replace(/\n/g, '<br>')}</p></div>`; container.appendChild(div); container.scrollTop = container.scrollHeight; lucide.createIcons(); }
+
+    loadProducts(); lucide.createIcons();
   </script>
 </body>
 </html>
