@@ -227,7 +227,7 @@
       </div>
     </div>
 
-    <!-- Menu Kategori Grid (Nokos dihapus permanen) -->
+    <!-- Menu Kategori Grid -->
     <div class="bg-white rounded-2xl p-3.5 sm:p-5 shadow-2xs border border-slate-200/80">
       <div id="category-buttons-grid" class="grid grid-cols-3 sm:grid-cols-6 gap-3 sm:gap-4 text-center text-[11px] font-semibold text-slate-700">
         <div onclick="setCategory('AI')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="AI">
@@ -345,7 +345,7 @@
     <button onclick="openChatModal()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="message-square-more" class="w-4 h-4"></i><span>Chat CS</span></button>
   </div>
 
-  <!-- MODAL DETAIL PRODUK (DENGAN FITUR QUANTITY) -->
+  <!-- MODAL DETAIL PRODUK (DENGAN JUMLAH FIX DI BAWAH) -->
   <div id="detail-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div onclick="closeDetailModal()" class="absolute inset-0 bg-black/50 backdrop-blur-2xs"></div>
     <div class="fixed inset-0 flex items-end sm:items-center justify-center p-0 sm:p-4 z-20">
@@ -409,9 +409,12 @@
 
             <div id="product-reviews-list" class="space-y-2.5 pt-1"></div>
           </div>
-          
-          <!-- SEKSI JUMLAH / QUANTITY -->
-          <div class="pt-4 mt-2 border-t border-slate-100 flex items-center justify-between">
+        </div>
+
+        <!-- FIXED BOTTOM AREA: JUMLAH & TOMBOL AKSI -->
+        <div class="bg-white">
+          <!-- SEKSI JUMLAH / QUANTITY (PERMANEN DI BAWAH) -->
+          <div class="px-4 py-3 border-t border-slate-100 flex items-center justify-between">
             <span class="font-bold text-slate-800 text-xs sm:text-sm">Jumlah Pembelian</span>
             <div class="flex items-center border border-slate-200 rounded-lg overflow-hidden bg-white shadow-sm">
               <button onclick="changeQuantity(-1)" class="w-8 h-8 flex items-center justify-center text-slate-500 hover:bg-slate-100 transition active:bg-slate-200"><i data-lucide="minus" class="w-4 h-4"></i></button>
@@ -419,14 +422,15 @@
               <button onclick="changeQuantity(1)" class="w-8 h-8 flex items-center justify-center text-[#f5125e] hover:bg-rose-50 transition active:bg-rose-100"><i data-lucide="plus" class="w-4 h-4"></i></button>
             </div>
           </div>
-          
-        </div>
 
-        <div class="p-3.5 bg-slate-50 border-t border-slate-100 grid grid-cols-5 gap-2">
-          <button id="modal-btn-chat" class="col-span-1 border border-rose-200 bg-rose-50 hover:bg-rose-100 text-[#f5125e] rounded-xl flex flex-col items-center justify-center p-2"><i data-lucide="message-square-more" class="w-4 h-4"></i><span class="text-[9px] font-bold">Chat</span></button>
-          <button id="modal-btn-cart" class="col-span-2 bg-rose-50 text-[#f5125e] border border-rose-200 font-bold rounded-xl text-xs py-2.5">+ Keranjang</button>
-          <button id="modal-btn-buy" class="col-span-2 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white font-bold rounded-xl text-xs py-2.5 shadow-xs">Beli Sekarang</button>
+          <!-- TOMBOL AKSI -->
+          <div class="p-3.5 bg-slate-50 border-t border-slate-100 grid grid-cols-5 gap-2">
+            <button id="modal-btn-chat" class="col-span-1 border border-rose-200 bg-rose-50 hover:bg-rose-100 text-[#f5125e] rounded-xl flex flex-col items-center justify-center p-2"><i data-lucide="message-square-more" class="w-4 h-4"></i><span class="text-[9px] font-bold">Chat</span></button>
+            <button id="modal-btn-cart" class="col-span-2 bg-rose-50 text-[#f5125e] border border-rose-200 font-bold rounded-xl text-xs py-2.5">+ Keranjang</button>
+            <button id="modal-btn-buy" class="col-span-2 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white font-bold rounded-xl text-xs py-2.5 shadow-xs">Beli Sekarang</button>
+          </div>
         </div>
+        
       </div>
     </div>
   </div>
@@ -510,7 +514,7 @@
     </div>
   </div>
 
-  <!-- MODAL & DRAWER LIVE CHAT CS ASISTEN -->
+  <!-- MODAL & DRAWER LIVE CHAT CS ASISTEN (SMART BOT MEMORY) -->
   <div id="chat-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div onclick="closeChatModal()" class="absolute inset-0 bg-black/50 backdrop-blur-2xs"></div>
     <div class="fixed inset-y-0 right-0 max-w-full flex pl-10 z-50">
@@ -589,7 +593,6 @@
         }).catch(e => {}); 
     }
     
-    // Merekam kedatangan pengunjung (View) saat web pertama dibuka
     window.addEventListener('DOMContentLoaded', () => {
         trackActivity('view');
     });
@@ -938,7 +941,7 @@
     window.changeQuantity = function(delta) {
       let newQty = currentSelectedQuantity + delta;
       if (newQty < 1) newQty = 1;
-      if (newQty > 99) newQty = 99; // Batas maksimal quantity
+      if (newQty > 99) newQty = 99; 
       currentSelectedQuantity = newQty;
       
       const qtyElem = document.getElementById('modal-quantity');
@@ -960,7 +963,7 @@
       const p = products.find(i => i.id === id);
       if (!p) return;
       
-      trackActivity('click'); // Lacak saat melihat detail produk
+      trackActivity('click'); 
       
       currentSelectedProduct = p;
       if (!p.variants || p.variants.length === 0) {
@@ -1026,7 +1029,7 @@
 
     // Checkout Produk Biasa (Dengan Tambahan Quantity)
     async function startNormalCheckout(product, variant, qty = 1, isCart = false) {
-      trackActivity('click'); // Lacak saat checkout
+      trackActivity('click'); 
       
       document.getElementById('step-pay').classList.remove('hidden');
       document.getElementById('step-result').classList.add('hidden');
@@ -1312,137 +1315,7 @@
       if (el) el.remove();
     }
 
-    // ================= KERANJANG BELANJA (KEBAL ERROR) =================
-    window.toggleCart = function(open) {
-      if (open) { 
-        document.getElementById('cart-modal').classList.remove('hidden'); 
-        setTimeout(() => document.getElementById('cart-drawer').classList.remove('translate-x-full'), 10);
-      } else { 
-        document.getElementById('cart-drawer').classList.add('translate-x-full');
-        setTimeout(() => document.getElementById('cart-modal').classList.add('hidden'), 250);
-      }
-    };
-
-    window.addToCart = function(p, v, qty = 1) {
-      try {
-        trackActivity('click'); // Lacak saat add to cart
-        if (!cart || !Array.isArray(cart)) cart = [];
-        const prodName = p && p.name ? p.name : 'Produk';
-        const varName = v && v.name ? v.name : '';
-        const finalName = varName ? `${prodName} (${varName}) x${qty}` : `${prodName} x${qty}`;
-        const unitPrice = v && v.price ? Number(v.price) : (p && p.price ? Number(p.price) : 0);
-        const finalPrice = unitPrice * qty; // Total harga dikali jumlah beli
-        const img = p && p.image ? p.image : 'https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png';
-        const id = p && p.id ? p.id : Date.now();
-
-        cart.push({ id: id, name: finalName, price: finalPrice, image: img, quantity: qty });
-        localStorage.setItem('my_digital_cart', JSON.stringify(cart));
-        renderCart();
-        showToast('Berhasil dimasukkan ke keranjang!');
-      } catch(e) {
-        showToast('Gagal masuk ke keranjang', 'error');
-      }
-    };
-    
-    // Fungsi Hapus Item Keranjang Aman
-    window.removeItemFromCart = function(idx) {
-      if(Array.isArray(cart)) {
-         cart.splice(idx, 1);
-         localStorage.setItem('my_digital_cart', JSON.stringify(cart));
-         renderCart();
-      }
-    };
-
-    function renderCart() {
-      try {
-          if (!Array.isArray(cart)) cart = [];
-          
-          const titleCount = document.getElementById('cart-title-count');
-          if(titleCount) titleCount.innerText = cart.length;
-          
-          const badge = document.getElementById('cart-badge');
-          if(badge) {
-              badge.innerText = cart.length;
-              if (cart.length > 0) badge.classList.remove('hidden');
-              else badge.classList.add('hidden');
-          }
-
-          const footer = document.getElementById('cart-footer');
-          if(footer) {
-              if (cart.length > 0) footer.classList.remove('hidden');
-              else footer.classList.add('hidden');
-          }
-
-          const cartItems = document.getElementById('cart-items');
-          if(cartItems) {
-              cartItems.innerHTML = cart.map((i, idx) => `
-                <div class="flex items-center justify-between gap-3 p-2.5 bg-slate-50 rounded-xl border border-slate-100 shadow-sm">
-                  <img src="${i.image || 'https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png'}" onerror="this.src='https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png'" class="w-12 h-12 rounded-lg object-contain bg-white border p-1" />
-                  <div class="flex-1 min-w-0">
-                    <h4 class="text-xs font-bold text-slate-800 line-clamp-1">${i.name}</h4>
-                    <p class="text-xs text-[#f5125e] font-black mt-0.5">${formatIDR(Number(i.price) || 0)}</p>
-                  </div>
-                  <button onclick="removeItemFromCart(${idx})" class="text-slate-400 hover:text-rose-500 bg-white border border-slate-200 hover:border-rose-200 p-1.5 rounded-lg transition-colors">
-                    <i data-lucide="trash-2" class="w-4 h-4"></i>
-                  </button>
-                </div>
-              `).join('');
-          }
-          
-          const totalPrice = document.getElementById('cart-total-price');
-          if(totalPrice) {
-              totalPrice.innerText = formatIDR(cart.reduce((a, b) => a + (Number(b.price) || 0), 0));
-          }
-          
-          if(typeof lucide !== 'undefined') lucide.createIcons();
-      } catch(e) {
-          console.error('Error renderCart:', e);
-      }
-    }
-
-    window.processCartCheckout = function() {
-      if (!cart || cart.length === 0) return;
-      toggleCart(false);
-      startNormalCheckout({ id: Date.now(), name: `Keranjang (${cart.length} Produk)` }, { name: 'Semua Produk', price: cart.reduce((a, b) => a + (Number(b.price) || 0), 0) }, 1, true);
-    };
-
-    window.saveOrderHistory = function(reference, productName, variantName, account) {
-      let history = [];
-      try { history = JSON.parse(localStorage.getItem('my_digital_orders')) || []; } catch(e){}
-      if(!Array.isArray(history)) history = [];
-      history.unshift({ reference: reference, productName: productName, variantName: variantName, date: new Date().toLocaleString('id-ID'), account: account });
-      localStorage.setItem('my_digital_orders', JSON.stringify(history));
-    };
-
-    // ================= RIWAYAT PESANAN =================
-    window.openHistoryModal = function() {
-      let history = [];
-      try { history = JSON.parse(localStorage.getItem('my_digital_orders')) || []; } catch(e){}
-      if(!Array.isArray(history)) history = [];
-      
-      const container = document.getElementById('history-list');
-      if (history.length === 0) {
-        container.innerHTML = `<div class="py-12 text-center text-slate-400 text-xs"><i data-lucide="receipt" class="w-8 h-8 mx-auto mb-1 stroke-1"></i>Belum ada riwayat pesanan</div>`;
-      } else {
-        container.innerHTML = history.map((item) => `
-          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
-            <div class="flex justify-between items-start">
-              <div>
-                <span class="text-[9px] font-bold text-[#f5125e] bg-rose-50 px-2 py-0.5 rounded font-mono">${item.reference}</span>
-                <h4 class="font-bold text-xs sm:text-sm text-slate-800 mt-1">${item.productName} (${item.variantName})</h4>
-                <p class="text-[10px] text-slate-400">${item.date}</p>
-              </div>
-            </div>
-            <div class="bg-white border rounded-xl p-2.5"><pre class="font-mono text-xs text-slate-800 whitespace-pre-wrap select-all">${item.account}</pre></div>
-          </div>
-        `).join('');
-      }
-      document.getElementById('history-modal').classList.remove('hidden');
-      if(typeof lucide !== 'undefined') lucide.createIcons();
-    };
-
-    window.closeHistoryModal = function() { document.getElementById('history-modal').classList.add('hidden'); };
-
+    // ================= ULASAN DINAMIS PER PRODUK =================
     function getReviewsForProduct(p) {
         const pName = p.name || 'Produk ini';
         let cat = (p.category || '').toLowerCase();
