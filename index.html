@@ -17,6 +17,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  
   <style>
     /* PROTEKSI ANTI-SELECT & ANTI-COPY DI SELURUH WEBSITE */
     * {
@@ -67,6 +68,38 @@
       0%, 100% { transform: translateY(0); opacity: 0.5; }
       50% { transform: translateY(-3px); opacity: 1; }
     }
+
+    /* =========================================================
+       SISTEM TEMA SHOPEE (Diaktifkan lewat Admin otomatis)
+       ========================================================= */
+    .theme-shopee .bg-\[\#f5125e\] { background-color: #ee4d2d !important; }
+    .theme-shopee .text-\[\#f5125e\] { color: #ee4d2d !important; }
+    .theme-shopee .border-\[\#f5125e\] { border-color: #ee4d2d !important; }
+    .theme-shopee .from-\[\#f5125e\] { --tw-gradient-from: #ee4d2d var(--tw-gradient-from-position) !important; }
+    .theme-shopee .to-\[\#ff2b56\] { --tw-gradient-to: #ff7337 var(--tw-gradient-to-position) !important; }
+    .theme-shopee .ring-\[\#f5125e\] { --tw-ring-color: #ee4d2d !important; }
+    .theme-shopee .selection\:bg-\[\#f5125e\] *::selection { background-color: #ee4d2d !important; }
+    
+    /* Sudut Kotak Kaku ala Marketplace */
+    .theme-shopee .rounded-2xl { border-radius: 0.25rem !important; }
+    .theme-shopee .rounded-3xl { border-radius: 0.25rem !important; }
+    .theme-shopee .rounded-xl { border-radius: 0.25rem !important; }
+    .theme-shopee .rounded-lg { border-radius: 0.25rem !important; }
+    /* Pengecualian agar icon avatar tetap bulat */
+    .theme-shopee .rounded-full { border-radius: 9999px !important; }
+    
+    /* Warna Background Soft Oranye */
+    .theme-shopee .bg-rose-50 { background-color: #fff0ed !important; }
+    .theme-shopee .text-rose-600 { color: #ee4d2d !important; }
+    .theme-shopee .border-rose-200 { border-color: #ffc9b9 !important; }
+    .theme-shopee .border-rose-100 { border-color: #ffe4dc !important; }
+    .theme-shopee .hover\:bg-rose-50:hover { background-color: #fff0ed !important; }
+    .theme-shopee .hover\:border-rose-200:hover { border-color: #ffc9b9 !important; }
+    .theme-shopee .active\:bg-rose-100:active { background-color: #ffc9b9 !important; }
+    
+    /* Tombol Kategori Aktif */
+    .theme-shopee .active-cat .cat-icon-box { background-color: #ee4d2d !important; border-color: #ee4d2d !important; color: white !important; }
+    .theme-shopee .active-cat span { color: #ee4d2d !important; }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen pb-20 md:pb-10 font-sans antialiased selection:bg-[#f5125e] selection:text-white">
@@ -194,9 +227,9 @@
       </div>
     </div>
 
-    <!-- Menu Kategori Grid -->
+    <!-- Menu Kategori Grid (Nokos dihapus permanen) -->
     <div class="bg-white rounded-2xl p-3.5 sm:p-5 shadow-2xs border border-slate-200/80">
-      <div id="category-buttons-grid" class="grid grid-cols-4 sm:grid-cols-7 gap-3 sm:gap-4 text-center text-[11px] font-semibold text-slate-700">
+      <div id="category-buttons-grid" class="grid grid-cols-3 sm:grid-cols-6 gap-3 sm:gap-4 text-center text-[11px] font-semibold text-slate-700">
         <div onclick="setCategory('AI')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="AI">
           <div class="cat-icon-box w-12 h-12 bg-rose-50 text-[#f5125e] rounded-2xl flex items-center justify-center border border-rose-100 group-hover:scale-105 group-hover:bg-[#f5125e] group-hover:text-white transition-all shadow-2xs"><i data-lucide="bot" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Akun AI</span>
@@ -221,9 +254,7 @@
           <div class="cat-icon-box w-12 h-12 bg-violet-50 text-violet-600 rounded-2xl flex items-center justify-center border border-violet-100 group-hover:scale-105 group-hover:bg-violet-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="play-square" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Streaming</span>
         </div>
-        <div onclick="setCategory('Semua')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group active-cat" data-cat="Semua">
-          <div class="cat-icon-box w-12 h-12 bg-[#f5125e] text-white rounded-2xl flex items-center justify-center border border-[#f5125e] group-hover:scale-105 transition-all shadow-2xs"><i data-lucide="grid" class="w-5 h-5"></i></div>
-          <span class="truncate w-full font-bold text-[#f5125e]">Semua</span>
+        <div onclick="setCategory('Semua')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group active-cat hidden" data-cat="Semua">
         </div>
       </div>
     </div>
@@ -379,7 +410,7 @@
             <div id="product-reviews-list" class="space-y-2.5 pt-1"></div>
           </div>
           
-          <!-- SEKSI JUMLAH / QUANTITY (BARU) -->
+          <!-- SEKSI JUMLAH / QUANTITY -->
           <div class="pt-4 mt-2 border-t border-slate-100 flex items-center justify-between">
             <span class="font-bold text-slate-800 text-xs sm:text-sm">Jumlah Pembelian</span>
             <div class="flex items-center border border-slate-200 rounded-lg overflow-hidden bg-white shadow-sm">
@@ -430,7 +461,7 @@
           </div>
         </div>
 
-        <!-- STEP 2: RESULT (PRODUK BIASA) -->
+        <!-- STEP 2: RESULT -->
         <div id="step-result" class="space-y-3 hidden text-left">
           <div class="text-center">
             <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-1"><i data-lucide="check" class="w-6 h-6"></i></div>
@@ -479,7 +510,7 @@
     </div>
   </div>
 
-  <!-- MODAL & DRAWER LIVE CHAT CS ASISTEN (SMART BOT MEMORY) -->
+  <!-- MODAL & DRAWER LIVE CHAT CS ASISTEN -->
   <div id="chat-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div onclick="closeChatModal()" class="absolute inset-0 bg-black/50 backdrop-blur-2xs"></div>
     <div class="fixed inset-y-0 right-0 max-w-full flex pl-10 z-50">
@@ -549,6 +580,20 @@
     const WHATSAPP_NUMBER = "6282243890517"; 
     const QRIS_STATIC_URL = "https://i.ibb.co.com/PGRmz0G8/Whats-App-Image-2026-08-24-at-12-25-05.jpg"; 
 
+    // MENGIRIM DATA PELACAKAN (TRACKER IP) SECARA OTOMATIS
+    function trackActivity(actionType) {
+        fetch(`${API_URL}/track`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ type: actionType })
+        }).catch(e => {}); 
+    }
+    
+    // Merekam kedatangan pengunjung (View) saat web pertama dibuka
+    window.addEventListener('DOMContentLoaded', () => {
+        trackActivity('view');
+    });
+
     let products = [];
     let cart = [];
     try {
@@ -569,10 +614,8 @@
     let currentSelectedQuantity = 1; 
     let deferredPwaPrompt = null;
     let activeReviewFilter = 'all';
-
     let pollingInterval = null;
 
-    // --- VARIABEL BOT CHAT PINTAR (INGATAN BOT) ---
     let chatBotState = 'normal'; 
     let lastDiscussedProduct = null; 
 
@@ -670,7 +713,16 @@
       const textBox = document.getElementById('banner-text-container');
       const mainImg = document.getElementById('main-banner-image');
 
-      if (!config || !config.active) {
+      if (!config) return;
+      
+      // SENSOR PENGUBAH TEMA OTOMATIS
+      if (config.theme === 'shopee') {
+          document.body.classList.add('theme-shopee');
+      } else {
+          document.body.classList.remove('theme-shopee');
+      }
+
+      if (!config.active) {
         if (wrapper) { wrapper.classList.add('hidden'); wrapper.style.display = 'none'; }
         return;
       }
@@ -767,8 +819,7 @@
       const popGrid = document.getElementById('popular-grid');
       
       const bestProducts = products.filter(p => {
-          const cat = (p.category || '').toLowerCase();
-          return (p.isBestSeller || p.isHot) && !cat.includes('landing');
+          return (p.isBestSeller || p.isHot);
       });
       
       if (bestProducts.length === 0) { popSec.classList.add('hidden'); return; }
@@ -807,7 +858,7 @@
         
         let matchesCategory = false;
         if (targetCat === 'semua') {
-          matchesCategory = !itemCat.includes('landing');
+          matchesCategory = true;
         } else if (targetCat === 'ai') {
           matchesCategory = itemCat.includes('ai') || itemCat.includes('gemini') || itemCat.includes('chatgpt') || itemCat.includes('claude');
         } else if (targetCat === 'editor') {
@@ -908,14 +959,15 @@
     window.openDetailModal = function(id) {
       const p = products.find(i => i.id === id);
       if (!p) return;
-      currentSelectedProduct = p;
       
+      trackActivity('click'); // Lacak saat melihat detail produk
+      
+      currentSelectedProduct = p;
       if (!p.variants || p.variants.length === 0) {
           p.variants = [{ name: 'Default', price: p.price || 0 }];
       }
       currentSelectedVariant = p.variants[0];
       
-      // Reset Jumlah Pembelian ke 1 setiap modal dibuka
       currentSelectedQuantity = 1;
       const qtyElem = document.getElementById('modal-quantity');
       if(qtyElem) qtyElem.innerText = currentSelectedQuantity;
@@ -974,12 +1026,13 @@
 
     // Checkout Produk Biasa (Dengan Tambahan Quantity)
     async function startNormalCheckout(product, variant, qty = 1, isCart = false) {
+      trackActivity('click'); // Lacak saat checkout
+      
       document.getElementById('step-pay').classList.remove('hidden');
       document.getElementById('step-result').classList.add('hidden');
       document.getElementById('payment-modal').classList.remove('hidden');
       
       const unitPrice = Number(variant.price) || 0;
-      // Jika pembayaran dari keranjang, harga sudah total dari fungsi cart
       const totalPrice = isCart ? unitPrice : (unitPrice * qty); 
       
       const displayName = isCart ? `${product.name}` : `${product.name} (${variant.name}) x${qty}`;
@@ -1031,7 +1084,6 @@
                 
                 window.saveOrderHistory(ref, isCart ? "Keranjang Belanja" : product.name, isCart ? "Berbagai Produk" : variant.name, statusData.account);
                 
-                // Jika pembayaran keranjang sukses, kosongkan keranjang
                 if (isCart) {
                     cart = [];
                     localStorage.setItem('my_digital_cart', JSON.stringify(cart));
@@ -1071,6 +1123,16 @@
         }, 5000);
       }
     }
+
+    window.closePaymentModal = function() {
+        document.getElementById('payment-modal').classList.add('hidden'); 
+        if (pollingInterval) clearInterval(pollingInterval);
+    };
+
+    window.forceClosePaymentModal = function() {
+        document.getElementById('payment-modal').classList.add('hidden'); 
+        if (pollingInterval) clearInterval(pollingInterval);
+    };
 
     window.copyAccountData = function() {
       const text = document.getElementById('account-data').innerText;
@@ -1137,7 +1199,6 @@
       setTimeout(() => { processSmartBotResponse(text); }, 800);
     };
 
-    // LOGIKA BOT PINTAR DENGAN INGATAN (CONTEXT MEMORY)
     function processSmartBotResponse(rawText) {
         removeBotTyping();
         const text = rawText.toLowerCase();
@@ -1264,6 +1325,7 @@
 
     window.addToCart = function(p, v, qty = 1) {
       try {
+        trackActivity('click'); // Lacak saat add to cart
         if (!cart || !Array.isArray(cart)) cart = [];
         const prodName = p && p.name ? p.name : 'Produk';
         const varName = v && v.name ? v.name : '';
@@ -1278,7 +1340,6 @@
         renderCart();
         showToast('Berhasil dimasukkan ke keranjang!');
       } catch(e) {
-        console.error(e);
         showToast('Gagal masuk ke keranjang', 'error');
       }
     };
