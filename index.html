@@ -892,19 +892,21 @@ const menuTemplate = document.getElementById('menu-template-web');
         
         let matchesCategory = false;
         if (targetCat === 'semua') {
-          matchesCategory = !itemCat.includes('landing');
+          // Di menu "Semua", sembunyikan landing page, template web, dan jasa web (tampilkan produk aplikasi/umum saja)
+          matchesCategory = !itemCat.includes('landing') && !itemCat.includes('blogger') && !itemCat.includes('template') && !itemCat.includes('jasa');
         } else if (targetCat === 'ai') {
-          matchesCategory = itemCat.includes('ai') || itemCat.includes('gemini') || itemCat.includes('chatgpt') || itemCat.includes('claude');
+          matchesCategory = itemCat === 'ai' || itemCat.includes('gemini') || itemCat.includes('chatgpt') || itemCat.includes('claude');
         } else if (targetCat === 'editor') {
-          matchesCategory = itemCat.includes('editor') || itemCat.includes('edit') || itemCat.includes('video') || itemCat.includes('capcut') || itemCat.includes('alight') || itemCat.includes('app');
+          // Pastikan menu App Pro (Editor) murni hanya menampilkan kategori Editor/App Pro, tidak menarik produk web
+          matchesCategory = (itemCat === 'editor' || itemCat.includes('app') || itemCat.includes('capcut') || itemCat.includes('alight')) && !itemCat.includes('web');
         } else if (targetCat === 'template web') {
-          matchesCategory = itemCat.includes('blogger') || itemCat.includes('template') || itemCat.includes('theme') || itemCat.includes('web');
+          matchesCategory = itemCat === 'template web' || itemCat.includes('blogger') || itemCat.includes('template');
         } else if (targetCat === 'landing') {
-          matchesCategory = itemCat.includes('landing') || itemCat.includes('website');
+          matchesCategory = itemCat === 'landing' || itemCat.includes('website');
         } else if (targetCat === 'jasa web') {
-          matchesCategory = itemCat.includes('sosmed') || itemCat.includes('follower') || itemCat.includes('like') || itemCat.includes('sub') || itemCat.includes('jasa') || itemCat.includes('bikin');
+          matchesCategory = itemCat === 'jasa web' || itemCat.includes('jasa') || itemCat.includes('bikin web');
         } else if (targetCat === 'stream') {
-          matchesCategory = itemCat.includes('stream') || itemCat.includes('youtube') || itemCat.includes('netflix') || itemCat.includes('spotify') || itemCat.includes('music');
+          matchesCategory = itemCat === 'stream' || itemCat.includes('youtube') || itemCat.includes('netflix') || itemCat.includes('spotify');
         } else {
           matchesCategory = itemCat.includes(targetCat);
         }
