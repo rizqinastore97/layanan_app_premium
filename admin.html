@@ -41,12 +41,17 @@
 
       <button onclick="switchTab('banner')" id="tab-btn-banner" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left">
         <i data-lucide="image" class="w-5 h-5 text-sky-400"></i>
-        <span>Banner & Promo</span>
+        <span>Tema, Banner & Promo</span>
       </button>
 
       <button onclick="switchTab('reviews')" id="tab-btn-reviews" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left">
         <i data-lucide="star" class="w-5 h-5 text-amber-400"></i>
         <span>Kelola Ulasan ⭐</span>
+      </button>
+      
+      <button onclick="switchTab('stats')" id="tab-btn-stats" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left">
+        <i data-lucide="bar-chart-2" class="w-5 h-5 text-emerald-400"></i>
+        <span>Statistik Toko</span>
       </button>
 
       <button onclick="switchTab('orders')" id="tab-btn-orders" class="w-full flex items-center justify-between px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left">
@@ -96,7 +101,7 @@
           </h2>
           <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Kelola produk dengan AI Generator, urutan posisi, banner, dan stok otomatis</p>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2" id="action-buttons-container">
           <button onclick="openProductModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-2xl shadow-sm transition-all flex items-center gap-1.5">
             <i data-lucide="plus" class="w-4 h-4"></i>
             <span>+ Tambah Produk Baru</span>
@@ -132,21 +137,30 @@
         </div>
       </section>
 
-      <!-- TAB 2: PENGATURAN BANNER -->
+      <!-- TAB 2: PENGATURAN TEMA & BANNER -->
       <section id="section-banner" class="space-y-4 hidden">
         <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-xs space-y-5">
           <div>
             <h3 class="font-bold text-sm sm:text-base text-slate-800 flex items-center gap-2">
               <i data-lucide="image" class="w-5 h-5 text-indigo-600"></i>
-              <span>Pengaturan Banner Promo Toko</span>
+              <span>Pengaturan Tema & Banner Promosi</span>
             </h3>
-            <p class="text-xs text-slate-500 mt-0.5">Aktifkan/nonaktifkan banner dan ganti tampilan gambar secara instan</p>
+            <p class="text-xs text-slate-500 mt-0.5">Ubah tampilan toko dan atur banner promosi utama</p>
+          </div>
+
+          <!-- FITUR PEMILIHAN TEMA -->
+          <div class="bg-indigo-50/50 border border-indigo-100 p-4 rounded-2xl">
+            <h4 class="font-bold text-slate-800 text-sm mb-2"><i data-lucide="palette" class="w-4 h-4 inline-block text-indigo-600 mr-1"></i> Tema Tampilan Website</h4>
+            <select id="theme-selector" onchange="bannerSettings.theme = this.value" class="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 font-bold text-slate-700 text-xs sm:text-sm">
+               <option value="default">Tema Default (Pink DigitalHub)</option>
+               <option value="shopee">Tema Marketplace (Gaya Oranye Shopee)</option>
+            </select>
           </div>
 
           <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl flex items-center justify-between">
             <div>
               <p class="font-bold text-slate-800 text-xs sm:text-sm">Status Tampilan Banner:</p>
-              <p class="text-[11px] text-slate-500 mt-0.5">Jika dimatikan, banner tidak akan muncul sama sekali di HP/PC pembeli</p>
+              <p class="text-[11px] text-slate-500 mt-0.5">Jika dimatikan, banner tidak akan muncul sama sekali</p>
             </div>
             <label class="relative inline-flex items-center cursor-pointer">
               <input type="checkbox" id="banner-toggle-active" onchange="toggleBannerActive(this.checked)" class="sr-only peer">
@@ -198,7 +212,7 @@
 
           <button onclick="saveBannerSettings()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-2xl text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2">
             <i data-lucide="save" class="w-4 h-4 text-emerald-400"></i>
-            <span>Simpan Pengaturan Banner ke Server KV</span>
+            <span>Simpan Pengaturan Tema & Banner</span>
           </button>
         </div>
       </section>
@@ -229,7 +243,54 @@
         <div id="admin-reviews-container" class="space-y-3"></div>
       </section>
 
-      <!-- TAB 4: RIWAYAT PESANAN -->
+      <!-- TAB 4: STATISTIK TOKO (BARU) -->
+      <section id="section-stats" class="space-y-4 hidden">
+        <div class="flex items-center justify-between bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs">
+           <div>
+             <h2 class="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
+               <i data-lucide="bar-chart-2" class="w-5 h-5 text-emerald-500"></i> Statistik Pengunjung
+             </h2>
+             <p class="text-xs text-slate-500 mt-0.5">Pantau grafik tayangan dan klik secara real-time dari pengunjung</p>
+           </div>
+           <button onclick="fetchStoreStats()" class="p-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-slate-600 transition-colors"><i data-lucide="refresh-cw" class="w-4 h-4"></i></button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+           <!-- Card Grafik Views & Clicks -->
+           <div class="lg:col-span-2 bg-white rounded-3xl p-5 border border-slate-200/80 shadow-xs flex flex-col">
+              <h3 class="font-bold text-slate-800 text-sm mb-4">Total Views & Clicks (7 Hari Terakhir)</h3>
+              <div class="flex gap-6 mb-6">
+                 <div>
+                    <p class="text-[10px] text-slate-500 font-bold uppercase flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-400"></span> Views (Tayangan)</p>
+                    <p id="stat-total-views" class="text-3xl font-black text-slate-800">0</p>
+                 </div>
+                 <div>
+                    <p class="text-[10px] text-slate-500 font-bold uppercase flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> Clicks (Klik)</p>
+                    <p id="stat-total-clicks" class="text-3xl font-black text-slate-800">0</p>
+                 </div>
+              </div>
+              
+              <!-- Grafik CSS Sederhana (Ala Lynk) -->
+              <div id="stat-graph-container" class="flex items-end justify-around gap-2 h-44 mt-auto border-b border-slate-100 pb-2 px-2 relative">
+                 <div class="w-full text-center text-slate-400 text-xs py-8">Memuat grafik...</div>
+              </div>
+           </div>
+
+           <!-- Card IP Tracker -->
+           <div class="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-xs flex flex-col">
+              <h3 class="font-bold text-slate-800 text-sm mb-4">Tracker IP Pengunjung</h3>
+              <div class="flex justify-between text-[10px] font-bold text-slate-400 uppercase border-b border-slate-100 pb-2 mb-2">
+                 <span>Alamat IP</span>
+                 <span>V / C</span>
+              </div>
+              <div id="stat-ip-list" class="flex-1 overflow-y-auto space-y-3 max-h-[250px] pr-1">
+                 <div class="text-center text-slate-400 text-xs py-8">Memuat data IP...</div>
+              </div>
+           </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: RIWAYAT PESANAN -->
       <section id="section-orders" class="space-y-4 hidden">
         <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs">
           <h3 class="font-bold text-sm sm:text-base text-slate-800 mb-1">Riwayat Transaksi TriPay & Akun</h3>
@@ -291,7 +352,7 @@
                 <span>✨ AI Generate Deskripsi & Data</span>
               </button>
             </div>
-            <input type="text" id="prod-form-name" required placeholder="Contoh: Gemini Pro / Netflix / CapCut / Googleflow" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none font-semibold text-slate-800" />
+            <input type="text" id="prod-form-name" required placeholder="Contoh: Gemini Pro / Netflix / CapCut" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none font-semibold text-slate-800" />
           </div>
 
           <div class="grid grid-cols-2 gap-2.5">
@@ -452,7 +513,8 @@
     let bannerSettings = {
       active: false,
       type: 'image',
-      imageUrl: ''
+      imageUrl: '',
+      theme: 'default' // Default Tema
     };
 
     const aiProductKnowledgeBase = {
@@ -510,7 +572,8 @@
             bannerSettings = {
               active: Boolean(bannerObj.active),
               type: bannerObj.type || 'image',
-              imageUrl: bannerObj.imageUrl || ''
+              imageUrl: bannerObj.imageUrl || '',
+              theme: bannerObj.theme || 'default'
             };
           }
           products = data.filter(item => !item._isBannerConfig && item.id !== "__BANNER_CONFIG__");
@@ -528,31 +591,118 @@
       }
     }
 
+    // FUNGSI UNTUK MENGAMBIL DATA STATISTIK DARI WORKER
+    async function fetchStoreStats() {
+       try {
+           const statList = document.getElementById('stat-ip-list');
+           const viewEl = document.getElementById('stat-total-views');
+           const clickEl = document.getElementById('stat-total-clicks');
+           const graphContainer = document.getElementById('stat-graph-container');
+
+           if(statList) statList.innerHTML = `<div class="text-center text-slate-400 text-xs py-8">Memuat data IP...</div>`;
+           
+           const res = await fetch(`${API_URL}/stats`, { method: "GET" });
+           const stats = await res.json();
+
+           viewEl.innerText = stats.views || 0;
+           clickEl.innerText = stats.clicks || 0;
+
+           // Render Grafik Batang CSS
+           if (stats.history && stats.history.length > 0) {
+               // Ambil nilai tertinggi untuk patokan 100% tinggi batang
+               let maxVal = 1;
+               stats.history.forEach(h => {
+                   if (h.views > maxVal) maxVal = h.views;
+                   if (h.clicks > maxVal) maxVal = h.clicks;
+               });
+
+               graphContainer.innerHTML = stats.history.map(h => {
+                   const viewH = (h.views / maxVal) * 100;
+                   const clickH = (h.clicks / maxVal) * 100;
+                   const dateLabel = h.date.split(' ')[0] || h.date; // Ambil tgl saja misal "21 Aug"
+                   
+                   return `
+                     <div class="flex flex-col items-center flex-1 h-full justify-end group relative">
+                        <!-- Tooltip Hover -->
+                        <div class="absolute -top-8 bg-slate-800 text-white text-[9px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
+                           👁️ ${h.views} | 🖱️ ${h.clicks}
+                        </div>
+                        <div class="flex items-end gap-0.5 w-full justify-center h-full pb-1">
+                           <div class="w-1/3 max-w-[12px] bg-amber-400 rounded-t-sm transition-all" style="height: ${viewH}%;"></div>
+                           <div class="w-1/3 max-w-[12px] bg-emerald-400 rounded-t-sm transition-all" style="height: ${clickH}%;"></div>
+                        </div>
+                        <span class="text-[9px] font-bold text-slate-400 border-t border-slate-100 w-full text-center pt-1 truncate">${dateLabel}</span>
+                     </div>
+                   `;
+               }).join('');
+           } else {
+               graphContainer.innerHTML = `<div class="w-full text-center text-slate-400 text-xs py-8">Belum ada grafik.</div>`;
+           }
+
+           // Render IP List
+           if (stats.ips && Object.keys(stats.ips).length > 0) {
+               // Ubah objek ke array dan sort berdasar total interaksi
+               let ipsArray = Object.keys(stats.ips).map(ip => ({
+                   ip: ip,
+                   views: stats.ips[ip].views || 0,
+                   clicks: stats.ips[ip].clicks || 0,
+                   total: (stats.ips[ip].views || 0) + (stats.ips[ip].clicks || 0)
+               })).sort((a,b) => b.total - a.total);
+
+               statList.innerHTML = ipsArray.map(item => `
+                   <div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg border border-slate-100">
+                      <span class="text-xs font-mono text-slate-700">${item.ip}</span>
+                      <span class="text-[10px] font-bold bg-white px-2 py-0.5 rounded shadow-sm border border-slate-200">
+                         <span class="text-amber-500">${item.views}</span> / <span class="text-emerald-500">${item.clicks}</span>
+                      </span>
+                   </div>
+               `).join('');
+           } else {
+               statList.innerHTML = `<div class="text-center text-slate-400 text-xs py-8">Belum ada pengunjung.</div>`;
+           }
+       } catch(e) {
+           showToast("Gagal memuat statistik", "error");
+       }
+    }
+
     function switchTab(tab) {
       document.getElementById('section-products').classList.add('hidden');
       document.getElementById('section-banner').classList.add('hidden');
       document.getElementById('section-reviews').classList.add('hidden');
       document.getElementById('section-orders').classList.add('hidden');
+      document.getElementById('section-stats').classList.add('hidden');
 
-      document.getElementById('tab-btn-products').className = 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left';
-      document.getElementById('tab-btn-banner').className = 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left';
-      document.getElementById('tab-btn-reviews').className = 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left';
+      const btnClasses = 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left';
+      const activeBtnClasses = 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl bg-indigo-600 text-white font-extrabold text-sm sm:text-base shadow-sm text-left';
+      
+      document.getElementById('tab-btn-products').className = btnClasses;
+      document.getElementById('tab-btn-banner').className = btnClasses;
+      document.getElementById('tab-btn-reviews').className = btnClasses;
+      document.getElementById('tab-btn-stats').className = btnClasses;
       document.getElementById('tab-btn-orders').className = 'w-full flex items-center justify-between px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left';
+
+      document.getElementById('action-buttons-container').classList.add('hidden');
 
       if (tab === 'products') {
         document.getElementById('section-products').classList.remove('hidden');
-        document.getElementById('tab-btn-products').className = 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl bg-indigo-600 text-white font-extrabold text-sm sm:text-base shadow-sm text-left';
+        document.getElementById('tab-btn-products').className = activeBtnClasses;
         document.getElementById('view-title').innerText = 'Manajemen Produk';
+        document.getElementById('action-buttons-container').classList.remove('hidden');
       } else if (tab === 'banner') {
         document.getElementById('section-banner').classList.remove('hidden');
-        document.getElementById('tab-btn-banner').className = 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl bg-indigo-600 text-white font-extrabold text-sm sm:text-base shadow-sm text-left';
-        document.getElementById('view-title').innerText = 'Pengaturan Banner & Promo';
+        document.getElementById('tab-btn-banner').className = activeBtnClasses;
+        document.getElementById('view-title').innerText = 'Pengaturan Tema & Promo';
         loadBannerSettingsToUI();
       } else if (tab === 'reviews') {
         document.getElementById('section-reviews').classList.remove('hidden');
-        document.getElementById('tab-btn-reviews').className = 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl bg-indigo-600 text-white font-extrabold text-sm sm:text-base shadow-sm text-left';
+        document.getElementById('tab-btn-reviews').className = activeBtnClasses;
         document.getElementById('view-title').innerText = 'Kelola Komentar & Ulasan';
         populateReviewProductSelector();
+      } else if (tab === 'stats') {
+        document.getElementById('section-stats').classList.remove('hidden');
+        document.getElementById('tab-btn-stats').className = activeBtnClasses;
+        document.getElementById('view-title').innerText = 'Statistik Analitik';
+        fetchStoreStats(); // Load grafik
       } else if (tab === 'orders') {
         document.getElementById('section-orders').classList.remove('hidden');
         document.getElementById('tab-btn-orders').className = 'w-full flex items-center justify-between px-4 py-3 rounded-2xl bg-indigo-600 text-white font-extrabold text-sm sm:text-base shadow-sm text-left';
@@ -629,6 +779,10 @@
 
     function loadBannerSettingsToUI() {
       document.getElementById('banner-toggle-active').checked = bannerSettings.active;
+      
+      const themeSelect = document.getElementById('theme-selector');
+      if (themeSelect) themeSelect.value = bannerSettings.theme || 'default';
+
       const typeRadios = document.getElementsByName('banner_type');
       for (const r of typeRadios) { r.checked = (r.value === bannerSettings.type); }
       document.getElementById('banner-url-input').value = bannerSettings.imageUrl || '';
@@ -678,28 +832,28 @@
     }
 
     async function saveBannerSettings() {
-      showToast('Menyimpan status banner ke Cloudflare KV...');
+      showToast('Menyimpan status Tema & Banner ke Cloudflare KV...');
       const payload = [
-        { id: "__BANNER_CONFIG__", _isBannerConfig: true, active: bannerSettings.active, type: bannerSettings.type, imageUrl: bannerSettings.imageUrl },
+        { id: "__BANNER_CONFIG__", _isBannerConfig: true, active: bannerSettings.active, type: bannerSettings.type, imageUrl: bannerSettings.imageUrl, theme: bannerSettings.theme },
         ...products
       ];
       try {
         const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
         const data = await res.json();
-        if (data.success) { showToast('Pengaturan banner berhasil disimpan ke server KV!'); }
+        if (data.success) { showToast('Pengaturan Tema & Banner berhasil disimpan!'); refreshPhonePreview(); }
       } catch (err) { showToast('Gagal terhubung ke Cloudflare', 'error'); }
     }
 
     async function saveAllProductsToKV() {
       showToast('Menyimpan perubahan ke Cloudflare KV...');
       const payload = [
-        { id: "__BANNER_CONFIG__", _isBannerConfig: true, active: bannerSettings.active, type: bannerSettings.type, imageUrl: bannerSettings.imageUrl },
+        { id: "__BANNER_CONFIG__", _isBannerConfig: true, active: bannerSettings.active, type: bannerSettings.type, imageUrl: bannerSettings.imageUrl, theme: bannerSettings.theme },
         ...products
       ];
       try {
         const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
         const data = await res.json();
-        if (data.success) { showToast('Semua data KV berhasil diperbarui!'); }
+        if (data.success) { showToast('Semua data KV berhasil diperbarui!'); refreshPhonePreview(); }
       } catch (err) { showToast('Gagal terhubung ke Cloudflare', 'error'); }
     }
 
@@ -721,7 +875,7 @@
               <button onclick="moveProduct(${pIdx}, 1)" ${pIdx === list.length - 1 ? 'disabled class="opacity-20 cursor-not-allowed"' : 'class="hover:text-indigo-600"'} p-1 rounded-md text-slate-500 font-bold"><i data-lucide="chevron-down" class="w-4 h-4"></i></button>
             </div>
             <div class="flex items-center gap-3 min-w-0 flex-1">
-              <img src="${prod.image}" class="w-12 h-12 rounded-2xl object-contain bg-slate-50 p-1 border border-slate-100 flex-shrink-0" />
+              <img src="${prod.image}" onerror="this.src='https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png'" class="w-12 h-12 rounded-2xl object-contain bg-slate-50 p-1 border border-slate-100 flex-shrink-0" />
               <div class="min-w-0 flex-1">
                 <div class="flex items-center gap-1.5 flex-wrap">
                   <span class="text-[9px] uppercase font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md">${prod.category}</span>
