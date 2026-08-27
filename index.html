@@ -222,37 +222,47 @@
       </div>
     </div>
 
-    <!-- Menu Kategori Grid (Diperlebar menjadi 7 Kolom agar Landing Page tidak hilang) -->
-    <div class="bg-white rounded-2xl p-3.5 sm:p-5 shadow-2xs border border-slate-200/80 overflow-hidden">
-      <div id="category-buttons-grid" class="grid grid-cols-4 md:grid-cols-7 gap-3 sm:gap-4 text-center text-[11px] font-semibold text-slate-700">
-        <div onclick="setCategory('Semua')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group active-cat" data-cat="Semua">
-          <div class="cat-icon-box w-12 h-12 bg-[#f5125e] text-white rounded-2xl flex items-center justify-center border border-[#f5125e] group-hover:scale-105 transition-all shadow-2xs"><i data-lucide="grid" class="w-5 h-5"></i></div>
-          <span class="truncate w-full font-bold text-[#f5125e]">Semua</span>
-        </div>
+    <!-- Menu Kategori Grid -->
+    <div class="bg-white rounded-2xl p-3.5 sm:p-5 shadow-2xs border border-slate-200/80">
+      <!-- Grid diubah menjadi 4 kolom agar 4 menu yang tersisa tampil rapi & proporsional -->
+      <div id="category-buttons-grid" class="grid grid-cols-4 sm:grid-cols-4 gap-3 sm:gap-4 text-center text-[11px] font-semibold text-slate-700">
+        
         <div onclick="setCategory('AI')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="AI">
           <div class="cat-icon-box w-12 h-12 bg-rose-50 text-[#f5125e] rounded-2xl flex items-center justify-center border border-rose-100 group-hover:scale-105 group-hover:bg-[#f5125e] group-hover:text-white transition-all shadow-2xs"><i data-lucide="bot" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Akun AI</span>
         </div>
+        
         <div onclick="setCategory('Editor')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Editor">
           <div class="cat-icon-box w-12 h-12 bg-pink-50 text-pink-600 rounded-2xl flex items-center justify-center border border-pink-100 group-hover:scale-105 group-hover:bg-pink-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="video" class="w-5 h-5"></i></div>
           <span class="truncate w-full">App Pro</span>
         </div>
-        <div onclick="setCategory('Template Web')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Template Web">
+        
+        <!-- MENU TEMPLATE WEB DI-HIDDEN (DISEMBUNYIKAN) -->
+        <div onclick="setCategory('Template Web')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group hidden" data-cat="Template Web">
           <div class="cat-icon-box w-12 h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center border border-amber-100 group-hover:scale-105 group-hover:bg-amber-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="layout" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Template Web</span>
         </div>
+        
         <div onclick="setCategory('Landing')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Landing">
           <div class="cat-icon-box w-12 h-12 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center border border-sky-100 group-hover:scale-105 group-hover:bg-sky-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="globe" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Landing Page</span>
         </div>
-        <div onclick="setCategory('Jasa Web')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Jasa Web">
+        
+        <!-- MENU JASA WEB DI-HIDDEN (DISEMBUNYIKAN) -->
+        <div onclick="setCategory('Jasa Web')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group hidden" data-cat="Jasa Web">
           <div class="cat-icon-box w-12 h-12 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center border border-purple-100 group-hover:scale-105 group-hover:bg-purple-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="monitor" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Jasa Web</span>
         </div>
+        
         <div onclick="setCategory('Stream')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Stream">
           <div class="cat-icon-box w-12 h-12 bg-violet-50 text-violet-600 rounded-2xl flex items-center justify-center border border-violet-100 group-hover:scale-105 group-hover:bg-violet-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="play-square" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Streaming</span>
         </div>
+        
+        <!-- Tombol "Semua" (Sudah tersembunyi sebagai pengatur sistem) -->
+        <div onclick="setCategory('Semua')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group active-cat hidden" data-cat="Semua">
+        </div>
+        
       </div>
     </div>
 
