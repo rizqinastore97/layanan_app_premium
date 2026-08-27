@@ -17,7 +17,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-  
   <style>
     /* PROTEKSI ANTI-SELECT & ANTI-COPY DI SELURUH WEBSITE */
     * {
@@ -85,7 +84,6 @@
     .theme-shopee .rounded-3xl { border-radius: 0.25rem !important; }
     .theme-shopee .rounded-xl { border-radius: 0.25rem !important; }
     .theme-shopee .rounded-lg { border-radius: 0.25rem !important; }
-    /* Pengecualian agar icon avatar tetap bulat */
     .theme-shopee .rounded-full { border-radius: 9999px !important; }
     
     /* Warna Background Soft Oranye */
@@ -155,7 +153,7 @@
         <img src="https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png" alt="Logo DigitalHub" class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl object-contain bg-white shadow-xs border border-slate-100" />
         <div class="hidden sm:block">
           <h1 class="text-base sm:text-lg font-black tracking-tight text-slate-900 leading-tight">DIGITAL<span class="text-[#f5125e]">HUB</span></h1>
-          <p class="text-[10px] text-slate-400 font-medium">Aplikasi Premium, Template & Jasa Sosmed</p>
+          <p class="text-[10px] text-slate-400 font-medium">Aplikasi Premium, Template & Jasa Web</p>
         </div>
       </div>
 
@@ -167,7 +165,7 @@
             type="text" 
             id="search-input" 
             oninput="handleSearch(this.value)" 
-            placeholder="Cari Template, Followers, AI..." 
+            placeholder="Cari Template Web, Jasa, AI..." 
             class="w-full bg-transparent text-slate-800 text-xs sm:text-sm font-medium focus:outline-none placeholder:text-slate-400 px-1" 
           />
           <label for="camera-search-input" class="p-1.5 text-slate-400 hover:text-[#f5125e] cursor-pointer rounded-full transition-colors flex items-center justify-center flex-shrink-0" title="Cari dengan Gambar">
@@ -218,16 +216,16 @@
 
       <div class="flex items-center justify-center gap-2.5 border-r border-slate-100 cursor-pointer" onclick="openHistoryModal()">
         <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0"><i data-lucide="receipt" class="w-4 h-4"></i></div>
-        <div class="text-left hidden sm:block"><p class="font-bold text-slate-800 leading-tight">Cek Transaksi</p><p class="text-[10px] text-slate-400">Lihat riwayat akun lama</p></div>
+        <div class="text-left hidden sm:block"><p class="font-bold text-slate-800 leading-tight">Cek Transaksi</p><p class="text-[10px] text-slate-400">Lihat riwayat pesanan</p></div>
       </div>
 
-      <div class="flex items-center justify-center gap-2.5 cursor-pointer" onclick="showToast('Semua produk bergaransi penuh')">
+      <div class="flex items-center justify-center gap-2.5 cursor-pointer" onclick="showToast('Semua layanan bergaransi penuh')">
         <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0"><i data-lucide="shield-check" class="w-4 h-4"></i></div>
         <div class="text-left hidden sm:block"><p class="font-bold text-slate-800 leading-tight">Garansi 100%</p><p class="text-[10px] text-slate-400">Layanan resmi & terpercaya</p></div>
       </div>
     </div>
 
-    <!-- Menu Kategori Grid -->
+    <!-- Menu Kategori Grid (Nokos dihapus, Followers diganti Jasa Web, Blogger diganti Template Web) -->
     <div class="bg-white rounded-2xl p-3.5 sm:p-5 shadow-2xs border border-slate-200/80">
       <div id="category-buttons-grid" class="grid grid-cols-3 sm:grid-cols-6 gap-3 sm:gap-4 text-center text-[11px] font-semibold text-slate-700">
         <div onclick="setCategory('AI')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="AI">
@@ -238,17 +236,17 @@
           <div class="cat-icon-box w-12 h-12 bg-pink-50 text-pink-600 rounded-2xl flex items-center justify-center border border-pink-100 group-hover:scale-105 group-hover:bg-pink-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="video" class="w-5 h-5"></i></div>
           <span class="truncate w-full">App Pro</span>
         </div>
-        <div onclick="setCategory('Blogger')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Blogger">
+        <div onclick="setCategory('Template Web')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Template Web">
           <div class="cat-icon-box w-12 h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center border border-amber-100 group-hover:scale-105 group-hover:bg-amber-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="layout" class="w-5 h-5"></i></div>
-          <span class="truncate w-full">Blogger</span>
+          <span class="truncate w-full">Template Web</span>
         </div>
         <div onclick="setCategory('Landing')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Landing">
           <div class="cat-icon-box w-12 h-12 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center border border-sky-100 group-hover:scale-105 group-hover:bg-sky-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="globe" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Landing Page</span>
         </div>
-        <div onclick="setCategory('Sosmed')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Sosmed">
-          <div class="cat-icon-box w-12 h-12 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center border border-purple-100 group-hover:scale-105 group-hover:bg-purple-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="users" class="w-5 h-5"></i></div>
-          <span class="truncate w-full">Followers</span>
+        <div onclick="setCategory('Jasa Web')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Jasa Web">
+          <div class="cat-icon-box w-12 h-12 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center border border-purple-100 group-hover:scale-105 group-hover:bg-purple-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="monitor" class="w-5 h-5"></i></div>
+          <span class="truncate w-full">Jasa Web</span>
         </div>
         <div onclick="setCategory('Stream')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Stream">
           <div class="cat-icon-box w-12 h-12 bg-violet-50 text-violet-600 rounded-2xl flex items-center justify-center border border-violet-100 group-hover:scale-105 group-hover:bg-violet-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="play-square" class="w-5 h-5"></i></div>
@@ -325,8 +323,8 @@
       </div>
       <div class="space-y-2 text-xs">
         <details class="group bg-slate-50 rounded-xl p-3 border border-slate-100 cursor-pointer">
-          <summary class="font-bold text-slate-800 flex justify-between items-center list-none"><span>⚡ Berapa lama waktu pengiriman akun?</span><i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i></summary>
-          <p class="text-slate-600 mt-2 leading-relaxed text-[11.5px]">Sistem kami menggunakan <b>Auto-Delivery 24 Jam</b> instan kurang dari 5 detik setelah pembayaran terverifikasi.</p>
+          <summary class="font-bold text-slate-800 flex justify-between items-center list-none"><span>⚡ Berapa lama waktu pengiriman layanan?</span><i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i></summary>
+          <p class="text-slate-600 mt-2 leading-relaxed text-[11.5px]">Sistem kami menggunakan <b>Auto-Delivery 24 Jam</b> instan untuk aplikasi/akun kurang dari 5 detik setelah pembayaran terverifikasi. Untuk jasa website akan dikerjakan sesuai estimasi waktu yang disepakati.</p>
         </details>
         <details class="group bg-slate-50 rounded-xl p-3 border border-slate-100 cursor-pointer">
           <summary class="font-bold text-slate-800 flex justify-between items-center list-none"><span>🛡️ Bagaimana ketentuan garansi jika akun berkendala?</span><i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i></summary>
@@ -346,92 +344,92 @@
   </div>
 
   <!-- MODAL DETAIL PRODUK (DENGAN JUMLAH FIX DI BAWAH) -->
-  <div id="detail-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
-    <div onclick="closeDetailModal()" class="absolute inset-0 bg-black/50 backdrop-blur-2xs"></div>
-    <div class="fixed inset-0 flex items-end sm:items-center justify-center p-0 sm:p-4 z-20">
-      <div id="detail-modal-card" class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
-        
-        <div class="relative p-4 border-b border-slate-100 flex items-center gap-3.5">
-          <img id="modal-img" src="" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-contain bg-slate-50 p-1 border border-slate-100 flex-shrink-0" />
-          <div class="min-w-0 flex-1">
-            <span id="modal-category" class="text-[9px] uppercase font-bold text-[#f5125e] bg-rose-50 px-2 py-0.5 rounded-md"></span>
-            <h3 id="modal-name" class="text-sm sm:text-base font-bold text-slate-900 truncate mt-1"></h3>
-            <p id="modal-price" class="text-sm sm:text-base font-black text-[#f5125e] mt-0.5"></p>
-          </div>
-          <button onclick="closeDetailModal()" class="text-slate-400 hover:text-slate-600 p-1"><i data-lucide="x" class="w-5 h-5"></i></button>
+  <div id="detail-modal" class="fixed inset-0 z-50 overflow-hidden hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div onclick="closeDetailModal()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+    <div id="detail-modal-card" class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col h-[90vh] sm:h-auto sm:max-h-[92vh] relative z-10">
+      
+      <!-- Modal Header (Fixed) -->
+      <div class="relative p-4 border-b border-slate-100 flex items-center gap-3.5 flex-shrink-0">
+        <img id="modal-img" src="" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-contain bg-slate-50 p-1 border border-slate-100 flex-shrink-0" />
+        <div class="min-w-0 flex-1">
+          <span id="modal-category" class="text-[9px] uppercase font-bold text-[#f5125e] bg-rose-50 px-2 py-0.5 rounded-md"></span>
+          <h3 id="modal-name" class="text-sm sm:text-base font-bold text-slate-900 truncate mt-1"></h3>
+          <p id="modal-price" class="text-sm sm:text-base font-black text-[#f5125e] mt-0.5"></p>
         </div>
-
-        <div class="p-4 overflow-y-auto space-y-4 text-xs sm:text-sm flex-1">
-          <div>
-            <h4 class="font-bold text-slate-800 mb-1.5 flex items-center justify-between text-xs">
-              <span>Pilihan Varian / Layanan:</span>
-            </h4>
-            <div id="modal-variants-list" class="flex flex-wrap gap-2"></div>
-          </div>
-
-          <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex items-center justify-around text-center">
-            <div><span class="text-[10px] text-slate-400 block">Terjual</span><span id="modal-sold" class="font-bold text-slate-800"></span></div>
-            <div class="w-px h-5 bg-slate-200"></div>
-            <div><span class="text-[10px] text-slate-400 block">Rating</span><span id="modal-rating" class="font-bold text-slate-800"></span></div>
-            <div class="w-px h-5 bg-slate-200"></div>
-            <div><span class="text-[10px] text-slate-400 block">Garansi</span><span id="modal-warranty" class="font-bold text-emerald-600"></span></div>
-          </div>
-
-          <div>
-            <h4 class="font-bold text-slate-800 mb-1">Deskripsi Layanan</h4>
-            <p id="modal-desc" class="text-slate-600 leading-relaxed whitespace-pre-line text-xs"></p>
-          </div>
-          
-          <div class="bg-amber-50 border border-amber-200 rounded-xl p-3">
-            <h4 class="font-bold text-amber-900 mb-1 flex items-center gap-1.5 text-xs"><i data-lucide="shield-alert" class="w-4 h-4"></i> Syarat & Ketentuan</h4>
-            <p id="modal-terms" class="text-amber-800 leading-relaxed whitespace-pre-line text-[11px]"></p>
-          </div>
-
-          <!-- SEKSI PENILAIAN & ULASAN PEMBELI -->
-          <div class="pt-3 border-t border-slate-100 space-y-3">
-            <div class="flex items-center justify-between">
-              <div>
-                <h4 class="font-bold text-slate-800 text-xs sm:text-sm flex items-center gap-1.5">
-                  <i data-lucide="star" class="w-4 h-4 text-amber-500 fill-amber-500"></i>
-                  <span>PENILAIAN PRODUK</span>
-                </h4>
-                <p class="text-[10.5px] text-slate-500 mt-0.5">⭐ 5.0 dari 5 • (100% Pembeli Puas)</p>
-              </div>
-              <span class="text-[10px] text-[#f5125e] font-bold bg-rose-50 px-2 py-0.5 rounded-md border border-rose-100">Ulasan Terverifikasi</span>
-            </div>
-
-            <div class="flex flex-wrap gap-1.5 text-[10px]" id="review-filter-buttons">
-              <button type="button" onclick="setReviewFilter('all')" id="rf-all" class="rf-btn bg-rose-50 text-[#f5125e] border border-rose-200 px-2.5 py-1 rounded-lg font-bold transition-all shadow-2xs">Semua (48)</button>
-              <button type="button" onclick="setReviewFilter('star5')" id="rf-star5" class="rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all">Bintang 5 (48)</button>
-              <button type="button" onclick="setReviewFilter('instant')" id="rf-instant" class="rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all">⚡ Kirim Instan (36)</button>
-              <button type="button" onclick="setReviewFilter('service')" id="rf-service" class="rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all">🛡️ Garansi Aman (12)</button>
-            </div>
-
-            <div id="product-reviews-list" class="space-y-2.5 pt-1"></div>
-          </div>
-        </div>
-
-        <!-- FIXED BOTTOM AREA: JUMLAH & TOMBOL AKSI -->
-        <div class="bg-white">
-          <!-- SEKSI JUMLAH / QUANTITY (PERMANEN DI BAWAH) -->
-          <div class="px-4 py-3 border-t border-slate-100 flex items-center justify-between">
-            <span class="font-bold text-slate-800 text-xs sm:text-sm">Jumlah Pembelian</span>
-            <div class="flex items-center border border-slate-200 rounded-lg overflow-hidden bg-white shadow-sm">
-              <button onclick="changeQuantity(-1)" class="w-8 h-8 flex items-center justify-center text-slate-500 hover:bg-slate-100 transition active:bg-slate-200"><i data-lucide="minus" class="w-4 h-4"></i></button>
-              <span id="modal-quantity" class="w-10 text-center font-bold text-slate-800 text-sm border-x border-slate-200">1</span>
-              <button onclick="changeQuantity(1)" class="w-8 h-8 flex items-center justify-center text-[#f5125e] hover:bg-rose-50 transition active:bg-rose-100"><i data-lucide="plus" class="w-4 h-4"></i></button>
-            </div>
-          </div>
-
-          <!-- TOMBOL AKSI -->
-          <div class="p-3.5 bg-slate-50 border-t border-slate-100 grid grid-cols-5 gap-2">
-            <button id="modal-btn-chat" class="col-span-1 border border-rose-200 bg-rose-50 hover:bg-rose-100 text-[#f5125e] rounded-xl flex flex-col items-center justify-center p-2"><i data-lucide="message-square-more" class="w-4 h-4"></i><span class="text-[9px] font-bold">Chat</span></button>
-            <button id="modal-btn-cart" class="col-span-2 bg-rose-50 text-[#f5125e] border border-rose-200 font-bold rounded-xl text-xs py-2.5">+ Keranjang</button>
-            <button id="modal-btn-buy" class="col-span-2 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white font-bold rounded-xl text-xs py-2.5 shadow-xs">Beli Sekarang</button>
-          </div>
-        </div>
-        
+        <button onclick="closeDetailModal()" class="text-slate-400 hover:text-slate-600 p-1"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
+
+      <!-- Modal Body (Scrollable) -->
+      <div class="p-4 overflow-y-auto space-y-4 text-xs sm:text-sm flex-1">
+        <div>
+          <h4 class="font-bold text-slate-800 mb-1.5 flex items-center justify-between text-xs">
+            <span>Pilihan Varian / Layanan:</span>
+          </h4>
+          <div id="modal-variants-list" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex items-center justify-around text-center">
+          <div><span class="text-[10px] text-slate-400 block">Terjual</span><span id="modal-sold" class="font-bold text-slate-800"></span></div>
+          <div class="w-px h-5 bg-slate-200"></div>
+          <div><span class="text-[10px] text-slate-400 block">Rating</span><span id="modal-rating" class="font-bold text-slate-800"></span></div>
+          <div class="w-px h-5 bg-slate-200"></div>
+          <div><span class="text-[10px] text-slate-400 block">Garansi</span><span id="modal-warranty" class="font-bold text-emerald-600"></span></div>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-slate-800 mb-1">Deskripsi Layanan</h4>
+          <p id="modal-desc" class="text-slate-600 leading-relaxed whitespace-pre-line text-xs"></p>
+        </div>
+        
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-3">
+          <h4 class="font-bold text-amber-900 mb-1 flex items-center gap-1.5 text-xs"><i data-lucide="shield-alert" class="w-4 h-4"></i> Syarat & Ketentuan</h4>
+          <p id="modal-terms" class="text-amber-800 leading-relaxed whitespace-pre-line text-[11px]"></p>
+        </div>
+
+        <!-- SEKSI PENILAIAN & ULASAN PEMBELI -->
+        <div class="pt-3 border-t border-slate-100 space-y-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <h4 class="font-bold text-slate-800 text-xs sm:text-sm flex items-center gap-1.5">
+                <i data-lucide="star" class="w-4 h-4 text-amber-500 fill-amber-500"></i>
+                <span>PENILAIAN PRODUK</span>
+              </h4>
+              <p class="text-[10.5px] text-slate-500 mt-0.5">⭐ 5.0 dari 5 • (100% Pembeli Puas)</p>
+            </div>
+            <span class="text-[10px] text-[#f5125e] font-bold bg-rose-50 px-2 py-0.5 rounded-md border border-rose-100">Ulasan Terverifikasi</span>
+          </div>
+
+          <div class="flex flex-wrap gap-1.5 text-[10px]" id="review-filter-buttons">
+            <button type="button" onclick="setReviewFilter('all')" id="rf-all" class="rf-btn bg-rose-50 text-[#f5125e] border border-rose-200 px-2.5 py-1 rounded-lg font-bold transition-all shadow-2xs">Semua (48)</button>
+            <button type="button" onclick="setReviewFilter('star5')" id="rf-star5" class="rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all">Bintang 5 (48)</button>
+            <button type="button" onclick="setReviewFilter('instant')" id="rf-instant" class="rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all">⚡ Kirim Instan (36)</button>
+            <button type="button" onclick="setReviewFilter('service')" id="rf-service" class="rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all">🛡️ Garansi Aman (12)</button>
+          </div>
+
+          <div id="product-reviews-list" class="space-y-2.5 pt-1"></div>
+        </div>
+      </div>
+
+      <!-- Modal Bottom Actions (Fixed Permanen di Bawah) -->
+      <div class="bg-white flex flex-col mt-auto shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] rounded-b-3xl sm:rounded-b-3xl flex-shrink-0 z-10">
+        <!-- SEKSI JUMLAH / QUANTITY -->
+        <div class="px-4 py-3 flex items-center justify-between border-b border-slate-50">
+          <span class="font-bold text-slate-800 text-xs sm:text-sm">Jumlah Pembelian</span>
+          <div class="flex items-center border border-slate-200 rounded-lg overflow-hidden bg-white shadow-sm">
+            <button type="button" onclick="changeQuantity(-1)" class="w-8 h-8 flex items-center justify-center text-slate-500 hover:bg-slate-100 transition active:bg-slate-200"><i data-lucide="minus" class="w-4 h-4"></i></button>
+            <span id="modal-quantity" class="w-10 text-center font-bold text-slate-800 text-sm border-x border-slate-200">1</span>
+            <button type="button" onclick="changeQuantity(1)" class="w-8 h-8 flex items-center justify-center text-[#f5125e] hover:bg-rose-50 transition active:bg-rose-100"><i data-lucide="plus" class="w-4 h-4"></i></button>
+          </div>
+        </div>
+
+        <!-- TOMBOL AKSI UTAMA -->
+        <div class="p-3.5 bg-slate-50 grid grid-cols-5 gap-2 rounded-b-3xl">
+          <button id="modal-btn-chat" type="button" class="col-span-1 border border-rose-200 bg-rose-50 hover:bg-rose-100 text-[#f5125e] rounded-xl flex flex-col items-center justify-center p-2 transition-colors"><i data-lucide="message-square-more" class="w-4 h-4"></i><span class="text-[9px] font-bold">Chat</span></button>
+          <button id="modal-btn-cart" type="button" class="col-span-2 bg-rose-50 text-[#f5125e] border border-rose-200 font-bold rounded-xl text-xs py-2.5 transition-colors">+ Keranjang</button>
+          <button id="modal-btn-buy" type="button" class="col-span-2 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white font-bold rounded-xl text-xs py-2.5 shadow-xs transition-transform active:scale-95">Beli Sekarang</button>
+        </div>
+      </div>
+      
     </div>
   </div>
 
@@ -584,7 +582,6 @@
     const WHATSAPP_NUMBER = "6282243890517"; 
     const QRIS_STATIC_URL = "https://i.ibb.co.com/PGRmz0G8/Whats-App-Image-2026-08-24-at-12-25-05.jpg"; 
 
-    // MENGIRIM DATA PELACAKAN (TRACKER IP) SECARA OTOMATIS
     function trackActivity(actionType) {
         fetch(`${API_URL}/track`, {
             method: 'POST',
@@ -718,7 +715,6 @@
 
       if (!config) return;
       
-      // SENSOR PENGUBAH TEMA OTOMATIS
       if (config.theme === 'shopee') {
           document.body.classList.add('theme-shopee');
       } else {
@@ -762,7 +758,7 @@
       renderCart();
     }
 
-    window.setCategory = function(cat) {
+    function setCategory(cat) {
       activeCategory = cat || 'Semua';
       const badge = document.getElementById('active-category-badge');
       if (badge) badge.innerText = activeCategory;
@@ -782,7 +778,10 @@
       });
       renderProducts();
       if(typeof lucide !== 'undefined') lucide.createIcons();
-    };
+    }
+    
+    // Terekspos ke window agar dipanggil dari onclick HTML
+    window.setCategory = setCategory;
 
     window.handleSearch = function(q) { searchQuery = (q || '').toLowerCase(); renderProducts(); };
     window.handleSortChange = function(s) { currentSort = s; renderProducts(); };
@@ -866,12 +865,12 @@
           matchesCategory = itemCat.includes('ai') || itemCat.includes('gemini') || itemCat.includes('chatgpt') || itemCat.includes('claude');
         } else if (targetCat === 'editor') {
           matchesCategory = itemCat.includes('editor') || itemCat.includes('edit') || itemCat.includes('video') || itemCat.includes('capcut') || itemCat.includes('alight');
-        } else if (targetCat === 'blogger') {
-          matchesCategory = itemCat.includes('blogger') || itemCat.includes('template') || itemCat.includes('theme');
+        } else if (targetCat === 'template web') {
+          matchesCategory = itemCat.includes('blogger') || itemCat.includes('template') || itemCat.includes('theme') || itemCat.includes('web');
         } else if (targetCat === 'landing') {
           matchesCategory = itemCat.includes('landing') || itemCat.includes('web') || itemCat.includes('website');
-        } else if (targetCat === 'sosmed') {
-          matchesCategory = itemCat.includes('sosmed') || itemCat.includes('follower') || itemCat.includes('like') || itemCat.includes('sub');
+        } else if (targetCat === 'jasa web') {
+          matchesCategory = itemCat.includes('sosmed') || itemCat.includes('follower') || itemCat.includes('jasa') || itemCat.includes('bikin') || itemCat.includes('web');
         } else if (targetCat === 'stream') {
           matchesCategory = itemCat.includes('stream') || itemCat.includes('youtube') || itemCat.includes('netflix') || itemCat.includes('spotify') || itemCat.includes('music');
         } else {
@@ -1027,7 +1026,7 @@
         document.getElementById('detail-modal').classList.add('hidden'); 
     };
 
-    // Checkout Produk Biasa (Dengan Tambahan Quantity)
+    // Checkout Produk Biasa
     async function startNormalCheckout(product, variant, qty = 1, isCart = false) {
       trackActivity('click'); 
       
@@ -1053,7 +1052,7 @@
       if(typeof lucide !== 'undefined') lucide.createIcons();
 
       let payloadBody = { productId: product.id, variantName: variant.name, quantity: qty };
-      if (isCart) payloadBody.cartTotal = totalPrice; // Kirim sinyal ke worker bahwa ini transaksi keranjang
+      if (isCart) payloadBody.cartTotal = totalPrice;
 
       try {
         const txRes = await fetch(`${API_URL}/create-tripay-tx`, {
@@ -1315,7 +1314,137 @@
       if (el) el.remove();
     }
 
-    // ================= ULASAN DINAMIS PER PRODUK =================
+    // ================= KERANJANG BELANJA (KEBAL ERROR) =================
+    window.toggleCart = function(open) {
+      if (open) { 
+        document.getElementById('cart-modal').classList.remove('hidden'); 
+        setTimeout(() => document.getElementById('cart-drawer').classList.remove('translate-x-full'), 10);
+      } else { 
+        document.getElementById('cart-drawer').classList.add('translate-x-full');
+        setTimeout(() => document.getElementById('cart-modal').classList.add('hidden'), 250);
+      }
+    };
+
+    window.addToCart = function(p, v, qty = 1) {
+      try {
+        trackActivity('click'); 
+        if (!cart || !Array.isArray(cart)) cart = [];
+        const prodName = p && p.name ? p.name : 'Produk';
+        const varName = v && v.name ? v.name : '';
+        const finalName = varName ? `${prodName} (${varName}) x${qty}` : `${prodName} x${qty}`;
+        const unitPrice = v && v.price ? Number(v.price) : (p && p.price ? Number(p.price) : 0);
+        const finalPrice = unitPrice * qty; // Total harga dikali jumlah beli
+        const img = p && p.image ? p.image : 'https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png';
+        const id = p && p.id ? p.id : Date.now();
+
+        cart.push({ id: id, name: finalName, price: finalPrice, image: img, quantity: qty });
+        localStorage.setItem('my_digital_cart', JSON.stringify(cart));
+        renderCart();
+        showToast('Berhasil dimasukkan ke keranjang!');
+      } catch(e) {
+        showToast('Gagal masuk ke keranjang', 'error');
+      }
+    };
+    
+    // Fungsi Hapus Item Keranjang Aman
+    window.removeItemFromCart = function(idx) {
+      if(Array.isArray(cart)) {
+         cart.splice(idx, 1);
+         localStorage.setItem('my_digital_cart', JSON.stringify(cart));
+         renderCart();
+      }
+    };
+
+    function renderCart() {
+      try {
+          if (!Array.isArray(cart)) cart = [];
+          
+          const titleCount = document.getElementById('cart-title-count');
+          if(titleCount) titleCount.innerText = cart.length;
+          
+          const badge = document.getElementById('cart-badge');
+          if(badge) {
+              badge.innerText = cart.length;
+              if (cart.length > 0) badge.classList.remove('hidden');
+              else badge.classList.add('hidden');
+          }
+
+          const footer = document.getElementById('cart-footer');
+          if(footer) {
+              if (cart.length > 0) footer.classList.remove('hidden');
+              else footer.classList.add('hidden');
+          }
+
+          const cartItems = document.getElementById('cart-items');
+          if(cartItems) {
+              cartItems.innerHTML = cart.map((i, idx) => `
+                <div class="flex items-center justify-between gap-3 p-2.5 bg-slate-50 rounded-xl border border-slate-100 shadow-sm">
+                  <img src="${i.image || 'https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png'}" onerror="this.src='https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png'" class="w-12 h-12 rounded-lg object-contain bg-white border p-1" />
+                  <div class="flex-1 min-w-0">
+                    <h4 class="text-xs font-bold text-slate-800 line-clamp-1">${i.name}</h4>
+                    <p class="text-xs text-[#f5125e] font-black mt-0.5">${formatIDR(Number(i.price) || 0)}</p>
+                  </div>
+                  <button onclick="removeItemFromCart(${idx})" class="text-slate-400 hover:text-rose-500 bg-white border border-slate-200 hover:border-rose-200 p-1.5 rounded-lg transition-colors">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                  </button>
+                </div>
+              `).join('');
+          }
+          
+          const totalPrice = document.getElementById('cart-total-price');
+          if(totalPrice) {
+              totalPrice.innerText = formatIDR(cart.reduce((a, b) => a + (Number(b.price) || 0), 0));
+          }
+          
+          if(typeof lucide !== 'undefined') lucide.createIcons();
+      } catch(e) {
+          console.error('Error renderCart:', e);
+      }
+    }
+
+    window.processCartCheckout = function() {
+      if (!cart || cart.length === 0) return;
+      toggleCart(false);
+      startNormalCheckout({ id: Date.now(), name: `Keranjang (${cart.length} Produk)` }, { name: 'Semua Produk', price: cart.reduce((a, b) => a + (Number(b.price) || 0), 0) }, 1, true);
+    };
+
+    window.saveOrderHistory = function(reference, productName, variantName, account) {
+      let history = [];
+      try { history = JSON.parse(localStorage.getItem('my_digital_orders')) || []; } catch(e){}
+      if(!Array.isArray(history)) history = [];
+      history.unshift({ reference: reference, productName: productName, variantName: variantName, date: new Date().toLocaleString('id-ID'), account: account });
+      localStorage.setItem('my_digital_orders', JSON.stringify(history));
+    };
+
+    // ================= RIWAYAT PESANAN =================
+    window.openHistoryModal = function() {
+      let history = [];
+      try { history = JSON.parse(localStorage.getItem('my_digital_orders')) || []; } catch(e){}
+      if(!Array.isArray(history)) history = [];
+      
+      const container = document.getElementById('history-list');
+      if (history.length === 0) {
+        container.innerHTML = `<div class="py-12 text-center text-slate-400 text-xs"><i data-lucide="receipt" class="w-8 h-8 mx-auto mb-1 stroke-1"></i>Belum ada riwayat pesanan</div>`;
+      } else {
+        container.innerHTML = history.map((item) => `
+          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="text-[9px] font-bold text-[#f5125e] bg-rose-50 px-2 py-0.5 rounded font-mono">${item.reference}</span>
+                <h4 class="font-bold text-xs sm:text-sm text-slate-800 mt-1">${item.productName} (${item.variantName})</h4>
+                <p class="text-[10px] text-slate-400">${item.date}</p>
+              </div>
+            </div>
+            <div class="bg-white border rounded-xl p-2.5"><pre class="font-mono text-xs text-slate-800 whitespace-pre-wrap select-all">${item.account}</pre></div>
+          </div>
+        `).join('');
+      }
+      document.getElementById('history-modal').classList.remove('hidden');
+      if(typeof lucide !== 'undefined') lucide.createIcons();
+    };
+
+    window.closeHistoryModal = function() { document.getElementById('history-modal').classList.add('hidden'); };
+
     function getReviewsForProduct(p) {
         const pName = p.name || 'Produk ini';
         let cat = (p.category || '').toLowerCase();
@@ -1330,7 +1459,7 @@
             commentsAll[1] = `Bantu banget buat nugas dan kerjaan. Akses ${pName} lancar jaya, AI nya responsif!`;
         } else if(cat.includes('editor') || cat.includes('canva') || cat.includes('capcut')) {
             commentsAll[1] = `Bisa langsung dipakai edit tanpa watermark. ${pName} premium memang beda, semua fitur pro kebuka.`;
-        } else if(cat.includes('sosmed') || cat.includes('follower')) {
+        } else if(cat.includes('sosmed') || cat.includes('jasa')) {
             commentsAll[1] = `Amanah banget, pesanan ${pName} langsung masuk sesuai target. Enggak drop sama sekali!`;
         } else if(cat.includes('stream') || cat.includes('netflix')) {
             commentsAll[1] = `Nonton kualitas HD/4K lancar tanpa screen limit. Beli ${pName} di sini paling murah dan terpercaya.`;
