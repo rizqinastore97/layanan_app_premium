@@ -148,19 +148,52 @@
             <p class="text-xs text-slate-500 mt-0.5">Ubah tampilan toko dan atur banner promosi utama</p>
           </div>
 
-          <!-- FITUR PEMILIHAN TEMA -->
-          <div class="bg-indigo-50/50 border border-indigo-100 p-4 rounded-2xl">
-            <h4 class="font-bold text-slate-800 text-sm mb-2"><i data-lucide="palette" class="w-4 h-4 inline-block text-indigo-600 mr-1"></i> Tema Tampilan Website</h4>
-            <select id="theme-selector" onchange="bannerSettings.theme = this.value" class="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 font-bold text-slate-700 text-xs sm:text-sm">
-               <option value="default">Tema Default (Pink DigitalHub)</option>
-               <option value="shopee">Tema Marketplace (Gaya Oranye Shopee)</option>
-            </select>
+          <!-- FITUR PEMILIHAN TEMA & MENU -->
+          <div class="bg-indigo-50/50 border border-indigo-100 p-4 rounded-2xl space-y-4">
+            <div>
+              <h4 class="font-bold text-slate-800 text-sm mb-2"><i data-lucide="palette" class="w-4 h-4 inline-block text-indigo-600 mr-1"></i> Tema Tampilan Website</h4>
+              <select id="theme-selector" onchange="bannerSettings.theme = this.value" class="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 font-bold text-slate-700 text-xs sm:text-sm">
+                 <option value="default">Tema Default (Pink DigitalHub)</option>
+                 <option value="shopee">Tema Marketplace (Gaya Oranye Shopee)</option>
+              </select>
+            </div>
+
+            <div class="pt-3 border-t border-indigo-100">
+              <h4 class="font-bold text-slate-800 text-sm mb-3"><i data-lucide="toggle-right" class="w-4 h-4 inline-block text-indigo-600 mr-1"></i> On/Off Kategori Menu</h4>
+              
+              <div class="space-y-2">
+                <!-- Saklar Menu Template Web -->
+                <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200">
+                  <div>
+                    <p class="font-bold text-slate-800 text-xs sm:text-sm">Menu Template Web</p>
+                    <p class="text-[10px] text-slate-500">Tampilkan menu kategori "Template Web"</p>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="toggle-menu-template" onchange="bannerSettings.showTemplateWeb = this.checked" class="sr-only peer">
+                    <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                  </label>
+                </div>
+
+                <!-- Saklar Menu Jasa Web -->
+                <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200">
+                  <div>
+                    <p class="font-bold text-slate-800 text-xs sm:text-sm">Menu Jasa Web</p>
+                    <p class="text-[10px] text-slate-500">Tampilkan menu kategori "Jasa Web"</p>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="toggle-menu-jasa" onchange="bannerSettings.showJasaWeb = this.checked" class="sr-only peer">
+                    <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                  </label>
+                </div>
+              </div>
+            </div>
           </div>
 
+          <!-- BANNER PROMO -->
           <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl flex items-center justify-between">
             <div>
               <p class="font-bold text-slate-800 text-xs sm:text-sm">Status Tampilan Banner:</p>
-              <p class="text-[11px] text-slate-500 mt-0.5">Jika dimatikan, banner tidak akan muncul sama sekali</p>
+              <p class="text-[11px] text-slate-500 mt-0.5">Jika dimatikan, banner promo tidak akan muncul</p>
             </div>
             <label class="relative inline-flex items-center cursor-pointer">
               <input type="checkbox" id="banner-toggle-active" onchange="toggleBannerActive(this.checked)" class="sr-only peer">
@@ -174,23 +207,23 @@
               <label class="border-2 border-slate-200 p-3 rounded-2xl flex items-center gap-2.5 cursor-pointer hover:border-indigo-500 transition-colors" id="label-type-custom">
                 <input type="radio" name="banner_type" value="image" onchange="setBannerType('image')" class="accent-indigo-600" checked />
                 <div>
-                  <p class="font-bold text-xs text-slate-800">Gambar Banner Kustom</p>
-                  <p class="text-[10px] text-slate-400">Upload gambar desain banner sendiri</p>
+                  <p class="font-bold text-xs text-slate-800">Gambar Banner</p>
+                  <p class="text-[10px] text-slate-400">Upload desain banner sendiri</p>
                 </div>
               </label>
 
               <label class="border-2 border-slate-200 p-3 rounded-2xl flex items-center gap-2.5 cursor-pointer hover:border-indigo-500 transition-colors" id="label-type-text">
                 <input type="radio" name="banner_type" value="text" onchange="setBannerType('text')" class="accent-indigo-600" />
                 <div>
-                  <p class="font-bold text-xs text-slate-800">LazFlash Teks Bawaan</p>
-                  <p class="text-[10px] text-slate-400">Gradasi merah & countdown timer</p>
+                  <p class="font-bold text-xs text-slate-800">LazFlash Bawaan</p>
+                  <p class="text-[10px] text-slate-400">Banner merah default sistem</p>
                 </div>
               </label>
             </div>
           </div>
 
           <div id="banner-image-form-box" class="space-y-3 pt-2 border-t border-slate-100">
-            <label class="text-xs font-bold text-slate-700 block">Upload Gambar Banner (Disarankan Rasio 16:6 atau 3:1):</label>
+            <label class="text-xs font-bold text-slate-700 block">Upload Gambar Banner (Rasio 16:6 / 3:1):</label>
             
             <div class="w-full aspect-[16/6] bg-slate-100 rounded-2xl border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden relative">
               <img id="banner-preview-img" src="" class="w-full h-full object-cover hidden" />
@@ -203,10 +236,10 @@
             <div class="flex flex-col sm:flex-row items-center gap-2">
               <label for="banner-file-input" class="w-full sm:w-auto bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-bold px-4 py-2.5 rounded-xl text-xs cursor-pointer transition-colors flex items-center justify-center gap-1.5 flex-shrink-0">
                 <i data-lucide="upload" class="w-4 h-4"></i>
-                <span>Pilih Gambar dari Device</span>
+                <span>Pilih Gambar Device</span>
               </label>
               <input type="file" id="banner-file-input" accept="image/*" onchange="handleBannerFileUpload(event)" class="hidden" />
-              <input type="text" id="banner-url-input" oninput="updateBannerPreviewFromUrl(this.value)" placeholder="Atau masukkan URL gambar banner..." class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+              <input type="text" id="banner-url-input" oninput="updateBannerPreviewFromUrl(this.value)" placeholder="Atau masukkan URL gambar..." class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
             </div>
           </div>
 
@@ -226,7 +259,7 @@
                 <i data-lucide="message-square" class="w-5 h-5 text-indigo-600"></i>
                 <span>Kelola Ulasan per Produk</span>
               </h3>
-              <p class="text-xs text-slate-500 mt-0.5">Pilih produk untuk menambah, mengedit, atau menghapus ulasan pembeli</p>
+              <p class="text-xs text-slate-500 mt-0.5">Pilih produk untuk mengedit ulasan pembeli</p>
             </div>
             <select id="review-product-selector" onchange="renderReviewsForSelectedProduct(this.value)" class="bg-slate-50 border border-slate-200 text-xs sm:text-sm font-bold px-3.5 py-2 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500"></select>
           </div>
@@ -243,34 +276,33 @@
         <div id="admin-reviews-container" class="space-y-3"></div>
       </section>
 
-      <!-- TAB 4: STATISTIK TOKO (BARU) -->
+      <!-- TAB 4: STATISTIK TOKO -->
       <section id="section-stats" class="space-y-4 hidden">
         <div class="flex items-center justify-between bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs">
            <div>
              <h2 class="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
                <i data-lucide="bar-chart-2" class="w-5 h-5 text-emerald-500"></i> Statistik Pengunjung
              </h2>
-             <p class="text-xs text-slate-500 mt-0.5">Pantau grafik tayangan dan klik secara real-time dari pengunjung</p>
+             <p class="text-xs text-slate-500 mt-0.5">Pantau grafik tayangan dan klik secara real-time</p>
            </div>
            <button onclick="fetchStoreStats()" class="p-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-slate-600 transition-colors"><i data-lucide="refresh-cw" class="w-4 h-4"></i></button>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-           <!-- Card Grafik Views & Clicks -->
+           <!-- Card Grafik -->
            <div class="lg:col-span-2 bg-white rounded-3xl p-5 border border-slate-200/80 shadow-xs flex flex-col">
               <h3 class="font-bold text-slate-800 text-sm mb-4">Total Views & Clicks (7 Hari Terakhir)</h3>
               <div class="flex gap-6 mb-6">
                  <div>
-                    <p class="text-[10px] text-slate-500 font-bold uppercase flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-400"></span> Views (Tayangan)</p>
+                    <p class="text-[10px] text-slate-500 font-bold uppercase flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-400"></span> Views</p>
                     <p id="stat-total-views" class="text-3xl font-black text-slate-800">0</p>
                  </div>
                  <div>
-                    <p class="text-[10px] text-slate-500 font-bold uppercase flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> Clicks (Klik)</p>
+                    <p class="text-[10px] text-slate-500 font-bold uppercase flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> Clicks</p>
                     <p id="stat-total-clicks" class="text-3xl font-black text-slate-800">0</p>
                  </div>
               </div>
               
-              <!-- Grafik CSS Sederhana (Ala Lynk) -->
               <div id="stat-graph-container" class="flex items-end justify-around gap-2 h-44 mt-auto border-b border-slate-100 pb-2 px-2 relative">
                  <div class="w-full text-center text-slate-400 text-xs py-8">Memuat grafik...</div>
               </div>
@@ -293,7 +325,7 @@
       <!-- TAB 5: RIWAYAT PESANAN -->
       <section id="section-orders" class="space-y-4 hidden">
         <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs">
-          <h3 class="font-bold text-sm sm:text-base text-slate-800 mb-1">Riwayat Transaksi TriPay & Akun</h3>
+          <h3 class="font-bold text-sm sm:text-base text-slate-800 mb-1">Riwayat Transaksi TriPay</h3>
           <p class="text-xs text-slate-500 mb-4">Daftar transaksi yang tercatat otomatis pada sistem</p>
           <div id="admin-orders-list" class="space-y-2.5 text-xs">
             <div class="p-8 text-center text-slate-400">Belum ada data pesanan baru.</div>
@@ -349,7 +381,7 @@
               <label class="font-bold text-slate-700">Nama Produk:</label>
               <button type="button" onclick="triggerAiGenerateDescription()" class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:opacity-90 text-white font-black text-[11px] px-3 py-1 rounded-xl shadow-xs transition-all flex items-center gap-1.5">
                 <i data-lucide="sparkles" class="w-3.5 h-3.5 text-yellow-300"></i>
-                <span>✨ AI Generate Deskripsi & Data</span>
+                <span>✨ AI Generate Deskripsi</span>
               </button>
             </div>
             <input type="text" id="prod-form-name" required placeholder="Contoh: Gemini Pro / Netflix / CapCut" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none font-semibold text-slate-800" />
@@ -358,15 +390,14 @@
           <div class="grid grid-cols-2 gap-2.5">
             <div>
               <label class="font-bold text-slate-700 block mb-1">Kategori:</label>
-              <input type="text" id="prod-form-category" list="category-options" placeholder="Ketik atau pilih kategori..." class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none font-bold text-slate-700" required />
+              <input type="text" id="prod-form-category" list="category-options" placeholder="Pilih..." class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none font-bold text-slate-700" required />
               <datalist id="category-options">
-                <option value="AI">AI (Gemini, ChatGPT, Claude)</option>
-                <option value="Editor">Editor (CapCut, Alight, Canva)</option>
-                <option value="Blogger">Blogger (Template Theme)</option>
+                <option value="AI">AI</option>
+                <option value="Editor">Editor</option>
+                <option value="Template Web">Template Web</option>
                 <option value="Landing">Landing Page</option>
-                <option value="Sosmed">Sosmed (Followers, Likes)</option>
-                <option value="Nokos">Nokos OTP</option>
-                <option value="Stream">Streaming (YouTube, Netflix)</option>
+                <option value="Jasa Web">Jasa Web</option>
+                <option value="Stream">Streaming</option>
               </datalist>
             </div>
             <div>
@@ -384,7 +415,6 @@
                 <input type="checkbox" id="prod-form-bestseller" class="w-4 h-4 accent-amber-600 rounded" />
                 <div class="text-[11px] leading-tight">
                   <p class="font-bold text-amber-900 flex items-center gap-0.5"><i data-lucide="flame" class="w-3.5 h-3.5 text-amber-600"></i> Best Seller</p>
-                  <p class="text-[9.5px] text-slate-500">Seksi teratas</p>
                 </div>
               </label>
 
@@ -392,15 +422,14 @@
                 <input type="checkbox" id="prod-form-hot" class="w-4 h-4 accent-rose-600 rounded" />
                 <div class="text-[11px] leading-tight">
                   <p class="font-bold text-rose-900 flex items-center gap-0.5"><i data-lucide="zap" class="w-3.5 h-3.5 text-rose-600"></i> Label HOT</p>
-                  <p class="text-[9.5px] text-slate-500">Badge di kartu</p>
                 </div>
               </label>
             </div>
 
             <div class="grid grid-cols-2 gap-2.5 pt-1">
               <div>
-                <label class="text-[10.5px] font-bold text-slate-700 block mb-0.5">Jumlah Terjual (Cth: 15000 -> 15RB+):</label>
-                <input type="number" id="prod-form-sold" placeholder="Contoh: 15000" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+                <label class="text-[10.5px] font-bold text-slate-700 block mb-0.5">Terjual (Cth: 15000):</label>
+                <input type="number" id="prod-form-sold" placeholder="15000" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
               </div>
               <div>
                 <label class="text-[10.5px] font-bold text-slate-700 block mb-0.5">Rating Bintang:</label>
@@ -411,7 +440,7 @@
 
           <!-- Logo Upload -->
           <div class="space-y-2">
-            <label class="font-bold text-slate-700 block">Logo / Gambar Produk:</label>
+            <label class="font-bold text-slate-700 block">Gambar / Mockup Produk:</label>
             <div class="flex items-center gap-3">
               <div id="prod-img-preview-box" class="w-16 h-16 rounded-2xl bg-slate-50 border-2 border-dashed border-slate-200 flex items-center justify-center overflow-hidden flex-shrink-0 relative">
                 <img id="prod-img-preview" src="" class="w-full h-full object-contain hidden" />
@@ -420,18 +449,18 @@
               <div class="flex-1 space-y-1">
                 <label for="prod-form-file" class="w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-bold px-3 py-2 rounded-xl text-xs cursor-pointer transition-colors flex items-center justify-center gap-1.5">
                   <i data-lucide="upload" class="w-4 h-4"></i>
-                  <span>Pilih Gambar dari Device / HP</span>
+                  <span>Pilih Gambar Device</span>
                 </label>
                 <input type="file" id="prod-form-file" accept="image/*" onchange="handleImageFileUpload(event)" class="hidden" />
               </div>
             </div>
-            <input type="text" id="prod-form-image" oninput="updateImagePreviewFromInput(this.value)" required placeholder="Atau tempel link URL gambar di sini..." class="w-full px-3.5 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none text-xs text-slate-600" />
+            <input type="text" id="prod-form-image" oninput="updateImagePreviewFromInput(this.value)" required placeholder="Atau paste link URL gambar..." class="w-full px-3.5 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 text-xs text-slate-600" />
           </div>
 
-          <!-- Varian Per Paket dengan Deskripsi Masing-Masing -->
+          <!-- Varian Per Paket -->
           <div class="border-t border-slate-200 pt-4 space-y-3">
             <div class="flex justify-between items-center bg-indigo-50 p-2.5 rounded-xl border border-indigo-100">
-              <label class="font-bold text-indigo-900 text-xs sm:text-sm flex items-center gap-1.5"><i data-lucide="layers" class="w-4 h-4"></i> Daftar Paket & Stok Akun</label>
+              <label class="font-bold text-indigo-900 text-xs sm:text-sm flex items-center gap-1.5"><i data-lucide="layers" class="w-4 h-4"></i> Daftar Varian/Paket Harga</label>
               <button type="button" onclick="addVariantFormRow()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-1 rounded shadow-xs font-bold text-[10px]">+ Tambah Paket</button>
             </div>
             <div id="variants-form-container" class="space-y-3"></div>
@@ -514,7 +543,9 @@
       active: false,
       type: 'image',
       imageUrl: '',
-      theme: 'default' // Default Tema
+      theme: 'default',
+      showTemplateWeb: false, // Default hidden sesuai request awal
+      showJasaWeb: false      // Default hidden sesuai request awal
     };
 
     const aiProductKnowledgeBase = {
@@ -573,7 +604,9 @@
               active: Boolean(bannerObj.active),
               type: bannerObj.type || 'image',
               imageUrl: bannerObj.imageUrl || '',
-              theme: bannerObj.theme || 'default'
+              theme: bannerObj.theme || 'default',
+              showTemplateWeb: Boolean(bannerObj.showTemplateWeb),
+              showJasaWeb: Boolean(bannerObj.showJasaWeb)
             };
           }
           products = data.filter(item => !item._isBannerConfig && item.id !== "__BANNER_CONFIG__");
@@ -609,7 +642,6 @@
 
            // Render Grafik Batang CSS
            if (stats.history && stats.history.length > 0) {
-               // Ambil nilai tertinggi untuk patokan 100% tinggi batang
                let maxVal = 1;
                stats.history.forEach(h => {
                    if (h.views > maxVal) maxVal = h.views;
@@ -619,11 +651,10 @@
                graphContainer.innerHTML = stats.history.map(h => {
                    const viewH = (h.views / maxVal) * 100;
                    const clickH = (h.clicks / maxVal) * 100;
-                   const dateLabel = h.date.split(' ')[0] || h.date; // Ambil tgl saja misal "21 Aug"
+                   const dateLabel = h.date.split(' ')[0] || h.date; 
                    
                    return `
                      <div class="flex flex-col items-center flex-1 h-full justify-end group relative">
-                        <!-- Tooltip Hover -->
                         <div class="absolute -top-8 bg-slate-800 text-white text-[9px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
                            👁️ ${h.views} | 🖱️ ${h.clicks}
                         </div>
@@ -641,7 +672,6 @@
 
            // Render IP List
            if (stats.ips && Object.keys(stats.ips).length > 0) {
-               // Ubah objek ke array dan sort berdasar total interaksi
                let ipsArray = Object.keys(stats.ips).map(ip => ({
                    ip: ip,
                    views: stats.ips[ip].views || 0,
@@ -702,7 +732,7 @@
         document.getElementById('section-stats').classList.remove('hidden');
         document.getElementById('tab-btn-stats').className = activeBtnClasses;
         document.getElementById('view-title').innerText = 'Statistik Analitik';
-        fetchStoreStats(); // Load grafik
+        fetchStoreStats(); 
       } else if (tab === 'orders') {
         document.getElementById('section-orders').classList.remove('hidden');
         document.getElementById('tab-btn-orders').className = 'w-full flex items-center justify-between px-4 py-3 rounded-2xl bg-indigo-600 text-white font-extrabold text-sm sm:text-base shadow-sm text-left';
@@ -760,18 +790,18 @@
         category = 'Stream'; warranty = 'Full Garansi'; tagKeyword = 'Streaming Hiburan';
       } else if (lower.includes('edit') || lower.includes('photo') || lower.includes('motion') || lower.includes('design') || lower.includes('preset')) {
         category = 'Editor'; warranty = 'Resmi 1 Tahun'; tagKeyword = 'Aplikasi Kreatif & Editing';
-      } else if (lower.includes('follow') || lower.includes('like') || lower.includes('sosmed') || lower.includes('sub') || lower.includes('view')) {
-        category = 'Sosmed'; warranty = 'Garansi Refill 30 Hari'; tagKeyword = 'Layanan Optimasi Sosial Media';
+      } else if (lower.includes('follow') || lower.includes('like') || lower.includes('sosmed') || lower.includes('sub') || lower.includes('view') || lower.includes('jasa')) {
+        category = 'Jasa Web'; warranty = 'Garansi Support'; tagKeyword = 'Jasa Digital Profesional';
       } else if (lower.includes('otp') || lower.includes('nokos') || lower.includes('nomor') || lower.includes('sms')) {
         category = 'Nokos'; warranty = 'Garansi 1x OTP'; tagKeyword = 'Nomor Virtual SMS';
-      } else if (lower.includes('web') || lower.includes('template') || lower.includes('blogger') || lower.includes('landing')) {
-        category = 'Blogger'; warranty = 'Full Source Code'; tagKeyword = 'Template Web Premium';
+      } else if (lower.includes('web') || lower.includes('template') || lower.includes('blogger') || lower.includes('landing') || lower.includes('theme')) {
+        category = 'Template Web'; warranty = 'Full Source Code'; tagKeyword = 'Template Web Premium';
       }
 
       return {
         category: category,
         warranty: warranty,
-        desc: `Beli layanan ${name} resmi dan bergaransi penuh di DigitalHub. Solusi ${tagKeyword} berkualitas dengan proses pengiriman instan 24 jam.\n\n✨ Keunggulan Layanan:\n• Fitur Premium / VIP terbuka penuh tanpa batasan\n• Akun stabil, aman, dan anti-suspend\n• Mendukung penggunaan di berbagai perangkat\n• Harga paling terjangkau dengan kualitas nomor satu\n\n⚡ Pengiriman: Otomatis via QRIS TriPay (< 5 Detik)\n🛡️ Garansi: ${warranty}`,
+        desc: `Beli layanan ${name} resmi dan bergaransi penuh di DigitalHub. Solusi ${tagKeyword} berkualitas dengan proses pengiriman instan.\n\n✨ Keunggulan Layanan:\n• Fitur Premium / VIP terbuka penuh tanpa batasan\n• Stabil, aman, dan anti-suspend\n• Harga paling terjangkau dengan kualitas nomor satu\n\n⚡ Pengiriman: Otomatis via QRIS TriPay (< 5 Detik)\n🛡️ Garansi: ${warranty}`,
         terms: `1. Gunakan ${name} sesuai aturan dan panduan yang diberikan.\n2. Dilarang melakukan tindakan yang melanggar ketentuan layanan.\n3. Simpan Nomor Invoice sebagai bukti klaim garansi sah via WhatsApp Admin.`,
         variants: [{ name: 'Paket Reguler', price: 5000 }, { name: 'Paket VIP Premium', price: 15000 }]
       };
@@ -782,6 +812,13 @@
       
       const themeSelect = document.getElementById('theme-selector');
       if (themeSelect) themeSelect.value = bannerSettings.theme || 'default';
+
+      // Load status toggle menu
+      const toggleTemplate = document.getElementById('toggle-menu-template');
+      if (toggleTemplate) toggleTemplate.checked = bannerSettings.showTemplateWeb;
+      
+      const toggleJasa = document.getElementById('toggle-menu-jasa');
+      if (toggleJasa) toggleJasa.checked = bannerSettings.showJasaWeb;
 
       const typeRadios = document.getElementsByName('banner_type');
       for (const r of typeRadios) { r.checked = (r.value === bannerSettings.type); }
@@ -834,20 +871,38 @@
     async function saveBannerSettings() {
       showToast('Menyimpan status Tema & Banner ke Cloudflare KV...');
       const payload = [
-        { id: "__BANNER_CONFIG__", _isBannerConfig: true, active: bannerSettings.active, type: bannerSettings.type, imageUrl: bannerSettings.imageUrl, theme: bannerSettings.theme },
+        { 
+          id: "__BANNER_CONFIG__", 
+          _isBannerConfig: true, 
+          active: bannerSettings.active, 
+          type: bannerSettings.type, 
+          imageUrl: bannerSettings.imageUrl, 
+          theme: bannerSettings.theme,
+          showTemplateWeb: bannerSettings.showTemplateWeb,
+          showJasaWeb: bannerSettings.showJasaWeb
+        },
         ...products
       ];
       try {
         const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
         const data = await res.json();
-        if (data.success) { showToast('Pengaturan Tema & Banner berhasil disimpan!'); refreshPhonePreview(); }
+        if (data.success) { showToast('Pengaturan Tema & Menu berhasil disimpan!'); refreshPhonePreview(); }
       } catch (err) { showToast('Gagal terhubung ke Cloudflare', 'error'); }
     }
 
     async function saveAllProductsToKV() {
       showToast('Menyimpan perubahan ke Cloudflare KV...');
       const payload = [
-        { id: "__BANNER_CONFIG__", _isBannerConfig: true, active: bannerSettings.active, type: bannerSettings.type, imageUrl: bannerSettings.imageUrl, theme: bannerSettings.theme },
+        { 
+          id: "__BANNER_CONFIG__", 
+          _isBannerConfig: true, 
+          active: bannerSettings.active, 
+          type: bannerSettings.type, 
+          imageUrl: bannerSettings.imageUrl, 
+          theme: bannerSettings.theme,
+          showTemplateWeb: bannerSettings.showTemplateWeb,
+          showJasaWeb: bannerSettings.showJasaWeb
+        },
         ...products
       ];
       try {
@@ -980,8 +1035,8 @@
         </div>
 
         <div class="pt-2 border-t border-slate-100">
-          <label class="text-[10px] font-bold text-slate-500 block mb-1">Kunci Akun / Lisensi (Khusus NOKOS isi: kode_layanan,kode_negara):</label>
-          <textarea rows="2" class="var-items-input w-full px-3 py-2 bg-slate-800 text-emerald-400 border border-slate-700 rounded-xl font-mono text-[11px] placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Akun Biasa: email1@gmail.com : pass1\nKhusus Nokos: wa,62 (Contoh untuk Whatsapp Indonesia)">${items}</textarea>
+          <label class="text-[10px] font-bold text-slate-500 block mb-1">Kunci Akun / Lisensi:</label>
+          <textarea rows="2" class="var-items-input w-full px-3 py-2 bg-slate-800 text-emerald-400 border border-slate-700 rounded-xl font-mono text-[11px] placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Akun Biasa: email1@gmail.com : pass1">${items}</textarea>
         </div>
         <button type="button" onclick="this.parentElement.remove()" class="text-[10px] text-rose-600 hover:underline font-bold w-full text-right mt-1">Hapus Paket Ini</button>
       `;
