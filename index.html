@@ -17,6 +17,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  
   <style>
     /* PROTEKSI ANTI-SELECT & ANTI-COPY DI SELURUH WEBSITE */
     * {
@@ -79,14 +80,12 @@
     .theme-shopee .ring-\[\#f5125e\] { --tw-ring-color: #ee4d2d !important; }
     .theme-shopee .selection\:bg-\[\#f5125e\] *::selection { background-color: #ee4d2d !important; }
     
-    /* Sudut Kotak Kaku ala Marketplace */
     .theme-shopee .rounded-2xl { border-radius: 0.25rem !important; }
     .theme-shopee .rounded-3xl { border-radius: 0.25rem !important; }
     .theme-shopee .rounded-xl { border-radius: 0.25rem !important; }
     .theme-shopee .rounded-lg { border-radius: 0.25rem !important; }
     .theme-shopee .rounded-full { border-radius: 9999px !important; }
     
-    /* Warna Background Soft Oranye */
     .theme-shopee .bg-rose-50 { background-color: #fff0ed !important; }
     .theme-shopee .text-rose-600 { color: #ee4d2d !important; }
     .theme-shopee .border-rose-200 { border-color: #ffc9b9 !important; }
@@ -95,7 +94,6 @@
     .theme-shopee .hover\:border-rose-200:hover { border-color: #ffc9b9 !important; }
     .theme-shopee .active\:bg-rose-100:active { background-color: #ffc9b9 !important; }
     
-    /* Tombol Kategori Aktif */
     .theme-shopee .active-cat .cat-icon-box { background-color: #ee4d2d !important; border-color: #ee4d2d !important; color: white !important; }
     .theme-shopee .active-cat span { color: #ee4d2d !important; }
   </style>
@@ -105,7 +103,7 @@
   <!-- Toast Container -->
   <div id="toast-container" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none w-full max-w-xs px-4"></div>
 
-  <!-- POPUP INSTALL PWA KUSTOM -->
+  <!-- POPUP INSTALL PWA -->
   <div id="pwa-install-popup" class="fixed inset-0 bg-black/75 z-[9999] hidden flex items-center justify-center p-5 backdrop-blur-2xs transition-opacity duration-300">
     <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center shadow-2xl transform transition-all space-y-4">
       <div class="w-20 h-20 bg-rose-50 text-[#f5125e] rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner border-4 border-white outline outline-4 outline-rose-100">
@@ -165,7 +163,7 @@
             type="text" 
             id="search-input" 
             oninput="handleSearch(this.value)" 
-            placeholder="Cari Template Web, Jasa, AI..." 
+            placeholder="Cari Template, Jasa Web, AI..." 
             class="w-full bg-transparent text-slate-800 text-xs sm:text-sm font-medium focus:outline-none placeholder:text-slate-400 px-1" 
           />
           <label for="camera-search-input" class="p-1.5 text-slate-400 hover:text-[#f5125e] cursor-pointer rounded-full transition-colors flex items-center justify-center flex-shrink-0" title="Cari dengan Gambar">
@@ -178,7 +176,6 @@
           </button>
         </form>
         
-        <!-- TOMBOL INSTALL APP PC -->
         <button onclick="triggerPwaPromptUI()" class="hidden sm:flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 bg-slate-100 text-slate-500 hover:text-[#f5125e] hover:bg-rose-50 border border-slate-200 hover:border-rose-200 rounded-full transition-all flex-shrink-0" title="Install Aplikasi">
           <i data-lucide="arrow-down" class="w-4 h-4 sm:w-5 sm:h-5"></i>
         </button>
@@ -225,9 +222,13 @@
       </div>
     </div>
 
-    <!-- Menu Kategori Grid (Nokos dihapus, Followers diganti Jasa Web, Blogger diganti Template Web) -->
-    <div class="bg-white rounded-2xl p-3.5 sm:p-5 shadow-2xs border border-slate-200/80">
-      <div id="category-buttons-grid" class="grid grid-cols-3 sm:grid-cols-6 gap-3 sm:gap-4 text-center text-[11px] font-semibold text-slate-700">
+    <!-- Menu Kategori Grid (Diperlebar menjadi 7 Kolom agar Landing Page tidak hilang) -->
+    <div class="bg-white rounded-2xl p-3.5 sm:p-5 shadow-2xs border border-slate-200/80 overflow-hidden">
+      <div id="category-buttons-grid" class="grid grid-cols-4 md:grid-cols-7 gap-3 sm:gap-4 text-center text-[11px] font-semibold text-slate-700">
+        <div onclick="setCategory('Semua')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group active-cat" data-cat="Semua">
+          <div class="cat-icon-box w-12 h-12 bg-[#f5125e] text-white rounded-2xl flex items-center justify-center border border-[#f5125e] group-hover:scale-105 transition-all shadow-2xs"><i data-lucide="grid" class="w-5 h-5"></i></div>
+          <span class="truncate w-full font-bold text-[#f5125e]">Semua</span>
+        </div>
         <div onclick="setCategory('AI')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="AI">
           <div class="cat-icon-box w-12 h-12 bg-rose-50 text-[#f5125e] rounded-2xl flex items-center justify-center border border-rose-100 group-hover:scale-105 group-hover:bg-[#f5125e] group-hover:text-white transition-all shadow-2xs"><i data-lucide="bot" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Akun AI</span>
@@ -251,8 +252,6 @@
         <div onclick="setCategory('Stream')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Stream">
           <div class="cat-icon-box w-12 h-12 bg-violet-50 text-violet-600 rounded-2xl flex items-center justify-center border border-violet-100 group-hover:scale-105 group-hover:bg-violet-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="play-square" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Streaming</span>
-        </div>
-        <div onclick="setCategory('Semua')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group active-cat hidden" data-cat="Semua">
         </div>
       </div>
     </div>
@@ -346,10 +345,10 @@
   <!-- MODAL DETAIL PRODUK (DENGAN JUMLAH FIX DI BAWAH) -->
   <div id="detail-modal" class="fixed inset-0 z-50 overflow-hidden hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
     <div onclick="closeDetailModal()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-    <div id="detail-modal-card" class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col h-[90vh] sm:h-auto sm:max-h-[92vh] relative z-10">
+    <div id="detail-modal-card" class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col h-[90vh] sm:h-auto sm:max-h-[92vh] relative z-10 overflow-hidden">
       
       <!-- Modal Header (Fixed) -->
-      <div class="relative p-4 border-b border-slate-100 flex items-center gap-3.5 flex-shrink-0">
+      <div class="relative p-4 border-b border-slate-100 flex items-center gap-3.5 flex-shrink-0 bg-white">
         <img id="modal-img" src="" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-contain bg-slate-50 p-1 border border-slate-100 flex-shrink-0" />
         <div class="min-w-0 flex-1">
           <span id="modal-category" class="text-[9px] uppercase font-bold text-[#f5125e] bg-rose-50 px-2 py-0.5 rounded-md"></span>
@@ -360,7 +359,7 @@
       </div>
 
       <!-- Modal Body (Scrollable) -->
-      <div class="p-4 overflow-y-auto space-y-4 text-xs sm:text-sm flex-1">
+      <div class="p-4 overflow-y-auto space-y-4 text-xs sm:text-sm flex-1 bg-white">
         <div>
           <h4 class="font-bold text-slate-800 mb-1.5 flex items-center justify-between text-xs">
             <span>Pilihan Varian / Layanan:</span>
@@ -411,9 +410,9 @@
       </div>
 
       <!-- Modal Bottom Actions (Fixed Permanen di Bawah) -->
-      <div class="bg-white flex flex-col mt-auto shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] rounded-b-3xl sm:rounded-b-3xl flex-shrink-0 z-10">
-        <!-- SEKSI JUMLAH / QUANTITY -->
-        <div class="px-4 py-3 flex items-center justify-between border-b border-slate-50">
+      <div class="bg-white flex flex-col flex-shrink-0 z-20 shadow-[0_-4px_10px_-1px_rgba(0,0,0,0.1)] rounded-b-3xl sm:rounded-b-3xl w-full">
+        <!-- SEKSI JUMLAH / QUANTITY (PERMANEN DI BAWAH) -->
+        <div class="px-4 py-3 flex items-center justify-between border-b border-slate-100">
           <span class="font-bold text-slate-800 text-xs sm:text-sm">Jumlah Pembelian</span>
           <div class="flex items-center border border-slate-200 rounded-lg overflow-hidden bg-white shadow-sm">
             <button type="button" onclick="changeQuantity(-1)" class="w-8 h-8 flex items-center justify-center text-slate-500 hover:bg-slate-100 transition active:bg-slate-200"><i data-lucide="minus" class="w-4 h-4"></i></button>
@@ -423,7 +422,7 @@
         </div>
 
         <!-- TOMBOL AKSI UTAMA -->
-        <div class="p-3.5 bg-slate-50 grid grid-cols-5 gap-2 rounded-b-3xl">
+        <div class="p-3.5 bg-slate-50 grid grid-cols-5 gap-2 rounded-b-3xl sm:rounded-b-3xl">
           <button id="modal-btn-chat" type="button" class="col-span-1 border border-rose-200 bg-rose-50 hover:bg-rose-100 text-[#f5125e] rounded-xl flex flex-col items-center justify-center p-2 transition-colors"><i data-lucide="message-square-more" class="w-4 h-4"></i><span class="text-[9px] font-bold">Chat</span></button>
           <button id="modal-btn-cart" type="button" class="col-span-2 bg-rose-50 text-[#f5125e] border border-rose-200 font-bold rounded-xl text-xs py-2.5 transition-colors">+ Keranjang</button>
           <button id="modal-btn-buy" type="button" class="col-span-2 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white font-bold rounded-xl text-xs py-2.5 shadow-xs transition-transform active:scale-95">Beli Sekarang</button>
@@ -481,16 +480,14 @@
   </div>
 
   <!-- MODAL RIWAYAT PESANAN -->
-  <div id="history-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
+  <div id="history-modal" class="fixed inset-0 z-50 overflow-hidden hidden flex items-center justify-center p-4 z-50">
     <div onclick="closeHistoryModal()" class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
-    <div class="fixed inset-0 flex items-center justify-center p-4 z-50">
-      <div id="history-modal-card" class="bg-white w-full max-w-lg rounded-3xl shadow-2xl p-5 flex flex-col max-h-[90vh]">
-        <div class="flex justify-between items-center pb-3 border-b border-slate-100">
-          <h3 class="font-bold text-sm sm:text-base text-slate-800 flex items-center gap-2"><i data-lucide="history" class="w-5 h-5 text-[#f5125e]"></i> Riwayat Pembelian Akun</h3>
-          <button onclick="closeHistoryModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
-        </div>
-        <div id="history-list" class="flex-1 overflow-y-auto space-y-3 pr-1 mt-3"></div>
+    <div id="history-modal-card" class="bg-white w-full max-w-lg rounded-3xl shadow-2xl p-5 flex flex-col max-h-[90vh] relative z-10">
+      <div class="flex justify-between items-center pb-3 border-b border-slate-100">
+        <h3 class="font-bold text-sm sm:text-base text-slate-800 flex items-center gap-2"><i data-lucide="history" class="w-5 h-5 text-[#f5125e]"></i> Riwayat Pembelian Akun</h3>
+        <button onclick="closeHistoryModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
+      <div id="history-list" class="flex-1 overflow-y-auto space-y-3 pr-1 mt-3"></div>
     </div>
   </div>
 
@@ -512,7 +509,7 @@
     </div>
   </div>
 
-  <!-- MODAL & DRAWER LIVE CHAT CS ASISTEN (SMART BOT MEMORY) -->
+  <!-- MODAL & DRAWER LIVE CHAT CS ASISTEN -->
   <div id="chat-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div onclick="closeChatModal()" class="absolute inset-0 bg-black/50 backdrop-blur-2xs"></div>
     <div class="fixed inset-y-0 right-0 max-w-full flex pl-10 z-50">
@@ -648,8 +645,8 @@
       { user: 'Rian P. (Jakarta Selatan)', product: 'CapCut Pro 1 Tahun', time: '2 menit lalu' },
       { user: 'Dewi Anggraini (Bandung)', product: 'Alight Motion 1 Tahun', time: 'Baru saja' },
       { user: 'Andi Wibowo (Yogyakarta)', product: 'YouTube Premium 3 Bulan', time: '3 menit lalu' },
-      { user: 'Siti Marwah (Semarang)', product: 'Template Blogger Toko Online', time: '5 menit lalu' },
-      { user: 'Dimas K. (Malang)', product: '1.000 Followers Instagram', time: '1 menit lalu' }
+      { user: 'Siti Marwah (Semarang)', product: 'Template Web Bisnis Pro', time: '5 menit lalu' },
+      { user: 'Dimas K. (Malang)', product: 'Jasa Pembuatan Landing Page', time: '1 menit lalu' }
     ];
 
     function startSocialProofNotifications() {
@@ -657,18 +654,13 @@
       setInterval(() => {
         const item = livePurchasesData[idx % livePurchasesData.length];
         idx++;
-
         const toast = document.getElementById('social-proof-toast');
         if (!toast) return;
-
         document.getElementById('sp-user').innerText = item.user;
         document.getElementById('sp-product').innerText = item.product;
         document.getElementById('sp-time').innerText = `${item.time} • Terverifikasi Otomatis`;
-        
         toast.classList.remove('opacity-0', 'translate-y-6');
-        setTimeout(() => {
-          toast.classList.add('opacity-0', 'translate-y-6');
-        }, 4000);
+        setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-6'); }, 4000);
       }, 9000);
     }
 
@@ -753,21 +745,32 @@
       
       document.getElementById('loading-indicator').classList.add('hidden');
       document.getElementById('product-grid').classList.remove('hidden');
+      
       renderPopularSection();
       renderProducts();
       renderCart();
     }
 
-    function setCategory(cat) {
+    window.setCategory = function(cat) {
       activeCategory = cat || 'Semua';
       const badge = document.getElementById('active-category-badge');
       if (badge) badge.innerText = activeCategory;
+
+      const popSec = document.getElementById('popular-section');
+      if (activeCategory.toLowerCase() === 'semua') {
+         renderPopularSection(); 
+      } else {
+         if (popSec) popSec.classList.add('hidden');
+      }
 
       const buttons = document.querySelectorAll('.category-btn');
       buttons.forEach(btn => {
         const btnCat = btn.getAttribute('data-cat');
         const iconBox = btn.querySelector('.cat-icon-box');
         const label = btn.querySelector('span');
+        
+        if (!iconBox || !label) return;
+        
         if (btnCat && btnCat.toLowerCase() === activeCategory.toLowerCase()) {
           iconBox.className = 'cat-icon-box w-12 h-12 bg-[#f5125e] text-white rounded-2xl flex items-center justify-center border border-[#f5125e] shadow-xs';
           label.className = 'truncate w-full font-bold text-[#f5125e]';
@@ -778,10 +781,7 @@
       });
       renderProducts();
       if(typeof lucide !== 'undefined') lucide.createIcons();
-    }
-    
-    // Terekspos ke window agar dipanggil dari onclick HTML
-    window.setCategory = setCategory;
+    };
 
     window.handleSearch = function(q) { searchQuery = (q || '').toLowerCase(); renderProducts(); };
     window.handleSortChange = function(s) { currentSort = s; renderProducts(); };
@@ -821,12 +821,16 @@
       const popGrid = document.getElementById('popular-grid');
       
       const bestProducts = products.filter(p => {
-          return (p.isBestSeller || p.isHot);
+          const cat = (p.category || '').toLowerCase();
+          return (p.isBestSeller || p.isHot) && !cat.includes('landing');
       });
       
-      if (bestProducts.length === 0) { popSec.classList.add('hidden'); return; }
+      if (bestProducts.length === 0 || activeCategory.toLowerCase() !== 'semua') { 
+          if(popSec) popSec.classList.add('hidden'); 
+          return; 
+      }
 
-      popSec.classList.remove('hidden');
+      if(popSec) popSec.classList.remove('hidden');
       popGrid.innerHTML = bestProducts.slice(0, 4).map(item => {
         const prices = item.variants && item.variants.length > 0 ? item.variants.map(v => Number(v.price || 0)) : [Number(item.price || 0)];
         const minPrice = Math.min(...prices);
@@ -860,17 +864,17 @@
         
         let matchesCategory = false;
         if (targetCat === 'semua') {
-          matchesCategory = true;
+          matchesCategory = !itemCat.includes('landing');
         } else if (targetCat === 'ai') {
           matchesCategory = itemCat.includes('ai') || itemCat.includes('gemini') || itemCat.includes('chatgpt') || itemCat.includes('claude');
         } else if (targetCat === 'editor') {
-          matchesCategory = itemCat.includes('editor') || itemCat.includes('edit') || itemCat.includes('video') || itemCat.includes('capcut') || itemCat.includes('alight');
+          matchesCategory = itemCat.includes('editor') || itemCat.includes('edit') || itemCat.includes('video') || itemCat.includes('capcut') || itemCat.includes('alight') || itemCat.includes('app');
         } else if (targetCat === 'template web') {
           matchesCategory = itemCat.includes('blogger') || itemCat.includes('template') || itemCat.includes('theme') || itemCat.includes('web');
         } else if (targetCat === 'landing') {
-          matchesCategory = itemCat.includes('landing') || itemCat.includes('web') || itemCat.includes('website');
+          matchesCategory = itemCat.includes('landing') || itemCat.includes('website');
         } else if (targetCat === 'jasa web') {
-          matchesCategory = itemCat.includes('sosmed') || itemCat.includes('follower') || itemCat.includes('jasa') || itemCat.includes('bikin') || itemCat.includes('web');
+          matchesCategory = itemCat.includes('sosmed') || itemCat.includes('follower') || itemCat.includes('like') || itemCat.includes('sub') || itemCat.includes('jasa') || itemCat.includes('bikin');
         } else if (targetCat === 'stream') {
           matchesCategory = itemCat.includes('stream') || itemCat.includes('youtube') || itemCat.includes('netflix') || itemCat.includes('spotify') || itemCat.includes('music');
         } else {
@@ -915,8 +919,8 @@
         return `
           <div onclick="openDetailModal(${item.id})" class="bg-white rounded-2xl p-2.5 sm:p-3 border border-slate-200/90 shadow-2xs flex flex-col justify-between cursor-pointer hover:border-[#f5125e] hover:shadow-md transition-all group relative">
             <div>
-              ${item.isBestSeller ? `<span class="absolute top-2 left-2 bg-[#f5125e] text-white text-[8px] font-bold px-1.5 py-0.5 rounded shadow-xs z-10">BEST SELLER</span>` : ''}
-              ${item.isHot ? `<span class="absolute top-2 right-2 bg-amber-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded shadow-xs z-10">HOT</span>` : ''}
+              ${item.isBestSeller ? `<span class="absolute top-2 left-2 bg-[#f5125e] text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-xs z-10">BEST SELLER</span>` : ''}
+              ${item.isHot ? `<span class="absolute top-2 right-2 bg-amber-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-xs z-10">HOT</span>` : ''}
               <div class="w-full aspect-square rounded-xl overflow-hidden bg-slate-50 flex items-center justify-center p-2 mb-2 border border-slate-100 group-hover:scale-[1.02] transition-transform">
                 <img src="${item.image || 'https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png'}" alt="${item.name || 'Produk'}" class="w-full h-full object-contain" loading="lazy" />
               </div>
@@ -1000,21 +1004,6 @@
       
       document.getElementById('modal-desc').innerText = currentSelectedVariant.desc || currentSelectedProduct.description || 'Tidak ada deskripsi.';
       document.getElementById('modal-terms').innerText = currentSelectedVariant.terms || currentSelectedProduct.terms || 'Mengikuti kebijakan garansi toko.';
-
-      document.getElementById('modal-btn-chat').onclick = () => {
-        closeDetailModal();
-        openChatModalWithProduct(currentSelectedProduct.name, currentSelectedVariant.name, currentSelectedVariant.price);
-      };
-      
-      document.getElementById('modal-btn-cart').onclick = () => { 
-          window.addToCart(currentSelectedProduct, currentSelectedVariant, currentSelectedQuantity); 
-          closeDetailModal(); 
-      };
-      
-      document.getElementById('modal-btn-buy').onclick = () => { 
-          closeDetailModal(); 
-          startNormalCheckout(currentSelectedProduct, currentSelectedVariant, currentSelectedQuantity); 
-      };
     };
 
     window.selectVariant = function(idx) {
@@ -1024,6 +1013,25 @@
 
     window.closeDetailModal = function() { 
         document.getElementById('detail-modal').classList.add('hidden'); 
+    };
+
+    // Tombol Chat, Keranjang, Beli 
+    window.handleModalChat = function() {
+        if (!currentSelectedProduct || !currentSelectedVariant) return;
+        closeDetailModal();
+        openChatModalWithProduct(currentSelectedProduct.name, currentSelectedVariant.name, currentSelectedVariant.price);
+    };
+
+    window.handleModalCart = function() {
+        if (!currentSelectedProduct || !currentSelectedVariant) return;
+        window.addToCart(currentSelectedProduct, currentSelectedVariant, currentSelectedQuantity); 
+        closeDetailModal();
+    };
+
+    window.handleModalBuy = function() {
+        if (!currentSelectedProduct || !currentSelectedVariant) return;
+        closeDetailModal(); 
+        startNormalCheckout(currentSelectedProduct, currentSelectedVariant, currentSelectedQuantity); 
     };
 
     // Checkout Produk Biasa
@@ -1052,7 +1060,7 @@
       if(typeof lucide !== 'undefined') lucide.createIcons();
 
       let payloadBody = { productId: product.id, variantName: variant.name, quantity: qty };
-      if (isCart) payloadBody.cartTotal = totalPrice;
+      if (isCart) payloadBody.cartTotal = totalPrice; 
 
       try {
         const txRes = await fetch(`${API_URL}/create-tripay-tx`, {
@@ -1333,7 +1341,7 @@
         const varName = v && v.name ? v.name : '';
         const finalName = varName ? `${prodName} (${varName}) x${qty}` : `${prodName} x${qty}`;
         const unitPrice = v && v.price ? Number(v.price) : (p && p.price ? Number(p.price) : 0);
-        const finalPrice = unitPrice * qty; // Total harga dikali jumlah beli
+        const finalPrice = unitPrice * qty; 
         const img = p && p.image ? p.image : 'https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png';
         const id = p && p.id ? p.id : Date.now();
 
@@ -1460,7 +1468,7 @@
         } else if(cat.includes('editor') || cat.includes('canva') || cat.includes('capcut')) {
             commentsAll[1] = `Bisa langsung dipakai edit tanpa watermark. ${pName} premium memang beda, semua fitur pro kebuka.`;
         } else if(cat.includes('sosmed') || cat.includes('jasa')) {
-            commentsAll[1] = `Amanah banget, pesanan ${pName} langsung masuk sesuai target. Enggak drop sama sekali!`;
+            commentsAll[1] = `Amanah banget, pesanan ${pName} langsung diproses sesuai kesepakatan. Mantap!`;
         } else if(cat.includes('stream') || cat.includes('netflix')) {
             commentsAll[1] = `Nonton kualitas HD/4K lancar tanpa screen limit. Beli ${pName} di sini paling murah dan terpercaya.`;
         }
