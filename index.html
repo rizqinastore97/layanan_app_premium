@@ -1566,7 +1566,62 @@ const menuTemplate = document.getElementById('menu-template-web');
           <p class="text-[11.5px] text-slate-700 leading-relaxed">${rev.comment}</p>
         </div>`).join('');
     }
+// ================= FUNGSI TOMBOL HEADER (ATAS) =================
+    
+    // 1. Fungsi Buka/Tutup Riwayat Pesanan
+    window.openHistoryModal = function() {
+      let history = [];
+      try { history = JSON.parse(localStorage.getItem('my_digital_orders')) || []; } catch(e){}
+      if(!Array.isArray(history)) history = [];
+      
+      const container = document.getElementById('history-list');
+      if (history.length === 0) {
+        container.innerHTML = `<div class="py-12 text-center text-slate-400 text-xs"><i data-lucide="receipt" class="w-8 h-8 mx-auto mb-1 stroke-1"></i>Belum ada riwayat pesanan</div>`;
+      } else {
+        container.innerHTML = history.map((item) => `
+          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="text-[9px] font-bold text-[#f5125e] bg-rose-50 px-2 py-0.5 rounded font-mono">${item.reference}</span>
+                <h4 class="font-bold text-xs sm:text-sm text-slate-800 mt-1">${item.productName} (${item.variantName})</h4>
+                <p class="text-[10px] text-slate-400">${item.date}</p>
+              </div>
+            </div>
+            <div class="bg-white border rounded-xl p-2.5"><pre class="font-mono text-xs text-slate-800 whitespace-pre-wrap select-all">${item.account}</pre></div>
+          </div>
+        `).join('');
+      }
+      document.getElementById('history-modal').classList.remove('hidden');
+      if(typeof lucide !== 'undefined') lucide.createIcons();
+    };
 
+    window.closeHistoryModal = function() { 
+        document.getElementById('history-modal').classList.add('hidden'); 
+    };
+
+    // 2. Fungsi Buka/Tutup Keranjang
+    window.toggleCart = function(open) {
+      if (open) { 
+        document.getElementById('cart-modal').classList.remove('hidden'); 
+        setTimeout(() => document.getElementById('cart-drawer').classList.remove('translate-x-full'), 10);
+      } else { 
+        document.getElementById('cart-drawer').classList.add('translate-x-full');
+        setTimeout(() => document.getElementById('cart-modal').classList.add('hidden'), 250);
+      }
+    };
+
+    // 3. Fungsi Buka/Tutup Chat CS Asisten
+    window.openChatModal = function() {
+      document.getElementById('chat-modal').classList.remove('hidden');
+      setTimeout(() => document.getElementById('chat-drawer').classList.remove('translate-x-full'), 10);
+      chatBotState = 'normal'; 
+      if(typeof lucide !== 'undefined') lucide.createIcons();
+    };
+
+    window.closeChatModal = function() {
+      document.getElementById('chat-drawer').classList.add('translate-x-full');
+      setTimeout(() => document.getElementById('chat-modal').classList.add('hidden'), 250);
+    };
     // Inisialisasi awal
     loadProducts();
     startSocialProofNotifications();
