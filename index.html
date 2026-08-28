@@ -345,15 +345,21 @@
     </div>
   </main>
 
-  <!-- Mobile Bottom Nav -->
-  <div class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200/80 z-40 py-2 px-6 flex md:hidden items-center justify-between text-slate-500 text-[10px] font-medium shadow-lg">
+<!-- Mobile Bottom Nav -->
+  <div class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200/80 z-40 py-2 px-3 flex md:hidden items-center justify-between text-slate-500 text-[10px] font-medium shadow-lg">
     <button onclick="setCategory('Semua')" class="flex flex-col items-center gap-0.5 text-[#f5125e]"><i data-lucide="home" class="w-4 h-4"></i><span>Beranda</span></button>
     <button onclick="triggerPwaPromptUI()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="download" class="w-4 h-4 text-emerald-600"></i><span>App</span></button>
     <button onclick="openHistoryModal()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="receipt" class="w-4 h-4"></i><span>Pesanan</span></button>
+    
+    <!-- TOMBOL GABUNG GRUP WA -->
+    <a href="https://chat.whatsapp.com/GyWih0duwCfBEZg8w9Tx1f" target="_blank" class="flex flex-col items-center gap-0.5 text-emerald-600 font-bold">
+      <i data-lucide="users" class="w-4 h-4"></i>
+      <span>Grup WA</span>
+    </a>
+
     <button onclick="toggleCart(true)" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="shopping-bag" class="w-4 h-4"></i><span>Keranjang</span></button>
     <button onclick="openChatModal()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="message-square-more" class="w-4 h-4"></i><span>Chat CS</span></button>
   </div>
-
   <!-- MODAL DETAIL PRODUK (DENGAN SLIDER GAMBAR & HARGA CORET) -->
 <div id="detail-modal" class="fixed inset-0 z-50 overflow-hidden hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
   <div onclick="closeDetailModal()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
