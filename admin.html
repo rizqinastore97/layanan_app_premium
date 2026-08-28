@@ -389,17 +389,19 @@
 
           <div class="grid grid-cols-2 gap-2.5">
             <div>
-              <label class="font-bold text-slate-700 block mb-1">Kategori:</label>
-              <input type="text" id="prod-form-category" list="category-options" placeholder="Pilih..." class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none font-bold text-slate-700" required />
-              <datalist id="category-options">
-                <option value="AI">AI</option>
-                <option value="Editor">Editor</option>
-                <option value="Template Web">Template Web</option>
-                <option value="Landing">Landing Page</option>
-                <option value="Jasa Web">Jasa Web</option>
-                <option value="Stream">Streaming</option>
-              </datalist>
-            </div>
+              <!-- KODE BARU -->
+<div>
+  <label class="font-bold text-slate-700 block mb-1">Kategori:</label>
+  <input type="text" id="prod-form-category" list="category-options" placeholder="Pilih atau ketik kategori..." class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none font-bold text-slate-700" required />
+  <datalist id="category-options">
+    <option value="AI">
+    <option value="Editor">
+    <option value="Template Web">
+    <option value="Landing">
+    <option value="Jasa Web">
+    <option value="Stream">
+  </datalist>
+</div>
             <div>
               <label class="font-bold text-slate-700 block mb-1">Garansi:</label>
               <input type="text" id="prod-form-warranty" placeholder="Resmi 1 Bulan" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
@@ -997,52 +999,58 @@
 
       const varContainer = document.getElementById('variants-form-container');
       varContainer.innerHTML = '';
-      (p.variants || []).forEach(v => {
-        const rawItems = (v.items && Array.isArray(v.items)) ? v.items.join('\n') : '';
-        const vDesc = v.desc || p.description || ''; 
-        const vTerms = v.terms || p.terms || '';
-        addVariantFormRow(v.name, v.price, rawItems, vDesc, vTerms);
-      });
+     // DI DALAM editProduct(), SESUAIKAN PEMANGGILAN addVariantFormRow:
+(p.variants || []).forEach(v => {
+  const rawItems = (v.items && Array.isArray(v.items)) ? v.items.join('\n') : '';
+  const vDesc = v.desc || p.description || ''; 
+  const vTerms = v.terms || p.terms || '';
+  addVariantFormRow(v.name, v.price, v.originalPrice || 0, rawItems, vDesc, vTerms); // MASUKKAN v.originalPrice DISINI
+});
       document.getElementById('product-modal').classList.remove('hidden');
       lucide.createIcons();
     }
 
-    function addVariantFormRow(name = '', price = 0, items = '', desc = '', terms = '') {
-      const container = document.getElementById('variants-form-container');
-      const div = document.createElement('div');
-      div.className = 'bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-2xs';
-      div.innerHTML = `
-        <div class="grid grid-cols-2 gap-3 border-b border-slate-100 pb-3">
-          <div>
-            <label class="text-[10px] font-bold text-slate-700 block mb-0.5">Nama Paket:</label>
-            <input type="text" placeholder="Contoh: 1 Bulan" value="${name}" class="var-name-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
-          </div>
-          <div>
-            <label class="text-[10px] font-bold text-slate-700 block mb-0.5">Harga (Rp):</label>
-            <input type="number" placeholder="15000" value="${price}" class="var-price-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
-          </div>
-        </div>
-        
-        <div class="space-y-2">
-          <div>
-            <label class="text-[10px] font-bold text-slate-700 block mb-0.5">Deskripsi Khusus Varian Ini:</label>
-            <textarea rows="3" class="var-desc-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs leading-relaxed text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Tuliskan fitur unggulan paket ini...">${desc}</textarea>
-          </div>
-          <div>
-            <label class="text-[10px] font-bold text-slate-700 block mb-0.5 flex items-center gap-1"><i data-lucide="shield-alert" class="w-3 h-3 text-amber-500"></i> Syarat & Ketentuan Varian Ini:</label>
-            <textarea rows="2" class="var-terms-input w-full px-3 py-2 bg-amber-50/30 border border-amber-200/60 rounded-xl text-xs leading-relaxed text-amber-900 focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="S&K yang berlaku...">${terms}</textarea>
-          </div>
-        </div>
+    // GANTI FUNGSI LAMA DENGAN INI
+function addVariantFormRow(name = '', price = 0, originalPrice = 0, items = '', desc = '', terms = '') {
+  const container = document.getElementById('variants-form-container');
+  const div = document.createElement('div');
+  div.className = 'bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-2xs';
+  div.innerHTML = `
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 border-b border-slate-100 pb-3">
+      <div>
+        <label class="text-[10px] font-bold text-slate-700 block mb-0.5">Nama Paket:</label>
+        <input type="text" placeholder="Contoh: Paket Basic" value="${name}" class="var-name-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+      </div>
+      <div>
+        <label class="text-[10px] font-bold text-slate-700 block mb-0.5">Harga Jual (Rp):</label>
+        <input type="number" placeholder="99000" value="${price}" class="var-price-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+      </div>
+      <div>
+        <label class="text-[10px] font-bold text-slate-700 block mb-0.5">Harga Coret (Opsional):</label>
+        <input type="number" placeholder="199000" value="${originalPrice || ''}" class="var-orig-price-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+      </div>
+    </div>
+    
+    <div class="space-y-2">
+      <div>
+        <label class="text-[10px] font-bold text-slate-700 block mb-0.5">Deskripsi Khusus Varian Ini:</label>
+        <textarea rows="2" class="var-desc-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs leading-relaxed text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Tuliskan fitur unggulan paket ini...">${desc}</textarea>
+      </div>
+      <div>
+        <label class="text-[10px] font-bold text-slate-700 block mb-0.5 flex items-center gap-1"><i data-lucide="shield-alert" class="w-3 h-3 text-amber-500"></i> Syarat & Ketentuan Varian Ini:</label>
+        <textarea rows="2" class="var-terms-input w-full px-3 py-2 bg-amber-50/30 border border-amber-200/60 rounded-xl text-xs leading-relaxed text-amber-900 focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="S&K yang berlaku...">${terms}</textarea>
+      </div>
+    </div>
 
-        <div class="pt-2 border-t border-slate-100">
-          <label class="text-[10px] font-bold text-slate-500 block mb-1">Kunci Akun / Lisensi:</label>
-          <textarea rows="2" class="var-items-input w-full px-3 py-2 bg-slate-800 text-emerald-400 border border-slate-700 rounded-xl font-mono text-[11px] placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Akun Biasa: email1@gmail.com : pass1">${items}</textarea>
-        </div>
-        <button type="button" onclick="this.parentElement.remove()" class="text-[10px] text-rose-600 hover:underline font-bold w-full text-right mt-1">Hapus Paket Ini</button>
-      `;
-      container.appendChild(div);
-      lucide.createIcons();
-    }
+    <div class="pt-2 border-t border-slate-100">
+      <label class="text-[10px] font-bold text-slate-500 block mb-1">Kunci Akun / Lisensi / Link Download:</label>
+      <textarea rows="2" class="var-items-input w-full px-3 py-2 bg-slate-800 text-emerald-400 border border-slate-700 rounded-xl font-mono text-[11px] placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Link Google Drive / Akun otomatis...">${items}</textarea>
+    </div>
+    <button type="button" onclick="this.parentElement.remove()" class="text-[10px] text-rose-600 hover:underline font-bold w-full text-right mt-1">Hapus Paket Ini</button>
+  `;
+  container.appendChild(div);
+  lucide.createIcons();
+}
 
     function closeProductModal() { document.getElementById('product-modal').classList.add('hidden'); }
 
@@ -1051,15 +1059,20 @@
       const varRows = document.querySelectorAll('#variants-form-container > div');
       const variants = [];
       
-      varRows.forEach(row => {
-        const name = row.querySelector('.var-name-input').value.trim();
-        const price = Number(row.querySelector('.var-price-input').value) || 0;
-        const rawItems = row.querySelector('.var-items-input').value.trim();
-        const desc = row.querySelector('.var-desc-input').value.trim();
-        const terms = row.querySelector('.var-terms-input').value.trim();
-        const items = rawItems ? rawItems.split('\n').map(i => i.trim()).filter(Boolean) : [];
-        if (name) { variants.push({ name, price, stock: items.length, items, desc, terms }); }
-      });
+      // DI DALAM FUNGSI handleSaveProduct(e), SESUAIKAN BAGIAN INI:
+varRows.forEach(row => {
+  const name = row.querySelector('.var-name-input').value.trim();
+  const price = Number(row.querySelector('.var-price-input').value) || 0;
+  const originalPrice = Number(row.querySelector('.var-orig-price-input').value) || 0; // TAMBAHKAN INI
+  const rawItems = row.querySelector('.var-items-input').value.trim();
+  const desc = row.querySelector('.var-desc-input').value.trim();
+  const terms = row.querySelector('.var-terms-input').value.trim();
+  const items = rawItems ? rawItems.split('\n').map(i => i.trim()).filter(Boolean) : [];
+  
+  if (name) { 
+    variants.push({ name, price, originalPrice, stock: items.length, items, desc, terms }); // MASUKKAN originalPrice DISINI
+  }
+});
 
       const newProductData = {
         id: currentEditingProductId ? currentEditingProductId : Date.now(),
