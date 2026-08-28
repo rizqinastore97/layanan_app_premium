@@ -1614,6 +1614,70 @@
     loadProducts();
     startSocialProofNotifications();
     if(typeof lucide !== 'undefined') lucide.createIcons();
+  
+  // Pantau perubahan riwayat browser (saat tombol back HP ditekan)
+  window.addEventListener('popstate', function(event) {
+    let isModalClosed = false;
+    
+    // Tutup Modal Detail Produk jika sedang terbuka
+    const detailModal = document.getElementById('detail-modal');
+    if (detailModal && !detailModal.classList.contains('hidden')) {
+      detailModal.classList.add('hidden');
+      isModalClosed = true;
+    }
+    
+    // Tutup Keranjang jika sedang terbuka
+    const cartModal = document.getElementById('cart-modal');
+    if (cartModal && !cartModal.classList.contains('hidden')) {
+      toggleCart(false);
+      isModalClosed = true;
+    }
+    
+    // Tutup Modal Riwayat Pesanan jika sedang terbuka
+    const historyModal = document.getElementById('history-modal');
+    if (historyModal && !historyModal.classList.contains('hidden')) {
+      historyModal.classList.add('hidden');
+      isModalClosed = true;
+    }
+
+    // Tutup Modal Chat CS jika sedang terbuka
+    const chatModal = document.getElementById('chat-modal');
+    if (chatModal && !chatModal.classList.contains('hidden')) {
+      closeChatModal();
+      isModalClosed = true;
+    }
+
+    // Tutup Modal Pembayaran QRIS jika sedang terbuka
+    const payModal = document.getElementById('payment-modal');
+    if (payModal && !payModal.classList.contains('hidden')) {
+      payModal.classList.add('hidden');
+      if (typeof pollingInterval !== 'undefined' && pollingInterval) clearInterval(pollingInterval);
+      isModalClosed = true;
+    }
+  });
+
+  const originalOpenDetailModal = window.openDetailModal;
+  window.openDetailModal = function(id) {
+    history.pushState({ modalOpen: true }, '', '#detail');
+    originalOpenDetailModal(id);
+  };
+  const originalToggleCart = window.toggleCart;
+  window.toggleCart = function(open) {
+    if (open) {
+      history.pushState({ modalOpen: true }, '', '#cart');
+    }
+    originalToggleCart(open);
+  };
+  const originalOpenHistoryModal = window.openHistoryModal;
+  window.openHistoryModal = function() {
+    history.pushState({ modalOpen: true }, '', '#history');
+    originalOpenHistoryModal();
+  };
+  const originalOpenChatModal = window.openChatModal;
+  window.openChatModal = function() {
+    history.pushState({ modalOpen: true }, '', '#chat');
+    originalOpenChatModal();
+  };
   </script>
 </body>
 </html>
