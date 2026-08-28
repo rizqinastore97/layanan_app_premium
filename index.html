@@ -599,7 +599,8 @@
   </div>
 
   <script>
-    const API_URL = "https://toko-digital-api.rizqinastore97.workers.dev";
+const _wEnc = "aHR0cHM6Ly90b2tvLWRpZ2l0YWwtYXBpLnJpenFpbmFzdG9yZTk3LndvcmtlcnMuZGV2";
+const API_URL = atob(_wEnc);
     const WHATSAPP_NUMBER = "6282243890517"; 
     const QRIS_STATIC_URL = "https://i.ibb.co.com/PGRmz0G8/Whats-App-Image-2026-08-24-at-12-25-05.jpg"; 
 
@@ -1610,44 +1611,37 @@
         </div>`).join('');
     }
 
-    // Inisialisasi awal
     loadProducts();
     startSocialProofNotifications();
     if(typeof lucide !== 'undefined') lucide.createIcons();
   
-  // Pantau perubahan riwayat browser (saat tombol back HP ditekan)
   window.addEventListener('popstate', function(event) {
     let isModalClosed = false;
     
-    // Tutup Modal Detail Produk jika sedang terbuka
     const detailModal = document.getElementById('detail-modal');
     if (detailModal && !detailModal.classList.contains('hidden')) {
       detailModal.classList.add('hidden');
       isModalClosed = true;
     }
-    
-    // Tutup Keranjang jika sedang terbuka
+  
     const cartModal = document.getElementById('cart-modal');
     if (cartModal && !cartModal.classList.contains('hidden')) {
       toggleCart(false);
       isModalClosed = true;
     }
     
-    // Tutup Modal Riwayat Pesanan jika sedang terbuka
     const historyModal = document.getElementById('history-modal');
     if (historyModal && !historyModal.classList.contains('hidden')) {
       historyModal.classList.add('hidden');
       isModalClosed = true;
     }
 
-    // Tutup Modal Chat CS jika sedang terbuka
     const chatModal = document.getElementById('chat-modal');
     if (chatModal && !chatModal.classList.contains('hidden')) {
       closeChatModal();
       isModalClosed = true;
     }
 
-    // Tutup Modal Pembayaran QRIS jika sedang terbuka
     const payModal = document.getElementById('payment-modal');
     if (payModal && !payModal.classList.contains('hidden')) {
       payModal.classList.add('hidden');
@@ -1679,5 +1673,49 @@
     originalOpenChatModal();
   };
   </script>
+
+<div id="digitalhub-copyright" style="text-align:center; padding:15px; font-size:11px; color:#94a3b8; border-top:1px solid #e2e8f0; margin-top:20px;">
+  &copy; 2026 <b>DigitalHub Store Manager</b>. All Rights Reserved. Protected System.
+</div>
+
+<script>
+  document.addEventListener('contextmenu', e => e.preventDefault()); 
+  document.addEventListener('keydown', function(e) {
+    // Blokir F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+S
+    if (
+      e.keyCode === 123 || 
+      (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || 
+      (e.ctrlKey && e.keyCode === 85) ||
+      (e.ctrlKey && e.keyCode === 83)
+    ) {
+      e.preventDefault();
+      alert('Aksi dilarang! Sistem keamanan DigitalHub aktif.');
+      window.location.href = "about:blank";
+      return false;
+    }
+  });
+
+  setInterval(function() {
+    const threshold = 160;
+    if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
+      document.body.innerHTML = "<h1 style='text-align:center;margin-top:20vh;color:red;font-family:sans-serif;'>⚠️ AKSES DITOLAK\nDeveloper Tools terdeteksi aktif.</h1>";
+      throw new Error("Security Violation: Inspector Detected.");
+    }
+  }, 1000);
+
+  setInterval(function() {
+    const copyrightEl = document.getElementById('digitalhub-copyright');
+    
+    // Jika elemen hak cipta dihapus, diubah teksnya, atau disembunyikan secara paksa
+    if (!copyrightEl || !copyrightEl.innerText.includes("DigitalHub Store Manager") || copyrightEl.style.display === 'none' || copyrightEl.style.visibility === 'hidden') {
+      
+      document.body.innerHTML = "<div style='background:black;color:red;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:monospace;text-align:center;padding:20px;'><h1>CRITICAL SYSTEM ERROR [Code: 403-TAMPER]</h1><p>Pelanggaran Hak Cipta terdeteksi: Elemen Hak Cipta Website telah dimodifikasi atau dihapus secara ilegal. Sistem dikunci.</p></div>";
+      
+      localStorage.clear();
+      sessionStorage.clear();
+      throw new Error("CRITICAL_TAMPER_PROTECTION_TRIGGERED");
+    }
+  }, 2000);
+</script>
 </body>
 </html>
