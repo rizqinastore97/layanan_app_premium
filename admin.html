@@ -440,24 +440,25 @@
             </div>
           </div>
 
-          <!-- Logo Upload -->
-          <div class="space-y-2">
-            <label class="font-bold text-slate-700 block">Gambar / Mockup Produk:</label>
-            <div class="flex items-center gap-3">
-              <div id="prod-img-preview-box" class="w-16 h-16 rounded-2xl bg-slate-50 border-2 border-dashed border-slate-200 flex items-center justify-center overflow-hidden flex-shrink-0 relative">
-                <img id="prod-img-preview" src="" class="w-full h-full object-contain hidden" />
-                <i id="prod-img-placeholder-icon" data-lucide="image" class="w-6 h-6 text-slate-300"></i>
-              </div>
-              <div class="flex-1 space-y-1">
-                <label for="prod-form-file" class="w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-bold px-3 py-2 rounded-xl text-xs cursor-pointer transition-colors flex items-center justify-center gap-1.5">
-                  <i data-lucide="upload" class="w-4 h-4"></i>
-                  <span>Pilih Gambar Device</span>
-                </label>
-                <input type="file" id="prod-form-file" accept="image/*" onchange="handleImageFileUpload(event)" class="hidden" />
-              </div>
-            </div>
-            <input type="text" id="prod-form-image" oninput="updateImagePreviewFromInput(this.value)" required placeholder="Atau paste link URL gambar..." class="w-full px-3.5 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 text-xs text-slate-600" />
-          </div>
+          <!-- GANTI BAGIAN INPUT GAMBAR LAMA DENGAN INI -->
+<div class="space-y-2">
+  <label class="font-bold text-slate-700 block">Gambar / Mockup Produk (Bisa Banyak):</label>
+  <div class="flex items-center gap-3">
+    <div id="prod-img-preview-box" class="w-16 h-16 rounded-2xl bg-slate-50 border-2 border-dashed border-slate-200 flex items-center justify-center overflow-hidden flex-shrink-0 relative">
+      <img id="prod-img-preview" src="" class="w-full h-full object-contain hidden" />
+      <i id="prod-img-placeholder-icon" data-lucide="image" class="w-6 h-6 text-slate-300"></i>
+    </div>
+    <div class="flex-1 space-y-1">
+      <label for="prod-form-file" class="w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-bold px-3 py-2 rounded-xl text-xs cursor-pointer transition-colors flex items-center justify-center gap-1.5">
+        <i data-lucide="upload" class="w-4 h-4"></i>
+        <span>Pilih Gambar Device</span>
+      </label>
+      <input type="file" id="prod-form-file" accept="image/*" onchange="handleImageFileUpload(event)" class="hidden" />
+    </div>
+  </div>
+  <textarea id="prod-form-image" rows="3" oninput="updateImagePreviewFromInput(this.value)" placeholder="Masukkan URL gambar (1 URL per baris jika ingin banyak gambar untuk slide)..." class="w-full px-3.5 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 text-xs text-slate-600 font-mono"></textarea>
+  <p class="text-[10px] text-slate-400">💡 Tips: Jika ingin 2 gambar berbeda untuk slide, masukkan link gambar pertama di baris 1, lalu enter dan masukkan link gambar kedua di baris ke-2.</p>
+</div>
 
           <!-- Varian Per Paket -->
           <div class="border-t border-slate-200 pt-4 space-y-3">
@@ -1054,32 +1055,36 @@ function addVariantFormRow(name = '', price = 0, originalPrice = 0, items = '', 
 
     function closeProductModal() { document.getElementById('product-modal').classList.add('hidden'); }
 
-    async function handleSaveProduct(e) {
+async function handleSaveProduct(e) {
       e.preventDefault();
       const varRows = document.querySelectorAll('#variants-form-container > div');
       const variants = [];
       
-      // DI DALAM FUNGSI handleSaveProduct(e), SESUAIKAN BAGIAN INI:
-varRows.forEach(row => {
-  const name = row.querySelector('.var-name-input').value.trim();
-  const price = Number(row.querySelector('.var-price-input').value) || 0;
-  const originalPrice = Number(row.querySelector('.var-orig-price-input').value) || 0; // TAMBAHKAN INI
-  const rawItems = row.querySelector('.var-items-input').value.trim();
-  const desc = row.querySelector('.var-desc-input').value.trim();
-  const terms = row.querySelector('.var-terms-input').value.trim();
-  const items = rawItems ? rawItems.split('\n').map(i => i.trim()).filter(Boolean) : [];
-  
-  if (name) { 
-    variants.push({ name, price, originalPrice, stock: items.length, items, desc, terms }); // MASUKKAN originalPrice DISINI
-  }
-});
+      varRows.forEach(row => {
+        const name = row.querySelector('.var-name-input').value.trim();
+        const price = Number(row.querySelector('.var-price-input').value) || 0;
+        const originalPrice = Number(row.querySelector('.var-orig-price-input').value) || 0;
+        const rawItems = row.querySelector('.var-items-input').value.trim();
+        const desc = row.querySelector('.var-desc-input').value.trim();
+        const terms = row.querySelector('.var-terms-input').value.trim();
+        const items = rawItems ? rawItems.split('\n').map(i => i.trim()).filter(Boolean) : [];
+        
+        if (name) { 
+          variants.push({ name, price, originalPrice, stock: items.length, items, desc, terms }); 
+        }
+      });
+
+      // Ambil banyak gambar dari textarea (1 baris = 1 link gambar untuk slide)
+      const rawImageInput = document.getElementById('prod-form-image').value.trim();
+      const imageLines = rawImageInput ? rawImageInput.split('\n').map(i => i.trim()).filter(Boolean) : ['https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png'];
 
       const newProductData = {
         id: currentEditingProductId ? currentEditingProductId : Date.now(),
         name: document.getElementById('prod-form-name').value.trim(),
         category: document.getElementById('prod-form-category').value.trim(),
         warranty: document.getElementById('prod-form-warranty').value.trim(),
-        image: document.getElementById('prod-form-image').value.trim(),
+        image: imageLines[0],        // Gambar utama untuk thumbnail di beranda
+        images: imageLines,        // Kumpulan gambar untuk slider di modal detail
         description: variants.length > 0 ? variants[0].desc : '',
         terms: variants.length > 0 ? variants[0].terms : '',
         isBestSeller: document.getElementById('prod-form-bestseller').checked,
