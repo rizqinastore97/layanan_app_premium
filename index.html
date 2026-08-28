@@ -455,9 +455,9 @@
   </div>
 
   <!-- MODAL PEMBAYARAN QRIS -->
-  <div id="payment-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
+  <div id="payment-modal" class="fixed inset-0 z-[60] overflow-hidden hidden">
     <div class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
-    <div class="fixed inset-0 flex items-center justify-center p-4 z-50">
+    <div class="fixed inset-0 flex items-center justify-center p-4 z-[60]">
       <div id="payment-modal-card" class="bg-white w-full max-w-sm sm:max-w-md rounded-3xl shadow-2xl overflow-hidden p-5 flex flex-col text-center max-h-[92vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-2">
           <h3 class="font-bold text-sm text-slate-800 flex items-center gap-1.5"><i data-lucide="wallet" class="w-4 h-4 text-[#f5125e]"></i> Pembayaran & Aktivasi</h3>
@@ -1065,10 +1065,12 @@ const menuTemplate = document.getElementById('menu-template-web');
 
     window.handleModalBuy = function() {
         if (!currentSelectedProduct || !currentSelectedVariant) return;
-        closeDetailModal(); 
-        startNormalCheckout(currentSelectedProduct, currentSelectedVariant, currentSelectedQuantity); 
+        
+        // Hapus atau abaikan closeDetailModal() agar tidak terpental ke depan
+        // closeDetailModal(); 
+        
+        startNormalCheckout(currentSelectedProduct, currentSelectedVariant, currentSelectedQuantity);
     };
-
     // Checkout Produk Biasa
     async function startNormalCheckout(product, variant, qty = 1, isCart = false) {
       trackActivity('click'); 
