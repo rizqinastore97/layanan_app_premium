@@ -438,13 +438,18 @@
           </div>
         </div>
 
-        <!-- TOMBOL AKSI UTAMA -->
+       <!-- TOMBOL AKSI UTAMA -->
         <div class="p-3.5 bg-slate-50 grid grid-cols-5 gap-2 rounded-b-3xl sm:rounded-b-3xl">
-          <button id="modal-btn-chat" type="button" class="col-span-1 border border-rose-200 bg-rose-50 hover:bg-rose-100 text-[#f5125e] rounded-xl flex flex-col items-center justify-center p-2 transition-colors"><i data-lucide="message-square-more" class="w-4 h-4"></i><span class="text-[9px] font-bold">Chat</span></button>
-          <button id="modal-btn-cart" type="button" class="col-span-2 bg-rose-50 text-[#f5125e] border border-rose-200 font-bold rounded-xl text-xs py-2.5 transition-colors">+ Keranjang</button>
-          <button id="modal-btn-buy" type="button" class="col-span-2 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white font-bold rounded-xl text-xs py-2.5 shadow-xs transition-transform active:scale-95">Beli Sekarang</button>
+          <button id="modal-btn-chat" onclick="handleModalChat()" type="button" class="col-span-1 border border-rose-200 bg-rose-50 hover:bg-rose-100 text-[#f5125e] rounded-xl flex flex-col items-center justify-center p-2 transition-colors">
+            <i data-lucide="message-square-more" class="w-4 h-4"></i><span class="text-[9px] font-bold">Chat</span>
+          </button>
+          <button id="modal-btn-cart" onclick="handleModalCart()" type="button" class="col-span-2 bg-rose-50 text-[#f5125e] border border-rose-200 font-bold rounded-xl text-xs py-2.5 transition-colors">
+            + Keranjang
+          </button>
+          <button id="modal-btn-buy" onclick="handleModalBuy()" type="button" class="col-span-2 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white font-bold rounded-xl text-xs py-2.5 shadow-xs transition-transform active:scale-95">
+            Beli Sekarang
+          </button>
         </div>
-      </div>
       
     </div>
   </div>
