@@ -1053,16 +1053,15 @@ const menuTemplate = document.getElementById('menu-template-web');
     // Tombol Chat, Keranjang, Beli 
     window.handleModalChat = function() {
         if (!currentSelectedProduct || !currentSelectedVariant) return;
-        closeDetailModal();
+        // closeDetailModal();  <-- Beri tanda komentar atau hapus baris ini
         openChatModalWithProduct(currentSelectedProduct.name, currentSelectedVariant.name, currentSelectedVariant.price);
     };
 
     window.handleModalCart = function() {
         if (!currentSelectedProduct || !currentSelectedVariant) return;
         window.addToCart(currentSelectedProduct, currentSelectedVariant, currentSelectedQuantity); 
-        closeDetailModal();
+        // closeDetailModal();  <-- Hapus ini juga supaya saat masuk keranjang tidak terpental
     };
-
     window.handleModalBuy = function() {
         if (!currentSelectedProduct || !currentSelectedVariant) return;
         
