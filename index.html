@@ -454,10 +454,10 @@
     </div>
   </div>
 
-  <!-- MODAL PEMBAYARAN QRIS -->
-  <div id="payment-modal" class="fixed inset-0 z-[60] overflow-hidden hidden">
+ <!-- MODAL PEMBAYARAN QRIS -->
+  <div id="payment-modal" class="fixed inset-0 z-[80] overflow-hidden hidden">
     <div class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
-    <div class="fixed inset-0 flex items-center justify-center p-4 z-[60]">
+    <div class="fixed inset-0 flex items-center justify-center p-4 z-[80]">
       <div id="payment-modal-card" class="bg-white w-full max-w-sm sm:max-w-md rounded-3xl shadow-2xl overflow-hidden p-5 flex flex-col text-center max-h-[92vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-2">
           <h3 class="font-bold text-sm text-slate-800 flex items-center gap-1.5"><i data-lucide="wallet" class="w-4 h-4 text-[#f5125e]"></i> Pembayaran & Aktivasi</h3>
@@ -502,7 +502,7 @@
   </div>
 
   <!-- MODAL RIWAYAT PESANAN -->
-  <div id="history-modal" class="fixed inset-0 z-50 overflow-hidden hidden flex items-center justify-center p-4 z-50">
+  <div id="history-modal" class="fixed inset-0 z-[60] overflow-hidden hidden flex items-center justify-center p-4">
     <div onclick="closeHistoryModal()" class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
     <div id="history-modal-card" class="bg-white w-full max-w-lg rounded-3xl shadow-2xl p-5 flex flex-col max-h-[90vh] relative z-10">
       <div class="flex justify-between items-center pb-3 border-b border-slate-100">
@@ -514,9 +514,9 @@
   </div>
 
   <!-- CART DRAWER -->
-  <div id="cart-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
+  <div id="cart-modal" class="fixed inset-0 z-[60] overflow-hidden hidden">
     <div onclick="toggleCart(false)" class="absolute inset-0 bg-black/40 backdrop-blur-2xs"></div>
-    <div class="fixed inset-y-0 right-0 max-w-full flex pl-10 z-50">
+    <div class="fixed inset-y-0 right-0 max-w-full flex pl-10 z-[60]">
       <div id="cart-drawer" class="w-screen max-w-sm bg-white shadow-xl flex flex-col translate-x-full transition-transform">
         <div class="px-4 py-4 border-b border-slate-100 flex items-center justify-between">
           <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2"><i data-lucide="shopping-cart" class="w-4 h-4 text-[#f5125e]"></i> Keranjang Belanja (<span id="cart-title-count">0</span>)</h3>
@@ -532,9 +532,9 @@
   </div>
 
   <!-- MODAL & DRAWER LIVE CHAT CS ASISTEN -->
-  <div id="chat-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
+ <div id="chat-modal" class="fixed inset-0 z-[70] overflow-hidden hidden">
     <div onclick="closeChatModal()" class="absolute inset-0 bg-black/50 backdrop-blur-2xs"></div>
-    <div class="fixed inset-y-0 right-0 max-w-full flex pl-10 z-50">
+    <div class="fixed inset-y-0 right-0 max-w-full flex pl-10 z-[70]">
       <div id="chat-drawer" class="w-screen max-w-sm sm:max-w-md bg-white shadow-2xl flex flex-col translate-x-full transition-transform duration-300">
         
         <div class="p-3.5 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white flex items-center justify-between shadow-xs">
@@ -1050,25 +1050,24 @@ const menuTemplate = document.getElementById('menu-template-web');
         document.getElementById('detail-modal').classList.add('hidden'); 
     };
 
-    // Tombol Chat, Keranjang, Beli 
+    // ================= TOMBOL CHAT, KERANJANG, BELI (FIXED) =================
     window.handleModalChat = function() {
         if (!currentSelectedProduct || !currentSelectedVariant) return;
-        // closeDetailModal();  <-- Beri tanda komentar atau hapus baris ini
+        // TIDAK ADA closeDetailModal() agar modal produk tetap terbuka di belakang
         openChatModalWithProduct(currentSelectedProduct.name, currentSelectedVariant.name, currentSelectedVariant.price);
     };
 
     window.handleModalCart = function() {
         if (!currentSelectedProduct || !currentSelectedVariant) return;
         window.addToCart(currentSelectedProduct, currentSelectedVariant, currentSelectedQuantity); 
-        // closeDetailModal();  <-- Hapus ini juga supaya saat masuk keranjang tidak terpental
+        // Langsung buka otomatis laci keranjangnya supaya pembeli tahu!
+        toggleCart(true); 
     };
+
     window.handleModalBuy = function() {
         if (!currentSelectedProduct || !currentSelectedVariant) return;
-        
-        // Hapus atau abaikan closeDetailModal() agar tidak terpental ke depan
-        // closeDetailModal(); 
-        
-        startNormalCheckout(currentSelectedProduct, currentSelectedVariant, currentSelectedQuantity);
+        // TIDAK ADA closeDetailModal() agar tidak terpental ke beranda
+        startNormalCheckout(currentSelectedProduct, currentSelectedVariant, currentSelectedQuantity); 
     };
     // Checkout Produk Biasa
     async function startNormalCheckout(product, variant, qty = 1, isCart = false) {
