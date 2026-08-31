@@ -244,44 +244,34 @@
 
     <div class="bg-white rounded-2xl p-3.5 sm:p-5 shadow-2xs border border-slate-200/80 overflow-hidden">
       <div id="category-buttons-grid" class="grid grid-cols-4 md:grid-cols-7 gap-3 sm:gap-4 text-center text-[11px] font-semibold text-slate-700">
-        
         <div onclick="setCategory('Semua')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group active-cat" data-cat="Semua">
           <div class="cat-icon-box w-12 h-12 bg-[#f5125e] text-white rounded-2xl flex items-center justify-center border border-[#f5125e] group-hover:scale-105 transition-all shadow-2xs"><i data-lucide="grid" class="w-5 h-5"></i></div>
           <span class="truncate w-full font-bold text-[#f5125e]">Semua</span>
         </div>
-
         <div onclick="setCategory('AI')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="AI">
           <div class="cat-icon-box w-12 h-12 bg-rose-50 text-[#f5125e] rounded-2xl flex items-center justify-center border border-rose-100 group-hover:scale-105 group-hover:bg-[#f5125e] group-hover:text-white transition-all shadow-2xs"><i data-lucide="bot" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Akun AI</span>
         </div>
-
         <div onclick="setCategory('Editor')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Editor">
           <div class="cat-icon-box w-12 h-12 bg-pink-50 text-pink-600 rounded-2xl flex items-center justify-center border border-pink-100 group-hover:scale-105 group-hover:bg-pink-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="video" class="w-5 h-5"></i></div>
           <span class="truncate w-full">App Pro</span>
         </div>
-
         <div onclick="setCategory('Template Web')" id="menu-template-web" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Template Web">
           <div class="cat-icon-box w-12 h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center border border-amber-100 group-hover:scale-105 group-hover:bg-amber-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="layout" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Template Web</span>
         </div>
-
         <div onclick="setCategory('Landing')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Landing">
           <div class="cat-icon-box w-12 h-12 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center border border-sky-100 group-hover:scale-105 group-hover:bg-sky-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="globe" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Landing Page</span>
         </div>
-
         <div onclick="setCategory('Jasa Web')" id="menu-jasa-web" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Jasa Web">
           <div class="cat-icon-box w-12 h-12 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center border border-purple-100 group-hover:scale-105 group-hover:bg-purple-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="monitor" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Jasa Web</span>
         </div>
-
         <div onclick="setCategory('Stream')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Stream">
           <div class="cat-icon-box w-12 h-12 bg-violet-50 text-violet-600 rounded-2xl flex items-center justify-center border border-violet-100 group-hover:scale-105 group-hover:bg-violet-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="play-square" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Streaming</span>
         </div>
-        
-        <div onclick="setCategory('Semua')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group active-cat hidden" data-cat="Semua"></div>
-
       </div>
     </div>
 
@@ -1025,48 +1015,13 @@
       if(typeof lucide !== 'undefined') lucide.createIcons();
     }
 
-    window.changeQuantity = function(delta) {
-      let newQty = currentSelectedQuantity + delta;
-      if (newQty < 1) newQty = 1;
-      if (newQty > 99) newQty = 99; 
-      currentSelectedQuantity = newQty;
-      
-      const qtyElem = document.getElementById('modal-quantity');
-      if(qtyElem) qtyElem.innerText = currentSelectedQuantity;
-      
-      window.updateModalPriceDisplay();
-    };
-
-    window.updateModalPriceDisplay = function() {
-      if (!currentSelectedVariant) return;
-      const unitPrice = Number(currentSelectedVariant.price) || 0;
-      const originalPrice = Number(currentSelectedVariant.originalPrice) || 0;
-      const totalPrice = unitPrice * currentSelectedQuantity;
-      
-      const priceElem = document.getElementById('modal-price');
-      const origPriceElem = document.getElementById('modal-original-price');
-      
-      if(priceElem) priceElem.innerText = formatIDR(totalPrice);
-      
-      if(origPriceElem) {
-        if (originalPrice > unitPrice) {
-          origPriceElem.innerText = formatIDR(originalPrice * currentSelectedQuantity);
-          origPriceElem.classList.remove('hidden');
-        } else {
-          origPriceElem.classList.add('hidden');
-        }
-      }
-    };
-
-    // ================= URL & NAVIGATION =================
+    // ================= FUNGSI URL/HISTORY CLEAN =================
     window.openDetailModal = function(id) {
       history.pushState({ modalOpen: true }, '', '#detail');
-      
       const p = products.find(i => i.id === id || i.id === parseInt(id));
       if (!p) return;
       
       trackActivity('click'); 
-      
       currentSelectedProduct = p;
       if (!p.variants || p.variants.length === 0) {
           p.variants = [{ name: 'Default', price: p.price || 0, originalPrice: p.originalPrice || 0 }];
@@ -1091,7 +1046,6 @@
 
       const sliderWrapper = document.getElementById('modal-slider-wrapper');
       const dotsContainer = document.getElementById('modal-slider-dots');
-      
       let imgList = (p.images && Array.isArray(p.images) && p.images.length > 0) ? p.images : [p.image || 'https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png'];
       
       if (sliderWrapper) {
@@ -1119,12 +1073,11 @@
     };
 
     window.toggleCart = function(open) {
-      if (open) history.pushState({ modalOpen: true }, '', '#cart');
-      
       const cartModal = document.getElementById('cart-modal');
       const cartDrawer = document.getElementById('cart-drawer');
       
       if (open) { 
+        history.pushState({ modalOpen: true }, '', '#cart');
         cartModal.classList.remove('hidden'); 
         setTimeout(() => cartDrawer.classList.remove('translate-x-full'), 10);
       } else { 
@@ -1192,7 +1145,6 @@
         if (pollingInterval) clearInterval(pollingInterval);
     };
 
-    // ================= EVENT LISTENER URL (TOMBOL BACK HP) =================
     window.addEventListener('popstate', function(event) {
       document.getElementById('detail-modal')?.classList.add('hidden');
       document.getElementById('cart-drawer')?.classList.add('translate-x-full');
@@ -1203,6 +1155,38 @@
       document.getElementById('payment-modal')?.classList.add('hidden');
       if (typeof pollingInterval !== 'undefined' && pollingInterval) clearInterval(pollingInterval);
     });
+
+    // ================= FUNGSI LAINNYA =================
+    window.changeQuantity = function(delta) {
+      let newQty = currentSelectedQuantity + delta;
+      if (newQty < 1) newQty = 1;
+      if (newQty > 99) newQty = 99; 
+      currentSelectedQuantity = newQty;
+      
+      const qtyElem = document.getElementById('modal-quantity');
+      if(qtyElem) qtyElem.innerText = currentSelectedQuantity;
+      window.updateModalPriceDisplay();
+    };
+
+    window.updateModalPriceDisplay = function() {
+      if (!currentSelectedVariant) return;
+      const unitPrice = Number(currentSelectedVariant.price) || 0;
+      const originalPrice = Number(currentSelectedVariant.originalPrice) || 0;
+      const totalPrice = unitPrice * currentSelectedQuantity;
+      
+      const priceElem = document.getElementById('modal-price');
+      const origPriceElem = document.getElementById('modal-original-price');
+      
+      if(priceElem) priceElem.innerText = formatIDR(totalPrice);
+      if(origPriceElem) {
+        if (originalPrice > unitPrice) {
+          origPriceElem.innerText = formatIDR(originalPrice * currentSelectedQuantity);
+          origPriceElem.classList.remove('hidden');
+        } else {
+          origPriceElem.classList.add('hidden');
+        }
+      }
+    };
 
     window.updateSliderDotsOnScroll = function(element) {
       const scrollLeft = element.scrollLeft;
@@ -1226,7 +1210,6 @@
       `).join('');
       
       window.updateModalPriceDisplay();
-      
       document.getElementById('modal-desc').innerText = currentSelectedVariant.desc || currentSelectedProduct.description || 'Tidak ada deskripsi.';
       document.getElementById('modal-terms').innerText = currentSelectedVariant.terms || currentSelectedProduct.terms || 'Mengikuti kebijakan garansi toko.';
     };
@@ -1236,21 +1219,29 @@
       window.renderVariantSelection(idx); 
     };
 
-    // ================= TOMBOL KERANJANG YANG DIPERBAIKI =================
+    // ================= TOMBOL KERANJANG (YANG DIPERBAIKI) =================
     window.handleModalCart = function() {
-        if (!currentSelectedProduct) {
-             showToast("Silakan pilih produk", "error");
-             return;
+        try {
+            if (!currentSelectedProduct) {
+                showToast("Data produk belum dimuat", "error");
+                return;
+            }
+            
+            let variant = currentSelectedVariant;
+            if (!variant && currentSelectedProduct.variants && currentSelectedProduct.variants.length > 0) {
+                variant = currentSelectedProduct.variants[0];
+            }
+            
+            window.addToCart(currentSelectedProduct, variant, currentSelectedQuantity); 
+            window.closeDetailModal(); 
+            
+            setTimeout(() => {
+                window.toggleCart(true); 
+            }, 150);
+        } catch (e) {
+            console.error(e);
+            showToast("Gagal memproses keranjang", "error");
         }
-        let variant = currentSelectedVariant || currentSelectedProduct.variants[0];
-        
-        window.addToCart(currentSelectedProduct, variant, currentSelectedQuantity); 
-        closeDetailModal(); 
-        
-        // Diberi jeda agar animasi tutup produk selesai dulu sebelum buka keranjang
-        setTimeout(() => {
-            window.toggleCart(true); 
-        }, 50);
     };
 
     window.handleModalChat = function() {
@@ -1261,6 +1252,93 @@
     window.handleModalBuy = function() {
         if (!currentSelectedProduct || !currentSelectedVariant) return;
         startNormalCheckout(currentSelectedProduct, currentSelectedVariant, currentSelectedQuantity); 
+    };
+
+    window.addToCart = function(p, v, qty = 1) {
+      try {
+        trackActivity('click'); 
+        if (!cart || !Array.isArray(cart)) cart = [];
+        const prodName = p && p.name ? p.name : 'Produk';
+        const varName = v && v.name ? v.name : '';
+        const finalName = (varName && varName !== 'Default') ? `${prodName} (${varName}) x${qty}` : `${prodName} x${qty}`;
+        const unitPrice = v && v.price ? Number(v.price) : (p && p.price ? Number(p.price) : 0);
+        const finalPrice = unitPrice * qty; 
+        const img = p && p.image ? p.image : 'https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png';
+        const id = p && p.id ? p.id : Date.now();
+
+        cart.push({ id: id, name: finalName, price: finalPrice, image: img, quantity: qty });
+        localStorage.setItem('my_digital_cart', JSON.stringify(cart));
+        renderCart();
+        showToast('Berhasil dimasukkan ke keranjang!');
+      } catch(e) {
+        showToast('Gagal masuk ke keranjang', 'error');
+      }
+    };
+    
+    window.removeItemFromCart = function(idx) {
+      if(Array.isArray(cart)) {
+         cart.splice(idx, 1);
+         localStorage.setItem('my_digital_cart', JSON.stringify(cart));
+         renderCart();
+      }
+    };
+
+    function renderCart() {
+      try {
+          if (!Array.isArray(cart)) cart = [];
+          const titleCount = document.getElementById('cart-title-count');
+          if(titleCount) titleCount.innerText = cart.length;
+          const badge = document.getElementById('cart-badge');
+          if(badge) {
+              badge.innerText = cart.length;
+              if (cart.length > 0) badge.classList.remove('hidden');
+              else badge.classList.add('hidden');
+          }
+          const footer = document.getElementById('cart-footer');
+          if(footer) {
+              if (cart.length > 0) footer.classList.remove('hidden');
+              else footer.classList.add('hidden');
+          }
+          const cartItems = document.getElementById('cart-items');
+          if(cartItems) {
+              cartItems.innerHTML = cart.map((i, idx) => `
+                <div class="flex items-center justify-between gap-3 p-2.5 bg-slate-50 rounded-xl border border-slate-100 shadow-sm">
+                  <img src="${i.image || 'https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png'}" onerror="this.src='https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png'" class="w-12 h-12 rounded-lg object-contain bg-white border p-1" />
+                  <div class="flex-1 min-w-0">
+                    <h4 class="text-xs font-bold text-slate-800 line-clamp-1">${i.name}</h4>
+                    <p class="text-xs text-[#f5125e] font-black mt-0.5">${formatIDR(Number(i.price) || 0)}</p>
+                  </div>
+                  <button onclick="removeItemFromCart(${idx})" class="text-slate-400 hover:text-rose-500 bg-white border border-slate-200 hover:border-rose-200 p-1.5 rounded-lg transition-colors">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                  </button>
+                </div>
+              `).join('');
+          }
+          const totalPrice = document.getElementById('cart-total-price');
+          if(totalPrice) {
+              totalPrice.innerText = formatIDR(cart.reduce((a, b) => a + (Number(b.price) || 0), 0));
+          }
+          if(typeof lucide !== 'undefined') lucide.createIcons();
+      } catch(e) {
+          console.error('Error renderCart:', e);
+      }
+    }
+
+    window.saveOrderHistory = function(ref, productName, variantName, accountData) {
+        let history = [];
+        try { history = JSON.parse(localStorage.getItem('my_digital_orders')) || []; } catch(e){}
+        if (!Array.isArray(history)) history = [];
+        
+        history.unshift({
+            reference: ref,
+            productName: productName,
+            variantName: variantName,
+            account: accountData,
+            date: new Date().toLocaleString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+        });
+        
+        if (history.length > 20) history = history.slice(0, 20);
+        localStorage.setItem('my_digital_orders', JSON.stringify(history));
     };
 
     // ================= SISTEM INVOICE & CHECKOUT =================
@@ -1396,7 +1474,6 @@
       if (!cart || cart.length === 0) return;
       toggleCart(false);
       const totalPrice = cart.reduce((a, b) => a + (Number(b.price) || 0), 0);
-      
       const itemNames = cart.map(i => i.name).join('\n'); 
       
       startNormalCheckout(
