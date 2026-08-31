@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Digital Store - Marketplace Produk & Jasa Digital</title>
 
-  <!-- PWA & META TAGS -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#f5125e" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -20,14 +19,14 @@
   
   <style>
     /* Styling Slider Gambar Produk Ala Lynk.id */
-.product-slider-container {
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-}
-.product-slider-item {
-  scroll-snap-align: start;
-  flex-shrink: 0;
-}
+    .product-slider-container {
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+    .product-slider-item {
+      scroll-snap-align: start;
+      flex-shrink: 0;
+    }
     /* PROTEKSI ANTI-SELECT & ANTI-COPY DI SELURUH WEBSITE */
     * {
       -webkit-user-select: none;
@@ -107,10 +106,8 @@
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen pb-20 md:pb-10 font-sans antialiased selection:bg-[#f5125e] selection:text-white">
 
-  <!-- Toast Container -->
   <div id="toast-container" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none w-full max-w-xs px-4"></div>
 
-  <!-- POPUP INSTALL PWA -->
   <div id="pwa-install-popup" class="fixed inset-0 bg-black/75 z-[9999] hidden flex items-center justify-center p-5 backdrop-blur-2xs transition-opacity duration-300">
     <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center shadow-2xl transform transition-all space-y-4">
       <div class="w-20 h-20 bg-rose-50 text-[#f5125e] rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner border-4 border-white outline outline-4 outline-rose-100">
@@ -134,7 +131,6 @@
     </div>
   </div>
 
-  <!-- LIVE SOCIAL PROOF -->
   <div id="social-proof-toast" class="fixed bottom-20 md:bottom-6 left-3 md:left-6 z-40 bg-white/95 backdrop-blur-md border border-rose-200/90 p-2.5 sm:p-3 rounded-2xl shadow-xl flex items-center gap-3 max-w-xs transition-all duration-500 opacity-0 translate-y-6 pointer-events-none">
     <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#f5125e] to-[#ff477e] text-white flex items-center justify-center flex-shrink-0 shadow-xs">
       <i data-lucide="bag-check" class="w-5 h-5"></i>
@@ -149,10 +145,8 @@
     </div>
   </div>
 
-  <!-- Header Toko -->
   <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-rose-100/80 shadow-xs px-3 sm:px-8 py-3">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-2.5 sm:gap-6">
-      <!-- Brand Logo -->
       <div class="flex items-center gap-2.5 cursor-pointer flex-shrink-0" onclick="setCategory('Semua')">
         <img src="https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png" alt="Logo DigitalHub" class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl object-contain bg-white shadow-xs border border-slate-100" />
         <div class="hidden sm:block">
@@ -161,7 +155,6 @@
         </div>
       </div>
 
-      <!-- Search Bar -->
       <div class="relative flex-1 max-w-2xl flex items-center gap-2">
         <form onsubmit="event.preventDefault(); handleSearch(document.getElementById('search-input').value);" class="flex-1 flex items-center bg-white border-2 border-[#f5125e] rounded-full p-0.5 sm:p-1 shadow-xs transition-all focus-within:ring-2 focus-within:ring-[#f5125e]/30">
           <i data-lucide="search" class="w-4 h-4 text-slate-400 ml-3 mr-1 flex-shrink-0"></i>
@@ -187,7 +180,6 @@
         </button>
       </div>
 
-      <!-- Action Buttons -->
       <div class="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
         <button onclick="openHistoryModal()" class="hidden md:flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-rose-50 hover:text-[#f5125e] border border-slate-200 hover:border-rose-200 px-3.5 py-2.5 rounded-xl transition-all">
           <i data-lucide="receipt" class="w-4 h-4 text-[#f5125e]"></i>
@@ -209,7 +201,6 @@
 
   <main class="max-w-7xl mx-auto px-3 sm:px-8 py-4 sm:py-6 space-y-5 sm:space-y-6">
     
-    <!-- Info Trust Bar -->
     <div class="bg-white rounded-2xl p-3 sm:p-4 shadow-2xs border border-rose-100/60 grid grid-cols-3 gap-2 text-center text-xs">
       <div class="flex items-center justify-center gap-2.5 border-r border-slate-100 cursor-pointer" onclick="showToast('Sistem Auto QRIS TriPay Aktif 24 Jam')">
         <div class="w-8 h-8 rounded-xl bg-rose-50 text-[#f5125e] flex items-center justify-center flex-shrink-0"><i data-lucide="qr-code" class="w-4 h-4"></i></div>
@@ -225,7 +216,6 @@
       </div>
     </div>
 
-    <!-- Menu Kategori Grid -->
     <div class="bg-white rounded-2xl p-3.5 sm:p-5 shadow-2xs border border-slate-200/80 overflow-hidden">
       <div id="category-buttons-grid" class="grid grid-cols-4 md:grid-cols-7 gap-3 sm:gap-4 text-center text-[11px] font-semibold text-slate-700">
         
@@ -264,13 +254,11 @@
           <span class="truncate w-full">Streaming</span>
         </div>
         
-        <!-- Tombol "Semua" (Sudah tersembunyi sebagai pengatur sistem) -->
         <div onclick="setCategory('Semua')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group active-cat hidden" data-cat="Semua"></div>
 
       </div>
     </div>
 
-    <!-- SEKSI BANNER PROMO DINAMIS -->
     <div id="store-banner-wrapper" class="hidden">
       <div id="banner-image-container" class="w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm border border-slate-200/80 hidden">
         <img id="main-banner-image" src="" alt="Banner Promo" class="w-full h-auto max-h-56 sm:max-h-72 object-cover" />
@@ -286,7 +274,6 @@
       </div>
     </div>
 
-    <!-- Seksi Produk Populer / Terlaris -->
     <div id="popular-section" class="space-y-3 hidden">
       <div class="flex items-center justify-between px-1">
         <h2 class="text-xs sm:text-sm font-black text-slate-800 uppercase tracking-wide flex items-center gap-1.5">
@@ -296,7 +283,6 @@
       <div id="popular-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4"></div>
     </div>
 
-    <!-- Katalog Produk Utama -->
     <div id="product-catalog-section" class="space-y-3">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-1">
         <div class="flex items-center gap-2">
@@ -326,7 +312,6 @@
       <div id="product-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2.5 sm:gap-4 hidden"></div>
     </div>
 
-    <!-- Seksi FAQ Accordion -->
     <div class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-2xs space-y-3">
       <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
         <div class="w-7 h-7 rounded-lg bg-rose-50 text-[#f5125e] flex items-center justify-center"><i data-lucide="help-circle" class="w-4 h-4"></i></div>
@@ -345,13 +330,11 @@
     </div>
   </main>
 
-<!-- Mobile Bottom Nav -->
-  <div class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200/80 z-40 py-2 px-3 flex md:hidden items-center justify-between text-slate-500 text-[10px] font-medium shadow-lg">
+<div class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200/80 z-40 py-2 px-3 flex md:hidden items-center justify-between text-slate-500 text-[10px] font-medium shadow-lg">
     <button onclick="setCategory('Semua')" class="flex flex-col items-center gap-0.5 text-[#f5125e]"><i data-lucide="home" class="w-4 h-4"></i><span>Beranda</span></button>
     <button onclick="triggerPwaPromptUI()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="download" class="w-4 h-4 text-emerald-600"></i><span>App</span></button>
     <button onclick="openHistoryModal()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="receipt" class="w-4 h-4"></i><span>Pesanan</span></button>
     
-    <!-- TOMBOL GABUNG GRUP WA -->
     <a href="https://chat.whatsapp.com/GyWih0duwCfBEZg8w9Tx1f" target="_blank" class="flex flex-col items-center gap-0.5 text-emerald-600 font-bold">
       <i data-lucide="users" class="w-4 h-4"></i>
       <span>Grup WA</span>
@@ -360,29 +343,22 @@
     <button onclick="toggleCart(true)" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="shopping-bag" class="w-4 h-4"></i><span>Keranjang</span></button>
     <button onclick="openChatModal()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="message-square-more" class="w-4 h-4"></i><span>Chat CS</span></button>
   </div>
-  <!-- MODAL DETAIL PRODUK (DENGAN SLIDER GAMBAR & HARGA CORET) -->
-<div id="detail-modal" class="fixed inset-0 z-50 overflow-hidden hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+
+  <div id="detail-modal" class="fixed inset-0 z-50 overflow-hidden hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
   <div onclick="closeDetailModal()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
   <div id="detail-modal-card" class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col h-[92vh] sm:h-auto sm:max-h-[94vh] relative z-10 overflow-hidden">
     
-    <!-- TOMBOL CLOSE ABSOLUTE DI ATAS SLIDER -->
     <button onclick="closeDetailModal()" class="absolute top-3 right-3 z-30 bg-black/50 hover:bg-black/75 text-white p-2 rounded-full transition-colors">
       <i data-lucide="x" class="w-5 h-5"></i>
     </button>
 
-    <!-- SLIDER GAMBAR UTAMA (ALA LYNK.ID) -->
     <div class="relative w-full bg-slate-900 flex-shrink-0">
       <div id="modal-slider-wrapper" class="product-slider-container flex overflow-x-auto no-scrollbar w-full aspect-[16/10] sm:aspect-[16/9]" onscroll="updateSliderDotsOnScroll(this)">
-        <!-- Gambar akan di-generate otomatis via JavaScript -->
-      </div>
-      
-      <!-- Titik Indikator Slider (Dots) -->
+        </div>
       <div id="modal-slider-dots" class="absolute bottom-3 inset-x-0 flex items-center justify-center gap-1.5 z-20 pointer-events-none">
-        <!-- Dots aktif dinamis -->
-      </div>
+        </div>
     </div>
 
-    <!-- Informasi Judul & Harga di Bawah Slider -->
     <div class="p-4 border-b border-slate-100 bg-white flex flex-col gap-1 flex-shrink-0">
       <div class="flex items-center justify-between">
         <span id="modal-category" class="text-[9px] uppercase font-bold text-[#f5125e] bg-rose-50 px-2 py-0.5 rounded-md"></span>
@@ -390,14 +366,12 @@
       </div>
       <h3 id="modal-name" class="text-base sm:text-lg font-black text-slate-900 leading-tight"></h3>
       
-      <!-- Harga dengan Dukungan Harga Coret (Diskon) -->
       <div class="flex items-baseline gap-2 mt-1">
         <p id="modal-price" class="text-base sm:text-xl font-black text-[#f5125e]"></p>
         <p id="modal-original-price" class="text-xs sm:text-sm font-semibold text-slate-400 line-through hidden"></p>
       </div>
     </div>
 
-      <!-- Modal Body -->
       <div class="p-4 overflow-y-auto space-y-4 text-xs sm:text-sm flex-1 bg-white">
         <div>
           <h4 class="font-bold text-slate-800 mb-1.5 flex items-center justify-between text-xs">
@@ -410,7 +384,7 @@
           <div class="w-px h-5 bg-slate-200"></div>
           <div><span class="text-[10px] text-slate-400 block">Rating</span><span id="modal-rating" class="font-bold text-slate-800"></span></div>
           <div class="w-px h-5 bg-slate-200"></div>
-          <div><span class="text-[10px] text-slate-400 block">Garansi</span><span id="modal-warranty" class="font-bold text-emerald-600"></span></div>
+          <div><span class="text-[10px] text-slate-400 block">Garansi</span><span id="modal-warranty-box" class="font-bold text-emerald-600">Resmi</span></div>
         </div>
         <div>
           <h4 class="font-bold text-slate-800 mb-1">Deskripsi Layanan</h4>
@@ -420,7 +394,6 @@
           <h4 class="font-bold text-amber-900 mb-1 flex items-center gap-1.5 text-xs"><i data-lucide="shield-alert" class="w-4 h-4"></i> Syarat & Ketentuan</h4>
           <p id="modal-terms" class="text-amber-800 leading-relaxed whitespace-pre-line text-[11px]"></p>
         </div>
-        <!-- Ulasan -->
         <div class="pt-3 border-t border-slate-100 space-y-3">
           <div class="flex items-center justify-between">
             <div>
@@ -442,7 +415,6 @@
         </div>
       </div>
 
-      <!-- Modal Bottom Actions -->
       <div class="bg-white flex flex-col flex-shrink-0 z-20 shadow-[0_-4px_10px_-1px_rgba(0,0,0,0.1)] rounded-b-3xl sm:rounded-b-3xl w-full">
         <div class="px-4 py-3 flex items-center justify-between border-b border-slate-100">
           <span class="font-bold text-slate-800 text-xs sm:text-sm">Jumlah Pembelian</span>
@@ -452,7 +424,6 @@
             <button type="button" onclick="changeQuantity(1)" class="w-8 h-8 flex items-center justify-center text-[#f5125e] hover:bg-rose-50 transition active:bg-rose-100"><i data-lucide="plus" class="w-4 h-4"></i></button>
           </div>
         </div>
-        <!-- TOMBOL AKSI UTAMA -->
         <div class="p-3.5 bg-slate-50 grid grid-cols-5 gap-2 rounded-b-3xl sm:rounded-b-3xl">
           <button id="modal-btn-chat" onclick="handleModalChat()" type="button" class="col-span-1 border border-rose-200 bg-rose-50 hover:bg-rose-100 text-[#f5125e] rounded-xl flex flex-col items-center justify-center p-2 transition-colors">
             <i data-lucide="message-square-more" class="w-4 h-4"></i><span class="text-[9px] font-bold">Chat</span>
@@ -468,64 +439,94 @@
     </div>
   </div>
 
-  <!-- MODAL PEMBAYARAN QRIS -->
   <div id="payment-modal" class="fixed inset-0 z-[80] overflow-hidden hidden">
     <div class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
     <div class="fixed inset-0 flex items-center justify-center p-4 z-[80]">
       <div id="payment-modal-card" class="bg-white w-full max-w-sm sm:max-w-md rounded-3xl shadow-2xl overflow-hidden p-5 flex flex-col text-center max-h-[92vh] overflow-y-auto">
-        <div class="flex justify-between items-center mb-2">
-          <h3 class="font-bold text-sm text-slate-800 flex items-center gap-1.5"><i data-lucide="wallet" class="w-4 h-4 text-[#f5125e]"></i> Pembayaran & Aktivasi</h3>
+        <div class="flex justify-between items-center mb-2 border-b border-slate-100 pb-3">
+          <h3 class="font-bold text-sm text-slate-800 flex items-center gap-1.5"><i data-lucide="wallet" class="w-4 h-4 text-[#f5125e]"></i> Kasir DigitalHub</h3>
           <button onclick="closePaymentModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
-        <!-- STEP 1: LOADING & QRIS -->
-        <div id="step-pay" class="space-y-3">
-          <div class="bg-rose-50/70 p-2.5 rounded-2xl border border-rose-100 text-left">
-            <p id="pay-item-name" class="text-xs font-semibold text-slate-800 truncate"></p>
-            <p id="pay-total-amount" class="text-base font-black text-[#f5125e] mt-0.5"></p>
+        
+        <div id="step-pay" class="space-y-3 mt-2">
+          
+          <div class="bg-white border border-slate-200 rounded-2xl p-3.5 text-left shadow-sm relative overflow-hidden">
+            <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-[#f5125e] to-[#ff2b56]"></div>
+            <div class="flex justify-between items-start border-b border-dashed border-slate-200 pb-2.5 mb-2.5 mt-1.5">
+              <div>
+                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Digital Invoice</p>
+                <p id="pay-invoice-no" class="text-xs font-black text-slate-800 font-mono tracking-tight">INV-...</p>
+              </div>
+              <div class="text-right">
+                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Tanggal</p>
+                <p id="pay-invoice-date" class="text-[10px] font-bold text-slate-600">...</p>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="pay-buyer-name" class="text-[10px] font-bold text-slate-500 mb-1 block">Nama Pembeli (Opsional):</label>
+              <input type="text" id="pay-buyer-name" placeholder="Ketik nama Anda..." class="w-full text-xs font-semibold text-slate-800 px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#f5125e] focus:ring-1 focus:ring-[#f5125e] bg-slate-50 transition-all" autocomplete="off" />
+            </div>
+
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 flex justify-between items-center">
+              <div class="flex-1 min-w-0 pr-3">
+                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Rincian Pesanan</p>
+                <p id="pay-item-name" class="text-xs font-bold text-slate-800 truncate"></p>
+              </div>
+              <div class="text-right flex-shrink-0 border-l border-slate-200 pl-3">
+                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Total Tagihan</p>
+                <p id="pay-total-amount" class="text-sm font-black text-[#f5125e]"></p>
+              </div>
+            </div>
           </div>
-          <div class="flex flex-col items-center">
+
+          <div class="flex flex-col items-center mt-2">
             <div class="w-48 h-48 bg-white p-2 rounded-2xl border-2 border-dashed border-slate-300 flex items-center justify-center relative">
               <img id="qris-img" src="" class="w-full h-full object-contain hidden" />
               <div id="qris-loading-spin" class="absolute inset-0 bg-white/95 flex flex-col items-center justify-center gap-2 p-2 text-center rounded-2xl">
                 <i data-lucide="loader-2" class="w-8 h-8 animate-spin text-[#f5125e]"></i>
-                <span id="qris-loading-text" class="text-[10px] font-semibold text-slate-600 leading-tight">Memproses Pesanan...</span>
+                <span id="qris-loading-text" class="text-[10px] font-semibold text-slate-600 leading-tight">Membuat QRIS...</span>
               </div>
             </div>
           </div>
-          <div id="auto-polling-indicator" class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3 text-center flex flex-col items-center gap-2">
-            <p id="polling-text" class="text-[10.5px] text-emerald-800 font-medium leading-tight">Harap tunggu, sistem sedang memproses.</p>
+          
+          <div id="auto-polling-indicator" class="bg-emerald-50 border border-emerald-200 rounded-2xl p-2.5 text-center flex flex-col items-center gap-1">
+            <p id="polling-text" class="text-[10.5px] text-emerald-800 font-medium leading-tight">Sistem sedang mengecek pembayaran Anda...</p>
           </div>
+
+          <button onclick="confirmViaWA()" class="w-full bg-[#25D366] hover:bg-[#1ebd5a] text-white py-3 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md shadow-emerald-500/20">
+            <i data-lucide="message-circle" class="w-4 h-4"></i> Konfirmasi Manual WA
+          </button>
+
         </div>
-        <!-- STEP 2: RESULT -->
-        <div id="step-result" class="space-y-3 hidden text-left">
+
+        <div id="step-result" class="space-y-3 hidden text-left mt-3">
           <div class="text-center">
             <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-1"><i data-lucide="check" class="w-6 h-6"></i></div>
             <h4 class="font-bold text-sm text-slate-800">Pembayaran Terverifikasi!</h4>
           </div>
           <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3">
-            <span class="text-[10px] text-slate-600 font-bold block uppercase mb-1">Data Akun / Lisensi:</span>
-            <pre id="account-data" class="font-mono text-xs text-slate-800 whitespace-pre-wrap select-all"></pre>
-            <button onclick="copyAccountData()" class="mt-2 w-full bg-[#f5125e] text-white py-2 rounded-xl font-bold text-xs">Salin Data</button>
+            <span class="text-[10px] text-slate-600 font-bold block uppercase mb-1">Data Pesanan / Lisensi Anda:</span>
+            <pre id="account-data" class="font-mono text-[11px] text-slate-800 whitespace-pre-wrap select-all"></pre>
+            <button onclick="copyAccountData()" class="mt-3 w-full bg-[#f5125e] hover:bg-[#d40c4e] text-white py-2.5 rounded-xl font-bold text-xs transition-colors flex justify-center items-center gap-2"><i data-lucide="copy" class="w-4 h-4"></i> Salin Data</button>
           </div>
-          <button onclick="forceClosePaymentModal()" class="w-full mt-2 bg-slate-100 text-slate-600 py-2.5 rounded-xl text-xs font-bold hover:bg-slate-200">Tutup</button>
+          <button onclick="forceClosePaymentModal()" class="w-full mt-2 bg-slate-100 text-slate-600 py-2.5 rounded-xl text-xs font-bold hover:bg-slate-200">Tutup Halaman Ini</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- MODAL RIWAYAT PESANAN -->
   <div id="history-modal" class="fixed inset-0 z-[60] overflow-hidden hidden flex items-center justify-center p-4">
     <div onclick="closeHistoryModal()" class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
     <div id="history-modal-card" class="bg-white w-full max-w-lg rounded-3xl shadow-2xl p-5 flex flex-col max-h-[90vh] relative z-10">
       <div class="flex justify-between items-center pb-3 border-b border-slate-100">
-        <h3 class="font-bold text-sm sm:text-base text-slate-800 flex items-center gap-2"><i data-lucide="history" class="w-5 h-5 text-[#f5125e]"></i> Riwayat Pembelian Akun</h3>
+        <h3 class="font-bold text-sm sm:text-base text-slate-800 flex items-center gap-2"><i data-lucide="history" class="w-5 h-5 text-[#f5125e]"></i> Riwayat Pesanan Saya</h3>
         <button onclick="closeHistoryModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
       <div id="history-list" class="flex-1 overflow-y-auto space-y-3 pr-1 mt-3"></div>
     </div>
   </div>
 
-  <!-- CART DRAWER -->
   <div id="cart-modal" class="fixed inset-0 z-[60] overflow-hidden hidden">
     <div onclick="toggleCart(false)" class="absolute inset-0 bg-black/40 backdrop-blur-2xs"></div>
     <div class="fixed inset-y-0 right-0 max-w-full flex pl-10 z-[60]">
@@ -536,14 +537,13 @@
         </div>
         <div id="cart-items" class="flex-1 overflow-y-auto p-4 space-y-2.5"></div>
         <div id="cart-footer" class="p-4 border-t border-slate-100 bg-slate-50 space-y-3 hidden">
-          <div class="flex justify-between items-center text-xs sm:text-sm"><span class="text-slate-500 font-medium">Total:</span><span id="cart-total-price" class="font-black text-[#f5125e] text-base">Rp 0</span></div>
-          <button onclick="processCartCheckout()" class="w-full bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white py-3 rounded-xl font-bold text-xs sm:text-sm shadow-md">Checkout QRIS Sekarang</button>
+          <div class="flex justify-between items-center text-xs sm:text-sm"><span class="text-slate-500 font-medium">Total Tagihan:</span><span id="cart-total-price" class="font-black text-[#f5125e] text-base">Rp 0</span></div>
+          <button onclick="processCartCheckout()" class="w-full bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white py-3 rounded-xl font-bold text-xs sm:text-sm shadow-md active:scale-95 transition-transform">Checkout QRIS Sekarang</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- MODAL & DRAWER LIVE CHAT CS ASISTEN -->
   <div id="chat-modal" class="fixed inset-0 z-[70] overflow-hidden hidden">
     <div onclick="closeChatModal()" class="absolute inset-0 bg-black/50 backdrop-blur-2xs"></div>
     <div class="fixed inset-y-0 right-0 max-w-full flex pl-10 z-[70]">
@@ -605,10 +605,15 @@
   </div>
 
   <script>
-const _wEnc = "aHR0cHM6Ly90b2tvLWRpZ2l0YWwtYXBpLnJpenFpbmFzdG9yZTk3LndvcmtlcnMuZGV2";
-const API_URL = atob(_wEnc);
+    const _wEnc = "aHR0cHM6Ly90b2tvLWRpZ2l0YWwtYXBpLnJpenFpbmFzdG9yZTk3LndvcmtlcnMuZGV2";
+    const API_URL = atob(_wEnc);
     const WHATSAPP_NUMBER = "6282243890517"; 
     const QRIS_STATIC_URL = "https://i.ibb.co.com/PGRmz0G8/Whats-App-Image-2026-08-24-at-12-25-05.jpg"; 
+
+    // Variable penyimpan Invoice sementara untuk WhatsApp
+    window.currentInvoiceNo = '';
+    window.currentInvoiceItem = '';
+    window.currentInvoiceTotal = '';
 
     function trackActivity(actionType) {
         fetch(`${API_URL}/track`, {
@@ -997,9 +1002,22 @@ const API_URL = atob(_wEnc);
     window.updateModalPriceDisplay = function() {
       if (!currentSelectedVariant) return;
       const unitPrice = Number(currentSelectedVariant.price) || 0;
+      const originalPrice = Number(currentSelectedVariant.originalPrice) || 0;
       const totalPrice = unitPrice * currentSelectedQuantity;
+      
       const priceElem = document.getElementById('modal-price');
+      const origPriceElem = document.getElementById('modal-original-price');
+      
       if(priceElem) priceElem.innerText = formatIDR(totalPrice);
+      
+      if(origPriceElem) {
+        if (originalPrice > unitPrice) {
+          origPriceElem.innerText = formatIDR(originalPrice * currentSelectedQuantity);
+          origPriceElem.classList.remove('hidden');
+        } else {
+          origPriceElem.classList.add('hidden');
+        }
+      }
     };
 
     window.openDetailModal = function(id) {
@@ -1024,7 +1042,12 @@ const API_URL = atob(_wEnc);
       
       const ratingNum = Math.round(Number(p.rating || 5));
       document.getElementById('modal-rating').innerHTML = `<span class="text-amber-500">${'★'.repeat(ratingNum)}</span>`;
-      document.getElementById('modal-warranty').innerText = p.warranty || 'Resmi';
+      
+      // Update label garansi jika ada
+      const warrElem = document.getElementById('modal-warranty');
+      const warrBox = document.getElementById('modal-warranty-box');
+      if(warrElem) warrElem.innerText = p.warranty || 'Resmi';
+      if(warrBox) warrBox.innerText = p.warranty || 'Resmi';
 
       // --- RENDER SLIDER GAMBAR ALA LYNK.ID ---
       const sliderWrapper = document.getElementById('modal-slider-wrapper');
@@ -1088,27 +1111,6 @@ const API_URL = atob(_wEnc);
         document.getElementById('detail-modal').classList.add('hidden'); 
     };
 
-    window.updateModalPriceDisplay = function() {
-      if (!currentSelectedVariant) return;
-      const unitPrice = Number(currentSelectedVariant.price) || 0;
-      const originalPrice = Number(currentSelectedVariant.originalPrice) || 0;
-      const totalPrice = unitPrice * currentSelectedQuantity;
-      
-      const priceElem = document.getElementById('modal-price');
-      const origPriceElem = document.getElementById('modal-original-price');
-      
-      if(priceElem) priceElem.innerText = formatIDR(totalPrice);
-      
-      if(origPriceElem) {
-        if (originalPrice > unitPrice) {
-          origPriceElem.innerText = formatIDR(originalPrice * currentSelectedQuantity);
-          origPriceElem.classList.remove('hidden');
-        } else {
-          origPriceElem.classList.add('hidden');
-        }
-      }
-    };
-
     // ================= TOMBOL CHAT, KERANJANG, BELI (FIXED) =================
     window.handleModalChat = function() {
         if (!currentSelectedProduct || !currentSelectedVariant) return;
@@ -1126,7 +1128,26 @@ const API_URL = atob(_wEnc);
         startNormalCheckout(currentSelectedProduct, currentSelectedVariant, currentSelectedQuantity); 
     };
 
-    // Checkout Produk Biasa
+    // FUNGSI MENYIMPAN RIWAYAT PEMBELIAN
+    window.saveOrderHistory = function(ref, productName, variantName, accountData) {
+        let history = [];
+        try { history = JSON.parse(localStorage.getItem('my_digital_orders')) || []; } catch(e){}
+        if (!Array.isArray(history)) history = [];
+        
+        history.unshift({
+            reference: ref,
+            productName: productName,
+            variantName: variantName,
+            account: accountData,
+            date: new Date().toLocaleString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+        });
+        
+        // Simpan max 20 order terakhir biar ga kepenuhan
+        if (history.length > 20) history = history.slice(0, 20);
+        localStorage.setItem('my_digital_orders', JSON.stringify(history));
+    };
+
+    // ================= SISTEM INVOICE & CHECKOUT =================
     async function startNormalCheckout(product, variant, qty = 1, isCart = false) {
       trackActivity('click'); 
       
@@ -1138,8 +1159,27 @@ const API_URL = atob(_wEnc);
       const totalPrice = isCart ? unitPrice : (unitPrice * qty); 
       
       const displayName = isCart ? `${product.name}` : `${product.name} (${variant.name}) x${qty}`;
-      document.getElementById('pay-item-name').innerText = displayName;
-      document.getElementById('pay-total-amount').innerText = formatIDR(totalPrice);
+      
+      // Generate Data Invoice Otomatis
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      const randomStr = Math.random().toString(36).substring(2, 6).toUpperCase();
+      
+      window.currentInvoiceNo = `INV-${yyyy}${mm}${dd}-${randomStr}`;
+      window.currentInvoiceItem = displayName;
+      window.currentInvoiceTotal = formatIDR(totalPrice);
+
+      // Tampilkan Data ke dalam Layout Invoice Profesional
+      document.getElementById('pay-invoice-no').innerText = window.currentInvoiceNo;
+      document.getElementById('pay-invoice-date').innerText = today.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+      document.getElementById('pay-item-name').innerText = window.currentInvoiceItem;
+      document.getElementById('pay-total-amount').innerText = window.currentInvoiceTotal;
+      
+      // Kosongkan input nama setiap kali checkout baru
+      const buyerNameInput = document.getElementById('pay-buyer-name');
+      if (buyerNameInput) buyerNameInput.value = '';
       
       const qrisImg = document.getElementById('qris-img');
       const qrisSpin = document.getElementById('qris-loading-spin');
@@ -1184,14 +1224,15 @@ const API_URL = atob(_wEnc);
                 document.getElementById('step-result').classList.remove('hidden');
                 document.getElementById('account-data').innerText = statusData.account;
                 
-                window.saveOrderHistory(ref, isCart ? "Keranjang Belanja" : product.name, isCart ? "Berbagai Produk" : variant.name, statusData.account);
+                // Gunakan No Invoice Lokal untuk History biar nyambung
+                window.saveOrderHistory(window.currentInvoiceNo, isCart ? "Keranjang Belanja" : product.name, isCart ? "Berbagai Produk" : variant.name, statusData.account);
                 
                 if (isCart) {
                     cart = [];
                     localStorage.setItem('my_digital_cart', JSON.stringify(cart));
                     renderCart();
                 }
-                showToast("Pembayaran Terverifikasi! Akun Terkirim.");
+                showToast("Pembayaran Terverifikasi! Lisensi Terkirim.");
               }
             } catch (e) {}
           }, 4000); 
@@ -1200,13 +1241,11 @@ const API_URL = atob(_wEnc);
           qrisImg.src = QRIS_STATIC_URL;
           qrisImg.classList.remove('hidden');
           qrisSpin.classList.add('hidden');
-          showToast("Koneksi gagal, menggunakan QRIS statis", "error");
         }
       } catch (err) {
         qrisImg.src = QRIS_STATIC_URL;
         qrisImg.classList.remove('hidden');
         qrisSpin.classList.add('hidden');
-        showToast("Sistem menggunakan mode manual/statis", "info");
 
         if(pollingInterval) clearTimeout(pollingInterval);
         pollingInterval = setTimeout(() => {
@@ -1215,7 +1254,7 @@ const API_URL = atob(_wEnc);
           const dummyAccount = "email_premium_pro@gmail.com : passSecure99\n(Format Akun Auto-Delivery Resmi)";
           document.getElementById('account-data').innerText = dummyAccount;
           
-          window.saveOrderHistory(`INV-DUMMY${Date.now()}`, isCart ? "Keranjang Belanja" : product.name, isCart ? "Berbagai Produk" : variant.name, dummyAccount);
+          window.saveOrderHistory(window.currentInvoiceNo, isCart ? "Keranjang Belanja" : product.name, isCart ? "Berbagai Produk" : variant.name, dummyAccount);
           if (isCart) {
               cart = [];
               localStorage.setItem('my_digital_cart', JSON.stringify(cart));
@@ -1225,6 +1264,21 @@ const API_URL = atob(_wEnc);
         }, 5000);
       }
     }
+
+    // FUNGSI KONFIRMASI MANUAL VIA WA DENGAN INVOICE
+    window.confirmViaWA = function() {
+        let name = document.getElementById('pay-buyer-name').value.trim();
+        if (!name) name = "Pelanggan";
+        
+        const inv = window.currentInvoiceNo || "INV-XXX";
+        const item = window.currentInvoiceItem || "-";
+        const total = window.currentInvoiceTotal || "-";
+        
+        const msg = `📄 *KONFIRMASI PEMBAYARAN DIGITALHUB*\n\n*No. Invoice:* ${inv}\n*Nama:* ${name}\n*Pesanan:* ${item}\n*Total Tagihan:* ${total}\n\n_Halo Admin DigitalHub, saya sudah bayar & transfer sesuai tagihan invoice di atas. Berikut saya lampirkan bukti transfernya..._`;
+        
+        const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+        window.open(waLink, '_blank');
+    };
 
     window.closePaymentModal = function() {
         document.getElementById('payment-modal').classList.add('hidden'); 
@@ -1238,7 +1292,7 @@ const API_URL = atob(_wEnc);
 
     window.copyAccountData = function() {
       const text = document.getElementById('account-data').innerText;
-      navigator.clipboard.writeText(text).then(() => showToast('Data disalin!'));
+      navigator.clipboard.writeText(text).then(() => showToast('Data lisensi berhasil disalin!'));
     };
 
     // ================= FUNGSI TOMBOL HEADER & MODAL LAIN =================
@@ -1252,15 +1306,16 @@ const API_URL = atob(_wEnc);
         container.innerHTML = `<div class="py-12 text-center text-slate-400 text-xs"><i data-lucide="receipt" class="w-8 h-8 mx-auto mb-1 stroke-1"></i>Belum ada riwayat pesanan</div>`;
       } else {
         container.innerHTML = history.map((item) => `
-          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
+          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2 shadow-sm">
             <div class="flex justify-between items-start">
               <div>
-                <span class="text-[9px] font-bold text-[#f5125e] bg-rose-50 px-2 py-0.5 rounded font-mono">${item.reference}</span>
+                <span class="text-[9px] font-bold text-[#f5125e] bg-rose-50 border border-rose-100 px-2 py-0.5 rounded font-mono shadow-xs">${item.reference}</span>
                 <h4 class="font-bold text-xs sm:text-sm text-slate-800 mt-1">${item.productName} (${item.variantName})</h4>
-                <p class="text-[10px] text-slate-400">${item.date}</p>
+                <p class="text-[10px] text-slate-400 mt-0.5"><i data-lucide="clock" class="w-3 h-3 inline pb-0.5"></i> ${item.date}</p>
               </div>
+              <div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex justify-center items-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3"></i></div>
             </div>
-            <div class="bg-white border rounded-xl p-2.5"><pre class="font-mono text-xs text-slate-800 whitespace-pre-wrap select-all">${item.account}</pre></div>
+            <div class="bg-white border rounded-xl p-2.5 shadow-inner"><pre class="font-mono text-[10px] sm:text-xs text-slate-800 whitespace-pre-wrap select-all">${item.account}</pre></div>
           </div>
         `).join('');
       }
@@ -1319,7 +1374,7 @@ const API_URL = atob(_wEnc);
       } else if (action === 'menu_cara_beli') {
           appendUserChatMessage("Bagaimana cara beli produk via QRIS dan sistem garansinya?");
           showBotTyping();
-          setTimeout(() => { removeBotTyping(); appendBotChatMessage(`**Cara Beli Sangat Mudah:**\n1. Pilih produk & paket yang diinginkan di beranda.\n2. Klik **Beli Sekarang**.\n3. Scan QRIS yang muncul di layar.\n4. Dalam hitungan detik, akun langsung muncul otomatis di layar! ⚡\n\n**Info Garansi:**\nSemua produk bergaransi penuh sesuai masa aktif. Simpan Nomor Invoice untuk klaim penggantian jika ada kendala.`); }, 1200);
+          setTimeout(() => { removeBotTyping(); appendBotChatMessage(`**Cara Beli Sangat Mudah:**\n1. Pilih produk & paket yang diinginkan di beranda.\n2. Klik **Beli Sekarang**.\n3. Scan QRIS yang muncul di layar.\n4. Dalam hitungan detik, lisensi langsung muncul otomatis di layar! ⚡\n\n**Info Garansi:**\nSemua produk bergaransi penuh sesuai masa aktif. Simpan Nomor Invoice (INV-...) untuk klaim penggantian jika ada kendala.`); }, 1200);
       } else if (action === 'menu_hubungi_admin') {
           appendUserChatMessage("Saya ingin menghubungi Admin CS via WhatsApp.");
           chatBotState = 'awaiting_wa_reason'; 
@@ -1349,7 +1404,7 @@ const API_URL = atob(_wEnc);
         if (chatBotState === 'awaiting_wa_reason') {
             chatBotState = 'normal'; 
             const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Halo Admin DigitalHub, saya butuh bantuan terkait: ' + rawText)}`;
-            appendBotChatMessage(`Terima kasih informasinya Kak. Silakan klik tombol di bawah ini untuk terhubung langsung dengan Admin kami beserta detail pesan Kakak:\n\n👉 <a href="${waLink}" target="_blank" class="text-emerald-600 font-black underline bg-emerald-50 px-2 py-1 rounded inline-block mt-2">Chat WhatsApp Admin</a>`);
+            appendBotChatMessage(`Terima kasih informasinya Kak. Silakan klik tombol di bawah ini untuk terhubung langsung dengan Admin kami beserta detail pesan Kakak:\n\n👉 <a href="${waLink}" target="_blank" class="text-emerald-600 font-black underline bg-emerald-50 px-2 py-1 rounded inline-block mt-2 shadow-xs">Chat WhatsApp Admin</a>`);
             return;
         }
 
