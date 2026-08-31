@@ -36,7 +36,7 @@
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   
   <style>
-    /* PENGUNCI FONT OUTFIT DI SELURUH WEBSITE (DIJAMIN BERUBAH) */
+    /* PENGUNCI FONT OUTFIT DI SELURUH WEBSITE */
     * {
       font-family: 'Outfit', sans-serif !important;
       -webkit-user-select: none;
@@ -375,7 +375,7 @@
     <button onclick="openChatModal()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="message-square-more" class="w-4 h-4"></i><span>Chat CS</span></button>
   </div>
 
-  <!-- MODAL DETAIL PRODUK (DENGAN SLIDER GAMBAR & HARGA CORET) -->
+  <!-- MODAL DETAIL PRODUK -->
 <div id="detail-modal" class="fixed inset-0 z-50 overflow-hidden hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
   <div onclick="closeDetailModal()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
   <div id="detail-modal-card" class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col h-[92vh] sm:h-auto sm:max-h-[94vh] relative z-10 overflow-hidden">
@@ -386,10 +386,8 @@
 
     <div class="relative w-full bg-slate-900 flex-shrink-0">
       <div id="modal-slider-wrapper" class="product-slider-container flex overflow-x-auto no-scrollbar w-full aspect-[16/10] sm:aspect-[16/9]" onscroll="updateSliderDotsOnScroll(this)">
-        <!-- Gambar akan di-generate otomatis via JavaScript -->
       </div>
       <div id="modal-slider-dots" class="absolute bottom-3 inset-x-0 flex items-center justify-center gap-1.5 z-20 pointer-events-none">
-        <!-- Dots aktif dinamis -->
       </div>
     </div>
 
@@ -400,14 +398,12 @@
       </div>
       <h3 id="modal-name" class="text-base sm:text-lg font-black text-slate-900 leading-tight"></h3>
       
-      <!-- Harga dengan Dukungan Harga Coret -->
       <div class="flex items-baseline gap-2 mt-1">
         <p id="modal-price" class="text-base sm:text-xl font-black text-[#f5125e]"></p>
         <p id="modal-original-price" class="text-xs sm:text-sm font-semibold text-slate-400 line-through hidden"></p>
       </div>
     </div>
 
-      <!-- Modal Body -->
       <div class="p-4 overflow-y-auto space-y-4 text-xs sm:text-sm flex-1 bg-white">
         <div>
           <h4 class="font-bold text-slate-800 mb-1.5 flex items-center justify-between text-xs">
@@ -430,7 +426,6 @@
           <h4 class="font-bold text-amber-900 mb-1 flex items-center gap-1.5 text-xs"><i data-lucide="shield-alert" class="w-4 h-4"></i> Syarat & Ketentuan</h4>
           <p id="modal-terms" class="text-amber-800 leading-relaxed whitespace-pre-line text-[11px]"></p>
         </div>
-        <!-- Ulasan -->
         <div class="pt-3 border-t border-slate-100 space-y-3">
           <div class="flex items-center justify-between">
             <div>
@@ -452,7 +447,6 @@
         </div>
       </div>
 
-      <!-- Modal Bottom Actions -->
       <div class="bg-white flex flex-col flex-shrink-0 z-20 shadow-[0_-4px_10px_-1px_rgba(0,0,0,0.1)] rounded-b-3xl sm:rounded-b-3xl w-full">
         <div class="px-4 py-3 flex items-center justify-between border-b border-slate-100">
           <span class="font-bold text-slate-800 text-xs sm:text-sm">Jumlah Pembelian</span>
@@ -490,7 +484,6 @@
         <!-- STEP 1: INVOICE & QRIS -->
         <div id="step-pay" class="space-y-3 mt-2">
           
-          <!-- INVOICE PROFESIONAL UI -->
           <div class="bg-white border-2 border-slate-100 rounded-2xl p-0 text-left shadow-sm relative overflow-hidden mb-3">
             <div class="bg-slate-50 p-3.5 border-b border-slate-100 flex justify-between items-center">
               <div>
@@ -512,7 +505,6 @@
               <div class="bg-slate-50 rounded-xl p-3 border border-slate-100 flex justify-between items-start">
                 <div class="flex-1 min-w-0 pr-3 border-r border-slate-200">
                   <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Rincian Pesanan</p>
-                  <!-- WHITESPACE PRE-WRAP AGAR LIST BARANG KERANJANG TERBACA SEMUA -->
                   <p id="pay-item-name" class="text-[10.5px] font-bold text-slate-800 whitespace-pre-wrap leading-relaxed"></p>
                 </div>
                 <div class="flex-shrink-0 pl-3 text-right">
@@ -523,7 +515,6 @@
             </div>
           </div>
 
-          <!-- KOTAK QRIS -->
           <div class="flex flex-col items-center mt-2">
             <div class="w-48 h-48 bg-white p-2 rounded-2xl border-2 border-dashed border-slate-300 flex items-center justify-center relative">
               <img id="qris-img" src="" class="w-full h-full object-contain hidden" />
@@ -534,9 +525,7 @@
             </div>
           </div>
           
-          <!-- Indikator Polling Dinamis -->
           <div id="auto-polling-indicator">
-             <!-- Di-inject otomatis lewat JS -->
           </div>
         </div>
 
@@ -551,7 +540,6 @@
             <p class="text-[11px] text-slate-500 mt-1 font-medium">Terima kasih, tagihan invoice Anda telah lunas.</p>
           </div>
           
-          <!-- BOX PERINGATAN SIMPAN INVOICE (FITUR BARU) -->
           <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3 text-center mt-2 shadow-sm">
               <p class="text-[10px] font-black text-amber-800 mb-1 tracking-wide flex justify-center items-center gap-1.5">
                   <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i> SIMPAN BUKTI INVOICE INI!
@@ -948,7 +936,7 @@
       popGrid.innerHTML = bestProducts.slice(0, 4).map(item => {
         const prices = item.variants && item.variants.length > 0 ? item.variants.map(v => Number(v.price || 0)) : [Number(item.price || 0)];
         return `
-          <div onclick="openDetailModal(${item.id})" class="bg-white rounded-2xl p-2.5 border border-rose-200/90 shadow-2xs hover:border-[#f5125e] transition-all cursor-pointer group flex flex-col justify-between relative">
+          <div onclick="openDetailModal('${item.id}')" class="bg-white rounded-2xl p-2.5 border border-rose-200/90 shadow-2xs hover:border-[#f5125e] transition-all cursor-pointer group flex flex-col justify-between relative">
             <div>
               ${item.isBestSeller ? `<span class="absolute top-2 left-2 bg-[#f5125e] text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-xs z-10">🔥 BEST SELLER</span>` : ''}
               ${item.isHot ? `<span class="absolute top-2 right-2 bg-rose-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-xs z-10">HOT</span>` : ''}
@@ -1029,7 +1017,7 @@
         const starsHtml = '★'.repeat(ratingNum);
 
         return `
-          <div onclick="openDetailModal(${item.id})" class="bg-white rounded-2xl p-2.5 sm:p-3 border border-slate-200/90 shadow-2xs flex flex-col justify-between cursor-pointer hover:border-[#f5125e] hover:shadow-md transition-all group relative">
+          <div onclick="openDetailModal('${item.id}')" class="bg-white rounded-2xl p-2.5 sm:p-3 border border-slate-200/90 shadow-2xs flex flex-col justify-between cursor-pointer hover:border-[#f5125e] hover:shadow-md transition-all group relative">
             <div>
               ${item.isBestSeller ? `<span class="absolute top-2 left-2 bg-[#f5125e] text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-xs z-10">BEST SELLER</span>` : ''}
               ${item.isHot ? `<span class="absolute top-2 right-2 bg-amber-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-xs z-10">HOT</span>` : ''}
@@ -1086,7 +1074,7 @@
     };
 
     window.openDetailModal = function(id) {
-      const p = products.find(i => i.id === id);
+      const p = products.find(i => i.id === id || i.id === parseInt(id));
       if (!p) return;
       
       trackActivity('click'); 
@@ -1242,7 +1230,6 @@
       const qrisSpin = document.getElementById('qris-loading-spin');
       const pollingIndicator = document.getElementById('auto-polling-indicator');
       
-      // Reset Polling UI (Untuk mencegah nyangkut)
       pollingIndicator.className = "bg-emerald-50 border border-emerald-200 rounded-2xl p-2.5 text-center flex flex-col items-center gap-2 mt-2";
       pollingIndicator.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin text-emerald-600"></i><p class="text-[10.5px] text-emerald-800 font-medium leading-tight">Sistem sedang mengecek pembayaran Anda...</p>`;
       if(typeof lucide !== 'undefined') lucide.createIcons();
@@ -1299,7 +1286,6 @@
           }, 4000); 
 
         } else {
-          // JIKA TRIPAY GAGAL (KARENA MULTI PRODUK KERANJANG), PAKAI QRIS MANUAL DAN TAMPILKAN TOMBOL "SUDAH TRANSFER"
           throw new Error("Gunakan QRIS Manual");
         }
       } catch (err) {
@@ -1309,7 +1295,6 @@
 
         if(pollingInterval) clearInterval(pollingInterval);
         
-        // GANTI TAMPILAN POLLING MENJADI TOMBOL MANUAL
         pollingIndicator.className = "bg-amber-50 border border-amber-200 rounded-2xl p-3 text-center flex flex-col items-center gap-2 mt-2";
         pollingIndicator.innerHTML = `
           <p class="text-[10px] text-amber-800 font-bold leading-tight">Sistem Verifikasi Otomatis Sedang Sibuk.</p>
@@ -1319,7 +1304,6 @@
       }
     }
 
-    // FUNGSI JIKA PEMBELI MENEKAN TOMBOL "SAYA SUDAH TRANSFER"
     window.manualPaymentSuccess = function(isCartFlag) {
       document.getElementById('step-pay').classList.add('hidden');
       document.getElementById('step-result').classList.remove('hidden');
@@ -1345,7 +1329,6 @@
       toggleCart(false);
       const totalPrice = cart.reduce((a, b) => a + (Number(b.price) || 0), 0);
       
-      // Menggabungkan semua nama item di keranjang dengan ENTER (\n) agar terdaftar rapi di Invoice
       const itemNames = cart.map(i => i.name).join('\n'); 
       
       startNormalCheckout(
@@ -1385,7 +1368,6 @@
       navigator.clipboard.writeText(text).then(() => showToast('Data lisensi berhasil disalin!'));
     };
 
-    // ================= FUNGSI TOMBOL HEADER & MODAL LAIN =================
     window.openHistoryModal = function() {
       let history = [];
       try { history = JSON.parse(localStorage.getItem('my_digital_orders')) || []; } catch(e){}
@@ -1453,7 +1435,6 @@
       }, 1000);
     };
 
-    // ================= FUNGSI BOT CERDAS =================
     window.sendQuickReply = function(action) {
       document.getElementById('chat-menu-buttons').classList.add('hidden'); 
       
@@ -1639,6 +1620,44 @@
                 { user: "p***i", avatarColor: "bg-pink-100 text-pink-600", rating: 5, date: "4 hari lalu", tag: "service", comment: `🛡️ Invoice resmi tersimpan rapi di browser, ga takut hilang bukti garansi buat pesanan ${pName}.` }
             ]
         };
+    }
+
+    window.setReviewFilter = function(filterType) {
+      activeReviewFilter = filterType;
+      document.querySelectorAll('.rf-btn').forEach(btn => {
+        btn.className = 'rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all text-[10px] cursor-pointer';
+      });
+      const activeBtn = document.getElementById(`rf-${filterType}`);
+      if (activeBtn) activeBtn.className = 'rf-btn bg-rose-50 text-[#f5125e] border border-rose-200 px-2.5 py-1 rounded-lg font-bold transition-all text-[10px] shadow-2xs cursor-pointer';
+      displayFilteredReviews();
+    };
+
+    function displayFilteredReviews() {
+      const container = document.getElementById('product-reviews-list');
+      if (!container || !currentSelectedProduct) return;
+      const dynamicReviews = getReviewsForProduct(currentSelectedProduct);
+      let listToShow = [];
+      if (currentSelectedProduct.customReviews && currentSelectedProduct.customReviews.length > 0) {
+        if (activeReviewFilter === 'all') listToShow = currentSelectedProduct.customReviews;
+        else if (activeReviewFilter === 'star5') listToShow = currentSelectedProduct.customReviews.filter(r => Number(r.rating) === 5);
+        else listToShow = currentSelectedProduct.customReviews.filter(r => r.tag === activeReviewFilter);
+      }
+      if (listToShow.length === 0) listToShow = dynamicReviews[activeReviewFilter] || dynamicReviews.all;
+
+      container.innerHTML = listToShow.map(rev => `
+        <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 space-y-1.5 animate-review">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-full ${rev.avatarColor || 'bg-rose-100 text-[#f5125e]'} flex items-center justify-center font-bold text-[10px]">
+                ${rev.user.charAt(0).toUpperCase()}
+              </div>
+              <div><p class="font-bold text-[11px] text-slate-800 leading-tight">${rev.user}</p><div class="flex items-center gap-0.5 text-amber-500 text-[10px]">${'★'.repeat(Number(rev.rating) || 5)}</div></div>
+            </div>
+            <span class="text-[9.5px] text-slate-400">${rev.date || 'Baru saja'}</span>
+          </div>
+          <div class="text-[10px] text-slate-500 font-medium bg-white px-2 py-0.5 rounded border border-slate-100 w-max">Variasi: ${rev.variant || currentSelectedVariant?.name || 'Resmi'}</div>
+          <p class="text-[11.5px] text-slate-700 leading-relaxed">${rev.comment}</p>
+        </div>`).join('');
     }
 
     loadProducts();
