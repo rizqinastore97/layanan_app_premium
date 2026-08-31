@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Digital Store - Marketplace Produk & Jasa Digital</title>
 
+  <!-- PWA & META TAGS -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#f5125e" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -13,15 +14,43 @@
   <link rel="icon" type="image/png" href="https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png" />
   <link rel="apple-touch-icon" href="https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png" />
 
+  <!-- GOOGLE FONT OUTFIT LENGKAP -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  
   <style>
+    /* PENGUNCI FONT OUTFIT DI SELURUH WEBSITE */
+    * {
+      font-family: 'Outfit', sans-serif !important;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+    }
+
+    /* Pengecualian Font Monospace untuk lisensi */
+    pre, code, #account-data {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    }
+    
     /* Styling Slider Gambar Produk Ala Lynk.id */
     .product-slider-container {
       scroll-snap-type: x mandatory;
@@ -30,18 +59,6 @@
     .product-slider-item {
       scroll-snap-align: start;
       flex-shrink: 0;
-    }
-    
-    /* FONT OUTFIT DITERAPKAN DI SINI */
-    body { font-family: 'Outfit', sans-serif; }
-
-    /* PROTEKSI ANTI-SELECT & ANTI-COPY DI SELURUH WEBSITE */
-    * {
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      -webkit-touch-callout: none;
     }
     
     input, textarea, select {
@@ -112,10 +129,12 @@
     .theme-shopee .active-cat span { color: #ee4d2d !important; }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen pb-20 md:pb-10 font-sans antialiased selection:bg-[#f5125e] selection:text-white">
+<body class="bg-slate-50 text-slate-800 min-h-screen pb-20 md:pb-10 antialiased selection:bg-[#f5125e] selection:text-white">
 
+  <!-- Toast Container -->
   <div id="toast-container" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none w-full max-w-xs px-4"></div>
 
+  <!-- POPUP INSTALL PWA -->
   <div id="pwa-install-popup" class="fixed inset-0 bg-black/75 z-[9999] hidden flex items-center justify-center p-5 backdrop-blur-2xs transition-opacity duration-300">
     <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center shadow-2xl transform transition-all space-y-4">
       <div class="w-20 h-20 bg-rose-50 text-[#f5125e] rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner border-4 border-white outline outline-4 outline-rose-100">
@@ -139,6 +158,7 @@
     </div>
   </div>
 
+  <!-- LIVE SOCIAL PROOF -->
   <div id="social-proof-toast" class="fixed bottom-20 md:bottom-6 left-3 md:left-6 z-40 bg-white/95 backdrop-blur-md border border-rose-200/90 p-2.5 sm:p-3 rounded-2xl shadow-xl flex items-center gap-3 max-w-xs transition-all duration-500 opacity-0 translate-y-6 pointer-events-none">
     <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#f5125e] to-[#ff477e] text-white flex items-center justify-center flex-shrink-0 shadow-xs">
       <i data-lucide="bag-check" class="w-5 h-5"></i>
@@ -153,8 +173,10 @@
     </div>
   </div>
 
+  <!-- Header Toko -->
   <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-rose-100/80 shadow-xs px-3 sm:px-8 py-3">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-2.5 sm:gap-6">
+      <!-- Brand Logo -->
       <div class="flex items-center gap-2.5 cursor-pointer flex-shrink-0" onclick="setCategory('Semua')">
         <img src="https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png" alt="Logo DigitalHub" class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl object-contain bg-white shadow-xs border border-slate-100" />
         <div class="hidden sm:block">
@@ -163,6 +185,7 @@
         </div>
       </div>
 
+      <!-- Search Bar -->
       <div class="relative flex-1 max-w-2xl flex items-center gap-2">
         <form onsubmit="event.preventDefault(); handleSearch(document.getElementById('search-input').value);" class="flex-1 flex items-center bg-white border-2 border-[#f5125e] rounded-full p-0.5 sm:p-1 shadow-xs transition-all focus-within:ring-2 focus-within:ring-[#f5125e]/30">
           <i data-lucide="search" class="w-4 h-4 text-slate-400 ml-3 mr-1 flex-shrink-0"></i>
@@ -188,6 +211,7 @@
         </button>
       </div>
 
+      <!-- Action Buttons -->
       <div class="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
         <button onclick="openHistoryModal()" class="hidden md:flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-rose-50 hover:text-[#f5125e] border border-slate-200 hover:border-rose-200 px-3.5 py-2.5 rounded-xl transition-all">
           <i data-lucide="receipt" class="w-4 h-4 text-[#f5125e]"></i>
@@ -209,6 +233,7 @@
 
   <main class="max-w-7xl mx-auto px-3 sm:px-8 py-4 sm:py-6 space-y-5 sm:space-y-6">
     
+    <!-- Info Trust Bar -->
     <div class="bg-white rounded-2xl p-3 sm:p-4 shadow-2xs border border-rose-100/60 grid grid-cols-3 gap-2 text-center text-xs">
       <div class="flex items-center justify-center gap-2.5 border-r border-slate-100 cursor-pointer" onclick="showToast('Sistem Auto QRIS TriPay Aktif 24 Jam')">
         <div class="w-8 h-8 rounded-xl bg-rose-50 text-[#f5125e] flex items-center justify-center flex-shrink-0"><i data-lucide="qr-code" class="w-4 h-4"></i></div>
@@ -224,6 +249,7 @@
       </div>
     </div>
 
+    <!-- Menu Kategori Grid -->
     <div class="bg-white rounded-2xl p-3.5 sm:p-5 shadow-2xs border border-slate-200/80 overflow-hidden">
       <div id="category-buttons-grid" class="grid grid-cols-4 md:grid-cols-7 gap-3 sm:gap-4 text-center text-[11px] font-semibold text-slate-700">
         
@@ -262,11 +288,13 @@
           <span class="truncate w-full">Streaming</span>
         </div>
         
+        <!-- Tombol "Semua" rahasia -->
         <div onclick="setCategory('Semua')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group active-cat hidden" data-cat="Semua"></div>
 
       </div>
     </div>
 
+    <!-- SEKSI BANNER PROMO DINAMIS -->
     <div id="store-banner-wrapper" class="hidden">
       <div id="banner-image-container" class="w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm border border-slate-200/80 hidden">
         <img id="main-banner-image" src="" alt="Banner Promo" class="w-full h-auto max-h-56 sm:max-h-72 object-cover" />
@@ -282,6 +310,7 @@
       </div>
     </div>
 
+    <!-- Seksi Produk Populer / Terlaris -->
     <div id="popular-section" class="space-y-3 hidden">
       <div class="flex items-center justify-between px-1">
         <h2 class="text-xs sm:text-sm font-black text-slate-800 uppercase tracking-wide flex items-center gap-1.5">
@@ -291,6 +320,7 @@
       <div id="popular-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4"></div>
     </div>
 
+    <!-- Katalog Produk Utama -->
     <div id="product-catalog-section" class="space-y-3">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-1">
         <div class="flex items-center gap-2">
@@ -320,6 +350,7 @@
       <div id="product-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2.5 sm:gap-4 hidden"></div>
     </div>
 
+    <!-- Seksi FAQ Accordion -->
     <div class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-2xs space-y-3">
       <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
         <div class="w-7 h-7 rounded-lg bg-rose-50 text-[#f5125e] flex items-center justify-center"><i data-lucide="help-circle" class="w-4 h-4"></i></div>
@@ -338,11 +369,13 @@
     </div>
   </main>
 
-<div class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200/80 z-40 py-2 px-3 flex md:hidden items-center justify-between text-slate-500 text-[10px] font-medium shadow-lg">
+<!-- Mobile Bottom Nav -->
+  <div class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200/80 z-40 py-2 px-3 flex md:hidden items-center justify-between text-slate-500 text-[10px] font-medium shadow-lg">
     <button onclick="setCategory('Semua')" class="flex flex-col items-center gap-0.5 text-[#f5125e]"><i data-lucide="home" class="w-4 h-4"></i><span>Beranda</span></button>
     <button onclick="triggerPwaPromptUI()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="download" class="w-4 h-4 text-emerald-600"></i><span>App</span></button>
     <button onclick="openHistoryModal()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="receipt" class="w-4 h-4"></i><span>Pesanan</span></button>
     
+    <!-- TOMBOL GABUNG GRUP WA -->
     <a href="https://chat.whatsapp.com/GyWih0duwCfBEZg8w9Tx1f" target="_blank" class="flex flex-col items-center gap-0.5 text-emerald-600 font-bold">
       <i data-lucide="users" class="w-4 h-4"></i>
       <span>Grup WA</span>
@@ -352,7 +385,8 @@
     <button onclick="openChatModal()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="message-square-more" class="w-4 h-4"></i><span>Chat CS</span></button>
   </div>
 
-  <div id="detail-modal" class="fixed inset-0 z-50 overflow-hidden hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+  <!-- MODAL DETAIL PRODUK (DENGAN SLIDER GAMBAR & HARGA CORET) -->
+<div id="detail-modal" class="fixed inset-0 z-50 overflow-hidden hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
   <div onclick="closeDetailModal()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
   <div id="detail-modal-card" class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col h-[92vh] sm:h-auto sm:max-h-[94vh] relative z-10 overflow-hidden">
     
@@ -362,9 +396,11 @@
 
     <div class="relative w-full bg-slate-900 flex-shrink-0">
       <div id="modal-slider-wrapper" class="product-slider-container flex overflow-x-auto no-scrollbar w-full aspect-[16/10] sm:aspect-[16/9]" onscroll="updateSliderDotsOnScroll(this)">
-        </div>
+        <!-- Gambar akan di-generate otomatis via JavaScript -->
+      </div>
       <div id="modal-slider-dots" class="absolute bottom-3 inset-x-0 flex items-center justify-center gap-1.5 z-20 pointer-events-none">
-        </div>
+        <!-- Dots aktif dinamis -->
+      </div>
     </div>
 
     <div class="p-4 border-b border-slate-100 bg-white flex flex-col gap-1 flex-shrink-0">
@@ -374,12 +410,14 @@
       </div>
       <h3 id="modal-name" class="text-base sm:text-lg font-black text-slate-900 leading-tight"></h3>
       
+      <!-- Harga dengan Dukungan Harga Coret -->
       <div class="flex items-baseline gap-2 mt-1">
         <p id="modal-price" class="text-base sm:text-xl font-black text-[#f5125e]"></p>
         <p id="modal-original-price" class="text-xs sm:text-sm font-semibold text-slate-400 line-through hidden"></p>
       </div>
     </div>
 
+      <!-- Modal Body -->
       <div class="p-4 overflow-y-auto space-y-4 text-xs sm:text-sm flex-1 bg-white">
         <div>
           <h4 class="font-bold text-slate-800 mb-1.5 flex items-center justify-between text-xs">
@@ -402,6 +440,7 @@
           <h4 class="font-bold text-amber-900 mb-1 flex items-center gap-1.5 text-xs"><i data-lucide="shield-alert" class="w-4 h-4"></i> Syarat & Ketentuan</h4>
           <p id="modal-terms" class="text-amber-800 leading-relaxed whitespace-pre-line text-[11px]"></p>
         </div>
+        <!-- Ulasan -->
         <div class="pt-3 border-t border-slate-100 space-y-3">
           <div class="flex items-center justify-between">
             <div>
@@ -423,6 +462,7 @@
         </div>
       </div>
 
+      <!-- Modal Bottom Actions -->
       <div class="bg-white flex flex-col flex-shrink-0 z-20 shadow-[0_-4px_10px_-1px_rgba(0,0,0,0.1)] rounded-b-3xl sm:rounded-b-3xl w-full">
         <div class="px-4 py-3 flex items-center justify-between border-b border-slate-100">
           <span class="font-bold text-slate-800 text-xs sm:text-sm">Jumlah Pembelian</span>
@@ -447,6 +487,7 @@
     </div>
   </div>
 
+  <!-- MODAL PEMBAYARAN QRIS (DIUPDATE DENGAN INVOICE DIGITAL OTOMATIS) -->
   <div id="payment-modal" class="fixed inset-0 z-[80] overflow-hidden hidden">
     <div class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
     <div class="fixed inset-0 flex items-center justify-center p-4 z-[80]">
@@ -456,8 +497,10 @@
           <button onclick="closePaymentModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
         
+        <!-- STEP 1: INVOICE & QRIS -->
         <div id="step-pay" class="space-y-3 mt-2">
           
+          <!-- INVOICE PROFESIONAL UI -->
           <div class="bg-white border-2 border-slate-100 rounded-2xl p-0 text-left shadow-sm relative overflow-hidden mb-3">
             <div class="bg-slate-50 p-3.5 border-b border-slate-100 flex justify-between items-center">
               <div>
@@ -489,6 +532,7 @@
             </div>
           </div>
 
+          <!-- KOTAK QRIS -->
           <div class="flex flex-col items-center mt-2">
             <div class="w-48 h-48 bg-white p-2 rounded-2xl border-2 border-dashed border-slate-300 flex items-center justify-center relative">
               <img id="qris-img" src="" class="w-full h-full object-contain hidden" />
@@ -502,11 +546,10 @@
           <div id="auto-polling-indicator" class="bg-emerald-50 border border-emerald-200 rounded-2xl p-2.5 text-center flex flex-col items-center gap-1">
             <p id="polling-text" class="text-[10.5px] text-emerald-800 font-medium leading-tight">Sistem sedang mengecek pembayaran Anda...</p>
           </div>
+        </div>
 
-          </div>
-
+        <!-- STEP 2: RESULT (SUCCESS & WHATSAPP BUTTON) -->
         <div id="step-result" class="space-y-4 hidden text-left mt-2">
-          
           <div class="text-center mt-2">
             <div class="w-16 h-16 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-2 shadow-inner">
               <i data-lucide="check-circle-2" class="w-8 h-8"></i>
@@ -536,6 +579,7 @@
     </div>
   </div>
 
+  <!-- MODAL RIWAYAT PESANAN -->
   <div id="history-modal" class="fixed inset-0 z-[60] overflow-hidden hidden flex items-center justify-center p-4">
     <div onclick="closeHistoryModal()" class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
     <div id="history-modal-card" class="bg-white w-full max-w-lg rounded-3xl shadow-2xl p-5 flex flex-col max-h-[90vh] relative z-10">
@@ -547,6 +591,7 @@
     </div>
   </div>
 
+  <!-- CART DRAWER -->
   <div id="cart-modal" class="fixed inset-0 z-[60] overflow-hidden hidden">
     <div onclick="toggleCart(false)" class="absolute inset-0 bg-black/40 backdrop-blur-2xs"></div>
     <div class="fixed inset-y-0 right-0 max-w-full flex pl-10 z-[60]">
@@ -564,6 +609,7 @@
     </div>
   </div>
 
+  <!-- MODAL & DRAWER LIVE CHAT CS ASISTEN -->
   <div id="chat-modal" class="fixed inset-0 z-[70] overflow-hidden hidden">
     <div onclick="closeChatModal()" class="absolute inset-0 bg-black/50 backdrop-blur-2xs"></div>
     <div class="fixed inset-y-0 right-0 max-w-full flex pl-10 z-[70]">
@@ -630,7 +676,6 @@
     const WHATSAPP_NUMBER = "6282243890517"; 
     const QRIS_STATIC_URL = "https://i.ibb.co.com/PGRmz0G8/Whats-App-Image-2026-08-24-at-12-25-05.jpg"; 
 
-    // Variable penyimpan Invoice sementara untuk WhatsApp
     window.currentInvoiceNo = '';
     window.currentInvoiceItem = '';
     window.currentInvoiceTotal = '';
@@ -1063,13 +1108,11 @@
       const ratingNum = Math.round(Number(p.rating || 5));
       document.getElementById('modal-rating').innerHTML = `<span class="text-amber-500">${'★'.repeat(ratingNum)}</span>`;
       
-      // Update label garansi jika ada
       const warrElem = document.getElementById('modal-warranty');
       const warrBox = document.getElementById('modal-warranty-box');
       if(warrElem) warrElem.innerText = p.warranty || 'Resmi';
       if(warrBox) warrBox.innerText = p.warranty || 'Resmi';
 
-      // --- RENDER SLIDER GAMBAR ALA LYNK.ID ---
       const sliderWrapper = document.getElementById('modal-slider-wrapper');
       const dotsContainer = document.getElementById('modal-slider-dots');
       
@@ -1148,7 +1191,6 @@
         startNormalCheckout(currentSelectedProduct, currentSelectedVariant, currentSelectedQuantity); 
     };
 
-    // FUNGSI MENYIMPAN RIWAYAT PEMBELIAN
     window.saveOrderHistory = function(ref, productName, variantName, accountData) {
         let history = [];
         try { history = JSON.parse(localStorage.getItem('my_digital_orders')) || []; } catch(e){}
@@ -1179,7 +1221,6 @@
       
       const displayName = isCart ? `${product.name}` : `${product.name} (${variant.name}) x${qty}`;
       
-      // Generate Data Invoice Otomatis
       const today = new Date();
       const yyyy = today.getFullYear();
       const mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -1190,13 +1231,11 @@
       window.currentInvoiceItem = displayName;
       window.currentInvoiceTotal = formatIDR(totalPrice);
 
-      // Tampilkan Data ke dalam Layout Invoice Profesional
       document.getElementById('pay-invoice-no').innerText = window.currentInvoiceNo;
       document.getElementById('pay-invoice-date').innerText = today.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
       document.getElementById('pay-item-name').innerText = window.currentInvoiceItem;
       document.getElementById('pay-total-amount').innerText = window.currentInvoiceTotal;
       
-      // Kosongkan input nama setiap kali checkout baru
       const buyerNameInput = document.getElementById('pay-buyer-name');
       if (buyerNameInput) buyerNameInput.value = '';
       
@@ -1243,7 +1282,6 @@
                 document.getElementById('step-result').classList.remove('hidden');
                 document.getElementById('account-data').innerText = statusData.account;
                 
-                // Gunakan No Invoice Lokal untuk History biar nyambung
                 window.saveOrderHistory(window.currentInvoiceNo, isCart ? "Keranjang Belanja" : product.name, isCart ? "Berbagai Produk" : variant.name, statusData.account);
                 
                 if (isCart) {
@@ -1284,7 +1322,7 @@
       }
     }
 
-    // FUNGSI KONFIRMASI MANUAL VIA WA DENGAN INVOICE
+    // FUNGSI KONFIRMASI WA SETELAH SUKSES
     window.confirmViaWA = function() {
         let name = document.getElementById('pay-buyer-name').value.trim();
         if (!name) name = "Pelanggan";
@@ -1293,7 +1331,7 @@
         const item = window.currentInvoiceItem || "-";
         const total = window.currentInvoiceTotal || "-";
         
-        const msg = `📄 *KONFIRMASI PEMBAYARAN DIGITALHUB*\n\n*No. Invoice:* ${inv}\n*Nama:* ${name}\n*Pesanan:* ${item}\n*Total Tagihan:* ${total}\n\n_Halo Admin DigitalHub, saya sudah bayar & transfer sesuai tagihan invoice di atas. Berikut saya lampirkan bukti transfernya..._`;
+        const msg = `📄 *KONFIRMASI PEMBAYARAN DIGITALHUB*\n\n*No. Invoice:* ${inv}\n*Nama:* ${name}\n*Pesanan:* ${item}\n*Total Tagihan:* ${total}\n\n_Halo Admin DigitalHub, saya sudah bayar dan pembayaran saya sudah terverifikasi lunas di website. Mohon bantuan bimbingan / klaim garansi ya._`;
         
         const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
         window.open(waLink, '_blank');
@@ -1761,7 +1799,6 @@
 <script>
   document.addEventListener('contextmenu', e => e.preventDefault()); 
   document.addEventListener('keydown', function(e) {
-    // Blokir F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+S
     if (
       e.keyCode === 123 || 
       (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || 
