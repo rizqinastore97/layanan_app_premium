@@ -100,6 +100,7 @@
       50% { transform: translateY(-3px); opacity: 1; }
     }
 
+    /* SISTEM TEMA SHOPEE */
     .theme-shopee .bg-\[\#f5125e\] { background-color: #ee4d2d !important; }
     .theme-shopee .text-\[\#f5125e\] { color: #ee4d2d !important; }
     .theme-shopee .border-\[\#f5125e\] { border-color: #ee4d2d !important; }
@@ -107,11 +108,13 @@
     .theme-shopee .to-\[\#ff2b56\] { --tw-gradient-to: #ff7337 var(--tw-gradient-to-position) !important; }
     .theme-shopee .ring-\[\#f5125e\] { --tw-ring-color: #ee4d2d !important; }
     .theme-shopee .selection\:bg-\[\#f5125e\] *::selection { background-color: #ee4d2d !important; }
+    
     .theme-shopee .rounded-2xl { border-radius: 0.25rem !important; }
     .theme-shopee .rounded-3xl { border-radius: 0.25rem !important; }
     .theme-shopee .rounded-xl { border-radius: 0.25rem !important; }
     .theme-shopee .rounded-lg { border-radius: 0.25rem !important; }
     .theme-shopee .rounded-full { border-radius: 9999px !important; }
+    
     .theme-shopee .bg-rose-50 { background-color: #fff0ed !important; }
     .theme-shopee .text-rose-600 { color: #ee4d2d !important; }
     .theme-shopee .border-rose-200 { border-color: #ffc9b9 !important; }
@@ -125,7 +128,7 @@
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen pb-20 md:pb-10 antialiased selection:bg-[#f5125e] selection:text-white">
 
-  <!-- Toast Container (Z-Index diperbaiki jadi 9999) -->
+  <!-- Toast Container -->
   <div id="toast-container" class="fixed top-5 left-1/2 -translate-x-1/2 z-[9999] flex flex-col gap-2 pointer-events-none w-full max-w-xs px-4"></div>
 
   <!-- POPUP INSTALL PWA -->
@@ -241,34 +244,44 @@
 
     <div class="bg-white rounded-2xl p-3.5 sm:p-5 shadow-2xs border border-slate-200/80 overflow-hidden">
       <div id="category-buttons-grid" class="grid grid-cols-4 md:grid-cols-7 gap-3 sm:gap-4 text-center text-[11px] font-semibold text-slate-700">
+        
         <div onclick="setCategory('Semua')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group active-cat" data-cat="Semua">
           <div class="cat-icon-box w-12 h-12 bg-[#f5125e] text-white rounded-2xl flex items-center justify-center border border-[#f5125e] group-hover:scale-105 transition-all shadow-2xs"><i data-lucide="grid" class="w-5 h-5"></i></div>
           <span class="truncate w-full font-bold text-[#f5125e]">Semua</span>
         </div>
+
         <div onclick="setCategory('AI')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="AI">
           <div class="cat-icon-box w-12 h-12 bg-rose-50 text-[#f5125e] rounded-2xl flex items-center justify-center border border-rose-100 group-hover:scale-105 group-hover:bg-[#f5125e] group-hover:text-white transition-all shadow-2xs"><i data-lucide="bot" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Akun AI</span>
         </div>
+
         <div onclick="setCategory('Editor')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Editor">
           <div class="cat-icon-box w-12 h-12 bg-pink-50 text-pink-600 rounded-2xl flex items-center justify-center border border-pink-100 group-hover:scale-105 group-hover:bg-pink-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="video" class="w-5 h-5"></i></div>
           <span class="truncate w-full">App Pro</span>
         </div>
+
         <div onclick="setCategory('Template Web')" id="menu-template-web" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Template Web">
           <div class="cat-icon-box w-12 h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center border border-amber-100 group-hover:scale-105 group-hover:bg-amber-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="layout" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Template Web</span>
         </div>
+
         <div onclick="setCategory('Landing')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Landing">
           <div class="cat-icon-box w-12 h-12 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center border border-sky-100 group-hover:scale-105 group-hover:bg-sky-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="globe" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Landing Page</span>
         </div>
+
         <div onclick="setCategory('Jasa Web')" id="menu-jasa-web" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Jasa Web">
           <div class="cat-icon-box w-12 h-12 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center border border-purple-100 group-hover:scale-105 group-hover:bg-purple-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="monitor" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Jasa Web</span>
         </div>
+
         <div onclick="setCategory('Stream')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group" data-cat="Stream">
           <div class="cat-icon-box w-12 h-12 bg-violet-50 text-violet-600 rounded-2xl flex items-center justify-center border border-violet-100 group-hover:scale-105 group-hover:bg-violet-600 group-hover:text-white transition-all shadow-2xs"><i data-lucide="play-square" class="w-5 h-5"></i></div>
           <span class="truncate w-full">Streaming</span>
         </div>
+        
+        <div onclick="setCategory('Semua')" class="category-btn flex flex-col items-center gap-1.5 cursor-pointer group active-cat hidden" data-cat="Semua"></div>
+
       </div>
     </div>
 
@@ -556,7 +569,7 @@
   <div id="cart-modal" class="fixed inset-0 z-[60] overflow-hidden hidden">
     <div onclick="toggleCart(false)" class="absolute inset-0 bg-black/40 backdrop-blur-2xs"></div>
     <div class="fixed inset-y-0 right-0 max-w-full flex pl-10 z-[60]">
-      <div id="cart-drawer" class="w-screen max-w-sm bg-white shadow-xl flex flex-col translate-x-full transition-transform">
+      <div id="cart-drawer" class="w-screen max-w-sm bg-white shadow-xl flex flex-col translate-x-full transition-transform duration-300">
         <div class="px-4 py-4 border-b border-slate-100 flex items-center justify-between">
           <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2"><i data-lucide="shopping-cart" class="w-4 h-4 text-[#f5125e]"></i> Keranjang Belanja (<span id="cart-title-count">0</span>)</h3>
           <button onclick="toggleCart(false)" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
@@ -1045,7 +1058,10 @@
       }
     };
 
+    // ================= URL & NAVIGATION =================
     window.openDetailModal = function(id) {
+      history.pushState({ modalOpen: true }, '', '#detail');
+      
       const p = products.find(i => i.id === id || i.id === parseInt(id));
       if (!p) return;
       
@@ -1098,6 +1114,96 @@
       if(typeof lucide !== 'undefined') lucide.createIcons();
     };
 
+    window.closeDetailModal = function() { 
+        document.getElementById('detail-modal').classList.add('hidden'); 
+    };
+
+    window.toggleCart = function(open) {
+      if (open) history.pushState({ modalOpen: true }, '', '#cart');
+      
+      const cartModal = document.getElementById('cart-modal');
+      const cartDrawer = document.getElementById('cart-drawer');
+      
+      if (open) { 
+        cartModal.classList.remove('hidden'); 
+        setTimeout(() => cartDrawer.classList.remove('translate-x-full'), 10);
+      } else { 
+        cartDrawer.classList.add('translate-x-full');
+        setTimeout(() => cartModal.classList.add('hidden'), 250);
+      }
+    };
+
+    window.openHistoryModal = function() {
+      history.pushState({ modalOpen: true }, '', '#history');
+      let historyData = [];
+      try { historyData = JSON.parse(localStorage.getItem('my_digital_orders')) || []; } catch(e){}
+      if(!Array.isArray(historyData)) historyData = [];
+      
+      const container = document.getElementById('history-list');
+      if (historyData.length === 0) {
+        container.innerHTML = `<div class="py-12 text-center text-slate-400 text-xs"><i data-lucide="receipt" class="w-8 h-8 mx-auto mb-1 stroke-1"></i>Belum ada riwayat pesanan</div>`;
+      } else {
+        container.innerHTML = historyData.map((item) => `
+          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2 shadow-sm">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="text-[9px] font-bold text-[#f5125e] bg-rose-50 border border-rose-100 px-2 py-0.5 rounded font-mono shadow-xs">${item.reference}</span>
+                <h4 class="font-bold text-xs sm:text-sm text-slate-800 mt-1">${item.productName} (${item.variantName})</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5"><i data-lucide="clock" class="w-3 h-3 inline pb-0.5"></i> ${item.date}</p>
+              </div>
+              <div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex justify-center items-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3"></i></div>
+            </div>
+            <div class="bg-white border rounded-xl p-2.5 shadow-inner"><pre class="font-mono text-[10px] sm:text-xs text-slate-800 whitespace-pre-wrap select-all">${item.account}</pre></div>
+          </div>
+        `).join('');
+      }
+      document.getElementById('history-modal').classList.remove('hidden');
+      if(typeof lucide !== 'undefined') lucide.createIcons();
+    };
+
+    window.closeHistoryModal = function() { 
+        document.getElementById('history-modal').classList.add('hidden'); 
+    };
+
+    window.openChatModal = function() {
+      history.pushState({ modalOpen: true }, '', '#chat');
+      document.getElementById('chat-modal').classList.remove('hidden');
+      setTimeout(() => document.getElementById('chat-drawer').classList.remove('translate-x-full'), 10);
+      chatBotState = 'normal'; 
+      if(typeof lucide !== 'undefined') lucide.createIcons();
+    };
+
+    window.closeChatModal = function() {
+      document.getElementById('chat-drawer').classList.add('translate-x-full');
+      setTimeout(() => document.getElementById('chat-modal').classList.add('hidden'), 250);
+    };
+
+    window.openPaymentModal = function() {
+      document.getElementById('payment-modal').classList.remove('hidden');
+    }
+
+    window.closePaymentModal = function() {
+        document.getElementById('payment-modal').classList.add('hidden'); 
+        if (pollingInterval) clearInterval(pollingInterval);
+    };
+
+    window.forceClosePaymentModal = function() {
+        document.getElementById('payment-modal').classList.add('hidden'); 
+        if (pollingInterval) clearInterval(pollingInterval);
+    };
+
+    // ================= EVENT LISTENER URL (TOMBOL BACK HP) =================
+    window.addEventListener('popstate', function(event) {
+      document.getElementById('detail-modal')?.classList.add('hidden');
+      document.getElementById('cart-drawer')?.classList.add('translate-x-full');
+      setTimeout(() => document.getElementById('cart-modal')?.classList.add('hidden'), 250);
+      document.getElementById('history-modal')?.classList.add('hidden');
+      document.getElementById('chat-drawer')?.classList.add('translate-x-full');
+      setTimeout(() => document.getElementById('chat-modal')?.classList.add('hidden'), 250);
+      document.getElementById('payment-modal')?.classList.add('hidden');
+      if (typeof pollingInterval !== 'undefined' && pollingInterval) clearInterval(pollingInterval);
+    });
+
     window.updateSliderDotsOnScroll = function(element) {
       const scrollLeft = element.scrollLeft;
       const itemWidth = element.clientWidth;
@@ -1130,8 +1236,21 @@
       window.renderVariantSelection(idx); 
     };
 
-    window.closeDetailModal = function() { 
-        document.getElementById('detail-modal').classList.add('hidden'); 
+    // ================= TOMBOL KERANJANG YANG DIPERBAIKI =================
+    window.handleModalCart = function() {
+        if (!currentSelectedProduct) {
+             showToast("Silakan pilih produk", "error");
+             return;
+        }
+        let variant = currentSelectedVariant || currentSelectedProduct.variants[0];
+        
+        window.addToCart(currentSelectedProduct, variant, currentSelectedQuantity); 
+        closeDetailModal(); 
+        
+        // Diberi jeda agar animasi tutup produk selesai dulu sebelum buka keranjang
+        setTimeout(() => {
+            window.toggleCart(true); 
+        }, 50);
     };
 
     window.handleModalChat = function() {
@@ -1139,33 +1258,9 @@
         openChatModalWithProduct(currentSelectedProduct.name, currentSelectedVariant.name, currentSelectedVariant.price);
     };
 
-    window.handleModalCart = function() {
-        if (!currentSelectedProduct || !currentSelectedVariant) return;
-        window.addToCart(currentSelectedProduct, currentSelectedVariant, currentSelectedQuantity); 
-        closeDetailModal(); // <--- TUTUP MODAL DETAIL SAAT KERANJANG DIBUKA
-        toggleCart(true); 
-    };
-
     window.handleModalBuy = function() {
         if (!currentSelectedProduct || !currentSelectedVariant) return;
         startNormalCheckout(currentSelectedProduct, currentSelectedVariant, currentSelectedQuantity); 
-    };
-
-    window.saveOrderHistory = function(ref, productName, variantName, accountData) {
-        let history = [];
-        try { history = JSON.parse(localStorage.getItem('my_digital_orders')) || []; } catch(e){}
-        if (!Array.isArray(history)) history = [];
-        
-        history.unshift({
-            reference: ref,
-            productName: productName,
-            variantName: variantName,
-            account: accountData,
-            date: new Date().toLocaleString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
-        });
-        
-        if (history.length > 20) history = history.slice(0, 20);
-        localStorage.setItem('my_digital_orders', JSON.stringify(history));
     };
 
     // ================= SISTEM INVOICE & CHECKOUT =================
@@ -1174,7 +1269,7 @@
       
       document.getElementById('step-pay').classList.remove('hidden');
       document.getElementById('step-result').classList.add('hidden');
-      document.getElementById('payment-modal').classList.remove('hidden');
+      openPaymentModal();
       
       const unitPrice = Number(variant.price) || 0;
       const totalPrice = isCart ? unitPrice : (unitPrice * qty); 
@@ -1326,77 +1421,13 @@
         window.open(waLink, '_blank');
     };
 
-    window.closePaymentModal = function() {
-        document.getElementById('payment-modal').classList.add('hidden'); 
-        if (pollingInterval) clearInterval(pollingInterval);
-    };
-
-    window.forceClosePaymentModal = function() {
-        document.getElementById('payment-modal').classList.add('hidden'); 
-        if (pollingInterval) clearInterval(pollingInterval);
-    };
-
     window.copyAccountData = function() {
       const text = document.getElementById('account-data').innerText;
       navigator.clipboard.writeText(text).then(() => showToast('Data lisensi berhasil disalin!'));
     };
 
-    window.openHistoryModal = function() {
-      let history = [];
-      try { history = JSON.parse(localStorage.getItem('my_digital_orders')) || []; } catch(e){}
-      if(!Array.isArray(history)) history = [];
-      
-      const container = document.getElementById('history-list');
-      if (history.length === 0) {
-        container.innerHTML = `<div class="py-12 text-center text-slate-400 text-xs"><i data-lucide="receipt" class="w-8 h-8 mx-auto mb-1 stroke-1"></i>Belum ada riwayat pesanan</div>`;
-      } else {
-        container.innerHTML = history.map((item) => `
-          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2 shadow-sm">
-            <div class="flex justify-between items-start">
-              <div>
-                <span class="text-[9px] font-bold text-[#f5125e] bg-rose-50 border border-rose-100 px-2 py-0.5 rounded font-mono shadow-xs">${item.reference}</span>
-                <h4 class="font-bold text-xs sm:text-sm text-slate-800 mt-1">${item.productName} (${item.variantName})</h4>
-                <p class="text-[10px] text-slate-400 mt-0.5"><i data-lucide="clock" class="w-3 h-3 inline pb-0.5"></i> ${item.date}</p>
-              </div>
-              <div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex justify-center items-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3"></i></div>
-            </div>
-            <div class="bg-white border rounded-xl p-2.5 shadow-inner"><pre class="font-mono text-[10px] sm:text-xs text-slate-800 whitespace-pre-wrap select-all">${item.account}</pre></div>
-          </div>
-        `).join('');
-      }
-      document.getElementById('history-modal').classList.remove('hidden');
-      if(typeof lucide !== 'undefined') lucide.createIcons();
-    };
-
-    window.closeHistoryModal = function() { 
-        document.getElementById('history-modal').classList.add('hidden'); 
-    };
-
-    window.toggleCart = function(open) {
-      if (open) { 
-        document.getElementById('cart-modal').classList.remove('hidden'); 
-        setTimeout(() => document.getElementById('cart-drawer').classList.remove('translate-x-full'), 10);
-      } else { 
-        document.getElementById('cart-drawer').classList.add('translate-x-full');
-        setTimeout(() => document.getElementById('cart-modal').classList.add('hidden'), 250);
-      }
-    };
-
-    window.openChatModal = function() {
-      document.getElementById('chat-modal').classList.remove('hidden');
-      setTimeout(() => document.getElementById('chat-drawer').classList.remove('translate-x-full'), 10);
-      chatBotState = 'normal'; 
-      if(typeof lucide !== 'undefined') lucide.createIcons();
-    };
-
-    window.closeChatModal = function() {
-      document.getElementById('chat-drawer').classList.add('translate-x-full');
-      setTimeout(() => document.getElementById('chat-modal').classList.add('hidden'), 250);
-    };
-
     window.openChatModalWithProduct = function(prodName, varName, price) {
       openChatModal();
-      
       const matched = products.find(p => p.name === prodName);
       if (matched) lastDiscussedProduct = matched;
 
@@ -1408,6 +1439,7 @@
       }, 1000);
     };
 
+    // ================= FUNGSI BOT CERDAS =================
     window.sendQuickReply = function(action) {
       document.getElementById('chat-menu-buttons').classList.add('hidden'); 
       
@@ -1636,64 +1668,6 @@
     loadProducts();
     startSocialProofNotifications();
     if(typeof lucide !== 'undefined') lucide.createIcons();
-  
-  window.addEventListener('popstate', function(event) {
-    let isModalClosed = false;
-    
-    const detailModal = document.getElementById('detail-modal');
-    if (detailModal && !detailModal.classList.contains('hidden')) {
-      detailModal.classList.add('hidden');
-      isModalClosed = true;
-    }
-  
-    const cartModal = document.getElementById('cart-modal');
-    if (cartModal && !cartModal.classList.contains('hidden')) {
-      toggleCart(false);
-      isModalClosed = true;
-    }
-    
-    const historyModal = document.getElementById('history-modal');
-    if (historyModal && !historyModal.classList.contains('hidden')) {
-      historyModal.classList.add('hidden');
-      isModalClosed = true;
-    }
-
-    const chatModal = document.getElementById('chat-modal');
-    if (chatModal && !chatModal.classList.contains('hidden')) {
-      closeChatModal();
-      isModalClosed = true;
-    }
-
-    const payModal = document.getElementById('payment-modal');
-    if (payModal && !payModal.classList.contains('hidden')) {
-      payModal.classList.add('hidden');
-      if (typeof pollingInterval !== 'undefined' && pollingInterval) clearInterval(pollingInterval);
-      isModalClosed = true;
-    }
-  });
-
-  const originalOpenDetailModal = window.openDetailModal;
-  window.openDetailModal = function(id) {
-    history.pushState({ modalOpen: true }, '', '#detail');
-    originalOpenDetailModal(id);
-  };
-  const originalToggleCart = window.toggleCart;
-  window.toggleCart = function(open) {
-    if (open) {
-      history.pushState({ modalOpen: true }, '', '#cart');
-    }
-    originalToggleCart(open);
-  };
-  const originalOpenHistoryModal = window.openHistoryModal;
-  window.openHistoryModal = function() {
-    history.pushState({ modalOpen: true }, '', '#history');
-    originalOpenHistoryModal();
-  };
-  const originalOpenChatModal = window.openChatModal;
-  window.openChatModal = function() {
-    history.pushState({ modalOpen: true }, '', '#chat');
-    originalOpenChatModal();
-  };
   </script>
 
 <div id="digitalhub-copyright" style="text-align:center; padding:15px; font-size:11px; color:#94a3b8; border-top:1px solid #e2e8f0; margin-top:20px;">
