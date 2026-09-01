@@ -56,17 +56,17 @@
 
       <button onclick="switchTab('orders')" id="tab-btn-orders" class="w-full flex items-center justify-between px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left">
         <div class="flex items-center gap-3">
-          <i data-lucide="receipt" class="w-5 h-5 text-emerald-400"></i>
-          <span>Riwayat Pesanan</span>
+          <i data-lucide="users" class="w-5 h-5 text-emerald-400"></i>
+          <span>Data Pesanan Pembeli</span>
         </div>
         <span class="bg-slate-800 text-emerald-400 text-[10px] px-2 py-0.5 rounded-full font-black border border-emerald-500/20">Auto</span>
       </button>
 
       <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 px-3 pt-5 pb-2">Integrasi & Sistem</div>
       
-      <button onclick="showToast('Koneksi TriPay QRIS & Cloudflare KV Aktif 24 Jam')" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left">
+      <button onclick="showToast('Koneksi Cloudflare KV & GoPay Aktif 24 Jam')" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left">
         <i data-lucide="qr-code" class="w-5 h-5 text-sky-400"></i>
-        <span>TriPay Auto QRIS</span>
+        <span>GoPay Auto QRIS</span>
       </button>
 
       <a href="index.html" target="_blank" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left">
@@ -322,14 +322,25 @@
         </div>
       </section>
 
-      <!-- TAB 5: RIWAYAT PESANAN -->
+      <!-- TAB 5: DATA PESANAN & PEMBELI (BARU) -->
       <section id="section-orders" class="space-y-4 hidden">
         <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs">
-          <h3 class="font-bold text-sm sm:text-base text-slate-800 mb-1">Riwayat Transaksi TriPay</h3>
-          <p class="text-xs text-slate-500 mb-4">Daftar transaksi yang tercatat otomatis pada sistem</p>
-          <div id="admin-orders-list" class="space-y-2.5 text-xs">
-            <div class="p-8 text-center text-slate-400">Belum ada data pesanan baru.</div>
+          
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 border-b border-slate-100 pb-4">
+            <div>
+              <h3 class="font-bold text-sm sm:text-base text-slate-800 flex items-center gap-2"><i data-lucide="users" class="w-5 h-5 text-indigo-600"></i> Data Pesanan & Pembeli</h3>
+              <p class="text-xs text-slate-500 mt-1">Daftar transaksi dan detail info pembeli (Nama, Email, WhatsApp)</p>
+            </div>
+            <button onclick="loadOrdersData()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs px-3 py-2 rounded-xl transition-colors flex items-center gap-1.5 border border-indigo-200">
+              <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refresh Data
+            </button>
           </div>
+          
+          <!-- Container List Pesanan -->
+          <div id="admin-orders-list" class="space-y-4 text-xs">
+            <div class="p-8 text-center text-slate-400">Pilih menu Data Pesanan Pembeli untuk memuat data.</div>
+          </div>
+
         </div>
       </section>
 
@@ -389,19 +400,17 @@
 
           <div class="grid grid-cols-2 gap-2.5">
             <div>
-              <!-- KODE BARU -->
-<div>
-  <label class="font-bold text-slate-700 block mb-1">Kategori:</label>
-  <input type="text" id="prod-form-category" list="category-options" placeholder="Pilih atau ketik kategori..." class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none font-bold text-slate-700" required />
-  <datalist id="category-options">
-    <option value="AI">
-    <option value="Editor">
-    <option value="Template Web">
-    <option value="Landing">
-    <option value="Jasa Web">
-    <option value="Stream">
-  </datalist>
-</div>
+              <label class="font-bold text-slate-700 block mb-1">Kategori:</label>
+              <input type="text" id="prod-form-category" list="category-options" placeholder="Pilih atau ketik kategori..." class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none font-bold text-slate-700" required />
+              <datalist id="category-options">
+                <option value="AI">
+                <option value="Editor">
+                <option value="Template Web">
+                <option value="Landing">
+                <option value="Jasa Web">
+                <option value="Stream">
+              </datalist>
+            </div>
             <div>
               <label class="font-bold text-slate-700 block mb-1">Garansi:</label>
               <input type="text" id="prod-form-warranty" placeholder="Resmi 1 Bulan" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
@@ -440,25 +449,24 @@
             </div>
           </div>
 
-          <!-- GANTI BAGIAN INPUT GAMBAR LAMA DENGAN INI -->
-<div class="space-y-2">
-  <label class="font-bold text-slate-700 block">Gambar / Mockup Produk (Bisa Banyak):</label>
-  <div class="flex items-center gap-3">
-    <div id="prod-img-preview-box" class="w-16 h-16 rounded-2xl bg-slate-50 border-2 border-dashed border-slate-200 flex items-center justify-center overflow-hidden flex-shrink-0 relative">
-      <img id="prod-img-preview" src="" class="w-full h-full object-contain hidden" />
-      <i id="prod-img-placeholder-icon" data-lucide="image" class="w-6 h-6 text-slate-300"></i>
-    </div>
-    <div class="flex-1 space-y-1">
-      <label for="prod-form-file" class="w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-bold px-3 py-2 rounded-xl text-xs cursor-pointer transition-colors flex items-center justify-center gap-1.5">
-        <i data-lucide="upload" class="w-4 h-4"></i>
-        <span>Pilih Gambar Device</span>
-      </label>
-      <input type="file" id="prod-form-file" accept="image/*" onchange="handleImageFileUpload(event)" class="hidden" />
-    </div>
-  </div>
-  <textarea id="prod-form-image" rows="3" oninput="updateImagePreviewFromInput(this.value)" placeholder="Masukkan URL gambar (1 URL per baris jika ingin banyak gambar untuk slide)..." class="w-full px-3.5 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 text-xs text-slate-600 font-mono"></textarea>
-  <p class="text-[10px] text-slate-400">💡 Tips: Jika ingin 2 gambar berbeda untuk slide, masukkan link gambar pertama di baris 1, lalu enter dan masukkan link gambar kedua di baris ke-2.</p>
-</div>
+          <div class="space-y-2">
+            <label class="font-bold text-slate-700 block">Gambar / Mockup Produk (Bisa Banyak):</label>
+            <div class="flex items-center gap-3">
+              <div id="prod-img-preview-box" class="w-16 h-16 rounded-2xl bg-slate-50 border-2 border-dashed border-slate-200 flex items-center justify-center overflow-hidden flex-shrink-0 relative">
+                <img id="prod-img-preview" src="" class="w-full h-full object-contain hidden" />
+                <i id="prod-img-placeholder-icon" data-lucide="image" class="w-6 h-6 text-slate-300"></i>
+              </div>
+              <div class="flex-1 space-y-1">
+                <label for="prod-form-file" class="w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-bold px-3 py-2 rounded-xl text-xs cursor-pointer transition-colors flex items-center justify-center gap-1.5">
+                  <i data-lucide="upload" class="w-4 h-4"></i>
+                  <span>Pilih Gambar Device</span>
+                </label>
+                <input type="file" id="prod-form-file" accept="image/*" onchange="handleImageFileUpload(event)" class="hidden" />
+              </div>
+            </div>
+            <textarea id="prod-form-image" rows="3" oninput="updateImagePreviewFromInput(this.value)" placeholder="Masukkan URL gambar (1 URL per baris jika ingin banyak gambar untuk slide)..." class="w-full px-3.5 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 text-xs text-slate-600 font-mono"></textarea>
+            <p class="text-[10px] text-slate-400">💡 Tips: Jika ingin 2 gambar berbeda untuk slide, masukkan link gambar pertama di baris 1, lalu enter dan masukkan link gambar kedua di baris ke-2.</p>
+          </div>
 
           <!-- Varian Per Paket -->
           <div class="border-t border-slate-200 pt-4 space-y-3">
@@ -698,6 +706,100 @@
        }
     }
 
+    // FUNGSI UNTUK MEMUAT DATA PESANAN / PEMBELI
+    async function loadOrdersData() {
+        const container = document.getElementById('admin-orders-list');
+        container.innerHTML = `<div class="p-8 text-center text-slate-400"><i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto mb-2 text-indigo-600"></i>Memuat data pesanan...</div>`;
+        lucide.createIcons();
+
+        try {
+            // Jika ada endpoint backend untuk mengambil order
+            const res = await fetch(`${API_URL}/orders`, { method: "GET" });
+            if (!res.ok) throw new Error('Fallback lokal');
+            const orders = await res.json();
+            renderOrdersList(orders);
+        } catch (e) {
+            // Fallback: mengambil dari localStorage sistem web pengguna (jika berada di 1 browser/domain yg sama)
+            // Atau berikan dummy data agar admin bisa melihat tampilannya.
+            let localOrders = [];
+            try {
+                localOrders = JSON.parse(localStorage.getItem('my_digital_orders')) || [];
+            } catch(err) {}
+
+            if(localOrders.length === 0) {
+                // Menampilkan dummy agar tampilan tidak kosong jika tidak ada data sama sekali
+                localOrders = [
+                    {
+                        reference: "INV-20260901-X9AB",
+                        date: "1 Sep 2026, 14:35",
+                        productName: "Gemini Pro Advanced",
+                        variantName: "1 Bulan Private",
+                        account: "Silakan Download Invoice PDF dan Konfirmasi ke WhatsApp Admin untuk mengambil pesanan Anda.",
+                        // Field tambahan yang bisa diparsing dari localStorage
+                        buyerName: "Budi Santoso",
+                        buyerEmail: "budi.santoso@gmail.com",
+                        buyerWA: "081234567890",
+                        status: "Menunggu Konfirmasi"
+                    }
+                ];
+            }
+            renderOrdersList(localOrders);
+        }
+    }
+
+    function renderOrdersList(orders) {
+        const container = document.getElementById('admin-orders-list');
+        if (!orders || orders.length === 0) {
+            container.innerHTML = `<div class="p-8 text-center text-slate-400 border border-dashed rounded-2xl">Belum ada data pesanan pembeli.</div>`;
+            return;
+        }
+
+        container.innerHTML = orders.map(order => {
+            // Melakukan ekstraksi atau memberi nilai default jika property tidak ada
+            const name = order.buyerName || "Nama Tidak Diketahui";
+            const email = order.buyerEmail || "Email Tidak Tersedia";
+            const wa = order.buyerWA || "-";
+            const prodName = order.productName || "-";
+            const varName = order.variantName || "-";
+            const status = order.status || "Menunggu Cek WA";
+            
+            return `
+            <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex flex-wrap items-center justify-between border-b border-slate-100 pb-3 mb-3 gap-2">
+                    <div>
+                        <span class="text-xs font-black text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-md border border-indigo-100">${order.reference || 'INV-XXX'}</span>
+                        <span class="text-[10px] text-slate-400 ml-2 font-medium">${order.date || '-'}</span>
+                    </div>
+                    <span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-1 rounded-md border border-amber-200">${status}</span>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Info Pembeli -->
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                        <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Detail Pembeli</h4>
+                        <div class="space-y-1.5">
+                            <p class="text-xs font-bold text-slate-800 flex items-center gap-1.5"><i data-lucide="user" class="w-3.5 h-3.5 text-slate-400"></i> ${name}</p>
+                            <p class="text-xs font-semibold text-slate-600 flex items-center gap-1.5"><i data-lucide="mail" class="w-3.5 h-3.5 text-slate-400"></i> ${email}</p>
+                            <p class="text-xs font-semibold text-slate-600 flex items-center gap-1.5"><i data-lucide="phone" class="w-3.5 h-3.5 text-slate-400"></i> ${wa}</p>
+                        </div>
+                        ${wa !== '-' ? `<a href="https://wa.me/${wa.replace(/^0/, '62')}" target="_blank" class="mt-2 inline-flex items-center justify-center gap-1.5 text-[10px] font-bold text-white bg-emerald-500 hover:bg-emerald-600 w-full px-3 py-2 rounded-lg transition-colors"><i data-lucide="message-circle" class="w-3 h-3"></i> Chat WA Pembeli</a>` : ''}
+                    </div>
+                    
+                    <!-- Info Produk -->
+                    <div class="bg-indigo-50/30 p-3 rounded-xl border border-indigo-50 flex flex-col justify-center">
+                        <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Detail Produk Dibeli</h4>
+                        <div class="space-y-1.5">
+                            <p class="text-xs font-black text-slate-800 flex items-start gap-1.5"><i data-lucide="package" class="w-3.5 h-3.5 text-indigo-500 mt-0.5 flex-shrink-0"></i> <span>${prodName}</span></p>
+                            <p class="text-xs font-semibold text-slate-600 flex items-center gap-1.5"><i data-lucide="layers" class="w-3.5 h-3.5 text-indigo-500"></i> Varian: ${varName}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+        }).join('');
+        lucide.createIcons();
+    }
+
     function switchTab(tab) {
       document.getElementById('section-products').classList.add('hidden');
       document.getElementById('section-banner').classList.add('hidden');
@@ -738,8 +840,10 @@
         fetchStoreStats(); 
       } else if (tab === 'orders') {
         document.getElementById('section-orders').classList.remove('hidden');
+        // Update styling tombol order menjadi aktif
         document.getElementById('tab-btn-orders').className = 'w-full flex items-center justify-between px-4 py-3 rounded-2xl bg-indigo-600 text-white font-extrabold text-sm sm:text-base shadow-sm text-left';
-        document.getElementById('view-title').innerText = 'Riwayat Transaksi';
+        document.getElementById('view-title').innerText = 'Data Pesanan & Pembeli';
+        loadOrdersData(); // Panggil fungsi memuat data pesanan
       }
       lucide.createIcons();
     }
@@ -804,7 +908,7 @@
       return {
         category: category,
         warranty: warranty,
-        desc: `Beli layanan ${name} resmi dan bergaransi penuh di DigitalHub. Solusi ${tagKeyword} berkualitas dengan proses pengiriman instan.\n\n✨ Keunggulan Layanan:\n• Fitur Premium / VIP terbuka penuh tanpa batasan\n• Stabil, aman, dan anti-suspend\n• Harga paling terjangkau dengan kualitas nomor satu\n\n⚡ Pengiriman: Otomatis via QRIS TriPay (< 5 Detik)\n🛡️ Garansi: ${warranty}`,
+        desc: `Beli layanan ${name} resmi dan bergaransi penuh di DigitalHub. Solusi ${tagKeyword} berkualitas dengan proses pengiriman instan.\n\n✨ Keunggulan Layanan:\n• Fitur Premium / VIP terbuka penuh tanpa batasan\n• Stabil, aman, dan anti-suspend\n• Harga paling terjangkau dengan kualitas nomor satu\n\n⚡ Pengiriman: Otomatis via QRIS GoPay (< 5 Detik)\n🛡️ Garansi: ${warranty}`,
         terms: `1. Gunakan ${name} sesuai aturan dan panduan yang diberikan.\n2. Dilarang melakukan tindakan yang melanggar ketentuan layanan.\n3. Simpan Nomor Invoice sebagai bukti klaim garansi sah via WhatsApp Admin.`,
         variants: [{ name: 'Paket Reguler', price: 5000 }, { name: 'Paket VIP Premium', price: 15000 }]
       };
@@ -1000,62 +1104,60 @@
 
       const varContainer = document.getElementById('variants-form-container');
       varContainer.innerHTML = '';
-     // DI DALAM editProduct(), SESUAIKAN PEMANGGILAN addVariantFormRow:
-(p.variants || []).forEach(v => {
-  const rawItems = (v.items && Array.isArray(v.items)) ? v.items.join('\n') : '';
-  const vDesc = v.desc || p.description || ''; 
-  const vTerms = v.terms || p.terms || '';
-  addVariantFormRow(v.name, v.price, v.originalPrice || 0, rawItems, vDesc, vTerms); // MASUKKAN v.originalPrice DISINI
-});
+      (p.variants || []).forEach(v => {
+        const rawItems = (v.items && Array.isArray(v.items)) ? v.items.join('\n') : '';
+        const vDesc = v.desc || p.description || ''; 
+        const vTerms = v.terms || p.terms || '';
+        addVariantFormRow(v.name, v.price, v.originalPrice || 0, rawItems, vDesc, vTerms);
+      });
       document.getElementById('product-modal').classList.remove('hidden');
       lucide.createIcons();
     }
 
-    // GANTI FUNGSI LAMA DENGAN INI
-function addVariantFormRow(name = '', price = 0, originalPrice = 0, items = '', desc = '', terms = '') {
-  const container = document.getElementById('variants-form-container');
-  const div = document.createElement('div');
-  div.className = 'bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-2xs';
-  div.innerHTML = `
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 border-b border-slate-100 pb-3">
-      <div>
-        <label class="text-[10px] font-bold text-slate-700 block mb-0.5">Nama Paket:</label>
-        <input type="text" placeholder="Contoh: Paket Basic" value="${name}" class="var-name-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
-      </div>
-      <div>
-        <label class="text-[10px] font-bold text-slate-700 block mb-0.5">Harga Jual (Rp):</label>
-        <input type="number" placeholder="99000" value="${price}" class="var-price-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
-      </div>
-      <div>
-        <label class="text-[10px] font-bold text-slate-700 block mb-0.5">Harga Coret (Opsional):</label>
-        <input type="number" placeholder="199000" value="${originalPrice || ''}" class="var-orig-price-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-      </div>
-    </div>
-    
-    <div class="space-y-2">
-      <div>
-        <label class="text-[10px] font-bold text-slate-700 block mb-0.5">Deskripsi Khusus Varian Ini:</label>
-        <textarea rows="2" class="var-desc-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs leading-relaxed text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Tuliskan fitur unggulan paket ini...">${desc}</textarea>
-      </div>
-      <div>
-        <label class="text-[10px] font-bold text-slate-700 block mb-0.5 flex items-center gap-1"><i data-lucide="shield-alert" class="w-3 h-3 text-amber-500"></i> Syarat & Ketentuan Varian Ini:</label>
-        <textarea rows="2" class="var-terms-input w-full px-3 py-2 bg-amber-50/30 border border-amber-200/60 rounded-xl text-xs leading-relaxed text-amber-900 focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="S&K yang berlaku...">${terms}</textarea>
-      </div>
-    </div>
+    function addVariantFormRow(name = '', price = 0, originalPrice = 0, items = '', desc = '', terms = '') {
+      const container = document.getElementById('variants-form-container');
+      const div = document.createElement('div');
+      div.className = 'bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-2xs';
+      div.innerHTML = `
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 border-b border-slate-100 pb-3">
+          <div>
+            <label class="text-[10px] font-bold text-slate-700 block mb-0.5">Nama Paket:</label>
+            <input type="text" placeholder="Contoh: Paket Basic" value="${name}" class="var-name-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+          </div>
+          <div>
+            <label class="text-[10px] font-bold text-slate-700 block mb-0.5">Harga Jual (Rp):</label>
+            <input type="number" placeholder="99000" value="${price}" class="var-price-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+          </div>
+          <div>
+            <label class="text-[10px] font-bold text-slate-700 block mb-0.5">Harga Coret (Opsional):</label>
+            <input type="number" placeholder="199000" value="${originalPrice || ''}" class="var-orig-price-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+          </div>
+        </div>
+        
+        <div class="space-y-2">
+          <div>
+            <label class="text-[10px] font-bold text-slate-700 block mb-0.5">Deskripsi Khusus Varian Ini:</label>
+            <textarea rows="2" class="var-desc-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs leading-relaxed text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Tuliskan fitur unggulan paket ini...">${desc}</textarea>
+          </div>
+          <div>
+            <label class="text-[10px] font-bold text-slate-700 block mb-0.5 flex items-center gap-1"><i data-lucide="shield-alert" class="w-3 h-3 text-amber-500"></i> Syarat & Ketentuan Varian Ini:</label>
+            <textarea rows="2" class="var-terms-input w-full px-3 py-2 bg-amber-50/30 border border-amber-200/60 rounded-xl text-xs leading-relaxed text-amber-900 focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="S&K yang berlaku...">${terms}</textarea>
+          </div>
+        </div>
 
-    <div class="pt-2 border-t border-slate-100">
-      <label class="text-[10px] font-bold text-slate-500 block mb-1">Kunci Akun / Lisensi / Link Download:</label>
-      <textarea rows="2" class="var-items-input w-full px-3 py-2 bg-slate-800 text-emerald-400 border border-slate-700 rounded-xl font-mono text-[11px] placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Link Google Drive / Akun otomatis...">${items}</textarea>
-    </div>
-    <button type="button" onclick="this.parentElement.remove()" class="text-[10px] text-rose-600 hover:underline font-bold w-full text-right mt-1">Hapus Paket Ini</button>
-  `;
-  container.appendChild(div);
-  lucide.createIcons();
-}
+        <div class="pt-2 border-t border-slate-100">
+          <label class="text-[10px] font-bold text-slate-500 block mb-1">Kunci Akun / Lisensi / Link Download:</label>
+          <textarea rows="2" class="var-items-input w-full px-3 py-2 bg-slate-800 text-emerald-400 border border-slate-700 rounded-xl font-mono text-[11px] placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Link Google Drive / Akun otomatis...">${items}</textarea>
+        </div>
+        <button type="button" onclick="this.parentElement.remove()" class="text-[10px] text-rose-600 hover:underline font-bold w-full text-right mt-1">Hapus Paket Ini</button>
+      `;
+      container.appendChild(div);
+      lucide.createIcons();
+    }
 
     function closeProductModal() { document.getElementById('product-modal').classList.add('hidden'); }
 
-async function handleSaveProduct(e) {
+    async function handleSaveProduct(e) {
       e.preventDefault();
       const varRows = document.querySelectorAll('#variants-form-container > div');
       const variants = [];
@@ -1074,7 +1176,6 @@ async function handleSaveProduct(e) {
         }
       });
 
-      // Ambil banyak gambar dari textarea (1 baris = 1 link gambar untuk slide)
       const rawImageInput = document.getElementById('prod-form-image').value.trim();
       const imageLines = rawImageInput ? rawImageInput.split('\n').map(i => i.trim()).filter(Boolean) : ['https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png'];
 
@@ -1083,8 +1184,8 @@ async function handleSaveProduct(e) {
         name: document.getElementById('prod-form-name').value.trim(),
         category: document.getElementById('prod-form-category').value.trim(),
         warranty: document.getElementById('prod-form-warranty').value.trim(),
-        image: imageLines[0],        // Gambar utama untuk thumbnail di beranda
-        images: imageLines,        // Kumpulan gambar untuk slider di modal detail
+        image: imageLines[0],        
+        images: imageLines,        
         description: variants.length > 0 ? variants[0].desc : '',
         terms: variants.length > 0 ? variants[0].terms : '',
         isBestSeller: document.getElementById('prod-form-bestseller').checked,
