@@ -646,7 +646,7 @@
   <script>
     const _wEnc = "aHR0cHM6Ly90b2tvLWRpZ2l0YWwtYXBpLnJpenFpbmFzdG9yZTk3LndvcmtlcnMuZGV2";
     const API_URL = atob(_wEnc);
-    const WHATSAPP_NUMBER = "6283159695037"; 
+    const WHATSAPP_NUMBER = "6282243890517"; 
     
     // GANTI URL DI BAWAH INI DENGAN LINK GAMBAR QRIS GOPAY MILIK ANDA
     const QRIS_GOPAY_URL = "https://i.ibb.co.com/PGRmz0G8/Whats-App-Image-2026-08-24-at-12-25-05.jpg"; 
@@ -1389,6 +1389,7 @@
       qrisImg.classList.remove('hidden');
     }
 
+    // ==== FUNGSI MANUAL PAYMENT SUCCESS (YANG DI-UPDATE) ====
     window.manualPaymentSuccess = function() {
       // Validasi Form
       const name = document.getElementById('pay-buyer-name').value.trim();
@@ -1409,8 +1410,29 @@
       const pName = window.currentIsCart ? "Keranjang Belanja" : (currentSelectedProduct ? currentSelectedProduct.name : "Produk");
       const vName = window.currentIsCart ? "Berbagai Produk" : (currentSelectedVariant ? currentSelectedVariant.name : "-");
 
+      // 1. Simpan ke local history (HP Pembeli)
       window.saveOrderHistory(window.currentInvoiceNo, pName, vName, dummyAccount);
+
+      // 2. KODE BARU: Kirim Data Pesanan Langsung ke Cloudflare Worker (Untuk Admin)
+      const orderPayload = {
+          reference: window.currentInvoiceNo,
+          date: window.currentOrderDate || new Date().toLocaleString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+          productName: pName,
+          variantName: vName,
+          buyerName: name,
+          buyerEmail: email,
+          buyerWA: wa,
+          status: "Menunggu Konfirmasi"
+      };
       
+      // Mengirim POST ke Worker
+      fetch(`${API_URL}/orders`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(orderPayload)
+      }).catch(e => console.log("Gagal sinkron data pesanan ke server admin."));
+      
+      // Clear Cart jika checkout dari keranjang
       if (window.currentIsCart) {
           cart = [];
           localStorage.setItem('my_digital_cart', JSON.stringify(cart));
