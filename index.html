@@ -1389,9 +1389,11 @@
       qrisImg.classList.remove('hidden');
     }
 
-    // ==== FUNGSI MANUAL PAYMENT SUCCESS (YANG DI-UPDATE) ====
+// Simpan data pembeli sementara agar tetap aman dan tidak hilang
+    window.currentBuyerData = { name: '', email: '', wa: '' };
+
+    // ==== FUNGSI MANUAL PAYMENT SUCCESS (TERBARU DENGAN STATUS LUNAS) ====
     window.manualPaymentSuccess = function() {
-      // Validasi Form
       const name = document.getElementById('pay-buyer-name').value.trim();
       const email = document.getElementById('pay-buyer-email').value.trim();
       const wa = document.getElementById('pay-buyer-wa').value.trim();
@@ -1401,10 +1403,13 @@
          return;
       }
 
+      // Kunci data pembeli di memori browser
+      window.currentBuyerData = { name, email, wa };
+
       document.getElementById('step-pay').classList.add('hidden');
       document.getElementById('step-result').classList.remove('hidden');
       
-      const dummyAccount = "Silakan Download Invoice PDF dan Konfirmasi ke WhatsApp Admin untuk mengambil pesanan Anda.";
+      const dummyAccount = "Pesanan sedang diproses. Silakan Download Invoice PDF dan Konfirmasi ke WhatsApp Admin untuk aktivasi.";
       document.getElementById('account-data').innerText = dummyAccount;
       
       const pName = window.currentIsCart ? "Keranjang Belanja" : (currentSelectedProduct ? currentSelectedProduct.name : "Produk");
@@ -1413,7 +1418,7 @@
       // 1. Simpan ke local history (HP Pembeli)
       window.saveOrderHistory(window.currentInvoiceNo, pName, vName, dummyAccount);
 
-      // 2. KODE BARU: Kirim Data Pesanan Langsung ke Cloudflare Worker (Untuk Admin)
+      // 2. Kirim Data Pesanan Langsung ke Cloudflare Worker
       const orderPayload = {
           reference: window.currentInvoiceNo,
           date: window.currentOrderDate || new Date().toLocaleString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
@@ -1422,17 +1427,15 @@
           buyerName: name,
           buyerEmail: email,
           buyerWA: wa,
-          status: "Menunggu Konfirmasi"
+          status: "Lunas (Menunggu Konfirmasi)"
       };
       
-      // Mengirim POST ke Worker
       fetch(`${API_URL}/orders`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(orderPayload)
       }).catch(e => console.log("Gagal sinkron data pesanan ke server admin."));
       
-      // Clear Cart jika checkout dari keranjang
       if (window.currentIsCart) {
           cart = [];
           localStorage.setItem('my_digital_cart', JSON.stringify(cart));
@@ -1457,9 +1460,9 @@
 
     window.downloadPDF = function() {
       showToast('Menyiapkan file PDF Invoice...');
-      const name = document.getElementById('pay-buyer-name').value.trim();
-      const email = document.getElementById('pay-buyer-email').value.trim();
-      const wa = document.getElementById('pay-buyer-wa').value.trim();
+      const name = window.currentBuyerData.name || document.getElementById('pay-buyer-name').value.trim();
+      const email = window.currentBuyerData.email || document.getElementById('pay-buyer-email').value.trim();
+      const wa = window.currentBuyerData.wa || document.getElementById('pay-buyer-wa').value.trim();
       
       const invoiceElement = document.createElement('div');
       invoiceElement.style.padding = '30px';
@@ -1484,7 +1487,7 @@
                       <p style="margin: 0 0 5px; font-size: 12px; color: #94a3b8; text-transform: uppercase;">Metode Pembayaran</p>
                       <p style="margin: 0 0 15px; font-size: 14px; font-weight: bold;">QRIS GoPay</p>
                       <p style="margin: 0 0 5px; font-size: 12px; color: #94a3b8; text-transform: uppercase;">Status Pembayaran</p>
-                      <span style="display: inline-block; background: #dcfce7; color: #16a34a; padding: 4px 12px; border-radius: 4px; font-size: 14px; font-weight: bold;">LUNAS (Menunggu Konfirmasi)</span>
+                      <span style="display: inline-block; background: #dcfce7; color: #16a34a; padding: 4px 12px; border-radius: 4px; font-size: 14px; font-weight: bold;">LUNAS (Menunggu Verifikasi)</span>
                   </td>
               </tr>
           </table>
@@ -1511,7 +1514,7 @@
               </tbody>
           </table>
           <div style="text-align: right; font-size: 20px; margin-bottom: 40px;">
-              <span style="color: #64748b; font-size: 14px; margin-right: 15px;">Total Tagihan Keseluruhan:</span>
+              <span style="color: #64748b; font-size: 14px; margin-right: 15px;">Total Yang Sudah Dibayar:</span>
               <strong style="color: #f5125e;">${window.currentInvoiceTotal}</strong>
           </div>
           <div style="text-align: center; color: #94a3b8; font-size: 12px; border-top: 1px solid #e2e8f0; padding-top: 20px;">
@@ -1536,20 +1539,38 @@
     };
 
     window.confirmViaWA = function() {
-        const name = document.getElementById('pay-buyer-name').value.trim();
-        const email = document.getElementById('pay-buyer-email').value.trim();
-        const wa = document.getElementById('pay-buyer-wa').value.trim();
+        const name = window.currentBuyerData.name || document.getElementById('pay-buyer-name')?.value.trim() || "-";
+        const email = window.currentBuyerData.email || document.getElementById('pay-buyer-email')?.value.trim() || "-";
+        const wa = window.currentBuyerData.wa || document.getElementById('pay-buyer-wa')?.value.trim() || "-";
         
-        const inv = window.currentInvoiceNo || "INV-XXX";
+        const inv = window.currentInvoiceNo || "INV-DIGITAL";
         const item = window.currentInvoiceItem || "-";
-        const total = window.currentInvoiceTotal || "-";
+        const total = window.currentInvoiceTotal || "Rp 0";
+        const tanggal = window.currentOrderDate || new Date().toLocaleString('id-ID');
         
-        const msg = `*KONFIRMASI PEMBAYARAN GOPAY*\n\n*No. Invoice:* ${inv}\n*Nama:* ${name}\n*Email:* ${email}\n*No WA:* ${wa}\n\n*Pesanan:*\n${item}\n\n*Total Tagihan:* ${total}\n\n_Halo Admin DigitalHub, saya sudah melakukan pembayaran via GoPay QRIS dan sudah lunas. Tolong segera diproses dan dikirimkan pesanan saya ya. (Bukti screenshot transfer dan file PDF Invoice akan saya kirimkan setelah pesan ini)._`;
+        const msg = 
+`🧾 *INVOICE PEMBAYARAN LUNAS*
+━━━━━━━━━━━━━━━━━━━━━
+*No. Invoice :* ${inv}
+*Tanggal      :* ${tanggal}
+*Status       :* ✅ *LUNAS (SUDAH DIBAYAR)*
+
+👤 *DATA PEMBELI*
+*Nama         :* ${name}
+*Email        :* ${email}
+*No. WhatsApp :* ${wa}
+
+📦 *RINCIAN PESANAN*
+${item}
+
+💰 *TOTAL YANG SUDAH DIBAYAR*
+*${total}* (Metode: GoPay QRIS)
+━━━━━━━━━━━━━━━━━━━━━
+_Halo Admin DigitalHub, saya sudah melunasi pesanan di atas. File Invoice PDF dan bukti transfer sudah saya unduh. Mohon pesanan segera diproses ya, terima kasih!_`;
         
         const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
         window.open(waLink, '_blank');
     };
-
     window.openChatModalWithProduct = function(prodName, varName, price) {
       openChatModal();
       const matched = products.find(p => p.name === prodName);
