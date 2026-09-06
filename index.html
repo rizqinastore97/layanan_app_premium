@@ -557,9 +557,33 @@
     <div onclick="closeHistoryModal()" class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
     <div id="history-modal-card" class="bg-white w-full max-w-lg rounded-3xl shadow-2xl p-5 flex flex-col max-h-[90vh] relative z-10">
       <div class="flex justify-between items-center pb-3 border-b border-slate-100">
-        <h3 class="font-bold text-sm sm:text-base text-slate-800 flex items-center gap-2"><i data-lucide="history" class="w-5 h-5 text-[#f5125e]"></i> Riwayat Pesanan Saya</h3>
-        <button onclick="closeHistoryModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+        <h3 class="font-bold text-sm sm:text-base text-slate-800 flex items-center gap-2">
+          <i data-lucide="history" class="w-5 h-5 text-[#f5125e]"></i> Riwayat Pesanan Saya
+        </h3>
+        <button onclick="closeHistoryModal()" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
       </div>
+
+      <!-- Form Pencarian Nomor WA / Email -->
+      <div class="pt-3">
+        <form onsubmit="fetchOnlineHistory(event)" class="flex gap-2">
+          <input 
+            type="text" 
+            id="history-search-input" 
+            placeholder="Masukkan No. WhatsApp / Email order..." 
+            class="flex-1 text-xs border border-slate-200 rounded-xl px-3 py-2.5 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#f5125e]"
+            required
+          />
+          <button type="submit" class="bg-[#f5125e] hover:bg-[#d40c4e] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-1 flex-shrink-0">
+            <i data-lucide="search" class="w-3.5 h-3.5"></i>
+            <span>Cari</span>
+          </button>
+        </form>
+        <p class="text-[10px] text-slate-400 mt-1 pl-1">Bisa dibuka dari HP mana pun menggunakan kontak saat order.</p>
+      </div>
+
+      <!-- Container Daftar Riwayat -->
       <div id="history-list" class="flex-1 overflow-y-auto space-y-3 pr-1 mt-3"></div>
     </div>
   </div>
@@ -1098,34 +1122,95 @@
       }
     };
 
+// Buka Modal & Cek apakah nomor WA sebelumnya sudah tersimpan di browser
     window.openHistoryModal = function() {
       history.pushState({ modalOpen: true }, '', '#history');
-      let historyData = [];
-      try { historyData = JSON.parse(localStorage.getItem('my_digital_orders')) || []; } catch(e){}
-      if(!Array.isArray(historyData)) historyData = [];
-      
-      const container = document.getElementById('history-list');
-      if (historyData.length === 0) {
-        container.innerHTML = `<div class="py-12 text-center text-slate-400 text-xs"><i data-lucide="receipt" class="w-8 h-8 mx-auto mb-1 stroke-1"></i>Belum ada riwayat pesanan</div>`;
-      } else {
-        container.innerHTML = historyData.map((item) => `
-          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2 shadow-sm">
-            <div class="flex justify-between items-start">
-              <div>
-                <span class="text-[9px] font-bold text-[#f5125e] bg-rose-50 border border-rose-100 px-2 py-0.5 rounded font-mono shadow-xs">${item.reference}</span>
-                <h4 class="font-bold text-xs sm:text-sm text-slate-800 mt-1">${item.productName} (${item.variantName})</h4>
-                <p class="text-[10px] text-slate-400 mt-0.5"><i data-lucide="clock" class="w-3 h-3 inline pb-0.5"></i> ${item.date}</p>
-              </div>
-              <div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex justify-center items-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3"></i></div>
-            </div>
-            <div class="bg-white border rounded-xl p-2.5 shadow-inner"><pre class="font-mono text-[10px] sm:text-xs text-slate-800 whitespace-pre-wrap select-all">${item.account}</pre></div>
-          </div>
-        `).join('');
-      }
       document.getElementById('history-modal').classList.remove('hidden');
-      if(typeof lucide !== 'undefined') lucide.createIcons();
+
+      const savedContact = localStorage.getItem('last_user_contact') || '';
+      const input = document.getElementById('history-search-input');
+      
+      if (savedContact && input) {
+        input.value = savedContact;
+        window.fetchOnlineHistory(null, savedContact);
+      } else {
+        document.getElementById('history-list').innerHTML = `
+          <div class="py-12 text-center text-slate-400 text-xs">
+            <i data-lucide="search" class="w-8 h-8 mx-auto mb-2 stroke-1 text-slate-300"></i>
+            Masukkan nomor WhatsApp atau Email Anda untuk menampilkan riwayat pesanan.
+          </div>`;
+      }
+      if (typeof lucide !== 'undefined') lucide.createIcons();
     };
 
+    // Ambil Data Pesanan Lintas Perangkat dari Cloudflare Worker
+    window.fetchOnlineHistory = async function(event, directValue = null) {
+      if (event) event.preventDefault();
+      
+      const query = directValue || document.getElementById('history-search-input').value.trim();
+      if (!query) return;
+
+      const container = document.getElementById('history-list');
+      container.innerHTML = `
+        <div class="py-12 text-center text-slate-400 text-xs flex flex-col items-center gap-2">
+          <i data-lucide="loader-2" class="w-6 h-6 animate-spin text-[#f5125e]"></i>
+          <span>Mencari pesanan Anda...</span>
+        </div>`;
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+
+      // Simpan input terakhir ke HP lokal agar次回 tidak perlu ketik ulang
+      localStorage.setItem('last_user_contact', query);
+
+      try {
+        const response = await fetch(`${API_URL}/orders?wa=${encodeURIComponent(query)}`);
+        const historyData = await response.json();
+
+        if (!Array.isArray(historyData) || historyData.length === 0) {
+          container.innerHTML = `
+            <div class="py-12 text-center text-slate-400 text-xs">
+              <i data-lucide="package-x" class="w-8 h-8 mx-auto mb-2 stroke-1 text-rose-300"></i>
+              Tidak ditemukan pesanan dengan kontak: <b>${escapeHtml(query)}</b>
+            </div>`;
+        } else {
+          container.innerHTML = historyData.map((item) => {
+            const waChatLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Halo Admin DigitalHub, saya mau cek pesanan saya:\nNo. Invoice: ${item.reference}\nProduk: ${item.productName}`)}`;
+
+            return `
+              <div class="bg-white border border-slate-200 rounded-2xl p-3.5 space-y-2.5 shadow-xs">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <span class="text-[9.5px] font-bold text-[#f5125e] bg-rose-50 border border-rose-100 px-2 py-0.5 rounded font-mono">${item.reference}</span>
+                    <h4 class="font-bold text-xs sm:text-sm text-slate-800 mt-1">${item.productName} ${item.variantName && item.variantName !== '-' ? `(${item.variantName})` : ''}</h4>
+                    <p class="text-[10px] text-slate-400 mt-0.5"><i data-lucide="clock" class="w-3 h-3 inline pb-0.5"></i> ${item.date}</p>
+                  </div>
+                  <span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-600 border border-emerald-100 text-[10px] font-bold px-2 py-1 rounded-lg">
+                    <i data-lucide="check-circle-2" class="w-3 h-3"></i> ${item.status || 'Lunas'}
+                  </span>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-100 rounded-xl p-2.5 flex items-center justify-between text-[11px]">
+                  <div>
+                    <span class="text-[10px] text-slate-400 block">Pemesan:</span>
+                    <span class="font-bold text-slate-700 text-xs">${item.buyerName || '-'}</span>
+                  </div>
+                  <a href="${waChatLink}" target="_blank" class="flex items-center gap-1 bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-2.5 py-1.5 rounded-lg text-[10px] transition-colors shadow-2xs">
+                    <i data-lucide="message-circle" class="w-3 h-3"></i> Hubungi CS
+                  </a>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      } catch (err) {
+        container.innerHTML = `
+          <div class="py-12 text-center text-rose-500 text-xs">
+            <i data-lucide="alert-circle" class="w-7 h-7 mx-auto mb-1"></i>
+            Gagal memuat pesanan. Periksa koneksi internet Anda.
+          </div>`;
+      }
+
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    };
     window.closeHistoryModal = function() { 
         document.getElementById('history-modal').classList.add('hidden'); 
     };
