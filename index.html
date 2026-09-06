@@ -352,6 +352,33 @@
     </div>
   </main>
 
+  <!-- MODAL LIHAT INVOICE LANGSUNG DI WEB -->
+  <div id="invoice-preview-modal" class="fixed inset-0 z-[85] overflow-hidden hidden flex items-center justify-center p-3 sm:p-4">
+    <div onclick="closeInvoicePreviewModal()" class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
+    <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden relative z-10 flex flex-col max-h-[92vh]">
+      <div class="p-3.5 sm:p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+        <h3 class="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-1.5">
+          <i data-lucide="file-text" class="w-4 h-4 text-[#f5125e]"></i> Lembar Invoice Pembelian
+        </h3>
+        <button onclick="closeInvoicePreviewModal()" class="text-slate-400 hover:text-slate-600 p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      
+      <!-- Isi Konten Invoice -->
+      <div id="invoice-preview-content" class="p-4 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm"></div>
+
+      <div class="p-3 border-t border-slate-100 bg-slate-50 flex gap-2">
+        <button onclick="closeInvoicePreviewModal()" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 py-2.5 rounded-xl font-bold text-xs transition">
+          Tutup
+        </button>
+        <button id="btn-download-from-preview" class="flex-1 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition">
+          <i data-lucide="download" class="w-3.5 h-3.5"></i> Unduh PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Mobile Bottom Nav -->
   <div class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200/80 z-40 py-2 px-3 flex md:hidden items-center justify-between text-slate-500 text-[10px] font-medium shadow-lg">
     <button onclick="setCategory('Semua')" class="flex flex-col items-center gap-0.5 text-[#f5125e]"><i data-lucide="home" class="w-4 h-4"></i><span>Beranda</span></button>
@@ -572,8 +599,8 @@
             type="text" 
             id="history-search-input" 
             placeholder="Masukkan No. WhatsApp / Email order..." 
-            class="flex-1 text-xs border border-slate-200 rounded-xl px-3 py-2.5 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#f5125e]"
-            required
+            class="flex-1 text-xs border border-slate-200 rounded-xl px-3 py-2.5 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#f5125e]" 
+            required 
           />
           <button type="submit" class="bg-[#f5125e] hover:bg-[#d40c4e] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-1 flex-shrink-0">
             <i data-lucide="search" class="w-3.5 h-3.5"></i>
@@ -656,7 +683,7 @@
               id="user-chat-input" 
               placeholder="Ketik pertanyaan (Contoh: Harga Canva)..." 
               class="flex-1 bg-slate-100 text-slate-800 text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#f5125e] focus:bg-white" 
-              autocomplete="off"
+              autocomplete="off" 
             />
             <button type="submit" class="bg-[#f5125e] hover:bg-[#d40c4e] text-white p-2.5 rounded-xl transition-colors">
               <i data-lucide="send" class="w-4 h-4"></i>
@@ -1122,95 +1149,6 @@
       }
     };
 
-// Buka Modal & Cek apakah nomor WA sebelumnya sudah tersimpan di browser
-    window.openHistoryModal = function() {
-      history.pushState({ modalOpen: true }, '', '#history');
-      document.getElementById('history-modal').classList.remove('hidden');
-
-      const savedContact = localStorage.getItem('last_user_contact') || '';
-      const input = document.getElementById('history-search-input');
-      
-      if (savedContact && input) {
-        input.value = savedContact;
-        window.fetchOnlineHistory(null, savedContact);
-      } else {
-        document.getElementById('history-list').innerHTML = `
-          <div class="py-12 text-center text-slate-400 text-xs">
-            <i data-lucide="search" class="w-8 h-8 mx-auto mb-2 stroke-1 text-slate-300"></i>
-            Masukkan nomor WhatsApp atau Email Anda untuk menampilkan riwayat pesanan.
-          </div>`;
-      }
-      if (typeof lucide !== 'undefined') lucide.createIcons();
-    };
-
-    // Ambil Data Pesanan Lintas Perangkat dari Cloudflare Worker
-    window.fetchOnlineHistory = async function(event, directValue = null) {
-      if (event) event.preventDefault();
-      
-      const query = directValue || document.getElementById('history-search-input').value.trim();
-      if (!query) return;
-
-      const container = document.getElementById('history-list');
-      container.innerHTML = `
-        <div class="py-12 text-center text-slate-400 text-xs flex flex-col items-center gap-2">
-          <i data-lucide="loader-2" class="w-6 h-6 animate-spin text-[#f5125e]"></i>
-          <span>Mencari pesanan Anda...</span>
-        </div>`;
-      if (typeof lucide !== 'undefined') lucide.createIcons();
-
-      // Simpan input terakhir ke HP lokal agar次回 tidak perlu ketik ulang
-      localStorage.setItem('last_user_contact', query);
-
-      try {
-        const response = await fetch(`${API_URL}/orders?wa=${encodeURIComponent(query)}`);
-        const historyData = await response.json();
-
-        if (!Array.isArray(historyData) || historyData.length === 0) {
-          container.innerHTML = `
-            <div class="py-12 text-center text-slate-400 text-xs">
-              <i data-lucide="package-x" class="w-8 h-8 mx-auto mb-2 stroke-1 text-rose-300"></i>
-              Tidak ditemukan pesanan dengan kontak: <b>${escapeHtml(query)}</b>
-            </div>`;
-        } else {
-          container.innerHTML = historyData.map((item) => {
-            const waChatLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Halo Admin DigitalHub, saya mau cek pesanan saya:\nNo. Invoice: ${item.reference}\nProduk: ${item.productName}`)}`;
-
-            return `
-              <div class="bg-white border border-slate-200 rounded-2xl p-3.5 space-y-2.5 shadow-xs">
-                <div class="flex justify-between items-start">
-                  <div>
-                    <span class="text-[9.5px] font-bold text-[#f5125e] bg-rose-50 border border-rose-100 px-2 py-0.5 rounded font-mono">${item.reference}</span>
-                    <h4 class="font-bold text-xs sm:text-sm text-slate-800 mt-1">${item.productName} ${item.variantName && item.variantName !== '-' ? `(${item.variantName})` : ''}</h4>
-                    <p class="text-[10px] text-slate-400 mt-0.5"><i data-lucide="clock" class="w-3 h-3 inline pb-0.5"></i> ${item.date}</p>
-                  </div>
-                  <span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-600 border border-emerald-100 text-[10px] font-bold px-2 py-1 rounded-lg">
-                    <i data-lucide="check-circle-2" class="w-3 h-3"></i> ${item.status || 'Lunas'}
-                  </span>
-                </div>
-
-                <div class="bg-slate-50 border border-slate-100 rounded-xl p-2.5 flex items-center justify-between text-[11px]">
-                  <div>
-                    <span class="text-[10px] text-slate-400 block">Pemesan:</span>
-                    <span class="font-bold text-slate-700 text-xs">${item.buyerName || '-'}</span>
-                  </div>
-                  <a href="${waChatLink}" target="_blank" class="flex items-center gap-1 bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-2.5 py-1.5 rounded-lg text-[10px] transition-colors shadow-2xs">
-                    <i data-lucide="message-circle" class="w-3 h-3"></i> Hubungi CS
-                  </a>
-                </div>
-              </div>
-            `;
-          }).join('');
-        }
-      } catch (err) {
-        container.innerHTML = `
-          <div class="py-12 text-center text-rose-500 text-xs">
-            <i data-lucide="alert-circle" class="w-7 h-7 mx-auto mb-1"></i>
-            Gagal memuat pesanan. Periksa koneksi internet Anda.
-          </div>`;
-      }
-
-      if (typeof lucide !== 'undefined') lucide.createIcons();
-    };
     window.closeHistoryModal = function() { 
         document.getElementById('history-modal').classList.add('hidden'); 
     };
@@ -1248,6 +1186,7 @@
       document.getElementById('chat-drawer')?.classList.add('translate-x-full');
       setTimeout(() => document.getElementById('chat-modal')?.classList.add('hidden'), 250);
       document.getElementById('payment-modal')?.classList.add('hidden');
+      document.getElementById('invoice-preview-modal')?.classList.add('hidden');
     });
 
     // ================= FUNGSI LAINNYA =================
@@ -1417,7 +1356,10 @@
       }
     }
 
-    window.saveOrderHistory = function(ref, productName, variantName, accountData) {
+    // Simpan data pembeli sementara di memori
+    window.currentBuyerData = { name: '', email: '', wa: '' };
+
+    window.saveOrderHistory = function(ref, productName, variantName, totalAmount, buyerData) {
         let history = [];
         try { history = JSON.parse(localStorage.getItem('my_digital_orders')) || []; } catch(e){}
         if (!Array.isArray(history)) history = [];
@@ -1426,7 +1368,9 @@
             reference: ref,
             productName: productName,
             variantName: variantName,
-            account: accountData,
+            total: totalAmount || "Rp 0",
+            buyerName: buyerData?.name || "-",
+            status: "Lunas (Diproses)",
             date: new Date().toLocaleString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
         });
         
@@ -1463,21 +1407,16 @@
       document.getElementById('pay-item-name').innerText = window.currentInvoiceItem;
       document.getElementById('pay-total-amount').innerText = window.currentInvoiceTotal;
       
-      // Kosongkan form
       document.getElementById('pay-buyer-name').value = '';
       document.getElementById('pay-buyer-email').value = '';
       document.getElementById('pay-buyer-wa').value = '';
       
-      // Set QRIS Statis GoPay
       const qrisImg = document.getElementById('qris-img');
       qrisImg.src = QRIS_GOPAY_URL;
       qrisImg.classList.remove('hidden');
     }
 
-// Simpan data pembeli sementara agar tetap aman dan tidak hilang
-    window.currentBuyerData = { name: '', email: '', wa: '' };
-
-    // ==== FUNGSI MANUAL PAYMENT SUCCESS (TERBARU DENGAN STATUS LUNAS) ====
+    // ==== FUNGSI MANUAL PAYMENT SUCCESS (STATUS LANGSUNG LUNAS DIPROSES) ====
     window.manualPaymentSuccess = function() {
       const name = document.getElementById('pay-buyer-name').value.trim();
       const email = document.getElementById('pay-buyer-email').value.trim();
@@ -1488,31 +1427,29 @@
          return;
       }
 
-      // Kunci data pembeli di memori browser
       window.currentBuyerData = { name, email, wa };
 
       document.getElementById('step-pay').classList.add('hidden');
       document.getElementById('step-result').classList.remove('hidden');
       
-      const dummyAccount = "Pesanan sedang diproses. Silakan Download Invoice PDF dan Konfirmasi ke WhatsApp Admin untuk aktivasi.";
+      const dummyAccount = "Pesanan sedang diproses. Pembayaran terverifikasi lunas.";
       document.getElementById('account-data').innerText = dummyAccount;
       
       const pName = window.currentIsCart ? "Keranjang Belanja" : (currentSelectedProduct ? currentSelectedProduct.name : "Produk");
       const vName = window.currentIsCart ? "Berbagai Produk" : (currentSelectedVariant ? currentSelectedVariant.name : "-");
 
-      // 1. Simpan ke local history (HP Pembeli)
-      window.saveOrderHistory(window.currentInvoiceNo, pName, vName, dummyAccount);
+      window.saveOrderHistory(window.currentInvoiceNo, pName, vName, window.currentInvoiceTotal, window.currentBuyerData);
 
-      // 2. Kirim Data Pesanan Langsung ke Cloudflare Worker
       const orderPayload = {
           reference: window.currentInvoiceNo,
           date: window.currentOrderDate || new Date().toLocaleString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
           productName: pName,
           variantName: vName,
+          totalAmount: window.currentInvoiceTotal || "Rp 0",
           buyerName: name,
           buyerEmail: email,
           buyerWA: wa,
-          status: "Lunas (Menunggu Konfirmasi)"
+          status: "Lunas (Diproses)"
       };
       
       fetch(`${API_URL}/orders`, {
@@ -1526,7 +1463,7 @@
           localStorage.setItem('my_digital_cart', JSON.stringify(cart));
           renderCart();
       }
-      showToast('Silakan Download PDF dan Konfirmasi WA!');
+      showToast('Pembayaran berhasil! Silakan unduh PDF / konfirmasi ke WA.');
     };
 
     window.processCartCheckout = function() {
@@ -1572,7 +1509,7 @@
                       <p style="margin: 0 0 5px; font-size: 12px; color: #94a3b8; text-transform: uppercase;">Metode Pembayaran</p>
                       <p style="margin: 0 0 15px; font-size: 14px; font-weight: bold;">QRIS GoPay</p>
                       <p style="margin: 0 0 5px; font-size: 12px; color: #94a3b8; text-transform: uppercase;">Status Pembayaran</p>
-                      <span style="display: inline-block; background: #dcfce7; color: #16a34a; padding: 4px 12px; border-radius: 4px; font-size: 14px; font-weight: bold;">LUNAS (Menunggu Verifikasi)</span>
+                      <span style="display: inline-block; background: #dcfce7; color: #16a34a; padding: 4px 12px; border-radius: 4px; font-size: 14px; font-weight: bold;">LUNAS (Diproses)</span>
                   </td>
               </tr>
           </table>
@@ -1656,6 +1593,7 @@ _Halo Admin DigitalHub, saya sudah melunasi pesanan di atas. File Invoice PDF da
         const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
         window.open(waLink, '_blank');
     };
+
     window.openChatModalWithProduct = function(prodName, varName, price) {
       openChatModal();
       const matched = products.find(p => p.name === prodName);
@@ -1667,6 +1605,178 @@ _Halo Admin DigitalHub, saya sudah melunasi pesanan di atas. File Invoice PDF da
         removeBotTyping();
         appendBotChatMessage(`Hai Kak! Untuk produk **${prodName} (${varName})** stoknya ready dan siap diproses. Kakak bisa langsung klik **Beli Sekarang** di katalog! 🚀`);
       }, 1000);
+    };
+
+    // Buka Modal & Cek apakah nomor WA sebelumnya sudah tersimpan di browser
+    window.openHistoryModal = function() {
+      history.pushState({ modalOpen: true }, '', '#history');
+      document.getElementById('history-modal').classList.remove('hidden');
+
+      const savedContact = localStorage.getItem('last_user_contact') || '';
+      const input = document.getElementById('history-search-input');
+      
+      if (savedContact && input) {
+        input.value = savedContact;
+        window.fetchOnlineHistory(null, savedContact);
+      } else {
+        document.getElementById('history-list').innerHTML = `
+          <div class="py-12 text-center text-slate-400 text-xs">
+            <i data-lucide="search" class="w-8 h-8 mx-auto mb-2 stroke-1 text-slate-300"></i>
+            Masukkan nomor WhatsApp atau Email Anda untuk menampilkan riwayat pesanan.
+          </div>`;
+      }
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    };
+
+    // Ambil Data Pesanan Lintas Perangkat & Render Tombol Lihat Invoice
+    window.fetchOnlineHistory = async function(event, directValue = null) {
+      if (event) event.preventDefault();
+      
+      const query = directValue || document.getElementById('history-search-input').value.trim();
+      if (!query) return;
+
+      const container = document.getElementById('history-list');
+      container.innerHTML = `
+        <div class="py-12 text-center text-slate-400 text-xs flex flex-col items-center gap-2">
+          <i data-lucide="loader-2" class="w-6 h-6 animate-spin text-[#f5125e]"></i>
+          <span>Mencari pesanan Anda...</span>
+        </div>`;
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+
+      localStorage.setItem('last_user_contact', query);
+
+      try {
+        const response = await fetch(`${API_URL}/orders?wa=${encodeURIComponent(query)}`);
+        const historyData = await response.json();
+
+        if (!Array.isArray(historyData) || historyData.length === 0) {
+          container.innerHTML = `
+            <div class="py-12 text-center text-slate-400 text-xs">
+              <i data-lucide="package-x" class="w-8 h-8 mx-auto mb-2 stroke-1 text-rose-300"></i>
+              Tidak ditemukan pesanan dengan kontak: <b>${escapeHtml(query)}</b>
+            </div>`;
+        } else {
+          container.innerHTML = historyData.map((item) => {
+            const waChatLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Halo Admin DigitalHub, saya mau cek pesanan saya:\nNo. Invoice: ${item.reference}\nProduk: ${item.productName}`)}`;
+            
+            const itemBase64 = btoa(unescape(encodeURIComponent(JSON.stringify(item))));
+
+            return `
+              <div class="bg-white border border-slate-200 rounded-2xl p-3.5 space-y-2.5 shadow-xs">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <span class="text-[9.5px] font-bold text-[#f5125e] bg-rose-50 border border-rose-100 px-2 py-0.5 rounded font-mono">${item.reference}</span>
+                    <h4 class="font-bold text-xs sm:text-sm text-slate-800 mt-1">${item.productName} ${item.variantName && item.variantName !== '-' ? `(${item.variantName})` : ''}</h4>
+                    <p class="text-[10px] text-slate-400 mt-0.5"><i data-lucide="clock" class="w-3 h-3 inline pb-0.5"></i> ${item.date}</p>
+                  </div>
+                  <span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-600 border border-emerald-100 text-[10px] font-bold px-2 py-1 rounded-lg">
+                    <i data-lucide="check-circle-2" class="w-3 h-3"></i> Lunas (Diproses)
+                  </span>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-100 rounded-xl p-2.5 flex items-center justify-between text-[11px]">
+                  <div>
+                    <span class="text-[10px] text-slate-400 block">Pemesan:</span>
+                    <span class="font-bold text-slate-700 text-xs">${item.buyerName || '-'}</span>
+                  </div>
+                  <div class="flex items-center gap-1.5">
+                    <button onclick="viewInvoiceFromData('${itemBase64}')" class="flex items-center gap-1 bg-rose-50 hover:bg-rose-100 text-[#f5125e] border border-rose-200 font-bold px-2.5 py-1.5 rounded-lg text-[10px] transition-colors shadow-2xs">
+                      <i data-lucide="file-text" class="w-3 h-3"></i> Lihat Invoice
+                    </button>
+                    <a href="${waChatLink}" target="_blank" class="flex items-center gap-1 bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-2.5 py-1.5 rounded-lg text-[10px] transition-colors shadow-2xs">
+                      <i data-lucide="message-circle" class="w-3 h-3"></i> Hubungi CS
+                    </a>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      } catch (err) {
+        container.innerHTML = `
+          <div class="py-12 text-center text-rose-500 text-xs">
+            <i data-lucide="alert-circle" class="w-7 h-7 mx-auto mb-1"></i>
+            Gagal memuat pesanan. Periksa koneksi internet Anda.
+          </div>`;
+      }
+
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    };
+
+    // Fungsi Render Lembar Invoice di Dalam Website
+    window.viewInvoiceFromData = function(base64Str) {
+      try {
+        const item = JSON.parse(decodeURIComponent(escape(atob(base64Str))));
+        const contentBox = document.getElementById('invoice-preview-content');
+
+        contentBox.innerHTML = `
+          <div style="border-bottom: 2px solid #f5125e; padding-bottom: 12px; margin-bottom: 15px;">
+            <h2 style="color: #f5125e; margin: 0; font-size: 20px; font-weight: 900; letter-spacing: -0.5px;">DIGITALHUB</h2>
+            <p style="margin: 2px 0 0; font-size: 11px; color: #64748b; font-weight: bold;">E-Invoice Pembelian Resmi</p>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 11px;">
+            <div>
+              <p style="margin: 0; color: #94a3b8; text-transform: uppercase;">No. Invoice</p>
+              <p style="margin: 2px 0 8px; font-weight: bold; font-family: monospace; font-size: 12px;">${item.reference}</p>
+              <p style="margin: 0; color: #94a3b8; text-transform: uppercase;">Tanggal Pesanan</p>
+              <p style="margin: 2px 0 0; font-weight: bold;">${item.date}</p>
+            </div>
+            <div style="text-align: right;">
+              <p style="margin: 0; color: #94a3b8; text-transform: uppercase;">Metode Pembayaran</p>
+              <p style="margin: 2px 0 8px; font-weight: bold;">QRIS GoPay</p>
+              <p style="margin: 0; color: #94a3b8; text-transform: uppercase;">Status</p>
+              <span style="display: inline-block; background: #dcfce7; color: #16a34a; padding: 2px 8px; border-radius: 6px; font-weight: bold; font-size: 10px;">LUNAS (DIPROSES)</span>
+            </div>
+          </div>
+
+          <div style="background: #f8fafc; padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0; font-size: 11px; margin-bottom: 15px;">
+            <p style="margin: 0 0 6px; font-weight: bold; color: #334155;">Data Pembeli</p>
+            <div style="display: grid; grid-template-columns: 80px 1fr; gap: 4px;">
+              <span style="color: #64748b;">Nama</span><span style="font-weight: 600;">: ${item.buyerName || '-'}</span>
+              <span style="color: #64748b;">Email</span><span style="font-weight: 600;">: ${item.buyerEmail || '-'}</span>
+              <span style="color: #64748b;">WhatsApp</span><span style="font-weight: 600;">: ${item.buyerWA || '-'}</span>
+            </div>
+          </div>
+
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 11.5px;">
+            <thead>
+              <tr style="background: #f5125e; color: white;">
+                <th style="padding: 8px 10px; text-align: left; border-radius: 6px 0 0 6px;">Produk</th>
+                <th style="padding: 8px 10px; text-align: right; border-radius: 0 6px 6px;">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;">
+                  <b>${item.productName}</b><br>
+                  <span style="color: #64748b; font-size: 10.5px;">Variasi: ${item.variantName || 'Standar'}</span>
+                </td>
+                <td style="padding: 10px; text-align: right; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #f5125e;">
+                  ${item.totalAmount || item.total || 'Lunas'}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="text-align: center; color: #94a3b8; font-size: 10px; border-top: 1px dashed #e2e8f0; padding-top: 10px;">
+            <p style="margin: 0;">Dokumen ini merupakan bukti transaksi digital sah di DigitalHub.</p>
+          </div>
+        `;
+
+        document.getElementById('btn-download-from-preview').onclick = function() {
+          window.downloadPDF();
+        };
+
+        document.getElementById('invoice-preview-modal').classList.remove('hidden');
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      } catch (err) {
+        showToast('Gagal memuat invoice', 'error');
+      }
+    };
+
+    window.closeInvoicePreviewModal = function() {
+      document.getElementById('invoice-preview-modal').classList.add('hidden');
     };
 
     // ================= FUNGSI BOT CERDAS =================
@@ -1910,7 +2020,7 @@ _Halo Admin DigitalHub, saya sudah melunasi pesanan di atas. File Invoice PDF da
     if (
       e.keyCode === 123 || 
       (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || 
-      (e.ctrlKey && e.keyCode === 85) ||
+      (e.ctrlKey && e.keyCode === 85) || 
       (e.ctrlKey && e.keyCode === 83)
     ) {
       e.preventDefault();
