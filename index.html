@@ -38,7 +38,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   
   <style>
-    /* PENGUNCI FONT OUTFIT DI SELURUH WEBSITE */
     * {
       font-family: 'Outfit', sans-serif !important;
       -webkit-user-select: none;
@@ -48,7 +47,6 @@
       -webkit-touch-callout: none;
     }
 
-    /* Pengecualian Font Monospace untuk Kode & Lisensi */
     pre, code, #account-data, #pay-invoice-no {
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
     }
@@ -102,7 +100,6 @@
       50% { transform: translateY(-3px); opacity: 1; }
     }
 
-    /* SISTEM TEMA SHOPEE */
     .theme-shopee .bg-\[\#f5125e\] { background-color: #ee4d2d !important; }
     .theme-shopee .text-\[\#f5125e\] { color: #ee4d2d !important; }
     .theme-shopee .border-\[\#f5125e\] { border-color: #ee4d2d !important; }
@@ -365,7 +362,6 @@
         </button>
       </div>
       
-      <!-- Isi Konten Invoice -->
       <div id="invoice-preview-content" class="p-4 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm"></div>
 
       <div class="p-3 border-t border-slate-100 bg-slate-50 flex gap-2">
@@ -435,6 +431,8 @@
           <h4 class="font-bold text-amber-900 mb-1 flex items-center gap-1.5 text-xs"><i data-lucide="shield-alert" class="w-4 h-4"></i> Syarat & Ketentuan</h4>
           <p id="modal-terms" class="text-amber-800 leading-relaxed whitespace-pre-line text-[11px]"></p>
         </div>
+
+        <!-- Seksi Ulasan & Rating -->
         <div class="pt-3 border-t border-slate-100 space-y-3">
           <div class="flex items-center justify-between">
             <div>
@@ -446,12 +444,50 @@
             </div>
             <span class="text-[10px] text-[#f5125e] font-bold bg-rose-50 px-2 py-0.5 rounded-md border border-rose-100">Ulasan Terverifikasi</span>
           </div>
+
           <div class="flex flex-wrap gap-1.5 text-[10px]" id="review-filter-buttons">
-            <button type="button" onclick="setReviewFilter('all')" id="rf-all" class="rf-btn bg-rose-50 text-[#f5125e] border border-rose-200 px-2.5 py-1 rounded-lg font-bold transition-all shadow-2xs">Semua (48)</button>
-            <button type="button" onclick="setReviewFilter('star5')" id="rf-star5" class="rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all">Bintang 5 (48)</button>
-            <button type="button" onclick="setReviewFilter('instant')" id="rf-instant" class="rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all">⚡ Kirim Instan (36)</button>
-            <button type="button" onclick="setReviewFilter('service')" id="rf-service" class="rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all">🛡️ Garansi Aman (12)</button>
+            <button type="button" onclick="setReviewFilter('all')" id="rf-all" class="rf-btn bg-rose-50 text-[#f5125e] border border-rose-200 px-2.5 py-1 rounded-lg font-bold transition-all shadow-2xs">Semua</button>
+            <button type="button" onclick="setReviewFilter('star5')" id="rf-star5" class="rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all">Bintang 5</button>
+            <button type="button" onclick="setReviewFilter('instant')" id="rf-instant" class="rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all">⚡ Kirim Instan</button>
+            <button type="button" onclick="setReviewFilter('service')" id="rf-service" class="rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all">🛡️ Garansi Aman</button>
           </div>
+
+          <!-- Form Berikan Ulasan -->
+          <div class="bg-rose-50/60 border border-rose-100 rounded-2xl p-3 space-y-2 mt-2">
+            <h5 class="font-bold text-slate-800 text-xs flex items-center gap-1">
+              <i data-lucide="message-square-plus" class="w-3.5 h-3.5 text-[#f5125e]"></i> Tulis Ulasan Anda
+            </h5>
+            <form onsubmit="handleReviewSubmit(event)" class="space-y-2">
+              <div class="grid grid-cols-2 gap-2">
+                <input 
+                  type="text" 
+                  id="rev-user-name" 
+                  placeholder="Nama Anda..." 
+                  class="text-[11px] px-2.5 py-1.5 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-[#f5125e]" 
+                  required 
+                />
+                <div class="flex items-center justify-between bg-white border border-slate-200 rounded-xl px-2.5 py-1">
+                  <span class="text-[10px] text-slate-500 font-bold">Rating:</span>
+                  <select id="rev-rating" class="text-xs font-bold text-amber-500 focus:outline-none bg-transparent">
+                    <option value="5">⭐⭐⭐⭐⭐ (5)</option>
+                    <option value="4">⭐⭐⭐⭐ (4)</option>
+                    <option value="3">⭐⭐⭐ (3)</option>
+                  </select>
+                </div>
+              </div>
+              <textarea 
+                id="rev-comment" 
+                rows="2" 
+                placeholder="Bagikan pengalaman Anda menggunakan produk ini..." 
+                class="w-full text-[11px] p-2.5 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-[#f5125e] resize-none" 
+                required
+              ></textarea>
+              <button type="submit" id="btn-submit-review" class="w-full bg-[#f5125e] hover:bg-[#d40c4e] text-white py-2 rounded-xl font-bold text-[11px] uppercase tracking-wider transition active:scale-95 shadow-xs flex items-center justify-center gap-1.5">
+                <i data-lucide="send" class="w-3.5 h-3.5"></i> Kirim Ulasan
+              </button>
+            </form>
+          </div>
+
           <div id="product-reviews-list" class="space-y-2.5 pt-1"></div>
         </div>
       </div>
@@ -767,7 +803,8 @@
       setTimeout(() => toast.remove(), 3500);
     }
 
-    const livePurchasesData = [
+    // Array Realtime Toast Pembelian
+    let livePurchasesData = [
       { user: 'Budi S. (Surabaya)', product: 'Gemini Pro Advanced', time: '1 menit lalu' },
       { user: 'Rian P. (Jakarta Selatan)', product: 'CapCut Pro 1 Tahun', time: '2 menit lalu' },
       { user: 'Dewi Anggraini (Bandung)', product: 'Alight Motion 1 Tahun', time: 'Baru saja' },
@@ -779,6 +816,7 @@
     function startSocialProofNotifications() {
       let idx = 0;
       setInterval(() => {
+        if (livePurchasesData.length === 0) return;
         const item = livePurchasesData[idx % livePurchasesData.length];
         idx++;
         const toast = document.getElementById('social-proof-toast');
@@ -1126,7 +1164,7 @@
       }
 
       window.renderVariantSelection(0);
-      window.setReviewFilter('all');
+      window.loadProductReviews(p.id);
       document.getElementById('detail-modal').classList.remove('hidden');
       if(typeof lucide !== 'undefined') lucide.createIcons();
     };
@@ -1416,7 +1454,7 @@
       qrisImg.classList.remove('hidden');
     }
 
-    // ==== FUNGSI MANUAL PAYMENT SUCCESS (STATUS LANGSUNG LUNAS DIPROSES) ====
+    // ==== FUNGSI MANUAL PAYMENT SUCCESS ====
     window.manualPaymentSuccess = function() {
       const name = document.getElementById('pay-buyer-name').value.trim();
       const email = document.getElementById('pay-buyer-email').value.trim();
@@ -1440,6 +1478,7 @@
 
       window.saveOrderHistory(window.currentInvoiceNo, pName, vName, window.currentInvoiceTotal, window.currentBuyerData);
 
+      // MENGIRIM PESANAN KE SERVER WORKER
       const orderPayload = {
           reference: window.currentInvoiceNo,
           date: window.currentOrderDate || new Date().toLocaleString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
@@ -1456,7 +1495,14 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(orderPayload)
-      }).catch(e => console.log("Gagal sinkron data pesanan ke server admin."));
+      }).catch(e => console.log("Gagal sinkron data pesanan."));
+
+      // MASUKKAN SECARA REALTIME KE TOAST NOTIFIKASI
+      livePurchasesData.unshift({
+        user: `${name} (Terverifikasi)`,
+        product: `${pName} ${vName !== '-' ? `(${vName})` : ''}`,
+        time: 'Baru saja'
+      });
       
       if (window.currentIsCart) {
           cart = [];
@@ -1676,7 +1722,7 @@ _Halo Admin DigitalHub, saya sudah melunasi pesanan di atas. File Invoice PDF da
 
                 <div class="bg-slate-50 border border-slate-100 rounded-xl p-2.5 flex items-center justify-between text-[11px]">
                   <div>
-                    <span class="text-[10px] text-slate-400 block">Pemesan:</span>
+                    <span class="text-[9.5px] text-slate-400 block">Pemesan:</span>
                     <span class="font-bold text-slate-700 text-xs">${item.buyerName || '-'}</span>
                   </div>
                   <div class="flex items-center gap-1.5">
@@ -1778,6 +1824,173 @@ _Halo Admin DigitalHub, saya sudah melunasi pesanan di atas. File Invoice PDF da
     window.closeInvoicePreviewModal = function() {
       document.getElementById('invoice-preview-modal').classList.add('hidden');
     };
+
+    // ================= FUNGSI ULASAN PRODUK =================
+    window.productOnlineReviews = {};
+
+    window.loadProductReviews = async function(productId) {
+      window.setReviewFilter('all');
+      try {
+        const res = await fetch(`${API_URL}/reviews?productId=${productId}`);
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          window.productOnlineReviews[productId] = data;
+          displayFilteredReviews();
+        }
+      } catch (e) {}
+    };
+
+    window.handleReviewSubmit = async function(e) {
+      e.preventDefault();
+      if (!currentSelectedProduct) return;
+
+      const nameInput = document.getElementById('rev-user-name');
+      const ratingInput = document.getElementById('rev-rating');
+      const commentInput = document.getElementById('rev-comment');
+      const submitBtn = document.getElementById('btn-submit-review');
+
+      const name = nameInput.value.trim();
+      const rating = Number(ratingInput.value) || 5;
+      const comment = commentInput.value.trim();
+
+      if (!name || !comment) {
+        showToast("Tolong lengkapi nama dan ulasan Anda!", "error");
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i> Mengirim...`;
+
+      const reviewPayload = {
+        productId: currentSelectedProduct.id,
+        user: name,
+        rating: rating,
+        comment: comment,
+        variant: currentSelectedVariant?.name || 'Resmi'
+      };
+
+      try {
+        const res = await fetch(`${API_URL}/reviews`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(reviewPayload)
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          showToast("Terima kasih atas ulasan Anda! ⭐");
+          nameInput.value = '';
+          commentInput.value = '';
+
+          if (!window.productOnlineReviews[currentSelectedProduct.id]) {
+            window.productOnlineReviews[currentSelectedProduct.id] = [];
+          }
+          window.productOnlineReviews[currentSelectedProduct.id].unshift({
+            user: name,
+            rating: rating,
+            comment: comment,
+            variant: currentSelectedVariant?.name || 'Resmi',
+            date: 'Baru saja',
+            avatarColor: 'bg-rose-100 text-[#f5125e]'
+          });
+
+          displayFilteredReviews();
+        } else {
+          showToast("Gagal mengirim ulasan", "error");
+        }
+      } catch (err) {
+        showToast("Koneksi gagal mengirim ulasan", "error");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<i data-lucide="send" class="w-3.5 h-3.5"></i> Kirim Ulasan`;
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      }
+    };
+
+    function getReviewsForProduct(p) {
+        const pName = p.name || 'Produk ini';
+        let cat = (p.category || '').toLowerCase();
+        
+        let commentsAll = [
+            `Sumpah mantap banget! Beli ${pName} di sini cepat prosesnya. Auto langganan! 🔥`,
+            `Awalnya ragu, tapi ternyata beneran full garansi. ${pName} nya work 100% tanpa kendala.`,
+            `Pelayanan super cepat. Pembayaran via GoPay QRIS gampang banget, langsung dapet akses ${pName}.`
+        ];
+        
+        if(cat.includes('ai') || cat.includes('gemini') || cat.includes('chatgpt')) {
+            commentsAll[1] = `Bantu banget buat nugas dan kerjaan. Akses ${pName} lancar jaya, AI nya responsif!`;
+        } else if(cat.includes('editor') || cat.includes('canva') || cat.includes('capcut')) {
+            commentsAll[1] = `Bisa langsung dipakai edit tanpa watermark. ${pName} premium memang beda, semua fitur pro kebuka.`;
+        } else if(cat.includes('sosmed') || cat.includes('jasa')) {
+            commentsAll[1] = `Amanah banget, pesanan ${pName} langsung diproses sesuai kesepakatan. Mantap!`;
+        } else if(cat.includes('stream') || cat.includes('netflix')) {
+            commentsAll[1] = `Nonton kualitas HD/4K lancar tanpa screen limit. Beli ${pName} di sini paling murah dan terpercaya.`;
+        }
+
+        return {
+            all: [
+                { user: "b***9", avatarColor: "bg-blue-100 text-blue-600", rating: 5, date: "Hari ini", tag: "instant", comment: commentsAll[0] },
+                { user: "d***i", avatarColor: "bg-rose-100 text-rose-600", rating: 5, date: "Kemarin", tag: "service", comment: commentsAll[1] },
+                { user: "r***a", avatarColor: "bg-emerald-100 text-emerald-600", rating: 5, date: "2 hari lalu", tag: "instant", comment: commentsAll[2] }
+            ],
+            star5: [
+                { user: "f***y", avatarColor: "bg-amber-100 text-amber-600", rating: 5, date: "Kemarin", tag: "instant", comment: `Bintang 5 buat ${pName}! Semua fungsi kebuka sempurna tanpa ada kendala sama sekali.` },
+                { user: "k***n", avatarColor: "bg-purple-100 text-purple-600", rating: 5, date: "3 hari lalu", tag: "service", comment: `Kualitas bintang lima. Konfirmasi cepat dan ramah, dapet akses ${pName} super aman!` }
+            ],
+            instant: [
+                { user: "h***d", avatarColor: "bg-indigo-100 text-indigo-600", rating: 5, date: "Hari ini", tag: "instant", comment: `⚡ Benar-benar kilat! Order ${pName} respon WA Admin nya cepet banget.` },
+                { user: "s***t", avatarColor: "bg-cyan-100 text-cyan-600", rating: 5, date: "Kemarin", tag: "instant", comment: `⚡ Sistem pembayaran mudah pakai QRIS, lisensi ${pName} langsung diberikan setelah konfirmasi.` }
+            ],
+            service: [
+                { user: "a***n", avatarColor: "bg-rose-100 text-rose-600", rating: 5, date: "Kemarin", tag: "service", comment: `🛡️ Garansi ${pName} terbukti 100% aman dan responsif. CS Admin WhatsApp sangat ramah membantu.` },
+                { user: "p***i", avatarColor: "bg-pink-100 text-pink-600", rating: 5, date: "4 hari lalu", tag: "service", comment: `🛡️ File PDF Invoice langsung didownload, ga takut hilang bukti garansi buat pesanan ${pName}.` }
+            ]
+        };
+    }
+
+    window.setReviewFilter = function(filterType) {
+      activeReviewFilter = filterType;
+      document.querySelectorAll('.rf-btn').forEach(btn => {
+        btn.className = 'rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all text-[10px] cursor-pointer';
+      });
+      const activeBtn = document.getElementById(`rf-${filterType}`);
+      if (activeBtn) activeBtn.className = 'rf-btn bg-rose-50 text-[#f5125e] border border-rose-200 px-2.5 py-1 rounded-lg font-bold transition-all text-[10px] shadow-2xs cursor-pointer';
+      displayFilteredReviews();
+    };
+
+    function displayFilteredReviews() {
+      const container = document.getElementById('product-reviews-list');
+      if (!container || !currentSelectedProduct) return;
+      const dynamicReviews = getReviewsForProduct(currentSelectedProduct);
+      
+      const onlineList = window.productOnlineReviews[currentSelectedProduct.id] || [];
+      let listToShow = [...onlineList];
+
+      if (activeReviewFilter === 'star5') {
+        listToShow = listToShow.filter(r => Number(r.rating) === 5);
+      } else if (activeReviewFilter !== 'all') {
+        listToShow = listToShow.filter(r => r.tag === activeReviewFilter);
+      }
+
+      if (listToShow.length === 0) {
+        listToShow = dynamicReviews[activeReviewFilter] || dynamicReviews.all;
+      }
+
+      container.innerHTML = listToShow.map(rev => `
+        <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 space-y-1.5 animate-review">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-full ${rev.avatarColor || 'bg-rose-100 text-[#f5125e]'} flex items-center justify-center font-bold text-[10px]">
+                ${rev.user.charAt(0).toUpperCase()}
+              </div>
+              <div><p class="font-bold text-[11px] text-slate-800 leading-tight">${rev.user}</p><div class="flex items-center gap-0.5 text-amber-500 text-[10px]">${'★'.repeat(Number(rev.rating) || 5)}</div></div>
+            </div>
+            <span class="text-[9.5px] text-slate-400">${rev.date || 'Baru saja'}</span>
+          </div>
+          <div class="text-[10px] text-slate-500 font-medium bg-white px-2 py-0.5 rounded border border-slate-100 w-max">Variasi: ${rev.variant || currentSelectedVariant?.name || 'Resmi'}</div>
+          <p class="text-[11.5px] text-slate-700 leading-relaxed">${rev.comment}</p>
+        </div>`).join('');
+    }
 
     // ================= FUNGSI BOT CERDAS =================
     window.sendQuickReply = function(action) {
@@ -1924,85 +2137,6 @@ _Halo Admin DigitalHub, saya sudah melunasi pesanan di atas. File Invoice PDF da
     function removeBotTyping() {
       const el = document.getElementById('bot-typing-indicator');
       if (el) el.remove();
-    }
-
-    function getReviewsForProduct(p) {
-        const pName = p.name || 'Produk ini';
-        let cat = (p.category || '').toLowerCase();
-        
-        let commentsAll = [
-            `Sumpah mantap banget! Beli ${pName} di sini cepat prosesnya. Auto langganan! 🔥`,
-            `Awalnya ragu, tapi ternyata beneran full garansi. ${pName} nya work 100% tanpa kendala.`,
-            `Pelayanan super cepat. Pembayaran via GoPay QRIS gampang banget, langsung dapet akses ${pName}.`
-        ];
-        
-        if(cat.includes('ai') || cat.includes('gemini') || cat.includes('chatgpt')) {
-            commentsAll[1] = `Bantu banget buat nugas dan kerjaan. Akses ${pName} lancar jaya, AI nya responsif!`;
-        } else if(cat.includes('editor') || cat.includes('canva') || cat.includes('capcut')) {
-            commentsAll[1] = `Bisa langsung dipakai edit tanpa watermark. ${pName} premium memang beda, semua fitur pro kebuka.`;
-        } else if(cat.includes('sosmed') || cat.includes('jasa')) {
-            commentsAll[1] = `Amanah banget, pesanan ${pName} langsung diproses sesuai kesepakatan. Mantap!`;
-        } else if(cat.includes('stream') || cat.includes('netflix')) {
-            commentsAll[1] = `Nonton kualitas HD/4K lancar tanpa screen limit. Beli ${pName} di sini paling murah dan terpercaya.`;
-        }
-
-        return {
-            all: [
-                { user: "b***9", avatarColor: "bg-blue-100 text-blue-600", rating: 5, date: "Hari ini", tag: "instant", comment: commentsAll[0] },
-                { user: "d***i", avatarColor: "bg-rose-100 text-rose-600", rating: 5, date: "Kemarin", tag: "service", comment: commentsAll[1] },
-                { user: "r***a", avatarColor: "bg-emerald-100 text-emerald-600", rating: 5, date: "2 hari lalu", tag: "instant", comment: commentsAll[2] }
-            ],
-            star5: [
-                { user: "f***y", avatarColor: "bg-amber-100 text-amber-600", rating: 5, date: "Kemarin", tag: "instant", comment: `Bintang 5 buat ${pName}! Semua fungsi kebuka sempurna tanpa ada kendala sama sekali.` },
-                { user: "k***n", avatarColor: "bg-purple-100 text-purple-600", rating: 5, date: "3 hari lalu", tag: "service", comment: `Kualitas bintang lima. Konfirmasi cepat dan ramah, dapet akses ${pName} super aman!` }
-            ],
-            instant: [
-                { user: "h***d", avatarColor: "bg-indigo-100 text-indigo-600", rating: 5, date: "Hari ini", tag: "instant", comment: `⚡ Benar-benar kilat! Order ${pName} respon WA Admin nya cepet banget.` },
-                { user: "s***t", avatarColor: "bg-cyan-100 text-cyan-600", rating: 5, date: "Kemarin", tag: "instant", comment: `⚡ Sistem pembayaran mudah pakai QRIS, lisensi ${pName} langsung diberikan setelah konfirmasi.` }
-            ],
-            service: [
-                { user: "a***n", avatarColor: "bg-rose-100 text-rose-600", rating: 5, date: "Kemarin", tag: "service", comment: `🛡️ Garansi ${pName} terbukti 100% aman dan responsif. CS Admin WhatsApp sangat ramah membantu.` },
-                { user: "p***i", avatarColor: "bg-pink-100 text-pink-600", rating: 5, date: "4 hari lalu", tag: "service", comment: `🛡️ File PDF Invoice langsung didownload, ga takut hilang bukti garansi buat pesanan ${pName}.` }
-            ]
-        };
-    }
-
-    window.setReviewFilter = function(filterType) {
-      activeReviewFilter = filterType;
-      document.querySelectorAll('.rf-btn').forEach(btn => {
-        btn.className = 'rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all text-[10px] cursor-pointer';
-      });
-      const activeBtn = document.getElementById(`rf-${filterType}`);
-      if (activeBtn) activeBtn.className = 'rf-btn bg-rose-50 text-[#f5125e] border border-rose-200 px-2.5 py-1 rounded-lg font-bold transition-all text-[10px] shadow-2xs cursor-pointer';
-      displayFilteredReviews();
-    };
-
-    function displayFilteredReviews() {
-      const container = document.getElementById('product-reviews-list');
-      if (!container || !currentSelectedProduct) return;
-      const dynamicReviews = getReviewsForProduct(currentSelectedProduct);
-      let listToShow = [];
-      if (currentSelectedProduct.customReviews && currentSelectedProduct.customReviews.length > 0) {
-        if (activeReviewFilter === 'all') listToShow = currentSelectedProduct.customReviews;
-        else if (activeReviewFilter === 'star5') listToShow = currentSelectedProduct.customReviews.filter(r => Number(r.rating) === 5);
-        else listToShow = currentSelectedProduct.customReviews.filter(r => r.tag === activeReviewFilter);
-      }
-      if (listToShow.length === 0) listToShow = dynamicReviews[activeReviewFilter] || dynamicReviews.all;
-
-      container.innerHTML = listToShow.map(rev => `
-        <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 space-y-1.5 animate-review">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <div class="w-7 h-7 rounded-full ${rev.avatarColor || 'bg-rose-100 text-[#f5125e]'} flex items-center justify-center font-bold text-[10px]">
-                ${rev.user.charAt(0).toUpperCase()}
-              </div>
-              <div><p class="font-bold text-[11px] text-slate-800 leading-tight">${rev.user}</p><div class="flex items-center gap-0.5 text-amber-500 text-[10px]">${'★'.repeat(Number(rev.rating) || 5)}</div></div>
-            </div>
-            <span class="text-[9.5px] text-slate-400">${rev.date || 'Baru saja'}</span>
-          </div>
-          <div class="text-[10px] text-slate-500 font-medium bg-white px-2 py-0.5 rounded border border-slate-100 w-max">Variasi: ${rev.variant || currentSelectedVariant?.name || 'Resmi'}</div>
-          <p class="text-[11.5px] text-slate-700 leading-relaxed">${rev.comment}</p>
-        </div>`).join('');
     }
 
     loadProducts();
