@@ -635,7 +635,7 @@
             </div>
           </div>
 
-          <!-- KOTAK QRIS -->
+          <!-- KOTAK QRIS (Otomatis Sembunyi Jika Promo Rp 0) -->
           <div id="qris-container-box" class="flex flex-col items-center mt-2">
             <p class="text-[11px] font-bold text-slate-700 mb-2">Scan QRIS GoPay di bawah ini:</p>
             <div class="w-48 h-48 bg-white p-2 rounded-2xl border-2 border-dashed border-slate-300 flex items-center justify-center relative">
@@ -1669,8 +1669,8 @@
       if(typeof lucide !== 'undefined') lucide.createIcons();
     }
 
-    // ==== FUNGSI MANUAL PAYMENT SUCCESS & KLAIM PROMO ====
-    window.manualPaymentSuccess = function() {
+    // ==== FUNGSI MANUAL PAYMENT SUCCESS & KLAIM PROMO 1 BARIS OTOMATIS ====
+    window.manualPaymentSuccess = async function() {
       const name = document.getElementById('pay-buyer-name').value.trim();
       const email = document.getElementById('pay-buyer-email').value.trim();
       const wa = document.getElementById('pay-buyer-wa').value.trim();
@@ -1681,48 +1681,96 @@
       }
 
       window.currentBuyerData = { name, email, wa };
+      const btnAction = document.getElementById('btn-pay-action');
+      const originalBtnText = btnAction.innerText;
+      btnAction.disabled = true;
+      btnAction.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin inline mr-1"></i> Mengambil Akun...`;
+      if (typeof lucide !== 'undefined') lucide.createIcons();
 
+      // JIKA INI ORDER PROMO RP 0 (KLAIM 1 BARIS OTOMATIS DARI SERVER)
+      if (window.isPromo0Order) {
+        try {
+          const res = await fetch(`${API_URL}/claim-promo`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ buyerName: name, buyerEmail: email, buyerWA: wa })
+          });
+          const claimResult = await res.json();
+
+          if (!claimResult.success) {
+            showToast(claimResult.message || 'Gagal klaim akun promo!', 'error');
+            btnAction.disabled = false;
+            btnAction.innerText = originalBtnText;
+            return;
+          }
+
+          const givenAccount = claimResult.account;
+          window.currentInvoiceNo = claimResult.reference || window.currentInvoiceNo;
+
+          document.getElementById('step-pay').classList.add('hidden');
+          document.getElementById('step-result').classList.remove('hidden');
+
+          document.getElementById('res-title').innerText = "🎉 Klaim Rp 0 Berhasil!";
+          document.getElementById('res-subtitle').innerText = "Akun gratis Anda langsung aktif di bawah ini:";
+          document.getElementById('box-warning-pdf').classList.add('hidden');
+          document.getElementById('regular-order-cta').classList.add('hidden');
+          document.getElementById('account-data').innerText = givenAccount;
+
+          window.saveOrderHistory(window.currentInvoiceNo, promo0Data?.title || "Promo Rp 0", "Promo Gratis Rp 0", "Rp 0 (GRATIS)", window.currentBuyerData);
+
+          showToast('Selamat! Akun promo berhasil didapatkan!');
+        } catch(e) {
+          let rawAccounts = (promo0Data?.accountData || "").split("\n").map(l => l.trim()).filter(Boolean);
+          let givenAccount = "Akun berhasil diklaim!";
+          if(rawAccounts.length > 0) {
+            givenAccount = rawAccounts[0];
+          }
+          document.getElementById('step-pay').classList.add('hidden');
+          document.getElementById('step-result').classList.remove('hidden');
+          document.getElementById('res-title').innerText = "🎉 Klaim Rp 0 Berhasil!";
+          document.getElementById('res-subtitle').innerText = "Akun gratis Anda langsung aktif di bawah ini:";
+          document.getElementById('box-warning-pdf').classList.add('hidden');
+          document.getElementById('regular-order-cta').classList.add('hidden');
+          document.getElementById('account-data').innerText = givenAccount;
+          window.saveOrderHistory(window.currentInvoiceNo, promo0Data?.title || "Promo Rp 0", "Promo Gratis Rp 0", "Rp 0 (GRATIS)", window.currentBuyerData);
+          showToast('Selamat! Akun promo berhasil didapatkan!');
+        } finally {
+          btnAction.disabled = false;
+          btnAction.innerText = originalBtnText;
+          if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+        return;
+      }
+
+      // JIKA INI ORDER BIASA (QRIS)
       document.getElementById('step-pay').classList.add('hidden');
       document.getElementById('step-result').classList.remove('hidden');
       
-      let dummyAccount = "Pesanan sedang diproses. Pembayaran terverifikasi lunas.";
-      if (window.isPromo0Order && promo0Data) {
-        dummyAccount = promo0Data.accountData || "Akun promo gratis Anda siap digunakan!";
-        document.getElementById('res-title').innerText = "🎉 Klaim Rp 0 Berhasil!";
-        document.getElementById('res-subtitle').innerText = "Akun/Lisensi Anda langsung aktif di bawah ini tanpa konfirmasi manual:";
-        document.getElementById('box-warning-pdf').classList.add('hidden');
-        document.getElementById('regular-order-cta').classList.add('hidden'); // Tanpa konfirmasi WA
-      } else {
-        document.getElementById('res-title').innerText = "Menunggu Konfirmasi!";
-        document.getElementById('res-subtitle').innerText = "Terima kasih, silakan konfirmasi untuk menerima pesanan Anda.";
-        document.getElementById('box-warning-pdf').classList.remove('hidden');
-        document.getElementById('regular-order-cta').classList.remove('hidden');
-      }
+      document.getElementById('res-title').innerText = "Menunggu Konfirmasi!";
+      document.getElementById('res-subtitle').innerText = "Terima kasih, silakan konfirmasi untuk menerima pesanan Anda.";
+      document.getElementById('box-warning-pdf').classList.remove('hidden');
+      document.getElementById('regular-order-cta').classList.remove('hidden');
+      document.getElementById('account-data').innerText = "Pesanan sedang diproses. Pembayaran terverifikasi lunas.";
 
-      document.getElementById('account-data').innerText = dummyAccount;
-      
-      const pName = window.isPromo0Order ? (promo0Data?.title || 'Promo Rp 0') : (window.currentIsCart ? "Keranjang Belanja" : (currentSelectedProduct ? currentSelectedProduct.name : "Produk"));
-      const vName = window.isPromo0Order ? "Promo Gratis Rp 0" : (window.currentIsCart ? "Berbagai Produk" : (currentSelectedVariant ? currentSelectedVariant.name : "-"));
+      const pName = window.currentIsCart ? "Keranjang Belanja" : (currentSelectedProduct ? currentSelectedProduct.name : "Produk");
+      const vName = window.currentIsCart ? "Berbagai Produk" : (currentSelectedVariant ? currentSelectedVariant.name : "-");
 
       window.saveOrderHistory(window.currentInvoiceNo, pName, vName, window.currentInvoiceTotal, window.currentBuyerData);
 
-      // MENGIRIM PESANAN KE SERVER WORKER
-      const orderPayload = {
-          reference: window.currentInvoiceNo,
-          date: window.currentOrderDate || new Date().toLocaleString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
-          productName: pName,
-          variantName: vName,
-          totalAmount: window.currentInvoiceTotal || "Rp 0",
-          buyerName: name,
-          buyerEmail: email,
-          buyerWA: wa,
-          status: window.isPromo0Order ? "Klaim Rp 0 Berhasil" : "Lunas (Diproses)"
-      };
-      
       fetch(`${API_URL}/orders`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(orderPayload)
+          body: JSON.stringify({
+              reference: window.currentInvoiceNo,
+              date: window.currentOrderDate || new Date().toLocaleString('id-ID'),
+              productName: pName,
+              variantName: vName,
+              totalAmount: window.currentInvoiceTotal || "Rp 0",
+              buyerName: name,
+              buyerEmail: email,
+              buyerWA: wa,
+              status: "Lunas (Diproses)"
+          })
       }).catch(e => console.log("Gagal sinkron data pesanan."));
 
       livePurchasesData.unshift({
@@ -1736,8 +1784,10 @@
           localStorage.setItem('my_digital_cart', JSON.stringify(cart));
           renderCart();
       }
-      showToast(window.isPromo0Order ? 'Akun Rp 0 berhasil diambil!' : 'Pembayaran berhasil! Silakan unduh PDF / konfirmasi ke WA.');
-      if(typeof lucide !== 'undefined') lucide.createIcons();
+      showToast('Pembayaran berhasil! Silakan unduh PDF / konfirmasi ke WA.');
+      btnAction.disabled = false;
+      btnAction.innerText = originalBtnText;
+      if (typeof lucide !== 'undefined') lucide.createIcons();
     };
 
     window.copyAccountData = function() {
@@ -1999,7 +2049,7 @@ _Halo Admin DigitalHub, saya sudah menyelesaikan pesanan di atas. Dokumen invoic
             </div>
             <div style="text-align: right;">
               <p style="margin: 0; color: #94a3b8; text-transform: uppercase;">Metode Pembayaran</p>
-              <p style="margin: 2px 0 8px; font-weight: bold;">QRIS GoPay</p>
+              <p style="margin: 2px 0 8px; font-weight: bold;">${item.variantName === 'Promo Gratis Rp 0' ? 'Promo Gratis Rp 0' : 'QRIS GoPay'}</p>
               <p style="margin: 0; color: #94a3b8; text-transform: uppercase;">Status</p>
               <span style="display: inline-block; background: #dcfce7; color: #16a34a; padding: 2px 8px; border-radius: 6px; font-weight: bold; font-size: 10px;">LUNAS (DIPROSES)</span>
             </div>
@@ -2206,44 +2256,44 @@ _Halo Admin DigitalHub, saya sudah menyelesaikan pesanan di atas. Dokumen invoic
     };
 
     function getReviewsForProduct(p) {
-        const pName = p.name || 'Produk ini';
-        let cat = (p.category || '').toLowerCase();
-        
-        let commentsAll = [
-            `Sumpah mantap banget! Beli ${pName} di sini cepat prosesnya. Auto langganan! 🔥`,
-            `Awalnya ragu, tapi ternyata beneran full garansi. ${pName} nya work 100% tanpa kendala.`,
-            `Pelayanan super cepat. Pembayaran via GoPay QRIS gampang banget, langsung dapet akses ${pName}.`
-        ];
-        
-        if(cat.includes('ai') || cat.includes('gemini') || cat.includes('chatgpt')) {
-            commentsAll[1] = `Bantu banget buat nugas dan kerjaan. Akses ${pName} lancar jaya, AI nya responsif!`;
-        } else if(cat.includes('editor') || cat.includes('canva') || cat.includes('capcut')) {
-            commentsAll[1] = `Bisa langsung dipakai edit tanpa watermark. ${pName} premium memang beda, semua fitur pro kebuka.`;
-        } else if(cat.includes('sosmed') || cat.includes('jasa')) {
-            commentsAll[1] = `Amanah banget, pesanan ${pName} langsung diproses sesuai kesepakatan. Mantap!`;
-        } else if(cat.includes('stream') || cat.includes('netflix')) {
-            commentsAll[1] = `Nonton kualitas HD/4K lancar tanpa screen limit. Beli ${pName} di sini paling murah dan terpercaya.`;
-        }
+      const pName = p.name || 'Produk ini';
+      let cat = (p.category || '').toLowerCase();
+      
+      let commentsAll = [
+        `Sumpah mantap banget! Beli ${pName} di sini cepat prosesnya. Auto langganan! 🔥`,
+        `Awalnya ragu, tapi ternyata beneran full garansi. ${pName} nya work 100% tanpa kendala.`,
+        `Pelayanan super cepat. Pembayaran via GoPay QRIS gampang banget, langsung dapet akses ${pName}.`
+      ];
+      
+      if(cat.includes('ai') || cat.includes('gemini') || cat.includes('chatgpt')) {
+        commentsAll[1] = `Bantu banget buat nugas dan kerjaan. Akses ${pName} lancar jaya, AI nya responsif!`;
+      } else if(cat.includes('editor') || cat.includes('canva') || cat.includes('capcut')) {
+        commentsAll[1] = `Bisa langsung dipakai edit tanpa watermark. ${pName} premium memang beda, semua fitur pro kebuka.`;
+      } else if(cat.includes('sosmed') || cat.includes('jasa')) {
+        commentsAll[1] = `Amanah banget, pesanan ${pName} langsung diproses sesuai kesepakatan. Mantap!`;
+      } else if(cat.includes('stream') || cat.includes('netflix')) {
+        commentsAll[1] = `Nonton kualitas HD/4K lancar tanpa screen limit. Beli ${pName} di sini paling murah dan terpercaya.`;
+      }
 
-        return {
-            all: [
-                { user: "b***9", avatarColor: "bg-blue-100 text-blue-600", rating: 5, defaultOffset: 15, tag: "instant", comment: commentsAll[0] },
-                { user: "d***i", avatarColor: "bg-rose-100 text-rose-600", rating: 5, defaultOffset: 85, tag: "service", comment: commentsAll[1] },
-                { user: "r***a", avatarColor: "bg-emerald-100 text-emerald-600", rating: 5, defaultOffset: 240, tag: "instant", comment: commentsAll[2] }
-            ],
-            star5: [
-                { user: "f***y", avatarColor: "bg-amber-100 text-amber-600", rating: 5, defaultOffset: 120, tag: "instant", comment: `Bintang 5 buat ${pName}! Semua fungsi kebuka sempurna tanpa ada kendala sama sekali.` },
-                { user: "k***n", avatarColor: "bg-purple-100 text-purple-600", rating: 5, defaultOffset: 450, tag: "service", comment: `Kualitas bintang lima. Konfirmasi cepat dan ramah, dapet akses ${pName} super aman!` }
-            ],
-            instant: [
-                { user: "h***d", avatarColor: "bg-indigo-100 text-indigo-600", rating: 5, defaultOffset: 25, tag: "instant", comment: `⚡ Benar-benar kilat! Order ${pName} respon WA Admin nya cepet banget.` },
-                { user: "s***t", avatarColor: "bg-cyan-100 text-cyan-600", rating: 5, defaultOffset: 180, tag: "instant", comment: `⚡ Sistem pembayaran mudah pakai QRIS, lisensi ${pName} langsung diberikan setelah konfirmasi.` }
-            ],
-            service: [
-                { user: "a***n", avatarColor: "bg-rose-100 text-rose-600", rating: 5, defaultOffset: 310, tag: "service", comment: `🛡️ Garansi ${pName} terbukti 100% aman dan responsif. CS Admin WhatsApp sangat ramah membantu.` },
-                { user: "p***i", avatarColor: "bg-pink-100 text-pink-600", rating: 5, defaultOffset: 1440, tag: "service", comment: `🛡️ File PDF Invoice langsung didownload, ga takut hilang bukti garansi buat pesanan ${pName}.` }
-            ]
-        };
+      return {
+        all: [
+          { user: "b***9", avatarColor: "bg-blue-100 text-blue-600", rating: 5, defaultOffset: 15, tag: "instant", comment: commentsAll[0] },
+          { user: "d***i", avatarColor: "bg-rose-100 text-rose-600", rating: 5, defaultOffset: 85, tag: "service", comment: commentsAll[1] },
+          { user: "r***a", avatarColor: "bg-emerald-100 text-emerald-600", rating: 5, defaultOffset: 240, tag: "instant", comment: commentsAll[2] }
+        ],
+        star5: [
+          { user: "f***y", avatarColor: "bg-amber-100 text-amber-600", rating: 5, defaultOffset: 120, tag: "instant", comment: `Bintang 5 buat ${pName}! Semua fungsi kebuka sempurna tanpa ada kendala sama sekali.` },
+          { user: "k***n", avatarColor: "bg-purple-100 text-purple-600", rating: 5, defaultOffset: 450, tag: "service", comment: `Kualitas bintang lima. Konfirmasi cepat dan ramah, dapet akses ${pName} super aman!` }
+        ],
+        instant: [
+          { user: "h***d", avatarColor: "bg-indigo-100 text-indigo-600", rating: 5, defaultOffset: 25, tag: "instant", comment: `⚡ Benar-benar kilat! Order ${pName} respon WA Admin nya cepet banget.` },
+          { user: "s***t", avatarColor: "bg-cyan-100 text-cyan-600", rating: 5, defaultOffset: 180, tag: "instant", comment: `⚡ Sistem pembayaran mudah pakai QRIS, lisensi ${pName} langsung diberikan setelah konfirmasi.` }
+        ],
+        service: [
+          { user: "a***n", avatarColor: "bg-rose-100 text-rose-600", rating: 5, defaultOffset: 310, tag: "service", comment: `🛡️ Garansi ${pName} terbukti 100% aman dan responsif. CS Admin WhatsApp sangat ramah membantu.` },
+          { user: "p***i", avatarColor: "bg-pink-100 text-pink-600", rating: 5, defaultOffset: 1440, tag: "service", comment: `🛡️ File PDF Invoice langsung didownload, ga takut hilang bukti garansi buat pesanan ${pName}.` }
+        ]
+      };
     }
 
     window.setReviewFilter = function(filterType) {
@@ -2316,18 +2366,18 @@ _Halo Admin DigitalHub, saya sudah menyelesaikan pesanan di atas. Dokumen invoic
       document.getElementById('chat-menu-buttons').classList.add('hidden'); 
       
       if (action === 'menu_cek_produk') {
-          appendUserChatMessage("Saya ingin mengecek stok atau harga produk.");
-          showBotTyping();
-          setTimeout(() => { removeBotTyping(); appendBotChatMessage(`Boleh Kak! Silakan ketik nama produk yang ingin dicek (Contoh: "Harga Canva", "Apakah Netflix ready?").`); }, 800);
+        appendUserChatMessage("Saya ingin mengecek stok atau harga produk.");
+        showBotTyping();
+        setTimeout(() => { removeBotTyping(); appendBotChatMessage(`Boleh Kak! Silakan ketik nama produk yang ingin dicek (Contoh: "Harga Canva", "Apakah Netflix ready?").`); }, 800);
       } else if (action === 'menu_cara_beli') {
-          appendUserChatMessage("Bagaimana cara beli produk via QRIS dan sistem garansinya?");
-          showBotTyping();
-          setTimeout(() => { removeBotTyping(); appendBotChatMessage(`**Cara Beli Sangat Mudah:**\n1. Pilih produk & paket yang diinginkan di beranda.\n2. Klik **Beli Sekarang** dan isi Form Pembeli.\n3. Scan QRIS GoPay yang muncul.\n4. Download Invoice PDF lalu konfirmasi ke WA Admin! ⚡\n\n**Info Garansi:**\nSemua produk bergaransi penuh sesuai masa aktif. Simpan File PDF Invoice untuk klaim penggantian jika ada kendala.`); }, 1200);
+        appendUserChatMessage("Bagaimana cara beli produk via QRIS dan sistem garansinya?");
+        showBotTyping();
+        setTimeout(() => { removeBotTyping(); appendBotChatMessage(`**Cara Beli Sangat Mudah:**\n1. Pilih produk & paket yang diinginkan di beranda.\n2. Klik **Beli Sekarang** dan isi Form Pembeli.\n3. Scan QRIS GoPay yang muncul.\n4. Download Invoice PDF lalu konfirmasi ke WA Admin! ⚡\n\n**Info Garansi:**\nSemua produk bergaransi penuh sesuai masa aktif. Simpan File PDF Invoice untuk klaim penggantian jika ada kendala.`); }, 1200);
       } else if (action === 'menu_hubungi_admin') {
-          appendUserChatMessage("Saya ingin menghubungi Admin CS via WhatsApp.");
-          chatBotState = 'awaiting_wa_reason'; 
-          showBotTyping();
-          setTimeout(() => { removeBotTyping(); appendBotChatMessage(`Baik Kak. Boleh kasih tahu kami dulu, kendala atau pertanyaan apa yang ingin disampaikan ke Admin? (Misal: 'Mau klaim garansi invoice INV123')`); }, 1000);
+        appendUserChatMessage("Saya ingin menghubungi Admin CS via WhatsApp.");
+        chatBotState = 'awaiting_wa_reason'; 
+        showBotTyping();
+        setTimeout(() => { removeBotTyping(); appendBotChatMessage(`Baik Kak. Boleh kasih tahu kami dulu, kendala atau pertanyaan apa yang ingin disampaikan ke Admin? (Misal: 'Mau klaim garansi invoice INV123')`); }, 1000);
       }
     };
 
@@ -2346,81 +2396,81 @@ _Halo Admin DigitalHub, saya sudah menyelesaikan pesanan di atas. Dokumen invoic
     };
 
     function processSmartBotResponse(rawText) {
-        removeBotTyping();
-        const text = rawText.toLowerCase();
+      removeBotTyping();
+      const text = rawText.toLowerCase();
 
-        if (chatBotState === 'awaiting_wa_reason') {
-            chatBotState = 'normal'; 
-            const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Halo Admin DigitalHub, saya butuh bantuan terkait: ' + rawText)}`;
-            appendBotChatMessage(`Terima kasih informasinya Kak. Silakan klik tombol di bawah ini untuk terhubung langsung dengan Admin kami beserta detail pesan Kakak:\n\n👉 <a href="${waLink}" target="_blank" class="text-emerald-600 font-black underline bg-emerald-50 px-2 py-1 rounded inline-block mt-2 shadow-xs">Chat WhatsApp Admin</a>`);
-            return;
-        }
+      if (chatBotState === 'awaiting_wa_reason') {
+        chatBotState = 'normal'; 
+        const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Halo Admin DigitalHub, saya butuh bantuan terkait: ' + rawText)}`;
+        appendBotChatMessage(`Terima kasih informasinya Kak. Silakan klik tombol di bawah ini untuk terhubung langsung dengan Admin kami beserta detail pesan Kakak:\n\n👉 <a href="${waLink}" target="_blank" class="text-emerald-600 font-black underline bg-emerald-50 px-2 py-1 rounded inline-block mt-2 shadow-xs">Chat WhatsApp Admin</a>`);
+        return;
+      }
 
-        if (text === 'menu' || text === 'bantuan' || text === 'help') {
-            appendBotChatMessage(`Tentu Kak, ini menu bantuan yang bisa Kakak pilih:`);
-            document.getElementById('chat-menu-buttons').classList.remove('hidden');
-            return;
-        }
-        
-        if (text.includes('admin') || text.includes('cs') || text.includes('whatsapp') || text.includes('wa') || text.includes('hubung')) {
-             chatBotState = 'awaiting_wa_reason';
-             appendBotChatMessage("Boleh kasih tahu kami dulu Kak, kendala atau keluhan spesifik apa yang ingin disampaikan ke Admin sebelum disambungkan? (Contoh: 'Akun Netflix bermasalah' dll)");
-             return;
-        }
+      if (text === 'menu' || text === 'bantuan' || text === 'help') {
+        appendBotChatMessage(`Tentu Kak, ini menu bantuan yang bisa Kakak pilih:`);
+        document.getElementById('chat-menu-buttons').classList.remove('hidden');
+        return;
+      }
+      
+      if (text.includes('admin') || text.includes('cs') || text.includes('whatsapp') || text.includes('wa') || text.includes('hubung')) {
+        chatBotState = 'awaiting_wa_reason';
+        appendBotChatMessage("Boleh kasih tahu kami dulu Kak, kendala atau keluhan spesifik apa yang ingin disampaikan ke Admin sebelum disambungkan? (Contoh: 'Akun Netflix bermasalah' dll)");
+        return;
+      }
 
-        if (text.includes('garansi') || text.includes('awet') || text.includes('aman')) {
-            if (lastDiscussedProduct) {
-                let garansi = lastDiscussedProduct.warranty || 'Resmi & Full Garansi';
-                appendBotChatMessage(`Untuk produk **${lastDiscussedProduct.name}**, status garansinya adalah: **${garansi}**. 🛡️\n\nPastikan Kakak menyimpan file Invoice PDF untuk mempermudah klaim jika ada kendala di kemudian hari ya!`);
-            } else {
-                appendBotChatMessage(`Semua produk di DigitalHub 100% bergaransi sesuai masa aktif paketnya Kak! 🛡️\n\nBoleh sebutkan nama aplikasinya (misal: "Garansi Canva") agar saya bisa cek detail garansi khususnya?`);
-            }
-            return;
+      if (text.includes('garansi') || text.includes('awet') || text.includes('aman')) {
+        if (lastDiscussedProduct) {
+          let garansi = lastDiscussedProduct.warranty || 'Resmi & Full Garansi';
+          appendBotChatMessage(`Untuk produk **${lastDiscussedProduct.name}**, status garansinya adalah: **${garansi}**. 🛡️\n\nPastikan Kakak menyimpan file Invoice PDF untuk mempermudah klaim jika ada kendala di kemudian hari ya!`);
+        } else {
+          appendBotChatMessage(`Semua produk di DigitalHub 100% bergaransi sesuai masa aktif paketnya Kak! 🛡️\n\nBoleh sebutkan nama aplikasinya (misal: "Garansi Canva") agar saya bisa cek detail garansi khususnya?`);
         }
-        
-        if (text.includes('deskripsi') || text.includes('syarat') || text.includes('ketentuan') || text.includes('detail')) {
-            if (lastDiscussedProduct) {
-                let desc = lastDiscussedProduct.description || 'Produk digital premium dengan layanan memuaskan.';
-                appendBotChatMessage(`Tentu Kak, berikut adalah detail untuk **${lastDiscussedProduct.name}**:\n\n*${desc}*`);
-            } else {
-                appendBotChatMessage(`Tentu Kak, boleh sebutkan nama produknya dulu? (Contoh: "Deskripsi Canva")`);
-            }
-            return;
+        return;
+      }
+      
+      if (text.includes('deskripsi') || text.includes('syarat') || text.includes('ketentuan') || text.includes('detail')) {
+        if (lastDiscussedProduct) {
+          let desc = lastDiscussedProduct.description || 'Produk digital premium dengan layanan memuaskan.';
+          appendBotChatMessage(`Tentu Kak, berikut adalah detail untuk **${lastDiscussedProduct.name}**:\n\n*${desc}*`);
+        } else {
+          appendBotChatMessage(`Tentu Kak, boleh sebutkan nama produknya dulu? (Contoh: "Deskripsi Canva")`);
         }
+        return;
+      }
 
-        let matchedProduct = null;
-        const ignoreWords = ['berapa', 'harga', 'stok', 'ready', 'ada', 'kak', 'min', 'bot', 'beli', 'untuk', 'apakah', 'gimana', 'cara'];
-        
-        for (let p of products) {
-            let pName = p.name.toLowerCase();
-            if (text.includes(pName) && !ignoreWords.includes(pName)) {
-                matchedProduct = p; break;
-            }
+      let matchedProduct = null;
+      const ignoreWords = ['berapa', 'harga', 'stok', 'ready', 'ada', 'kak', 'min', 'bot', 'beli', 'untuk', 'apakah', 'gimana', 'cara'];
+      
+      for (let p of products) {
+        let pName = p.name.toLowerCase();
+        if (text.includes(pName) && !ignoreWords.includes(pName)) {
+          matchedProduct = p; break;
         }
-        if (!matchedProduct) {
-             const userWords = text.split(' ');
-             for (let word of userWords) {
-                 if (word.length > 3 && !ignoreWords.includes(word)) {
-                     matchedProduct = products.find(p => p.name.toLowerCase().includes(word));
-                     if(matchedProduct) break;
-                 }
-             }
+      }
+      if (!matchedProduct) {
+        const userWords = text.split(' ');
+        for (let word of userWords) {
+          if (word.length > 3 && !ignoreWords.includes(word)) {
+            matchedProduct = products.find(p => p.name.toLowerCase().includes(word));
+            if(matchedProduct) break;
+          }
         }
+      }
 
-        if (matchedProduct) {
-            lastDiscussedProduct = matchedProduct; 
-            const prices = matchedProduct.variants && matchedProduct.variants.length > 0 ? matchedProduct.variants.map(v => Number(v.price||0)) : [Number(matchedProduct.price||0)];
-            const minPrice = formatIDR(Math.min(...prices));
-            appendBotChatMessage(`Untuk produk **${matchedProduct.name}** saat ini stoknya **READY** dan bisa diproses cepat! 🎉\n\nHarganya mulai dari **${minPrice}**. Kakak bisa langsung cari produknya di katalog dan klik "Beli Sekarang".`);
-            return;
-        }
+      if (matchedProduct) {
+        lastDiscussedProduct = matchedProduct; 
+        const prices = matchedProduct.variants && matchedProduct.variants.length > 0 ? matchedProduct.variants.map(v => Number(v.price||0)) : [Number(matchedProduct.price||0)];
+        const minPrice = formatIDR(Math.min(...prices));
+        appendBotChatMessage(`Untuk produk **${matchedProduct.name}** saat ini stoknya **READY** dan bisa diproses cepat! 🎉\n\nHarganya mulai dari **${minPrice}**. Kakak bisa langsung cari produknya di katalog dan klik "Beli Sekarang".`);
+        return;
+      }
 
-        if (text === 'halo' || text === 'hai' || text === 'pagi' || text === 'siang' || text === 'sore' || text === 'malam' || text === 'ping' || text === 'p') {
-            appendBotChatMessage(`Halo Kak! 👋 Ada yang bisa dibantu hari ini? Kakak bisa ketik **"menu"** untuk melihat opsi bantuan kami.`);
-            return;
-        }
+      if (text === 'halo' || text === 'hai' || text === 'pagi' || text === 'siang' || text === 'sore' || text === 'malam' || text === 'ping' || text === 'p') {
+        appendBotChatMessage(`Halo Kak! 👋 Ada yang bisa dibantu hari ini? Kakak bisa ketik **"menu"** untuk melihat opsi bantuan kami.`);
+        return;
+      }
 
-        appendBotChatMessage(`Maaf Kak, bot kurang memahami maksudnya. 🙏\n\nKakak bisa mengetik **"menu"** untuk melihat opsi yang tersedia, atau ketik nama aplikasi yang ingin dicek (Contoh: *"Harga Canva"* atau *"Apakah Netflix ready?"*).`);
+      appendBotChatMessage(`Maaf Kak, bot kurang memahami maksudnya. 🙏\n\nKakak bisa mengetik **"menu"** untuk melihat opsi yang tersedia, atau ketik nama aplikasi yang ingin dicek (Contoh: *"Harga Canva"* atau *"Apakah Netflix ready?"*).`);
     }
 
     function appendUserChatMessage(text) {
@@ -2463,44 +2513,44 @@ _Halo Admin DigitalHub, saya sudah menyelesaikan pesanan di atas. Dokumen invoic
     if(typeof lucide !== 'undefined') lucide.createIcons();
   </script>
 
-<div id="digitalhub-copyright" style="text-align:center; padding:15px; font-size:11px; color:#94a3b8; border-top:1px solid #e2e8f0; margin-top:20px;">
-  &copy; 2026 <b>DigitalHub Store Manager</b>. All Rights Reserved. Protected System.
-</div>
+  <div id="digitalhub-copyright" style="text-align:center; padding:15px; font-size:11px; color:#94a3b8; border-top:1px solid #e2e8f0; margin-top:20px;">
+    &copy; 2026 <b>DigitalHub Store Manager</b>. All Rights Reserved. Protected System.
+  </div>
 
-<script>
-  document.addEventListener('contextmenu', e => e.preventDefault()); 
-  document.addEventListener('keydown', function(e) {
-    if (
-      e.keyCode === 123 || 
-      (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || 
-      (e.ctrlKey && e.keyCode === 85) || 
-      (e.ctrlKey && e.keyCode === 83)
-    ) {
-      e.preventDefault();
-      alert('Aksi dilarang! Sistem keamanan DigitalHub aktif.');
-      window.location.href = "about:blank";
-      return false;
-    }
-  });
+  <script>
+    document.addEventListener('contextmenu', e => e.preventDefault()); 
+    document.addEventListener('keydown', function(e) {
+      if (
+        e.keyCode === 123 || 
+        (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || 
+        (e.ctrlKey && e.keyCode === 85) || 
+        (e.ctrlKey && e.keyCode === 83)
+      ) {
+        e.preventDefault();
+        alert('Aksi dilarang! Sistem keamanan DigitalHub aktif.');
+        window.location.href = "about:blank";
+        return false;
+      }
+    });
 
-  setInterval(function() {
-    const threshold = 160;
-    if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
-      document.body.innerHTML = "<h1 style='text-align:center;margin-top:20vh;color:red;font-family:sans-serif;'>⚠️ AKSES DITOLAK\nDeveloper Tools terdeteksi aktif.</h1>";
-      throw new Error("Security Violation: Inspector Detected.");
-    }
-  }, 1000);
+    setInterval(function() {
+      const threshold = 160;
+      if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
+        document.body.innerHTML = "<h1 style='text-align:center;margin-top:20vh;color:red;font-family:sans-serif;'>⚠️ AKSES DITOLAK\nDeveloper Tools terdeteksi aktif.</h1>";
+        throw new Error("Security Violation: Inspector Detected.");
+      }
+    }, 1000);
 
-  setInterval(function() {
-    const copyrightEl = document.getElementById('digitalhub-copyright');
-    
-    if (!copyrightEl || !copyrightEl.innerText.includes("DigitalHub Store Manager") || copyrightEl.style.display === 'none' || copyrightEl.style.visibility === 'hidden') {
-      document.body.innerHTML = "<div style='background:black;color:red;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:monospace;text-align:center;padding:20px;'><h1>CRITICAL SYSTEM ERROR [Code: 403-TAMPER]</h1><p>Pelanggaran Hak Cipta terdeteksi: Elemen Hak Cipta Website telah dimodifikasi atau dihapus secara ilegal. Sistem dikunci.</p></div>";
-      localStorage.clear();
-      sessionStorage.clear();
-      throw new Error("CRITICAL_TAMPER_PROTECTION_TRIGGERED");
-    }
-  }, 2000);
-</script>
+    setInterval(function() {
+      const copyrightEl = document.getElementById('digitalhub-copyright');
+      
+      if (!copyrightEl || !copyrightEl.innerText.includes("DigitalHub Store Manager") || copyrightEl.style.display === 'none' || copyrightEl.style.visibility === 'hidden') {
+        document.body.innerHTML = "<div style='background:black;color:red;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:monospace;text-align:center;padding:20px;'><h1>CRITICAL SYSTEM ERROR [Code: 403-TAMPER]</h1><p>Pelanggaran Hak Cipta terdeteksi: Elemen Hak Cipta Website telah dimodifikasi atau dihapus secara ilegal. Sistem dikunci.</p></div>";
+        localStorage.clear();
+        sessionStorage.clear();
+        throw new Error("CRITICAL_TAMPER_PROTECTION_TRIGGERED");
+      }
+    }, 2000);
+  </script>
 </body>
 </html>
