@@ -39,6 +39,12 @@
         <span>Katalog & Produk</span>
       </button>
 
+      <!-- TAB BARU: PROMO RP 0 -->
+      <button onclick="switchTab('promo0')" id="tab-btn-promo0" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left">
+        <i data-lucide="gift" class="w-5 h-5 text-rose-400"></i>
+        <span>Promo Rp 0 (Free)</span>
+      </button>
+
       <button onclick="switchTab('banner')" id="tab-btn-banner" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left">
         <i data-lucide="image" class="w-5 h-5 text-sky-400"></i>
         <span>Tema, Banner & Promo</span>
@@ -99,7 +105,7 @@
           <h2 class="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
             <span id="view-title">Manajemen Produk</span>
           </h2>
-          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Kelola produk dengan AI Generator, urutan posisi, banner, dan stok otomatis</p>
+          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Kelola produk dengan AI Generator, promo Rp 0, urutan posisi, dan stok</p>
         </div>
         <div class="flex items-center gap-2" id="action-buttons-container">
           <button onclick="openProductModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-2xl shadow-sm transition-all flex items-center gap-1.5">
@@ -137,6 +143,87 @@
         </div>
       </section>
 
+      <!-- TAB BARU: PROMO RP 0 DENGAN TIMER HITUNG MUNDUR -->
+      <section id="section-promo0" class="space-y-4 hidden">
+        <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-xs space-y-5">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+            <div>
+              <h3 class="font-bold text-sm sm:text-base text-slate-800 flex items-center gap-2">
+                <i data-lucide="gift" class="w-5 h-5 text-rose-500"></i>
+                <span>Pengaturan Promo Spesial Rp 0 (Free Giveaway)</span>
+              </h3>
+              <p class="text-xs text-slate-500 mt-0.5">Produk ini dapat diklaim Rp 0 oleh pembeli tanpa QRIS & tanpa chat WA</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-slate-600">Status Promo:</span>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="promo0-toggle" class="sr-only peer">
+                <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-500"></div>
+              </label>
+            </div>
+          </div>
+
+          <div class="space-y-4 text-xs sm:text-sm">
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Nama Produk Promo:</label>
+              <input type="text" id="promo0-title" placeholder="Contoh: Canva Pro 1 Bulan / Akun Netflix Sharing" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-rose-500 font-bold text-slate-800" />
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="font-bold text-slate-700 block mb-1">Teks Badge / Label:</label>
+                <input type="text" id="promo0-badge" placeholder="Contoh: FLASH SALE HARI INI" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl font-semibold" />
+              </div>
+              <div>
+                <label class="font-bold text-slate-700 block mb-1">URL Gambar Mockup:</label>
+                <input type="text" id="promo0-image" placeholder="https://..." class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl" />
+              </div>
+            </div>
+
+            <!-- Pengaturan Timer Hitung Mundur -->
+            <div class="bg-rose-50 border border-rose-100 rounded-2xl p-4 space-y-3">
+              <h4 class="font-bold text-rose-900 text-xs flex items-center gap-1.5">
+                <i data-lucide="clock" class="w-4 h-4 text-rose-600"></i> Pengaturan Batas Waktu / Countdown Timer
+              </h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="text-[11px] font-bold text-slate-700 block mb-1">Tambah Durasi Waktu Mulai Sekarang:</label>
+                  <div class="flex gap-2">
+                    <input type="number" id="promo0-duration-val" placeholder="Contoh: 12" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-bold text-rose-600 text-xs" />
+                    <select id="promo0-duration-unit" class="bg-white border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-bold text-slate-700">
+                      <option value="hours">Jam</option>
+                      <option value="days">Hari</option>
+                    </select>
+                    <button type="button" onclick="setPromoTimerFromDuration()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3 py-2 rounded-xl text-xs flex-shrink-0">Terapkan</button>
+                  </div>
+                </div>
+                <div>
+                  <label class="text-[11px] font-bold text-slate-700 block mb-1">Atau Tetapkan Target Waktu Berakhir (ISO Date):</label>
+                  <input type="datetime-local" id="promo0-datetime-input" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-700" />
+                </div>
+              </div>
+              <p class="text-[10.5px] text-rose-700 font-medium">Jika waktu habis, kotak promo akan otomatis hilang dari tampilan pembeli.</p>
+            </div>
+
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Deskripsi Singkat Promo:</label>
+              <textarea id="promo0-desc" rows="2" placeholder="Tuliskan syarat klaim singkat..." class="w-full px-3.5 py-2 border border-slate-200 rounded-xl text-xs"></textarea>
+            </div>
+
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Data Akun / Lisensi yang Otomatis Diberikan ke Pembeli:</label>
+              <textarea id="promo0-account-data" rows="3" placeholder="Contoh: Email: promo@digitalhub.com | Pass: digital123 | Link: https://..." class="w-full px-3.5 py-2 bg-slate-900 text-emerald-400 font-mono text-xs border border-slate-700 rounded-xl focus:outline-none"></textarea>
+              <p class="text-[10px] text-slate-400 mt-1">Data di atas akan langsung ditampilkan di layar pembeli seketika setelah mereka klik "KLAIM SEKARANG".</p>
+            </div>
+
+            <button onclick="savePromo0Settings()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-3.5 rounded-2xl text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2">
+              <i data-lucide="save" class="w-4 h-4"></i>
+              <span>Simpan Pengaturan Promo Rp 0</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
       <!-- TAB 2: PENGATURAN TEMA & BANNER -->
       <section id="section-banner" class="space-y-4 hidden">
         <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-xs space-y-5">
@@ -148,7 +235,6 @@
             <p class="text-xs text-slate-500 mt-0.5">Ubah tampilan toko dan atur banner promosi utama</p>
           </div>
 
-          <!-- FITUR PEMILIHAN TEMA & MENU -->
           <div class="bg-indigo-50/50 border border-indigo-100 p-4 rounded-2xl space-y-4">
             <div>
               <h4 class="font-bold text-slate-800 text-sm mb-2"><i data-lucide="palette" class="w-4 h-4 inline-block text-indigo-600 mr-1"></i> Tema Tampilan Website</h4>
@@ -162,7 +248,6 @@
               <h4 class="font-bold text-slate-800 text-sm mb-3"><i data-lucide="toggle-right" class="w-4 h-4 inline-block text-indigo-600 mr-1"></i> On/Off Kategori Menu</h4>
               
               <div class="space-y-2">
-                <!-- Saklar Menu Template Web -->
                 <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200">
                   <div>
                     <p class="font-bold text-slate-800 text-xs sm:text-sm">Menu Template Web</p>
@@ -174,7 +259,6 @@
                   </label>
                 </div>
 
-                <!-- Saklar Menu Jasa Web -->
                 <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200">
                   <div>
                     <p class="font-bold text-slate-800 text-xs sm:text-sm">Menu Jasa Web</p>
@@ -189,7 +273,6 @@
             </div>
           </div>
 
-          <!-- BANNER PROMO -->
           <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl flex items-center justify-between">
             <div>
               <p class="font-bold text-slate-800 text-xs sm:text-sm">Status Tampilan Banner:</p>
@@ -289,7 +372,6 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-           <!-- Card Grafik -->
            <div class="lg:col-span-2 bg-white rounded-3xl p-5 border border-slate-200/80 shadow-xs flex flex-col">
               <h3 class="font-bold text-slate-800 text-sm mb-4">Total Views & Clicks (7 Hari Terakhir)</h3>
               <div class="flex gap-6 mb-6">
@@ -308,7 +390,6 @@
               </div>
            </div>
 
-           <!-- Card IP Tracker -->
            <div class="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-xs flex flex-col">
               <h3 class="font-bold text-slate-800 text-sm mb-4">Tracker IP Pengunjung</h3>
               <div class="flex justify-between text-[10px] font-bold text-slate-400 uppercase border-b border-slate-100 pb-2 mb-2">
@@ -322,10 +403,9 @@
         </div>
       </section>
 
-      <!-- TAB 5: DATA PESANAN & PEMBELI (BARU) -->
+      <!-- TAB 5: DATA PESANAN & PEMBELI -->
       <section id="section-orders" class="space-y-4 hidden">
         <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs">
-          
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 border-b border-slate-100 pb-4">
             <div>
               <h3 class="font-bold text-sm sm:text-base text-slate-800 flex items-center gap-2"><i data-lucide="users" class="w-5 h-5 text-indigo-600"></i> Data Pesanan & Pembeli</h3>
@@ -336,11 +416,9 @@
             </button>
           </div>
           
-          <!-- Container List Pesanan -->
           <div id="admin-orders-list" class="space-y-4 text-xs">
             <div class="p-8 text-center text-slate-400">Pilih menu Data Pesanan Pembeli untuk memuat data.</div>
           </div>
-
         </div>
       </section>
 
@@ -555,8 +633,18 @@
       type: 'image',
       imageUrl: '',
       theme: 'default',
-      showTemplateWeb: false, // Default hidden sesuai request awal
-      showJasaWeb: false      // Default hidden sesuai request awal
+      showTemplateWeb: false,
+      showJasaWeb: false
+    };
+
+    let promo0Settings = {
+      active: false,
+      title: 'Canva Pro 1 Bulan (Gratis)',
+      badge: 'PROMO KILAT Rp 0',
+      image: 'https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png',
+      desc: 'Promo spesial Rp 0! Akun siap pakai dan langsung bisa diklaim otomatis.',
+      accountData: 'Silakan gunakan link aktivasi gratis berikut: https://www.canva.com/brand/join?token=PROMO_FREE_123',
+      expiresAt: new Date(Date.now() + 12 * 3600 * 1000).toISOString()
     };
 
     const aiProductKnowledgeBase = {
@@ -620,13 +708,28 @@
               showJasaWeb: Boolean(bannerObj.showJasaWeb)
             };
           }
-          products = data.filter(item => !item._isBannerConfig && item.id !== "__BANNER_CONFIG__");
+
+          const promo0Obj = data.find(item => item._isPromo0Config || item.id === "__PROMO0_CONFIG__");
+          if (promo0Obj) {
+            promo0Settings = {
+              active: Boolean(promo0Obj.active),
+              title: promo0Obj.title || '',
+              badge: promo0Obj.badge || 'PROMO KILAT Rp 0',
+              image: promo0Obj.image || '',
+              desc: promo0Obj.desc || '',
+              accountData: promo0Obj.accountData || '',
+              expiresAt: promo0Obj.expiresAt || new Date(Date.now() + 12 * 3600 * 1000).toISOString()
+            };
+          }
+
+          products = data.filter(item => !item._isBannerConfig && item.id !== "__BANNER_CONFIG__" && !item._isPromo0Config && item.id !== "__PROMO0_CONFIG__");
         } else {
           products = [];
         }
         renderAdminProductsList(products);
         populateReviewProductSelector();
         loadBannerSettingsToUI();
+        loadPromo0SettingsToUI();
         showToast('Data produk & ulasan berhasil disinkron!');
       } catch (err) {
         if (!products) products = [];
@@ -635,7 +738,64 @@
       }
     }
 
-    // FUNGSI UNTUK MENGAMBIL DATA STATISTIK DARI WORKER
+    function loadPromo0SettingsToUI() {
+      document.getElementById('promo0-toggle').checked = Boolean(promo0Settings.active);
+      document.getElementById('promo0-title').value = promo0Settings.title || '';
+      document.getElementById('promo0-badge').value = promo0Settings.badge || '';
+      document.getElementById('promo0-image').value = promo0Settings.image || '';
+      document.getElementById('promo0-desc').value = promo0Settings.desc || '';
+      document.getElementById('promo0-account-data').value = promo0Settings.accountData || '';
+
+      if (promo0Settings.expiresAt) {
+        const dt = new Date(promo0Settings.expiresAt);
+        if (!isNaN(dt.getTime())) {
+          const tzOffset = dt.getTimezoneOffset() * 60000;
+          const localISOTime = (new Date(dt.getTime() - tzOffset)).toISOString().slice(0, 16);
+          document.getElementById('promo0-datetime-input').value = localISOTime;
+        }
+      }
+    }
+
+    function setPromoTimerFromDuration() {
+      const val = Number(document.getElementById('promo0-duration-val').value) || 0;
+      const unit = document.getElementById('promo0-duration-unit').value;
+      if (val <= 0) {
+        showToast('Masukkan durasi angka yang valid!', 'error');
+        return;
+      }
+      const multiplier = unit === 'days' ? (24 * 3600 * 1000) : (3600 * 1000);
+      const targetTime = new Date(Date.now() + val * multiplier);
+      promo0Settings.expiresAt = targetTime.toISOString();
+      
+      const tzOffset = targetTime.getTimezoneOffset() * 60000;
+      document.getElementById('promo0-datetime-input').value = (new Date(targetTime.getTime() - tzOffset)).toISOString().slice(0, 16);
+      showToast(`Batas waktu promo diset ke ${val} ${unit === 'days' ? 'Hari' : 'Jam'} ke depan.`);
+    }
+
+    async function savePromo0Settings() {
+      showToast('Menyimpan pengaturan Promo Rp 0 ke Cloudflare...');
+      
+      const customDtVal = document.getElementById('promo0-datetime-input').value;
+      let finalExpiresAt = promo0Settings.expiresAt;
+      if (customDtVal) {
+        finalExpiresAt = new Date(customDtVal).toISOString();
+      }
+
+      promo0Settings = {
+        active: document.getElementById('promo0-toggle').checked,
+        title: document.getElementById('promo0-title').value.trim(),
+        badge: document.getElementById('promo0-badge').value.trim(),
+        image: document.getElementById('promo0-image').value.trim(),
+        desc: document.getElementById('promo0-desc').value.trim(),
+        accountData: document.getElementById('promo0-account-data').value.trim(),
+        expiresAt: finalExpiresAt
+      };
+
+      await saveAllProductsToKV();
+      showToast('Pengaturan Promo Rp 0 Berhasil Disimpan!');
+      refreshPhonePreview();
+    }
+
     async function fetchStoreStats() {
        try {
            const statList = document.getElementById('stat-ip-list');
@@ -651,7 +811,6 @@
            viewEl.innerText = stats.views || 0;
            clickEl.innerText = stats.clicks || 0;
 
-           // Render Grafik Batang CSS
            if (stats.history && stats.history.length > 0) {
                let maxVal = 1;
                stats.history.forEach(h => {
@@ -681,7 +840,6 @@
                graphContainer.innerHTML = `<div class="w-full text-center text-slate-400 text-xs py-8">Belum ada grafik.</div>`;
            }
 
-           // Render IP List
            if (stats.ips && Object.keys(stats.ips).length > 0) {
                let ipsArray = Object.keys(stats.ips).map(ip => ({
                    ip: ip,
@@ -706,28 +864,23 @@
        }
     }
 
-    // FUNGSI UNTUK MEMUAT DATA PESANAN / PEMBELI
     async function loadOrdersData() {
         const container = document.getElementById('admin-orders-list');
         container.innerHTML = `<div class="p-8 text-center text-slate-400"><i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto mb-2 text-indigo-600"></i>Memuat data pesanan...</div>`;
         lucide.createIcons();
 
         try {
-            // Jika ada endpoint backend untuk mengambil order
             const res = await fetch(`${API_URL}/orders`, { method: "GET" });
             if (!res.ok) throw new Error('Fallback lokal');
             const orders = await res.json();
             renderOrdersList(orders);
         } catch (e) {
-            // Fallback: mengambil dari localStorage sistem web pengguna (jika berada di 1 browser/domain yg sama)
-            // Atau berikan dummy data agar admin bisa melihat tampilannya.
             let localOrders = [];
             try {
                 localOrders = JSON.parse(localStorage.getItem('my_digital_orders')) || [];
             } catch(err) {}
 
             if(localOrders.length === 0) {
-                // Menampilkan dummy agar tampilan tidak kosong jika tidak ada data sama sekali
                 localOrders = [
                     {
                         reference: "INV-20260901-X9AB",
@@ -735,7 +888,6 @@
                         productName: "Gemini Pro Advanced",
                         variantName: "1 Bulan Private",
                         account: "Silakan Download Invoice PDF dan Konfirmasi ke WhatsApp Admin untuk mengambil pesanan Anda.",
-                        // Field tambahan yang bisa diparsing dari localStorage
                         buyerName: "Budi Santoso",
                         buyerEmail: "budi.santoso@gmail.com",
                         buyerWA: "081234567890",
@@ -755,7 +907,6 @@
         }
 
         container.innerHTML = orders.map(order => {
-            // Melakukan ekstraksi atau memberi nilai default jika property tidak ada
             const name = order.buyerName || "Nama Tidak Diketahui";
             const email = order.buyerEmail || "Email Tidak Tersedia";
             const wa = order.buyerWA || "-";
@@ -774,7 +925,6 @@
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Info Pembeli -->
                     <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
                         <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Detail Pembeli</h4>
                         <div class="space-y-1.5">
@@ -785,7 +935,6 @@
                         ${wa !== '-' ? `<a href="https://wa.me/${wa.replace(/^0/, '62')}" target="_blank" class="mt-2 inline-flex items-center justify-center gap-1.5 text-[10px] font-bold text-white bg-emerald-500 hover:bg-emerald-600 w-full px-3 py-2 rounded-lg transition-colors"><i data-lucide="message-circle" class="w-3 h-3"></i> Chat WA Pembeli</a>` : ''}
                     </div>
                     
-                    <!-- Info Produk -->
                     <div class="bg-indigo-50/30 p-3 rounded-xl border border-indigo-50 flex flex-col justify-center">
                         <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Detail Produk Dibeli</h4>
                         <div class="space-y-1.5">
@@ -802,6 +951,7 @@
 
     function switchTab(tab) {
       document.getElementById('section-products').classList.add('hidden');
+      document.getElementById('section-promo0').classList.add('hidden');
       document.getElementById('section-banner').classList.add('hidden');
       document.getElementById('section-reviews').classList.add('hidden');
       document.getElementById('section-orders').classList.add('hidden');
@@ -811,6 +961,7 @@
       const activeBtnClasses = 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl bg-indigo-600 text-white font-extrabold text-sm sm:text-base shadow-sm text-left';
       
       document.getElementById('tab-btn-products').className = btnClasses;
+      document.getElementById('tab-btn-promo0').className = btnClasses;
       document.getElementById('tab-btn-banner').className = btnClasses;
       document.getElementById('tab-btn-reviews').className = btnClasses;
       document.getElementById('tab-btn-stats').className = btnClasses;
@@ -823,6 +974,11 @@
         document.getElementById('tab-btn-products').className = activeBtnClasses;
         document.getElementById('view-title').innerText = 'Manajemen Produk';
         document.getElementById('action-buttons-container').classList.remove('hidden');
+      } else if (tab === 'promo0') {
+        document.getElementById('section-promo0').classList.remove('hidden');
+        document.getElementById('tab-btn-promo0').className = activeBtnClasses;
+        document.getElementById('view-title').innerText = 'Pengaturan Promo Rp 0';
+        loadPromo0SettingsToUI();
       } else if (tab === 'banner') {
         document.getElementById('section-banner').classList.remove('hidden');
         document.getElementById('tab-btn-banner').className = activeBtnClasses;
@@ -840,10 +996,9 @@
         fetchStoreStats(); 
       } else if (tab === 'orders') {
         document.getElementById('section-orders').classList.remove('hidden');
-        // Update styling tombol order menjadi aktif
         document.getElementById('tab-btn-orders').className = 'w-full flex items-center justify-between px-4 py-3 rounded-2xl bg-indigo-600 text-white font-extrabold text-sm sm:text-base shadow-sm text-left';
         document.getElementById('view-title').innerText = 'Data Pesanan & Pembeli';
-        loadOrdersData(); // Panggil fungsi memuat data pesanan
+        loadOrdersData();
       }
       lucide.createIcons();
     }
@@ -920,7 +1075,6 @@
       const themeSelect = document.getElementById('theme-selector');
       if (themeSelect) themeSelect.value = bannerSettings.theme || 'default';
 
-      // Load status toggle menu
       const toggleTemplate = document.getElementById('toggle-menu-template');
       if (toggleTemplate) toggleTemplate.checked = bannerSettings.showTemplateWeb;
       
@@ -976,25 +1130,7 @@
     }
 
     async function saveBannerSettings() {
-      showToast('Menyimpan status Tema & Banner ke Cloudflare KV...');
-      const payload = [
-        { 
-          id: "__BANNER_CONFIG__", 
-          _isBannerConfig: true, 
-          active: bannerSettings.active, 
-          type: bannerSettings.type, 
-          imageUrl: bannerSettings.imageUrl, 
-          theme: bannerSettings.theme,
-          showTemplateWeb: bannerSettings.showTemplateWeb,
-          showJasaWeb: bannerSettings.showJasaWeb
-        },
-        ...products
-      ];
-      try {
-        const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-        const data = await res.json();
-        if (data.success) { showToast('Pengaturan Tema & Menu berhasil disimpan!'); refreshPhonePreview(); }
-      } catch (err) { showToast('Gagal terhubung ke Cloudflare', 'error'); }
+      await saveAllProductsToKV();
     }
 
     async function saveAllProductsToKV() {
@@ -1009,6 +1145,17 @@
           theme: bannerSettings.theme,
           showTemplateWeb: bannerSettings.showTemplateWeb,
           showJasaWeb: bannerSettings.showJasaWeb
+        },
+        {
+          id: "__PROMO0_CONFIG__",
+          _isPromo0Config: true,
+          active: promo0Settings.active,
+          title: promo0Settings.title,
+          badge: promo0Settings.badge,
+          image: promo0Settings.image,
+          desc: promo0Settings.desc,
+          accountData: promo0Settings.accountData,
+          expiresAt: promo0Settings.expiresAt
         },
         ...products
       ];
@@ -1099,7 +1246,7 @@
       document.getElementById('prod-form-hot').checked = Boolean(p.isHot);
       document.getElementById('prod-form-sold').value = p.sold || '0';
       document.getElementById('prod-form-rating').value = p.rating || '5.0';
-      document.getElementById('prod-form-image').value = p.image || '';
+      document.getElementById('prod-form-image').value = (p.images && p.images.length > 0) ? p.images.join('\n') : (p.image || '');
       updateImagePreview(p.image || '');
 
       const varContainer = document.getElementById('variants-form-container');
@@ -1303,7 +1450,8 @@
         rating: Number(document.getElementById('rev-form-rating').value) || 5,
         tag: document.getElementById('rev-form-tag').value,
         variant: document.getElementById('rev-form-variant').value.trim() || '1 Bulan',
-        date: new Date().toISOString().slice(0, 16).replace('T', ' '),
+        date: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
         comment: document.getElementById('rev-form-comment').value.trim()
       });
 
