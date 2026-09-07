@@ -769,15 +769,28 @@
     window.currentOrderDate = '';
     window.currentIsCart = false;
 
-    // FUNGSI TIME AGO DINAMIS (WAKTU BERJALAN)
-    function timeAgo(dateInput) {
-      if (!dateInput) return 'Baru saja';
+    // FUNGSI TIME AGO CERDAS (MENDUKUNG ULASAN BARU & LAMA)
+    function timeAgo(dateInput, index = 0) {
+      // 1. Jika data lama berupa teks "Baru saja", ubah otomatis agar bertingkat & realistis
+      if (!dateInput || dateInput === 'Baru saja') {
+        const fakeOffsets = [
+          '5 menit lalu',
+          '23 menit lalu',
+          '1 jam lalu',
+          '3 jam lalu',
+          'Kemarin',
+          '2 hari lalu',
+          '3 hari lalu',
+          '5 hari lalu'
+        ];
+        return fakeOffsets[index % fakeOffsets.length];
+      }
       
-      // Jika format teks lama dari dummy
       if (dateInput === 'Hari ini') return 'Hari ini';
       if (dateInput === 'Kemarin') return 'Kemarin';
       if (typeof dateInput === 'string' && dateInput.includes('hari lalu')) return dateInput;
 
+      // 2. Jika format tanggal/jam asli (ISO Date)
       const date = new Date(dateInput);
       if (isNaN(date.getTime())) return dateInput;
 
@@ -2083,7 +2096,7 @@ _Halo Admin DigitalHub, saya sudah melunasi pesanan di atas. File Invoice PDF da
       displayFilteredReviews();
     };
 
-    function displayFilteredReviews() {
+function displayFilteredReviews() {
       const container = document.getElementById('product-reviews-list');
       if (!container || !currentSelectedProduct) return;
       const dynamicReviews = getReviewsForProduct(currentSelectedProduct);
@@ -2101,9 +2114,9 @@ _Halo Admin DigitalHub, saya sudah melunasi pesanan di atas. File Invoice PDF da
         listToShow = dynamicReviews[activeReviewFilter] || dynamicReviews.all;
       }
 
-      container.innerHTML = listToShow.map(rev => {
-        // Tentukan waktu dinamis menggunakan timeAgo()
-        const dynamicDate = timeAgo(rev.createdAt || rev.timestamp || rev.date);
+      container.innerHTML = listToShow.map((rev, index) => {
+        // Mengirim index agar ulasan lama otomatis tersebar waktunya secara dinamis
+        const dynamicDate = timeAgo(rev.createdAt || rev.timestamp || rev.date, index);
 
         return `
         <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 space-y-1.5 animate-review">
