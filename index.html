@@ -769,6 +769,34 @@
     window.currentOrderDate = '';
     window.currentIsCart = false;
 
+    // FUNGSI TIME AGO DINAMIS (WAKTU BERJALAN)
+    function timeAgo(dateInput) {
+      if (!dateInput) return 'Baru saja';
+      
+      // Jika format teks lama dari dummy
+      if (dateInput === 'Hari ini') return 'Hari ini';
+      if (dateInput === 'Kemarin') return 'Kemarin';
+      if (typeof dateInput === 'string' && dateInput.includes('hari lalu')) return dateInput;
+
+      const date = new Date(dateInput);
+      if (isNaN(date.getTime())) return dateInput;
+
+      const now = new Date();
+      const seconds = Math.floor((now - date) / 1000);
+
+      if (seconds < 60) return 'Baru saja';
+      const minutes = Math.floor(seconds / 60);
+      if (minutes < 60) return `${minutes} menit lalu`;
+      const hours = Math.floor(minutes / 60);
+      if (hours < 24) return `${hours} jam lalu`;
+      const days = Math.floor(hours / 24);
+      if (days === 1) return 'Kemarin';
+      if (days < 30) return `${days} hari lalu`;
+      const months = Math.floor(days / 30);
+      if (months < 12) return `${months} bulan lalu`;
+      return `${Math.floor(months / 12)} tahun lalu`;
+    }
+
     function trackActivity(actionType) {
         fetch(`${API_URL}/track`, {
             method: 'POST',
@@ -1233,11 +1261,11 @@
       document.getElementById('payment-modal').classList.remove('hidden');
     }
 
-    window.closePaymentModal = function() {
+    window.closePaymentModal = function() { 
         document.getElementById('payment-modal').classList.add('hidden'); 
     };
 
-    window.forceClosePaymentModal = function() {
+    window.forceClosePaymentModal = function() { 
         document.getElementById('payment-modal').classList.add('hidden'); 
     };
 
@@ -1647,11 +1675,11 @@
 ━━━━━━━━━━━━━━━━━━━━━
 *No. Invoice :* ${inv}
 *Tanggal      :* ${tanggal}
-*Status       :* ✅ *LUNAS (SUDAH DIBAYAR)*
+*Status        :* ✅ *LUNAS (SUDAH DIBAYAR)*
 
 👤 *DATA PEMBELI*
-*Nama         :* ${name}
-*Email        :* ${email}
+*Nama          :* ${name}
+*Email         :* ${email}
 *No. WhatsApp :* ${wa}
 
 📦 *RINCIAN PESANAN*
@@ -1950,13 +1978,16 @@ _Halo Admin DigitalHub, saya sudah melunasi pesanan di atas. File Invoice PDF da
       submitBtn.disabled = true;
       submitBtn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i> Mengirim...`;
 
+      const nowIso = new Date().toISOString(); // Simpan timestamp riil
+
       const reviewPayload = {
         productId: currentSelectedProduct.id,
         user: name,
         rating: rating,
         comment: comment,
-        image: window.currentUploadedReviewImage || '', // Mengirim foto ke backend
-        variant: currentSelectedVariant?.name || 'Resmi'
+        image: window.currentUploadedReviewImage || '',
+        variant: currentSelectedVariant?.name || 'Resmi',
+        createdAt: nowIso // Mengirim waktu pembuatan ke server
       };
 
       try {
@@ -1983,7 +2014,8 @@ _Halo Admin DigitalHub, saya sudah melunasi pesanan di atas. File Invoice PDF da
             comment: comment,
             image: savedImg || '',
             variant: currentSelectedVariant?.name || 'Resmi',
-            date: 'Baru saja',
+            createdAt: nowIso,
+            date: nowIso,
             avatarColor: 'bg-rose-100 text-[#f5125e]'
           });
 
@@ -2069,7 +2101,11 @@ _Halo Admin DigitalHub, saya sudah melunasi pesanan di atas. File Invoice PDF da
         listToShow = dynamicReviews[activeReviewFilter] || dynamicReviews.all;
       }
 
-      container.innerHTML = listToShow.map(rev => `
+      container.innerHTML = listToShow.map(rev => {
+        // Tentukan waktu dinamis menggunakan timeAgo()
+        const dynamicDate = timeAgo(rev.createdAt || rev.timestamp || rev.date);
+
+        return `
         <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 space-y-1.5 animate-review">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
@@ -2078,7 +2114,7 @@ _Halo Admin DigitalHub, saya sudah melunasi pesanan di atas. File Invoice PDF da
               </div>
               <div><p class="font-bold text-[11px] text-slate-800 leading-tight">${rev.user}</p><div class="flex items-center gap-0.5 text-amber-500 text-[10px]">${'★'.repeat(Number(rev.rating) || 5)}</div></div>
             </div>
-            <span class="text-[9.5px] text-slate-400">${rev.date || 'Baru saja'}</span>
+            <span class="text-[9.5px] text-slate-400">${dynamicDate}</span>
           </div>
           <div class="text-[10px] text-slate-500 font-medium bg-white px-2 py-0.5 rounded border border-slate-100 w-max">Variasi: ${rev.variant || currentSelectedVariant?.name || 'Resmi'}</div>
           <p class="text-[11.5px] text-slate-700 leading-relaxed">${rev.comment}</p>
@@ -2087,7 +2123,8 @@ _Halo Admin DigitalHub, saya sudah melunasi pesanan di atas. File Invoice PDF da
               <img src="${rev.image}" onclick="zoomImage('${rev.image}')" alt="Bukti Ulasan" class="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-xl border border-slate-200 hover:opacity-90 transition-opacity cursor-pointer shadow-2xs" />
             </div>
           ` : ''}
-        </div>`).join('');
+        </div>`;
+      }).join('');
     }
 
     // ================= FUNGSI BOT CERDAS =================
