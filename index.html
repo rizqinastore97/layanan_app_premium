@@ -769,33 +769,32 @@
     window.currentOrderDate = '';
     window.currentIsCart = false;
 
-    // FUNGSI TIME AGO CERDAS (MENDUKUNG ULASAN BARU & LAMA)
-    function timeAgo(dateInput, index = 0) {
-      // 1. Jika data lama berupa teks "Baru saja", ubah otomatis agar bertingkat & realistis
-      if (!dateInput || dateInput === 'Baru saja') {
-        const fakeOffsets = [
-          '5 menit lalu',
-          '23 menit lalu',
-          '1 jam lalu',
-          '3 jam lalu',
-          'Kemarin',
-          '2 hari lalu',
-          '3 hari lalu',
-          '5 hari lalu'
-        ];
-        return fakeOffsets[index % fakeOffsets.length];
+    // SISTEM PENYIMPANAN WAKTU PERSISTEN & DINAMIS UNTUK DATA LAMA MAUPUN BARU
+    function getStableTimestamp(key, defaultOffsetMinutes) {
+      const storageKey = 'rev_time_' + key;
+      let stored = localStorage.getItem(storageKey);
+      if (!stored) {
+        // Buat timestamp mundur dari sekarang saat pertama kali dibuka
+        stored = (Date.now() - defaultOffsetMinutes * 60 * 1000).toString();
+        localStorage.setItem(storageKey, stored);
       }
-      
-      if (dateInput === 'Hari ini') return 'Hari ini';
-      if (dateInput === 'Kemarin') return 'Kemarin';
-      if (typeof dateInput === 'string' && dateInput.includes('hari lalu')) return dateInput;
+      return parseInt(stored, 10);
+    }
 
-      // 2. Jika format tanggal/jam asli (ISO Date)
-      const date = new Date(dateInput);
-      if (isNaN(date.getTime())) return dateInput;
+    // FUNGSI TIME AGO REAL-TIME SEJATI
+    function timeAgo(dateInput, uniqueKey = '', defaultOffset = 10) {
+      let timeMs = 0;
 
-      const now = new Date();
-      const seconds = Math.floor((now - date) / 1000);
+      // Jika dateInput adalah ISO String atau timestamp yang valid
+      if (dateInput && !isNaN(new Date(dateInput).getTime()) && dateInput !== 'Baru saja' && dateInput !== 'Hari ini' && dateInput !== 'Kemarin') {
+        timeMs = new Date(dateInput).getTime();
+      } else {
+        // Jika data lama bertuliskan "Baru saja" / teks mati, gunakan waktu persisten yang terus berjalan
+        timeMs = getStableTimestamp(uniqueKey || 'def', defaultOffset);
+      }
+
+      const now = Date.now();
+      const seconds = Math.floor((now - timeMs) / 1000);
 
       if (seconds < 60) return 'Baru saja';
       const minutes = Math.floor(seconds / 60);
@@ -1991,7 +1990,7 @@ _Halo Admin DigitalHub, saya sudah melunasi pesanan di atas. File Invoice PDF da
       submitBtn.disabled = true;
       submitBtn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i> Mengirim...`;
 
-      const nowIso = new Date().toISOString(); // Simpan timestamp riil
+      const nowIso = new Date().toISOString();
 
       const reviewPayload = {
         productId: currentSelectedProduct.id,
@@ -2000,7 +1999,7 @@ _Halo Admin DigitalHub, saya sudah melunasi pesanan di atas. File Invoice PDF da
         comment: comment,
         image: window.currentUploadedReviewImage || '',
         variant: currentSelectedVariant?.name || 'Resmi',
-        createdAt: nowIso // Mengirim waktu pembuatan ke server
+        createdAt: nowIso
       };
 
       try {
@@ -2067,21 +2066,21 @@ _Halo Admin DigitalHub, saya sudah melunasi pesanan di atas. File Invoice PDF da
 
         return {
             all: [
-                { user: "b***9", avatarColor: "bg-blue-100 text-blue-600", rating: 5, date: "Hari ini", tag: "instant", comment: commentsAll[0] },
-                { user: "d***i", avatarColor: "bg-rose-100 text-rose-600", rating: 5, date: "Kemarin", tag: "service", comment: commentsAll[1] },
-                { user: "r***a", avatarColor: "bg-emerald-100 text-emerald-600", rating: 5, date: "2 hari lalu", tag: "instant", comment: commentsAll[2] }
+                { user: "b***9", avatarColor: "bg-blue-100 text-blue-600", rating: 5, defaultOffset: 15, tag: "instant", comment: commentsAll[0] },
+                { user: "d***i", avatarColor: "bg-rose-100 text-rose-600", rating: 5, defaultOffset: 85, tag: "service", comment: commentsAll[1] },
+                { user: "r***a", avatarColor: "bg-emerald-100 text-emerald-600", rating: 5, defaultOffset: 240, tag: "instant", comment: commentsAll[2] }
             ],
             star5: [
-                { user: "f***y", avatarColor: "bg-amber-100 text-amber-600", rating: 5, date: "Kemarin", tag: "instant", comment: `Bintang 5 buat ${pName}! Semua fungsi kebuka sempurna tanpa ada kendala sama sekali.` },
-                { user: "k***n", avatarColor: "bg-purple-100 text-purple-600", rating: 5, date: "3 hari lalu", tag: "service", comment: `Kualitas bintang lima. Konfirmasi cepat dan ramah, dapet akses ${pName} super aman!` }
+                { user: "f***y", avatarColor: "bg-amber-100 text-amber-600", rating: 5, defaultOffset: 120, tag: "instant", comment: `Bintang 5 buat ${pName}! Semua fungsi kebuka sempurna tanpa ada kendala sama sekali.` },
+                { user: "k***n", avatarColor: "bg-purple-100 text-purple-600", rating: 5, defaultOffset: 450, tag: "service", comment: `Kualitas bintang lima. Konfirmasi cepat dan ramah, dapet akses ${pName} super aman!` }
             ],
             instant: [
-                { user: "h***d", avatarColor: "bg-indigo-100 text-indigo-600", rating: 5, date: "Hari ini", tag: "instant", comment: `⚡ Benar-benar kilat! Order ${pName} respon WA Admin nya cepet banget.` },
-                { user: "s***t", avatarColor: "bg-cyan-100 text-cyan-600", rating: 5, date: "Kemarin", tag: "instant", comment: `⚡ Sistem pembayaran mudah pakai QRIS, lisensi ${pName} langsung diberikan setelah konfirmasi.` }
+                { user: "h***d", avatarColor: "bg-indigo-100 text-indigo-600", rating: 5, defaultOffset: 25, tag: "instant", comment: `⚡ Benar-benar kilat! Order ${pName} respon WA Admin nya cepet banget.` },
+                { user: "s***t", avatarColor: "bg-cyan-100 text-cyan-600", rating: 5, defaultOffset: 180, tag: "instant", comment: `⚡ Sistem pembayaran mudah pakai QRIS, lisensi ${pName} langsung diberikan setelah konfirmasi.` }
             ],
             service: [
-                { user: "a***n", avatarColor: "bg-rose-100 text-rose-600", rating: 5, date: "Kemarin", tag: "service", comment: `🛡️ Garansi ${pName} terbukti 100% aman dan responsif. CS Admin WhatsApp sangat ramah membantu.` },
-                { user: "p***i", avatarColor: "bg-pink-100 text-pink-600", rating: 5, date: "4 hari lalu", tag: "service", comment: `🛡️ File PDF Invoice langsung didownload, ga takut hilang bukti garansi buat pesanan ${pName}.` }
+                { user: "a***n", avatarColor: "bg-rose-100 text-rose-600", rating: 5, defaultOffset: 310, tag: "service", comment: `🛡️ Garansi ${pName} terbukti 100% aman dan responsif. CS Admin WhatsApp sangat ramah membantu.` },
+                { user: "p***i", avatarColor: "bg-pink-100 text-pink-600", rating: 5, defaultOffset: 1440, tag: "service", comment: `🛡️ File PDF Invoice langsung didownload, ga takut hilang bukti garansi buat pesanan ${pName}.` }
             ]
         };
     }
@@ -2096,7 +2095,7 @@ _Halo Admin DigitalHub, saya sudah melunasi pesanan di atas. File Invoice PDF da
       displayFilteredReviews();
     };
 
-function displayFilteredReviews() {
+    function displayFilteredReviews() {
       const container = document.getElementById('product-reviews-list');
       if (!container || !currentSelectedProduct) return;
       const dynamicReviews = getReviewsForProduct(currentSelectedProduct);
@@ -2114,20 +2113,25 @@ function displayFilteredReviews() {
         listToShow = dynamicReviews[activeReviewFilter] || dynamicReviews.all;
       }
 
+      // Render ulasan dengan waktu yang selalu terhitung mundur dari saat pertama kali dimuat
       container.innerHTML = listToShow.map((rev, index) => {
-        // Mengirim index agar ulasan lama otomatis tersebar waktunya secara dinamis
-        const dynamicDate = timeAgo(rev.createdAt || rev.timestamp || rev.date, index);
+        const reviewUniqueKey = (currentSelectedProduct.id || 'p') + '_' + (rev.user || 'usr') + '_' + index;
+        const defaultOffset = rev.defaultOffset || (index * 35 + 12);
+        const dynamicDate = timeAgo(rev.createdAt || rev.timestamp || rev.date, reviewUniqueKey, defaultOffset);
 
         return `
         <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 space-y-1.5 animate-review">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
               <div class="w-7 h-7 rounded-full ${rev.avatarColor || 'bg-rose-100 text-[#f5125e]'} flex items-center justify-center font-bold text-[10px]">
-                ${rev.user.charAt(0).toUpperCase()}
+                ${(rev.user || 'U').charAt(0).toUpperCase()}
               </div>
-              <div><p class="font-bold text-[11px] text-slate-800 leading-tight">${rev.user}</p><div class="flex items-center gap-0.5 text-amber-500 text-[10px]">${'★'.repeat(Number(rev.rating) || 5)}</div></div>
+              <div>
+                <p class="font-bold text-[11px] text-slate-800 leading-tight">${rev.user || 'Pengguna'}</p>
+                <div class="flex items-center gap-0.5 text-amber-500 text-[10px]">${'★'.repeat(Number(rev.rating) || 5)}</div>
+              </div>
             </div>
-            <span class="text-[9.5px] text-slate-400">${dynamicDate}</span>
+            <span class="text-[9.5px] text-slate-400 font-medium">${dynamicDate}</span>
           </div>
           <div class="text-[10px] text-slate-500 font-medium bg-white px-2 py-0.5 rounded border border-slate-100 w-max">Variasi: ${rev.variant || currentSelectedVariant?.name || 'Resmi'}</div>
           <p class="text-[11.5px] text-slate-700 leading-relaxed">${rev.comment}</p>
@@ -2139,6 +2143,14 @@ function displayFilteredReviews() {
         </div>`;
       }).join('');
     }
+
+    // Refresh otomatis tampilan waktu ulasan tiap 60 detik agar terus bertambah
+    setInterval(() => {
+      const modal = document.getElementById('detail-modal');
+      if (modal && !modal.classList.contains('hidden') && currentSelectedProduct) {
+        displayFilteredReviews();
+      }
+    }, 60000);
 
     // ================= FUNGSI BOT CERDAS =================
     window.sendQuickReply = function(action) {
