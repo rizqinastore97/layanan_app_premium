@@ -873,18 +873,29 @@
       setTimeout(() => toast.remove(), 3500);
     }
 
-        // =========================================================================
-    // PERBAIKAN WAKTU ULASAN: MENGGUNAKAN TANGGAL ASLI YANG BERJALAN OTOMATIS
+            // =========================================================================
+    // SISTEM WAKTU OTOMATIS: OTOMATIS BERSIHKAN CACHE LAMA TANPA PERLU CONSOLE
     // =========================================================================
+    // Naikkan versi ini jika ingin me-reset patokan waktu semua pengguna secara serentak
+    const REVIEW_TIME_VERSION = 'v2_2026';
+
     function getStableTimestamp(key, defaultOffsetMinutes) {
-      const storageKey = 'rev_fixed_time_' + key;
+      const storageKey = `rev_time_${REVIEW_TIME_VERSION}_${key}`;
       let stored = localStorage.getItem(storageKey);
       
-      // Jika belum pernah tersimpan, buat timestamp permanen di masa lalu
       if (!stored) {
-        // Berikan waktu dasar mundur dari saat pertama kali ulasan ada
-        const initialPastTime = Date.now() - (defaultOffsetMinutes * 60 * 1000);
-        stored = initialPastTime.toString();
+        // Otomatis bersihkan sisa-sisa kunci waktu dari versi lama tanpa menghapus data keranjang
+        Object.keys(localStorage).forEach(k => {
+          if (k.startsWith('rev_time_') || k.startsWith('rev_fixed_time_')) {
+            if (!k.includes(REVIEW_TIME_VERSION)) {
+              localStorage.removeItem(k);
+            }
+          }
+        });
+
+        // Simpan titik waktu masa lalu permanen
+        const pastTimestamp = Date.now() - (defaultOffsetMinutes * 60 * 1000);
+        stored = pastTimestamp.toString();
         localStorage.setItem(storageKey, stored);
       }
       return parseInt(stored, 10);
@@ -893,7 +904,7 @@
     function timeAgo(dateInput, uniqueKey = '', defaultOffset = 15) {
       let timeMs = 0;
 
-      // 1. Cek apakah ada tanggal asli (ISO String/Timestamp) yang valid dan bukan teks lama
+      // 1. Jika ulasan memiliki ISO Date asli dan bukan string statis bawaan
       if (
         dateInput &&
         !isNaN(new Date(dateInput).getTime()) &&
@@ -904,9 +915,8 @@
       ) {
         timeMs = new Date(dateInput).getTime();
       } else {
-        // 2. Jika data ulasan adalah data bawaan / teks lama tanpa tanggal asli,
-        // gunakan timestamp tersimpan yang tidak akan di-reset saat refresh
-        timeMs = getStableTimestamp(uniqueKey || 'default_rev', defaultOffset);
+        // 2. Gunakan timestamp unik terversi yang terus berjalan seiring hari berganti
+        timeMs = getStableTimestamp(uniqueKey || 'default_user', defaultOffset);
       }
 
       const now = Date.now();
