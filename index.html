@@ -873,38 +873,61 @@
       setTimeout(() => toast.remove(), 3500);
     }
 
+        // =========================================================================
+    // PERBAIKAN WAKTU ULASAN: MENGGUNAKAN TANGGAL ASLI YANG BERJALAN OTOMATIS
+    // =========================================================================
     function getStableTimestamp(key, defaultOffsetMinutes) {
-      const storageKey = 'rev_time_' + key;
+      const storageKey = 'rev_fixed_time_' + key;
       let stored = localStorage.getItem(storageKey);
+      
+      // Jika belum pernah tersimpan, buat timestamp permanen di masa lalu
       if (!stored) {
-        stored = (Date.now() - defaultOffsetMinutes * 60 * 1000).toString();
+        // Berikan waktu dasar mundur dari saat pertama kali ulasan ada
+        const initialPastTime = Date.now() - (defaultOffsetMinutes * 60 * 1000);
+        stored = initialPastTime.toString();
         localStorage.setItem(storageKey, stored);
       }
       return parseInt(stored, 10);
     }
 
-    function timeAgo(dateInput, uniqueKey = '', defaultOffset = 10) {
+    function timeAgo(dateInput, uniqueKey = '', defaultOffset = 15) {
       let timeMs = 0;
-      if (dateInput && !isNaN(new Date(dateInput).getTime()) && dateInput !== 'Baru saja' && dateInput !== 'Hari ini' && dateInput !== 'Kemarin') {
+
+      // 1. Cek apakah ada tanggal asli (ISO String/Timestamp) yang valid dan bukan teks lama
+      if (
+        dateInput &&
+        !isNaN(new Date(dateInput).getTime()) &&
+        dateInput !== 'Baru saja' &&
+        dateInput !== 'Hari ini' &&
+        dateInput !== 'Kemarin' &&
+        !String(dateInput).includes('lalu')
+      ) {
         timeMs = new Date(dateInput).getTime();
       } else {
-        timeMs = getStableTimestamp(uniqueKey || 'def', defaultOffset);
+        // 2. Jika data ulasan adalah data bawaan / teks lama tanpa tanggal asli,
+        // gunakan timestamp tersimpan yang tidak akan di-reset saat refresh
+        timeMs = getStableTimestamp(uniqueKey || 'default_rev', defaultOffset);
       }
 
       const now = Date.now();
-      const seconds = Math.floor((now - timeMs) / 1000);
+      const diffSeconds = Math.floor((now - timeMs) / 1000);
 
-      if (seconds < 60) return 'Baru saja';
-      const minutes = Math.floor(seconds / 60);
-      if (minutes < 60) return `${minutes} menit lalu`;
-      const hours = Math.floor(minutes / 60);
-      if (hours < 24) return `${hours} jam lalu`;
-      const days = Math.floor(hours / 24);
-      if (days === 1) return 'Kemarin';
-      if (days < 30) return `${days} hari lalu`;
-      const months = Math.floor(days / 30);
-      if (months < 12) return `${months} bulan lalu`;
-      return `${Math.floor(months / 12)} tahun lalu`;
+      if (diffSeconds < 60) return 'Baru saja';
+      
+      const diffMinutes = Math.floor(diffSeconds / 60);
+      if (diffMinutes < 60) return `${diffMinutes} menit lalu`;
+      
+      const diffHours = Math.floor(diffMinutes / 60);
+      if (diffHours < 24) return `${diffHours} jam lalu`;
+      
+      const diffDays = Math.floor(diffHours / 24);
+      if (diffDays === 1) return 'Kemarin';
+      if (diffDays < 30) return `${diffDays} hari lalu`;
+      
+      const diffMonths = Math.floor(diffDays / 30);
+      if (diffMonths < 12) return `${diffMonths} bulan lalu`;
+      
+      return `${Math.floor(diffMonths / 12)} tahun lalu`;
     }
 
     function trackActivity(actionType) {
