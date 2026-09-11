@@ -251,7 +251,7 @@
           class="w-full h-full object-contain sm:object-cover transition-transform duration-500 group-hover:scale-[1.01]" 
           alt="Banner Promo" 
         />
-        <span id="promo0-badge-txt" class="absolute top-2 left-2 bg-amber-400 text-amber-950 text-[8px] sm:text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow-md">
+        <span id="promo0-badge-txt" class="absolute top-2 left-2 bg-amber-400 text-amber-950 text-[8px] sm:text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-md">
           FLASH SALE
         </span>
       </div>
@@ -1239,6 +1239,7 @@
         const cleanText = text.replace(/[^a-zA-Z0-9\s]/g, ' ').trim().toLowerCase();
         let foundWord = '';
         for (const p of products) {
+          if (p.hidden) continue;
           for (const w of p.name.toLowerCase().split(' ')) {
             if (w.length > 2 && cleanText.includes(w)) { foundWord = w; break; }
           }
@@ -1262,7 +1263,7 @@
       
       const bestProducts = products.filter(p => {
           const cat = (p.category || '').toLowerCase();
-          return (p.isBestSeller || p.isHot) && !cat.includes('landing');
+          return !p.hidden && (p.isBestSeller || p.isHot) && !cat.includes('landing');
       });
       
       if (bestProducts.length === 0 || activeCategory.toLowerCase() !== 'semua') { 
@@ -1298,6 +1299,8 @@
       if (!grid) return;
 
       let filtered = products.filter(item => {
+        if (item.hidden) return false;
+
         const itemCat = (item.category || '').toLowerCase().trim();
         const targetCat = (activeCategory || 'semua').toLowerCase().trim();
         
@@ -2504,6 +2507,7 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
       const ignoreWords = ['berapa', 'harga', 'stok', 'ready', 'ada', 'kak', 'min', 'bot', 'beli', 'untuk', 'apakah', 'gimana', 'cara'];
       
       for (let p of products) {
+        if (p.hidden) continue;
         let pName = p.name.toLowerCase();
         if (text.includes(pName) && !ignoreWords.includes(pName)) {
           matchedProduct = p; break;
@@ -2513,7 +2517,7 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
         const userWords = text.split(' ');
         for (let word of userWords) {
           if (word.length > 3 && !ignoreWords.includes(word)) {
-            matchedProduct = products.find(p => p.name.toLowerCase().includes(word));
+            matchedProduct = products.find(p => !p.hidden && p.name.toLowerCase().includes(word));
             if(matchedProduct) break;
           }
         }
