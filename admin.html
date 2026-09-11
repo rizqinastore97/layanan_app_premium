@@ -40,10 +40,10 @@
         <span>Katalog & Produk</span>
       </button>
 
-      <!-- TAB PROMO RP 0 -->
+      <!-- TAB PROMO BANNER -->
       <button onclick="switchTab('promo0')" id="tab-btn-promo0" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left">
         <i data-lucide="gift" class="w-5 h-5 text-rose-400"></i>
-        <span>Promo Rp 0 (Free)</span>
+        <span>Promo Banner (Rp 0 / Diskon)</span>
       </button>
 
       <button onclick="switchTab('banner')" id="tab-btn-banner" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left">
@@ -106,7 +106,7 @@
           <h2 class="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
             <span id="view-title">Manajemen Produk</span>
           </h2>
-          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Kelola produk dengan AI Generator, promo Rp 0, urutan posisi, dan stok</p>
+          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Kelola produk dengan AI Generator, promo Rp 0 & diskon, urutan posisi, dan stok</p>
         </div>
         <div class="flex items-center gap-2" id="action-buttons-container">
           <button onclick="openProductModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-2xl shadow-sm transition-all flex items-center gap-1.5">
@@ -144,16 +144,16 @@
         </div>
       </section>
 
-      <!-- TAB PROMO RP 0 DENGAN PENGHITUNG STOK BARIS -->
+      <!-- TAB PROMO BANNER: RP 0 ATAU DISKON POTONGAN HARGA -->
       <section id="section-promo0" class="space-y-4 hidden">
         <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-xs space-y-5">
           <div class="flex items-center justify-between border-b border-slate-100 pb-4">
             <div>
               <h3 class="font-bold text-sm sm:text-base text-slate-800 flex items-center gap-2">
                 <i data-lucide="gift" class="w-5 h-5 text-rose-500"></i>
-                <span>Pengaturan Promo Spesial Rp 0 (Free Giveaway)</span>
+                <span>Pengaturan Promo Banner Toko</span>
               </h3>
-              <p class="text-xs text-slate-500 mt-0.5">Produk ini dapat diklaim Rp 0 oleh pembeli tanpa QRIS & tanpa chat WA</p>
+              <p class="text-xs text-slate-500 mt-0.5">Mendukung giveaway gratis Rp 0 atau flash sale potongan harga dengan bayar via QRIS</p>
             </div>
             <div class="flex items-center gap-2">
               <span class="text-xs font-bold text-slate-600">Status Promo:</span>
@@ -165,18 +165,59 @@
           </div>
 
           <div class="space-y-4 text-xs sm:text-sm">
+            
+            <!-- PILIHAN MODEL PROMO BANNER -->
+            <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-3">
+              <div>
+                <label class="text-xs font-bold text-slate-800 block mb-1.5">Pilih Model Promo Banner:</label>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                  <label class="flex items-center gap-2 p-2.5 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-rose-500 transition-colors">
+                    <input type="radio" name="promo_mode_radio" value="free" id="promo-mode-free" onchange="togglePromoModeUI()" checked class="accent-rose-600" />
+                    <span class="font-bold text-slate-700">🎁 Gratis Rp 0 (Giveaway Tanpa Bayar)</span>
+                  </label>
+                  <label class="flex items-center gap-2 p-2.5 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-rose-500 transition-colors">
+                    <input type="radio" name="promo_mode_radio" value="discount" id="promo-mode-discount" onchange="togglePromoModeUI()" class="accent-rose-600" />
+                    <span class="font-bold text-slate-700">💰 Diskon Murah (Bayar via QRIS)</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- KOLOM HARGA PROMO (MUNCUL JIKA DISKON DIPILIH) -->
+              <div id="promo-price-container" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2.5 border-t border-slate-200">
+                <div>
+                  <label class="text-[11px] font-bold text-slate-700 block mb-1">Harga Promo Pembeli (Rp):</label>
+                  <input 
+                    type="number" 
+                    id="promo0-price-input" 
+                    placeholder="Contoh: 18000" 
+                    class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-black text-rose-600 text-xs focus:ring-2 focus:ring-rose-500 focus:outline-none" 
+                  />
+                  <p class="text-[10px] text-slate-400 mt-1">*Nominal ini akan ditagihkan saat pembeli scan QRIS.</p>
+                </div>
+                <div>
+                  <label class="text-[11px] font-bold text-slate-700 block mb-1">Harga Coret / Asli (Opsional):</label>
+                  <input 
+                    type="number" 
+                    id="promo0-orig-price-input" 
+                    placeholder="Contoh: 50000" 
+                    class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-bold text-slate-500 text-xs focus:ring-2 focus:ring-rose-500 focus:outline-none" 
+                  />
+                </div>
+              </div>
+            </div>
+
             <div>
               <label class="font-bold text-slate-700 block mb-1">Nama Produk Promo:</label>
-              <input type="text" id="promo0-title" placeholder="Contoh: Canva Pro 1 Bulan (Gratis)" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-rose-500 font-bold text-slate-800" />
+              <input type="text" id="promo0-title" placeholder="Contoh: Gemini Pro 18 Bulan (Promo Spesial)" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-rose-500 font-bold text-slate-800" />
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label class="font-bold text-slate-700 block mb-1">Teks Badge / Label:</label>
-                <input type="text" id="promo0-badge" placeholder="Contoh: FLASH SALE RP 0" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl font-semibold" />
+                <input type="text" id="promo0-badge" placeholder="Contoh: FLASH SALE / PROMO DISKON" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl font-semibold" />
               </div>
               <div>
-                <label class="font-bold text-slate-700 block mb-1">URL Gambar Mockup:</label>
+                <label class="font-bold text-slate-700 block mb-1">URL Gambar Mockup / Banner:</label>
                 <input type="text" id="promo0-image" placeholder="https://..." class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl" />
               </div>
             </div>
@@ -208,11 +249,11 @@
 
             <div>
               <label class="font-bold text-slate-700 block mb-1">Deskripsi Singkat Promo:</label>
-              <textarea id="promo0-desc" rows="2" placeholder="Tuliskan syarat klaim singkat..." class="w-full px-3.5 py-2 border border-slate-200 rounded-xl text-xs"></textarea>
+              <textarea id="promo0-desc" rows="2" placeholder="Tuliskan keterangan singkat promo..." class="w-full px-3.5 py-2 border border-slate-200 rounded-xl text-xs"></textarea>
             </div>
 
             <!-- TEXTAREA AKUN 1 BARIS = 1 AKUN DENGAN COUNTER SISA STOK -->
-            <div>
+            <div id="promo-accounts-box">
               <div class="flex items-center justify-between mb-1">
                 <label class="font-bold text-slate-700">Data Akun / Lisensi (1 Baris = 1 Akun):</label>
                 <span id="promo0-stock-counter" class="text-[11px] font-black px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200">
@@ -220,12 +261,12 @@
                 </span>
               </div>
               <textarea id="promo0-account-data" rows="5" oninput="updatePromoStockCounter(this.value)" placeholder="Masukkan 1 akun per baris (tekan Enter untuk akun berikutnya):&#10;user1@gmail.com | pass1&#10;user2@gmail.com | pass2&#10;https://link-aktivasi-3..." class="w-full px-3.5 py-2.5 bg-slate-900 text-emerald-400 font-mono text-xs border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500"></textarea>
-              <p class="text-[10px] text-slate-400 mt-1">💡 <b>Sistem Otomatis:</b> Setiap 1 pembeli klaim, sistem mengambil 1 baris paling atas dan langsung menghapusnya dari daftar (mengurangi stok baris).</p>
+              <p class="text-[10px] text-slate-400 mt-1">💡 <b>Catatan:</b> Jika memilih Gratis Rp 0, 1 akun akan diambil otomatis per klaim. Jika memilih Diskon QRIS, akun dikirim admin via WhatsApp setelah bukti transfer dicek.</p>
             </div>
 
             <button onclick="savePromo0Settings()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-3.5 rounded-2xl text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2">
               <i data-lucide="save" class="w-4 h-4"></i>
-              <span>Simpan Pengaturan Promo Rp 0</span>
+              <span>Simpan Pengaturan Promo Banner</span>
             </button>
           </div>
         </div>
@@ -525,11 +566,11 @@
             <div class="grid grid-cols-2 gap-2.5 pt-1">
               <div>
                 <label class="text-[10.5px] font-bold text-slate-700 block mb-0.5">Terjual (Cth: 15000):</label>
-                <input type="number" id="prod-form-sold" placeholder="15000" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+                <input type="number" id="prod-form-sold" placeholder="15000" class="w-full px-3.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
               </div>
               <div>
                 <label class="text-[10.5px] font-bold text-slate-700 block mb-0.5">Rating Bintang:</label>
-                <input type="text" id="prod-form-rating" placeholder="5.0" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+                <input type="text" id="prod-form-rating" placeholder="5.0" class="w-full px-3.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
               </div>
             </div>
           </div>
@@ -651,7 +692,9 @@
       image: 'https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png',
       desc: 'Promo spesial Rp 0! Akun siap pakai dan langsung bisa diklaim otomatis.',
       accountData: 'user1@gmail.com | pass1\nuser2@gmail.com | pass2\nhttps://link-aktivasi-3...',
-      expiresAt: new Date(Date.now() + 12 * 3600 * 1000).toISOString()
+      expiresAt: new Date(Date.now() + 12 * 3600 * 1000).toISOString(),
+      promoPrice: 0,
+      originalPrice: 0
     };
 
     const aiProductKnowledgeBase = {
@@ -725,7 +768,9 @@
               image: promo0Obj.image || '',
               desc: promo0Obj.desc || '',
               accountData: promo0Obj.accountData || '',
-              expiresAt: promo0Obj.expiresAt || new Date(Date.now() + 12 * 3600 * 1000).toISOString()
+              expiresAt: promo0Obj.expiresAt || new Date(Date.now() + 12 * 3600 * 1000).toISOString(),
+              promoPrice: Number(promo0Obj.promoPrice || 0),
+              originalPrice: Number(promo0Obj.originalPrice || 0)
             };
           }
 
@@ -742,6 +787,17 @@
         if (!products) products = [];
         renderAdminProductsList(products);
         showToast('Mode siap digunakan.', 'info');
+      }
+    }
+
+    function togglePromoModeUI() {
+      const isDiscount = document.getElementById('promo-mode-discount').checked;
+      const priceBox = document.getElementById('promo-price-container');
+      if (isDiscount) {
+        priceBox.classList.remove('hidden');
+      } else {
+        priceBox.classList.add('hidden');
+        document.getElementById('promo0-price-input').value = '0';
       }
     }
 
@@ -766,6 +822,18 @@
       document.getElementById('promo0-desc').value = promo0Settings.desc || '';
       document.getElementById('promo0-account-data').value = promo0Settings.accountData || '';
       updatePromoStockCounter(promo0Settings.accountData);
+
+      const price = Number(promo0Settings.promoPrice || 0);
+      if (price > 0) {
+        document.getElementById('promo-mode-discount').checked = true;
+        document.getElementById('promo0-price-input').value = price;
+        document.getElementById('promo0-orig-price-input').value = promo0Settings.originalPrice || '';
+        document.getElementById('promo-price-container').classList.remove('hidden');
+      } else {
+        document.getElementById('promo-mode-free').checked = true;
+        document.getElementById('promo0-price-input').value = '0';
+        document.getElementById('promo-price-container').classList.add('hidden');
+      }
 
       if (promo0Settings.expiresAt) {
         const dt = new Date(promo0Settings.expiresAt);
@@ -794,13 +862,17 @@
     }
 
     async function savePromo0Settings() {
-      showToast('Menyimpan pengaturan Promo Rp 0 ke Cloudflare...');
+      showToast('Menyimpan pengaturan Promo ke Cloudflare...');
       
       const customDtVal = document.getElementById('promo0-datetime-input').value;
       let finalExpiresAt = promo0Settings.expiresAt;
       if (customDtVal) {
         finalExpiresAt = new Date(customDtVal).toISOString();
       }
+
+      const isDiscount = document.getElementById('promo-mode-discount').checked;
+      const finalPrice = isDiscount ? (Number(document.getElementById('promo0-price-input').value) || 0) : 0;
+      const finalOrigPrice = isDiscount ? (Number(document.getElementById('promo0-orig-price-input').value) || 0) : 0;
 
       promo0Settings = {
         active: document.getElementById('promo0-toggle').checked,
@@ -809,11 +881,13 @@
         image: document.getElementById('promo0-image').value.trim(),
         desc: document.getElementById('promo0-desc').value.trim(),
         accountData: document.getElementById('promo0-account-data').value.trim(),
-        expiresAt: finalExpiresAt
+        expiresAt: finalExpiresAt,
+        promoPrice: finalPrice,
+        originalPrice: finalOrigPrice
       };
 
       await saveAllProductsToKV();
-      showToast('Pengaturan Promo Rp 0 Berhasil Disimpan!');
+      showToast('Pengaturan Promo Banner Berhasil Disimpan!');
       refreshPhonePreview();
     }
 
@@ -998,7 +1072,7 @@
       } else if (tab === 'promo0') {
         document.getElementById('section-promo0').classList.remove('hidden');
         document.getElementById('tab-btn-promo0').className = activeBtnClasses;
-        document.getElementById('view-title').innerText = 'Pengaturan Promo Rp 0';
+        document.getElementById('view-title').innerText = 'Pengaturan Promo Banner';
         loadPromo0SettingsToUI();
       } else if (tab === 'banner') {
         document.getElementById('section-banner').classList.remove('hidden');
@@ -1176,7 +1250,9 @@
           image: promo0Settings.image,
           desc: promo0Settings.desc,
           accountData: promo0Settings.accountData,
-          expiresAt: promo0Settings.expiresAt
+          expiresAt: promo0Settings.expiresAt,
+          promoPrice: Number(promo0Settings.promoPrice || 0),
+          originalPrice: Number(promo0Settings.originalPrice || 0)
         },
         ...products
       ];
