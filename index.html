@@ -241,48 +241,49 @@
       </div>
     </div>
 
-    <!-- KOTAK BANNER PROMO RP 0 (COUNTDOWN TIMER REAL-TIME) -->
-    <div id="promo0-banner-wrapper" class="hidden bg-gradient-to-r from-rose-600 via-[#f5125e] to-pink-600 rounded-3xl p-4 sm:p-6 text-white shadow-xl relative overflow-hidden">
-      <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
-      
-      <div class="flex flex-col md:flex-row items-center justify-between gap-5 relative z-10">
-        <div class="flex items-center gap-4 w-full md:w-auto">
-          <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white p-2 flex-shrink-0 shadow-md border border-white/20">
-            <img id="promo0-img" src="" class="w-full h-full object-contain" alt="Promo Rp 0" />
-          </div>
-          <div class="space-y-1 min-w-0">
-            <span id="promo0-badge-txt" class="inline-block bg-amber-400 text-amber-950 text-[9px] sm:text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-xs">FLASH SALE RP 0</span>
-            <h3 id="promo0-title-txt" class="text-base sm:text-xl font-black truncate tracking-tight">Canva Pro 1 Bulan Gratis</h3>
-            <p id="promo0-desc-txt" class="text-xs text-rose-100 line-clamp-1">Klaim langsung tanpa bayar sepeser pun!</p>
-          </div>
+    <!-- KOTAK BANNER PROMO MEMANJANG (FORMAT BILLBOARD / LANDSCAPE ADSTERRA DENGAN COUNTDOWN) -->
+    <div id="promo0-banner-wrapper" class="hidden bg-white border border-slate-200/80 rounded-2xl sm:rounded-3xl shadow-md overflow-hidden relative group">
+      <!-- AREA GAMBAR BANNER PANJANG -->
+      <div class="w-full relative overflow-hidden bg-slate-900 aspect-[21/9] sm:aspect-[4/1] md:aspect-[5/1] max-h-56 sm:max-h-64 cursor-pointer" onclick="startPromo0Checkout()">
+        <img id="promo0-img" src="" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.01]" alt="Banner Promo" />
+        <span id="promo0-badge-txt" class="absolute top-2.5 left-2.5 bg-amber-400 text-amber-950 text-[9px] sm:text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-md">FLASH SALE</span>
+      </div>
+
+      <!-- BARIS DETAIL PROMO, COUNTDOWN TIMER, & TOMBOL AKSI -->
+      <div class="p-3.5 sm:p-4 bg-gradient-to-r from-rose-600 via-[#f5125e] to-pink-600 text-white flex flex-col md:flex-row items-center justify-between gap-3">
+        <div class="text-center md:text-left min-w-0">
+          <h3 id="promo0-title-txt" class="text-sm sm:text-base font-black truncate tracking-tight">Canva Pro 1 Bulan Gratis</h3>
+          <p id="promo0-desc-txt" class="text-[11px] text-rose-100 line-clamp-1">Klaim promo spesial sekarang!</p>
         </div>
 
-        <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto justify-end">
-          <div class="flex items-center gap-1.5 text-center">
-            <div class="bg-black/30 backdrop-blur-md px-2.5 py-1.5 rounded-xl min-w-[42px] border border-white/10">
-              <span id="promo0-timer-days" class="font-black text-sm sm:text-base block">00</span>
-              <span class="text-[8px] uppercase text-rose-200 block">Hari</span>
+        <div class="flex flex-wrap sm:flex-nowrap items-center justify-center gap-2.5 w-full md:w-auto">
+          <!-- TIMER REAL-TIME -->
+          <div class="flex items-center gap-1 text-center">
+            <div class="bg-black/35 backdrop-blur-xs px-2 py-1 rounded-lg min-w-[36px] border border-white/10">
+              <span id="promo0-timer-days" class="font-black text-xs sm:text-sm block">00</span>
+              <span class="text-[7.5px] uppercase text-rose-200 block">Hari</span>
             </div>
-            <span class="font-black">:</span>
-            <div class="bg-black/30 backdrop-blur-md px-2.5 py-1.5 rounded-xl min-w-[42px] border border-white/10">
-              <span id="promo0-timer-hours" class="font-black text-sm sm:text-base block">00</span>
-              <span class="text-[8px] uppercase text-rose-200 block">Jam</span>
+            <span class="font-black text-xs">:</span>
+            <div class="bg-black/35 backdrop-blur-xs px-2 py-1 rounded-lg min-w-[36px] border border-white/10">
+              <span id="promo0-timer-hours" class="font-black text-xs sm:text-sm block">00</span>
+              <span class="text-[7.5px] uppercase text-rose-200 block">Jam</span>
             </div>
-            <span class="font-black">:</span>
-            <div class="bg-black/30 backdrop-blur-md px-2.5 py-1.5 rounded-xl min-w-[42px] border border-white/10">
-              <span id="promo0-timer-mins" class="font-black text-sm sm:text-base block">00</span>
-              <span class="text-[8px] uppercase text-rose-200 block">Mnt</span>
+            <span class="font-black text-xs">:</span>
+            <div class="bg-black/35 backdrop-blur-xs px-2 py-1 rounded-lg min-w-[36px] border border-white/10">
+              <span id="promo0-timer-mins" class="font-black text-xs sm:text-sm block">00</span>
+              <span class="text-[7.5px] uppercase text-rose-200 block">Mnt</span>
             </div>
-            <span class="font-black">:</span>
-            <div class="bg-black/30 backdrop-blur-md px-2.5 py-1.5 rounded-xl min-w-[42px] border border-white/10">
-              <span id="promo0-timer-secs" class="font-black text-sm sm:text-base block text-amber-300">00</span>
-              <span class="text-[8px] uppercase text-rose-200 block">Dtk</span>
+            <span class="font-black text-xs">:</span>
+            <div class="bg-black/35 backdrop-blur-xs px-2 py-1 rounded-lg min-w-[36px] border border-white/10">
+              <span id="promo0-timer-secs" class="font-black text-xs sm:text-sm block text-amber-300">00</span>
+              <span class="text-[7.5px] uppercase text-rose-200 block">Dtk</span>
             </div>
           </div>
 
-          <button onclick="startPromo0Checkout()" class="w-full sm:w-auto bg-amber-400 hover:bg-amber-300 text-amber-950 font-black text-xs px-6 py-3 rounded-2xl shadow-lg transition-transform active:scale-95 flex items-center justify-center gap-1.5 whitespace-nowrap">
+          <!-- TOMBOL AKSI OTOMATIS MENYESUAIKAN GRATIS / POTONGAN HARGA -->
+          <button id="promo0-btn-claim" onclick="startPromo0Checkout()" class="w-full sm:w-auto bg-amber-400 hover:bg-amber-300 text-amber-950 font-black text-xs px-5 py-2.5 rounded-xl shadow-md transition-transform active:scale-95 flex items-center justify-center gap-1.5 whitespace-nowrap">
             <i data-lucide="gift" class="w-4 h-4"></i>
-            <span>KLAIM RP 0 SEKARANG</span>
+            <span id="promo0-btn-text">KLAIM SEKARANG</span>
           </button>
         </div>
       </div>
@@ -662,29 +663,30 @@
             <div class="w-14 h-14 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-2 shadow-inner">
               <i data-lucide="check-circle-2" class="w-7 h-7"></i>
             </div>
-            <h4 id="res-title" class="font-black text-lg text-slate-800 tracking-tight">Pesanan Berhasil!</h4>
-            <p id="res-subtitle" class="text-[11px] text-slate-500 mt-1 font-medium">Terima kasih, akun Anda siap digunakan.</p>
+            <h4 id="res-title" class="font-black text-lg text-slate-800 tracking-tight">Verifikasi Pembayaran</h4>
+            <p id="res-subtitle" class="text-[11px] text-slate-500 mt-1 font-medium">Kirim bukti transaksi Anda agar pesanan segera dicek oleh Admin.</p>
           </div>
           
-        <!-- KODE BARU: UKURAN BESAR, KONTRAS & ANTI-LEWAT -->
-<div class="bg-rose-50 border-2 border-rose-400 rounded-2xl p-4 text-center mt-2 shadow-sm" id="box-warning-pdf">
-  <div class="inline-flex items-center justify-center gap-2 text-rose-700 font-black text-xs sm:text-sm tracking-wide mb-1.5 uppercase">
-    <i data-lucide="alert-circle" class="w-5 h-5 text-rose-600 flex-shrink-0"></i>
-    <span>Wajib Sertakan Bukti Transfer!</span>
-  </div>
-  <p class="text-xs sm:text-[13px] font-bold text-slate-800 leading-snug">
-    Pesanan <span class="text-rose-600 underline">tidak akan diproses</span> sebelum Anda mengirimkan tangkapan layar (screenshot) struk bukti transfer asli bersama file Invoice PDF ke WhatsApp Admin.
-  </p>
-</div>
+          <!-- KOTAK PERINGATAN BESAR, KONTRAS & TEGAS -->
+          <div class="bg-rose-50 border-2 border-rose-400 rounded-2xl p-4 text-center mt-2 shadow-sm" id="box-warning-pdf">
+            <div class="inline-flex items-center justify-center gap-2 text-rose-700 font-black text-xs sm:text-sm tracking-wide mb-1.5 uppercase">
+              <i data-lucide="alert-circle" class="w-5 h-5 text-rose-600 flex-shrink-0"></i>
+              <span>Wajib Sertakan Bukti Transfer!</span>
+            </div>
+            <p class="text-xs sm:text-[13px] font-bold text-slate-800 leading-snug">
+              Pesanan <span class="text-rose-600 underline">tidak akan diproses</span> sebelum Anda mengirimkan tangkapan layar (screenshot) struk bukti transfer asli bersama file Invoice PDF ke WhatsApp Admin.
+            </p>
+          </div>
+
           <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3.5 shadow-sm mt-2" id="account-result-container">
             <div class="flex items-center justify-between mb-2">
-              <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1.5"><i data-lucide="key" class="w-3.5 h-3.5"></i> Status / Akun Anda:</span>
+              <span class="text-[10px] text-amber-400 font-bold uppercase tracking-wider flex items-center gap-1.5"><i data-lucide="clock" class="w-3.5 h-3.5"></i> Status Pesanan Anda:</span>
               <button onclick="copyAccountData()" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-white font-bold px-2 py-0.5 rounded border border-slate-600 transition-colors flex items-center gap-1">
                 <i data-lucide="copy" class="w-3 h-3"></i> Salin
               </button>
             </div>
             <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
-               <pre id="account-data" class="font-mono text-[11px] sm:text-xs text-emerald-400 whitespace-pre-wrap select-all"></pre>
+               <pre id="account-data" class="font-mono text-[11px] sm:text-xs text-amber-300 whitespace-pre-wrap select-all"></pre>
             </div>
           </div>
           
@@ -892,7 +894,6 @@
       ) {
         timeMs = new Date(dateInput).getTime();
       } else {
-        // Fallback berurutan untuk ulasan lama yang belum ada ISO time di database
         timeMs = Date.now() - (fallbackDays * 24 * 60 * 60 * 1000);
       }
 
@@ -1048,9 +1049,20 @@
       }
 
       document.getElementById('promo0-img').src = promo.image || 'https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png';
-      document.getElementById('promo0-badge-txt').innerText = promo.badge || 'FLASH SALE RP 0';
-      document.getElementById('promo0-title-txt').innerText = promo.title || 'Produk Promo Rp 0';
-      document.getElementById('promo0-desc-txt').innerText = promo.desc || 'Klaim gratis sekarang juga!';
+      document.getElementById('promo0-badge-txt').innerText = promo.badge || (Number(promo.promoPrice || 0) > 0 ? 'FLASH SALE DISKON' : 'FLASH SALE RP 0');
+      document.getElementById('promo0-title-txt').innerText = promo.title || 'Produk Promo';
+      document.getElementById('promo0-desc-txt').innerText = promo.desc || 'Klaim penawaran terbatas sekarang!';
+      
+      const promoPrice = Number(promo.promoPrice || 0);
+      const btnText = document.getElementById('promo0-btn-text');
+      if (btnText) {
+        if (promoPrice > 0) {
+          btnText.innerText = `BELI SEKARANG (${formatIDR(promoPrice)})`;
+        } else {
+          btnText.innerText = 'KLAIM RP 0 SEKARANG';
+        }
+      }
+
       wrapper.classList.remove('hidden');
 
       if (promoTimerInterval) clearInterval(promoTimerInterval);
@@ -1077,39 +1089,59 @@
       document.getElementById('promo0-timer-secs').innerText = String(secs).padStart(2, '0');
     }
 
+    // SISTEM DETEKSI: KLAIM RP 0 (GRATIS) ATAU PROMO POTONGAN HARGA (QRIS)
     window.startPromo0Checkout = function() {
       if (!promo0Data) return;
-      window.isPromo0Order = true;
-      window.currentIsCart = false;
+      
+      const discountPrice = Number(promo0Data.promoPrice || 0);
 
-      const today = new Date();
-      const yyyy = today.getFullYear();
-      const mm = String(today.getMonth() + 1).padStart(2, '0');
-      const dd = String(today.getDate()).padStart(2, '0');
-      const randomStr = Math.random().toString(36).substring(2, 6).toUpperCase();
+      // JIKA HARGA 0 (PROMO GRATIS)
+      if (discountPrice <= 0) {
+        window.isPromo0Order = true;
+        window.currentIsCart = false;
 
-      window.currentInvoiceNo = `FREE-${yyyy}${mm}${dd}-${randomStr}`;
-      window.currentInvoiceItem = `${promo0Data.title} (Promo Rp 0)`;
-      window.currentInvoiceTotal = 'Rp 0 (GRATIS)';
-      window.currentOrderDate = today.toLocaleString('id-ID');
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        const randomStr = Math.random().toString(36).substring(2, 6).toUpperCase();
 
-      document.getElementById('pay-badge-type').innerText = 'PROMO GRATIS';
-      document.getElementById('pay-badge-type').className = 'bg-emerald-500 text-white text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full shadow-xs';
-      document.getElementById('pay-invoice-no').innerText = window.currentInvoiceNo;
-      document.getElementById('pay-invoice-date').innerText = today.toLocaleDateString('id-ID');
-      document.getElementById('pay-item-name').innerText = window.currentInvoiceItem;
-      document.getElementById('pay-total-amount').innerText = 'Rp 0';
+        window.currentInvoiceNo = `FREE-${yyyy}${mm}${dd}-${randomStr}`;
+        window.currentInvoiceItem = `${promo0Data.title} (Promo Rp 0)`;
+        window.currentInvoiceTotal = 'Rp 0 (GRATIS)';
+        window.currentOrderDate = today.toLocaleString('id-ID');
 
-      document.getElementById('qris-container-box').classList.add('hidden');
-      document.getElementById('promo0-checkout-box').classList.remove('hidden');
+        document.getElementById('pay-badge-type').innerText = 'PROMO GRATIS';
+        document.getElementById('pay-badge-type').className = 'bg-emerald-500 text-white text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full shadow-xs';
+        document.getElementById('pay-invoice-no').innerText = window.currentInvoiceNo;
+        document.getElementById('pay-invoice-date').innerText = today.toLocaleDateString('id-ID');
+        document.getElementById('pay-item-name').innerText = window.currentInvoiceItem;
+        document.getElementById('pay-total-amount').innerText = 'Rp 0';
 
-      const btnAction = document.getElementById('btn-pay-action');
-      btnAction.innerText = 'KLAIM SEKARANG (GRATIS)';
-      btnAction.className = 'w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all active:scale-95 shadow-lg shadow-emerald-500/20';
+        document.getElementById('qris-container-box').classList.add('hidden');
+        document.getElementById('promo0-checkout-box').classList.remove('hidden');
 
-      document.getElementById('step-pay').classList.remove('hidden');
-      document.getElementById('step-result').classList.add('hidden');
-      openPaymentModal();
+        const btnAction = document.getElementById('btn-pay-action');
+        btnAction.innerText = 'KLAIM SEKARANG (GRATIS)';
+        btnAction.className = 'w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all active:scale-95 shadow-lg shadow-emerald-500/20';
+
+        document.getElementById('step-pay').classList.remove('hidden');
+        document.getElementById('step-result').classList.add('hidden');
+        openPaymentModal();
+      } 
+      // JIKA MEMILIKI HARGA (PROMO DISKON BAYAR VIA QRIS BIASA)
+      else {
+        const promoProductObj = {
+          id: promo0Data.id || 'PROMO_SPECIAL',
+          name: promo0Data.title || 'Flash Sale Promo'
+        };
+        const promoVariantObj = {
+          name: promo0Data.badge || 'Harga Diskon Spesial',
+          price: discountPrice
+        };
+        startNormalCheckout(promoProductObj, promoVariantObj, 1, false);
+      }
+
       if (typeof lucide !== 'undefined') lucide.createIcons();
     };
 
@@ -1755,11 +1787,10 @@
       document.getElementById('step-pay').classList.add('hidden');
       document.getElementById('step-result').classList.remove('hidden');
       document.getElementById('res-title').innerText = "Verifikasi Pembayaran";
-document.getElementById('res-subtitle').innerText = "Kirim bukti transaksi Anda agar pesanan segera dicek oleh Admin.";
+      document.getElementById('res-subtitle').innerText = "Kirim bukti transaksi Anda agar pesanan segera dicek oleh Admin.";
       document.getElementById('box-warning-pdf').classList.remove('hidden');
       document.getElementById('regular-order-cta').classList.remove('hidden');
-document.getElementById('account-data').innerText = "MENUNGGU VERIFIKASI PEMBAYARAN.\nKirimkan tangkapan layar (screenshot) bukti transfer asli ke WhatsApp Admin untuk validasi & pengiriman akses akun.";
-      
+      document.getElementById('account-data').innerText = "MENUNGGU VERIFIKASI PEMBAYARAN.\nKirimkan tangkapan layar (screenshot) bukti transfer asli ke WhatsApp Admin untuk validasi & pengiriman akses akun.";
 
       const pName = window.currentIsCart ? "Keranjang Belanja" : (currentSelectedProduct ? currentSelectedProduct.name : "Produk");
       const vName = window.currentIsCart ? "Berbagai Produk" : (currentSelectedVariant ? currentSelectedVariant.name : "-");
@@ -1778,12 +1809,12 @@ document.getElementById('account-data').innerText = "MENUNGGU VERIFIKASI PEMBAYA
               buyerName: name,
               buyerEmail: email,
               buyerWA: wa,
-              status: "Lunas (Diproses)"
+              status: "Menunggu Verifikasi"
           })
       }).catch(e => console.log("Gagal sinkron data pesanan."));
 
       livePurchasesData.unshift({
-        user: `${name} (Terverifikasi)`,
+        user: `${name} (Diproses)`,
         product: `${pName} ${vName !== '-' ? `(${vName})` : ''}`,
         time: 'Baru saja'
       });
@@ -1793,7 +1824,7 @@ document.getElementById('account-data').innerText = "MENUNGGU VERIFIKASI PEMBAYA
           localStorage.setItem('my_digital_cart', JSON.stringify(cart));
           renderCart();
       }
-      showToast('Pembayaran berhasil! Silakan unduh PDF / konfirmasi ke WA.');
+      showToast('Pemesanan dikirim! Silakan unduh PDF dan konfirmasi ke WhatsApp.');
       btnAction.disabled = false;
       btnAction.innerText = originalBtnText;
       if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -1801,7 +1832,7 @@ document.getElementById('account-data').innerText = "MENUNGGU VERIFIKASI PEMBAYA
 
     window.copyAccountData = function() {
       const text = document.getElementById('account-data').innerText;
-      navigator.clipboard.writeText(text).then(() => showToast('Data akun berhasil disalin!'));
+      navigator.clipboard.writeText(text).then(() => showToast('Data status pesanan berhasil disalin!'));
     };
 
     window.processCartCheckout = function() {
@@ -1847,7 +1878,7 @@ document.getElementById('account-data').innerText = "MENUNGGU VERIFIKASI PEMBAYA
                       <p style="margin: 0 0 5px; font-size: 12px; color: #94a3b8; text-transform: uppercase;">Metode Pembayaran</p>
                       <p style="margin: 0 0 15px; font-size: 14px; font-weight: bold;">${window.isPromo0Order ? 'Promo Gratis Rp 0' : 'QRIS GoPay'}</p>
                       <p style="margin: 0 0 5px; font-size: 12px; color: #94a3b8; text-transform: uppercase;">Status Pembayaran</p>
-                      <span style="display: inline-block; background: #dcfce7; color: #16a34a; padding: 4px 12px; border-radius: 4px; font-size: 14px; font-weight: bold;">LUNAS (Diproses)</span>
+                      <span style="display: inline-block; background: #fef3c7; color: #b45309; padding: 4px 12px; border-radius: 4px; font-size: 13px; font-weight: bold;">MENUNGGU VERIFIKASI BUKTI</span>
                   </td>
               </tr>
           </table>
@@ -1863,7 +1894,7 @@ document.getElementById('account-data').innerText = "MENUNGGU VERIFIKASI PEMBAYA
               <thead>
                   <tr style="background: #f5125e; color: white;">
                       <th style="padding: 12px 15px; text-align: left; border-radius: 8px 0 0 8px;">Deskripsi Item</th>
-                      <th style="padding: 12px 15px; text-align: right; border-radius: 0 8px 8px 0;">Total Harga</th>
+                      <th style="padding: 12px 15px; text-align: right; border-radius: 0 8px 8px 0;">Total Tagihan</th>
                   </tr>
               </thead>
               <tbody>
@@ -1874,12 +1905,12 @@ document.getElementById('account-data').innerText = "MENUNGGU VERIFIKASI PEMBAYA
               </tbody>
           </table>
           <div style="text-align: right; font-size: 20px; margin-bottom: 40px;">
-              <span style="color: #64748b; font-size: 14px; margin-right: 15px;">Total Yang Sudah Dibayar:</span>
+              <span style="color: #64748b; font-size: 14px; margin-right: 15px;">Total Tagihan:</span>
               <strong style="color: #f5125e;">${window.currentInvoiceTotal}</strong>
           </div>
           <div style="text-align: center; color: #94a3b8; font-size: 12px; border-top: 1px solid #e2e8f0; padding-top: 20px;">
-              <p style="margin: 0;">Terima kasih atas pesanan Anda.</p>
-              <p style="margin: 5px 0 0;">Dokumen ini adalah bukti kepemilikan lisensi yang sah di DigitalHub.</p>
+              <p style="margin: 0; color: #e11d48; font-weight: bold;">WAJIB LAMPIRKAN TANGKAPAN LAYAR BUKTI TRANSFER SAAT KONFIRMASI KE WHATSAPP.</p>
+              <p style="margin: 5px 0 0;">Dokumen ini adalah bukti transaksi resmi di DigitalHub.</p>
           </div>
       `;
 
@@ -1898,23 +1929,22 @@ document.getElementById('account-data').innerText = "MENUNGGU VERIFIKASI PEMBAYA
       });
     };
 
-   // Ganti fungsi confirmViaWA yang lama dengan ini:
-window.confirmViaWA = function() {
-    const name = window.currentBuyerData.name || document.getElementById('pay-buyer-name')?.value.trim() || "-";
-    const email = window.currentBuyerData.email || document.getElementById('pay-buyer-email')?.value.trim() || "-";
-    const wa = window.currentBuyerData.wa || document.getElementById('pay-buyer-wa')?.value.trim() || "-";
-    
-    const inv = window.currentInvoiceNo || "INV-DIGITAL";
-    const item = window.currentInvoiceItem || "-";
-    const total = window.currentInvoiceTotal || "Rp 0";
-    const tanggal = window.currentOrderDate || new Date().toLocaleString('id-ID');
-    
-    const msg = 
-`🧾 *INVOICE PEMBAYARAN LUNAS*
+    window.confirmViaWA = function() {
+        const name = window.currentBuyerData.name || document.getElementById('pay-buyer-name')?.value.trim() || "-";
+        const email = window.currentBuyerData.email || document.getElementById('pay-buyer-email')?.value.trim() || "-";
+        const wa = window.currentBuyerData.wa || document.getElementById('pay-buyer-wa')?.value.trim() || "-";
+        
+        const inv = window.currentInvoiceNo || "INV-DIGITAL";
+        const item = window.currentInvoiceItem || "-";
+        const total = window.currentInvoiceTotal || "Rp 0";
+        const tanggal = window.currentOrderDate || new Date().toLocaleString('id-ID');
+        
+        const msg = 
+`🧾 *KONFIRMASI PESANAN DIGITALHUB*
 ━━━━━━━━━━━━━━━━━━━━━
 *No. Invoice :* ${inv}
 *Tanggal      :* ${tanggal}
-*Status        :* ✅ *LUNAS (SUDAH DIBAYAR)*
+*Status        :* ⏳ *MENUNGGU VERIFIKASI PEMBAYARAN*
 
 👤 *DATA PEMBELI*
 *Nama          :* ${name}
@@ -1924,17 +1954,17 @@ window.confirmViaWA = function() {
 📦 *RINCIAN PESANAN*
 ${item}
 
-💰 *TOTAL YANG SUDAH DIBAYAR*
+💰 *TOTAL TAGIHAN*
 *${total}* (Metode: ${window.isPromo0Order ? 'Promo Gratis Rp 0' : 'GoPay QRIS'})
 ━━━━━━━━━━━━━━━━━━━━━
 ⚠️ *PERHATIAN:*
-_Saya melampirkan file Invoice PDF beserta *TANGKAPAN LAYAR (SCREENSHOT) BUKTI TRANSFER ASLI* pada pesan ini._
+_Saya melampirkan file Invoice PDF beserta *TANGKAPAN LAYAR (SCREENSHOT) BUKTI TRANSFER ASLI* pada chat ini._
 
-_Halo Admin DigitalHub, mohon segera diverifikasi dan dikirimkan pesanannya. Terima kasih!_`;
-    
-    const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
-    window.open(waLink, '_blank');
-};
+_Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_`;
+        
+        const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+        window.open(waLink, '_blank');
+    };
 
     window.openChatModalWithProduct = function(prodName, varName, price) {
       openChatModal();
@@ -2008,8 +2038,8 @@ _Halo Admin DigitalHub, mohon segera diverifikasi dan dikirimkan pesanannya. Ter
                     <h4 class="font-bold text-xs sm:text-sm text-slate-800 mt-1">${item.productName} ${item.variantName && item.variantName !== '-' ? `(${item.variantName})` : ''}</h4>
                     <p class="text-[10px] text-slate-400 mt-0.5"><i data-lucide="clock" class="w-3 h-3 inline pb-0.5"></i> ${item.date}</p>
                   </div>
-                  <span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-600 border border-emerald-100 text-[10px] font-bold px-2 py-1 rounded-lg">
-                    <i data-lucide="check-circle-2" class="w-3 h-3"></i> Lunas (Diproses)
+                  <span class="inline-flex items-center gap-1 bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-bold px-2 py-1 rounded-lg">
+                    <i data-lucide="clock" class="w-3 h-3"></i> ${item.status || 'Diproses'}
                   </span>
                 </div>
 
@@ -2064,7 +2094,7 @@ _Halo Admin DigitalHub, mohon segera diverifikasi dan dikirimkan pesanannya. Ter
               <p style="margin: 0; color: #94a3b8; text-transform: uppercase;">Metode Pembayaran</p>
               <p style="margin: 2px 0 8px; font-weight: bold;">${item.variantName === 'Promo Gratis Rp 0' ? 'Promo Gratis Rp 0' : 'QRIS GoPay'}</p>
               <p style="margin: 0; color: #94a3b8; text-transform: uppercase;">Status</p>
-              <span style="display: inline-block; background: #dcfce7; color: #16a34a; padding: 2px 8px; border-radius: 6px; font-weight: bold; font-size: 10px;">LUNAS (DIPROSES)</span>
+              <span style="display: inline-block; background: #fef3c7; color: #b45309; padding: 2px 8px; border-radius: 6px; font-weight: bold; font-size: 10px;">${item.status || 'DIPROSES'}</span>
             </div>
           </div>
 
