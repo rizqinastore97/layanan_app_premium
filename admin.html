@@ -40,7 +40,6 @@
         <span>Katalog & Produk</span>
       </button>
 
-      <!-- TAB PROMO BANNER -->
       <button onclick="switchTab('promo0')" id="tab-btn-promo0" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left">
         <i data-lucide="gift" class="w-5 h-5 text-rose-400"></i>
         <span>Promo Banner (Rp 0 / Diskon)</span>
@@ -106,7 +105,7 @@
           <h2 class="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
             <span id="view-title">Manajemen Produk</span>
           </h2>
-          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Kelola produk dengan AI Generator, promo Rp 0 & diskon, urutan posisi, dan stok</p>
+          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Kelola produk, sembunyikan/tampilkan, promo Rp 0 & diskon, serta stok</p>
         </div>
         <div class="flex items-center gap-2" id="action-buttons-container">
           <button onclick="openProductModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-2xl shadow-sm transition-all flex items-center gap-1.5">
@@ -116,7 +115,7 @@
         </div>
       </div>
 
-      <!-- TAB 1: DAFTAR PRODUK (DENGAN FITUR SEMBUNYIKAN PRODUK) -->
+      <!-- TAB 1: DAFTAR PRODUK (FITUR SEMBUNYIKAN PRODUK) -->
       <section id="section-products" class="space-y-4">
         <div class="flex items-center gap-2">
           <div class="relative flex-1">
@@ -132,7 +131,7 @@
         <div class="bg-slate-100 border border-slate-200 rounded-2xl p-3 text-xs text-slate-700 flex items-center justify-between">
           <span class="flex items-center gap-1.5 font-medium">
             <i data-lucide="info" class="w-4 h-4 text-indigo-600"></i>
-            Klik ikon <b>Mata</b> untuk sembunyikan/tampilkan produk tanpa perlu menghapusnya.
+            Klik tombol <b>Ikon Mata</b> pada produk untuk menyembunyikan/menampilkannya tanpa perlu menghapus produk.
           </span>
         </div>
 
@@ -192,7 +191,7 @@
                     placeholder="Contoh: 18000" 
                     class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-black text-rose-600 text-xs focus:ring-2 focus:ring-rose-500 focus:outline-none" 
                   />
-                  <p class="text-[10px] text-slate-400 mt-1">*Nominal ini akan ditagihkan saat pembeli scan QRIS.</p>
+                  <p class="text-[10px] text-slate-400 mt-1">*Nominal tagihan di kasir QRIS.</p>
                 </div>
                 <div>
                   <label class="text-[11px] font-bold text-slate-700 block mb-1">Harga Coret / Asli (Opsional):</label>
@@ -565,11 +564,11 @@
             <div class="grid grid-cols-2 gap-2.5 pt-1">
               <div>
                 <label class="text-[10.5px] font-bold text-slate-700 block mb-0.5">Terjual (Cth: 15000):</label>
-                <input type="number" id="prod-form-sold" placeholder="15000" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+                <input type="number" id="prod-form-sold" placeholder="15000" class="w-full px-3.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
               </div>
               <div>
                 <label class="text-[10.5px] font-bold text-slate-700 block mb-0.5">Rating Bintang:</label>
-                <input type="text" id="prod-form-rating" placeholder="5.0" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+                <input type="text" id="prod-form-rating" placeholder="5.0" class="w-full px-3.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
               </div>
             </div>
           </div>
@@ -1033,4 +1032,565 @@
                         <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Detail Produk Dibeli</h4>
                         <div class="space-y-1.5">
                             <p class="text-xs font-black text-slate-800 flex items-start gap-1.5"><i data-lucide="package" class="w-3.5 h-3.5 text-indigo-500 mt-0.5 flex-shrink-0"></i> <span>${prodName}</span></p>
-                            <p class="text-xs font-semibold text-slate-600 flex items-center gapSaya adalah AI berbasis teks, dan hal itu di luar kemampuan saya.
+                            <p class="text-xs font-semibold text-slate-600 flex items-center gap-1.5"><i data-lucide="layers" class="w-3.5 h-3.5 text-indigo-500"></i> Varian: ${varName}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+        }).join('');
+        lucide.createIcons();
+    }
+
+    function switchTab(tab) {
+      document.getElementById('section-products').classList.add('hidden');
+      document.getElementById('section-promo0').classList.add('hidden');
+      document.getElementById('section-banner').classList.add('hidden');
+      document.getElementById('section-reviews').classList.add('hidden');
+      document.getElementById('section-orders').classList.add('hidden');
+      document.getElementById('section-stats').classList.add('hidden');
+
+      const btnClasses = 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left';
+      const activeBtnClasses = 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl bg-indigo-600 text-white font-extrabold text-sm sm:text-base shadow-sm text-left';
+      
+      document.getElementById('tab-btn-products').className = btnClasses;
+      document.getElementById('tab-btn-promo0').className = btnClasses;
+      document.getElementById('tab-btn-banner').className = btnClasses;
+      document.getElementById('tab-btn-reviews').className = btnClasses;
+      document.getElementById('tab-btn-stats').className = btnClasses;
+      document.getElementById('tab-btn-orders').className = 'w-full flex items-center justify-between px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left';
+
+      document.getElementById('action-buttons-container').classList.add('hidden');
+
+      if (tab === 'products') {
+        document.getElementById('section-products').classList.remove('hidden');
+        document.getElementById('tab-btn-products').className = activeBtnClasses;
+        document.getElementById('view-title').innerText = 'Manajemen Produk';
+        document.getElementById('action-buttons-container').classList.remove('hidden');
+      } else if (tab === 'promo0') {
+        document.getElementById('section-promo0').classList.remove('hidden');
+        document.getElementById('tab-btn-promo0').className = activeBtnClasses;
+        document.getElementById('view-title').innerText = 'Pengaturan Promo Banner';
+        loadPromo0SettingsToUI();
+      } else if (tab === 'banner') {
+        document.getElementById('section-banner').classList.remove('hidden');
+        document.getElementById('tab-btn-banner').className = activeBtnClasses;
+        document.getElementById('view-title').innerText = 'Pengaturan Tema & Promo';
+        loadBannerSettingsToUI();
+      } else if (tab === 'reviews') {
+        document.getElementById('section-reviews').classList.remove('hidden');
+        document.getElementById('tab-btn-reviews').className = activeBtnClasses;
+        document.getElementById('view-title').innerText = 'Kelola Komentar & Ulasan';
+        populateReviewProductSelector();
+      } else if (tab === 'stats') {
+        document.getElementById('section-stats').classList.remove('hidden');
+        document.getElementById('tab-btn-stats').className = activeBtnClasses;
+        document.getElementById('view-title').innerText = 'Statistik Analitik';
+        fetchStoreStats(); 
+      } else if (tab === 'orders') {
+        document.getElementById('section-orders').classList.remove('hidden');
+        document.getElementById('tab-btn-orders').className = 'w-full flex items-center justify-between px-4 py-3 rounded-2xl bg-indigo-600 text-white font-extrabold text-sm sm:text-base shadow-sm text-left';
+        document.getElementById('view-title').innerText = 'Data Pesanan & Pembeli';
+        loadOrdersData();
+      }
+      lucide.createIcons();
+    }
+
+    function triggerAiGenerateDescription() {
+      const nameInput = document.getElementById('prod-form-name');
+      const rawName = (nameInput.value || '').trim();
+
+      if (!rawName) {
+        showToast('Ketik nama produk terlebih dahulu (misal: Googleflow, Gemini, Netflix)', 'error');
+        nameInput.focus();
+        return;
+      }
+
+      showToast('✨ AI sedang meracik deskripsi & data terbaik...');
+      const cleanKey = rawName.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+      let matchedData = null;
+      for (const [k, v] of Object.entries(aiProductKnowledgeBase)) {
+        if (cleanKey.includes(k) || k.includes(cleanKey) || (cleanKey.includes('google') && k.includes('google'))) {
+          matchedData = v;
+          break;
+        }
+      }
+
+      if (!matchedData) {
+        matchedData = generateSmartHeuristicProductData(rawName);
+      }
+
+      document.getElementById('prod-form-category').value = matchedData.category;
+      document.getElementById('prod-form-warranty').value = matchedData.warranty;
+
+      const varContainer = document.getElementById('variants-form-container');
+      if (matchedData.variants && matchedData.variants.length > 0) {
+        varContainer.innerHTML = '';
+        matchedData.variants.forEach(v => {
+          addVariantFormRow(v.name, v.price, '', matchedData.desc, matchedData.terms);
+        });
+      }
+
+      showToast(`✨ Sukses generate data AI untuk "${rawName}"!`);
+    }
+
+    function generateSmartHeuristicProductData(name) {
+      const lower = name.toLowerCase();
+      let category = 'AI';
+      let warranty = 'Resmi 1 Bulan';
+      let tagKeyword = 'Layanan Digital';
+
+      if (lower.includes('stream') || lower.includes('tv') || lower.includes('film') || lower.includes('movie') || lower.includes('video') || lower.includes('drama') || lower.includes('anime')) {
+        category = 'Stream'; warranty = 'Full Garansi'; tagKeyword = 'Streaming Hiburan';
+      } else if (lower.includes('edit') || lower.includes('photo') || lower.includes('motion') || lower.includes('design') || lower.includes('preset')) {
+        category = 'Editor'; warranty = 'Resmi 1 Tahun'; tagKeyword = 'Aplikasi Kreatif & Editing';
+      } else if (lower.includes('follow') || lower.includes('like') || lower.includes('sosmed') || lower.includes('sub') || lower.includes('view') || lower.includes('jasa')) {
+        category = 'Jasa Web'; warranty = 'Garansi Support'; tagKeyword = 'Jasa Digital Profesional';
+      } else if (lower.includes('otp') || lower.includes('nokos') || lower.includes('nomor') || lower.includes('sms')) {
+        category = 'Nokos'; warranty = 'Garansi 1x OTP'; tagKeyword = 'Nomor Virtual SMS';
+      } else if (lower.includes('web') || lower.includes('template') || lower.includes('blogger') || lower.includes('landing') || lower.includes('theme')) {
+        category = 'Template Web'; warranty = 'Full Source Code'; tagKeyword = 'Template Web Premium';
+      }
+
+      return {
+        category: category,
+        warranty: warranty,
+        desc: `Beli layanan ${name} resmi dan bergaransi penuh di DigitalHub. Solusi ${tagKeyword} berkualitas dengan proses pengiriman instan.\n\n✨ Keunggulan Layanan:\n• Fitur Premium / VIP terbuka penuh tanpa batasan\n• Stabil, aman, dan anti-suspend\n• Harga paling terjangkau dengan kualitas nomor satu\n\n⚡ Pengiriman: Otomatis via QRIS GoPay (< 5 Detik)\n🛡️ Garansi: ${warranty}`,
+        terms: `1. Gunakan ${name} sesuai aturan dan panduan yang diberikan.\n2. Dilarang melakukan tindakan yang melanggar ketentuan layanan.\n3. Simpan Nomor Invoice sebagai bukti klaim garansi sah via WhatsApp Admin.`,
+        variants: [{ name: 'Paket Reguler', price: 5000 }, { name: 'Paket VIP Premium', price: 15000 }]
+      };
+    }
+
+    function loadBannerSettingsToUI() {
+      document.getElementById('banner-toggle-active').checked = bannerSettings.active;
+      
+      const themeSelect = document.getElementById('theme-selector');
+      if (themeSelect) themeSelect.value = bannerSettings.theme || 'default';
+
+      const toggleTemplate = document.getElementById('toggle-menu-template');
+      if (toggleTemplate) toggleTemplate.checked = bannerSettings.showTemplateWeb;
+      
+      const toggleJasa = document.getElementById('toggle-menu-jasa');
+      if (toggleJasa) toggleJasa.checked = bannerSettings.showJasaWeb;
+
+      const typeRadios = document.getElementsByName('banner_type');
+      for (const r of typeRadios) { r.checked = (r.value === bannerSettings.type); }
+      document.getElementById('banner-url-input').value = bannerSettings.imageUrl || '';
+      updateBannerPreview(bannerSettings.imageUrl);
+      setBannerType(bannerSettings.type);
+    }
+
+    function toggleBannerActive(isActive) { bannerSettings.active = isActive; }
+    function setBannerType(type) {
+      bannerSettings.type = type;
+      const imgBox = document.getElementById('banner-image-form-box');
+      if (type === 'image') { imgBox.classList.remove('hidden'); } else { imgBox.classList.add('hidden'); }
+    }
+
+    function handleBannerFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const maxDim = 900;
+          let width = img.width, height = img.height;
+          if (width > maxDim) { height *= maxDim / width; width = maxDim; }
+          canvas.width = width; canvas.height = height;
+          const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
+          const compressed = canvas.toDataURL('image/webp', 0.85);
+          bannerSettings.imageUrl = compressed;
+          document.getElementById('banner-url-input').value = compressed;
+          updateBannerPreview(compressed);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function updateBannerPreviewFromUrl(url) { bannerSettings.imageUrl = url.trim(); updateBannerPreview(url.trim()); }
+    function updateBannerPreview(src) {
+      const img = document.getElementById('banner-preview-img');
+      const icon = document.getElementById('banner-placeholder-icon');
+      if (src && src.length > 5) {
+        img.src = src; img.classList.remove('hidden'); icon.classList.add('hidden');
+      } else {
+        img.src = ''; img.classList.add('hidden'); icon.classList.remove('hidden');
+      }
+    }
+
+    async function saveBannerSettings() {
+      await saveAllProductsToKV();
+    }
+
+    async function saveAllProductsToKV() {
+      showToast('Menyimpan perubahan ke Cloudflare KV...');
+      const payload = [
+        { 
+          id: "__BANNER_CONFIG__", 
+          _isBannerConfig: true, 
+          active: bannerSettings.active, 
+          type: bannerSettings.type, 
+          imageUrl: bannerSettings.imageUrl, 
+          theme: bannerSettings.theme,
+          showTemplateWeb: bannerSettings.showTemplateWeb,
+          showJasaWeb: bannerSettings.showJasaWeb
+        },
+        {
+          id: "__PROMO0_CONFIG__",
+          _isPromo0Config: true,
+          active: promo0Settings.active,
+          title: promo0Settings.title,
+          badge: promo0Settings.badge,
+          image: promo0Settings.image,
+          desc: promo0Settings.desc,
+          accountData: promo0Settings.accountData,
+          expiresAt: promo0Settings.expiresAt,
+          promoPrice: Number(promo0Settings.promoPrice || 0),
+          originalPrice: Number(promo0Settings.originalPrice || 0)
+        },
+        ...products
+      ];
+      try {
+        const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+        const data = await res.json();
+        if (data.success) { showToast('Semua data KV berhasil diperbarui!'); refreshPhonePreview(); }
+      } catch (err) { showToast('Gagal terhubung ke Cloudflare', 'error'); }
+    }
+
+    // FUNGSI TOGGLE SEMBUNYIKAN / TAMPILKAN PRODUK
+    async function toggleHideProduct(productId) {
+      const prod = products.find(p => p.id === productId);
+      if (!prod) return;
+      prod.hidden = !prod.hidden;
+      renderAdminProductsList(products);
+      await saveAllProductsToKV();
+      showToast(prod.hidden ? `Produk "${prod.name}" disembunyikan dari etalase` : `Produk "${prod.name}" kembali ditampilkan di toko`);
+    }
+
+    function renderAdminProductsList(list) {
+      const container = document.getElementById('admin-product-list');
+      if (list.length === 0) {
+        container.innerHTML = `<div class="p-8 text-center text-slate-400 bg-white rounded-2xl border text-xs">Belum ada produk.</div>`;
+        return;
+      }
+      container.innerHTML = list.map((prod, pIdx) => {
+        const prices = prod.variants.map(v => Number(v.price || 0));
+        const minPrice = Math.min(...prices);
+        const totalStock = prod.variants.reduce((acc, v) => acc + (v.items ? v.items.length : (Number(v.stock) || 0)), 0);
+        const isHidden = Boolean(prod.hidden);
+
+        return `
+          <div class="bg-white rounded-3xl p-3.5 sm:p-4 border ${isHidden ? 'border-amber-300 bg-amber-50/20 opacity-80' : 'border-slate-200'} shadow-2xs hover:border-indigo-500 transition-all flex items-center justify-between gap-3 group">
+            <div class="flex flex-col items-center gap-1 pr-1 border-r border-slate-100 flex-shrink-0">
+              <button onclick="moveProduct(${pIdx}, -1)" ${pIdx === 0 ? 'disabled class="opacity-20 cursor-not-allowed"' : 'class="hover:text-indigo-600"'} p-1 rounded-md text-slate-500 font-bold"><i data-lucide="chevron-up" class="w-4 h-4"></i></button>
+              <span class="text-[10px] font-black text-slate-400 leading-none">${pIdx + 1}</span>
+              <button onclick="moveProduct(${pIdx}, 1)" ${pIdx === list.length - 1 ? 'disabled class="opacity-20 cursor-not-allowed"' : 'class="hover:text-indigo-600"'} p-1 rounded-md text-slate-500 font-bold"><i data-lucide="chevron-down" class="w-4 h-4"></i></button>
+            </div>
+            <div class="flex items-center gap-3 min-w-0 flex-1">
+              <img src="${prod.image}" onerror="this.src='https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png'" class="w-12 h-12 rounded-2xl object-contain bg-slate-50 p-1 border border-slate-100 flex-shrink-0" />
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="text-[9px] uppercase font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md">${prod.category}</span>
+                  <span class="text-[9.5px] font-bold text-slate-400">• Stok: ${totalStock}</span>
+                  ${isHidden ? `<span class="text-[9px] uppercase font-black text-amber-700 bg-amber-100 border border-amber-200 px-2 py-0.5 rounded-md flex items-center gap-1"><i data-lucide="eye-off" class="w-2.5 h-2.5"></i> Sembunyi</span>` : ''}
+                </div>
+                <h3 class="text-xs sm:text-sm font-bold text-slate-800 truncate mt-0.5 ${isHidden ? 'line-through text-slate-500' : ''}">${prod.name}</h3>
+                <p class="text-[11px] font-black text-indigo-600">Rp ${minPrice.toLocaleString('id-ID')} <span class="text-[10px] text-slate-400 font-normal">(${prod.variants.length} Paket)</span></p>
+              </div>
+            </div>
+            <div class="flex items-center gap-1.5 flex-shrink-0">
+              <!-- TOMBOL SEMBUNYIKAN / TAMPILKAN DENGAN IKON MATA -->
+              <button onclick="toggleHideProduct(${prod.id})" title="${isHidden ? 'Tampilkan Kembali ke Toko' : 'Sembunyikan dari Toko'}" class="${isHidden ? 'bg-amber-100 text-amber-800 hover:bg-amber-200' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'} text-xs font-bold p-2 rounded-xl transition-all">
+                <i data-lucide="${isHidden ? 'eye-off' : 'eye'}" class="w-3.5 h-3.5"></i>
+              </button>
+              <button onclick="editProduct(${prod.id})" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold p-2 rounded-xl"><i data-lucide="edit" class="w-3.5 h-3.5"></i></button>
+              <button onclick="deleteProduct(${prod.id})" class="bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold p-2 rounded-xl"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+            </div>
+          </div>
+        `;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    function moveProduct(index, direction) {
+      const targetIndex = index + direction;
+      if (targetIndex < 0 || targetIndex >= products.length) return;
+      const temp = products[index];
+      products[index] = products[targetIndex];
+      products[targetIndex] = temp;
+      renderAdminProductsList(products);
+    }
+
+    function filterAdminProducts(query) {
+      const q = (query || '').toLowerCase();
+      renderAdminProductsList(products.filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q)));
+    }
+
+    function openProductModal() {
+      currentEditingProductId = null;
+      document.getElementById('modal-product-title').innerHTML = `<i data-lucide="package-plus" class="w-5 h-5 text-indigo-600"></i> Tambah Produk Baru`;
+      document.getElementById('prod-form-id').value = '';
+      document.getElementById('prod-form-name').value = '';
+      document.getElementById('prod-form-image').value = '';
+      updateImagePreview('');
+      
+      document.getElementById('variants-form-container').innerHTML = '';
+      addVariantFormRow('1 Bulan', 5000, '', '', '1. Dilarang mengganti password email akun.\n2. Garansi full berlaku selama masa aktif.');
+      
+      document.getElementById('product-modal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function editProduct(productId) {
+      const p = products.find(item => item.id === productId);
+      if (!p) return;
+      currentEditingProductId = p.id;
+      document.getElementById('modal-product-title').innerHTML = `<i data-lucide="edit" class="w-5 h-5 text-indigo-600"></i> Edit Produk: ${p.name}`;
+      document.getElementById('prod-form-id').value = p.id;
+      document.getElementById('prod-form-name').value = p.name;
+      document.getElementById('prod-form-category').value = p.category;
+      document.getElementById('prod-form-warranty').value = p.warranty || 'Resmi';
+      document.getElementById('prod-form-bestseller').checked = Boolean(p.isBestSeller);
+      document.getElementById('prod-form-hot').checked = Boolean(p.isHot);
+      document.getElementById('prod-form-sold').value = p.sold || '0';
+      document.getElementById('prod-form-rating').value = p.rating || '5.0';
+      document.getElementById('prod-form-image').value = (p.images && p.images.length > 0) ? p.images.join('\n') : (p.image || '');
+      updateImagePreview(p.image || '');
+
+      const varContainer = document.getElementById('variants-form-container');
+      varContainer.innerHTML = '';
+      (p.variants || []).forEach(v => {
+        const rawItems = (v.items && Array.isArray(v.items)) ? v.items.join('\n') : '';
+        const vDesc = v.desc || p.description || ''; 
+        const vTerms = v.terms || p.terms || '';
+        addVariantFormRow(v.name, v.price, v.originalPrice || 0, rawItems, vDesc, vTerms);
+      });
+      document.getElementById('product-modal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function addVariantFormRow(name = '', price = 0, originalPrice = 0, items = '', desc = '', terms = '') {
+      const container = document.getElementById('variants-form-container');
+      const div = document.createElement('div');
+      div.className = 'bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-2xs';
+      div.innerHTML = `
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 border-b border-slate-100 pb-3">
+          <div>
+            <label class="text-[10px] font-bold text-slate-700 block mb-0.5">Nama Paket:</label>
+            <input type="text" placeholder="Contoh: Paket Basic" value="${name}" class="var-name-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+          </div>
+          <div>
+            <label class="text-[10px] font-bold text-slate-700 block mb-0.5">Harga Jual (Rp):</label>
+            <input type="number" placeholder="99000" value="${price}" class="var-price-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+          </div>
+          <div>
+            <label class="text-[10px] font-bold text-slate-700 block mb-0.5">Harga Coret (Opsional):</label>
+            <input type="number" placeholder="199000" value="${originalPrice || ''}" class="var-orig-price-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+          </div>
+        </div>
+        
+        <div class="space-y-2">
+          <div>
+            <label class="text-[10px] font-bold text-slate-700 block mb-0.5">Deskripsi Khusus Varian Ini:</label>
+            <textarea rows="2" class="var-desc-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs leading-relaxed text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Tuliskan fitur unggulan paket ini...">${desc}</textarea>
+          </div>
+          <div>
+            <label class="text-[10px] font-bold text-slate-700 block mb-0.5 flex items-center gap-1"><i data-lucide="shield-alert" class="w-3 h-3 text-amber-500"></i> Syarat & Ketentuan Varian Ini:</label>
+            <textarea rows="2" class="var-terms-input w-full px-3 py-2 bg-amber-50/30 border border-amber-200/60 rounded-xl text-xs leading-relaxed text-amber-900 focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="S&K yang berlaku...">${terms}</textarea>
+          </div>
+        </div>
+
+        <div class="pt-2 border-t border-slate-100">
+          <label class="text-[10px] font-bold text-slate-500 block mb-1">Kunci Akun / Lisensi / Link Download:</label>
+          <textarea rows="2" class="var-items-input w-full px-3 py-2 bg-slate-800 text-emerald-400 border border-slate-700 rounded-xl font-mono text-[11px] placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Link Google Drive / Akun otomatis...">${items}</textarea>
+        </div>
+        <button type="button" onclick="this.parentElement.remove()" class="text-[10px] text-rose-600 hover:underline font-bold w-full text-right mt-1">Hapus Paket Ini</button>
+      `;
+      container.appendChild(div);
+      lucide.createIcons();
+    }
+
+    function closeProductModal() { document.getElementById('product-modal').classList.add('hidden'); }
+
+    async function handleSaveProduct(e) {
+      e.preventDefault();
+      const varRows = document.querySelectorAll('#variants-form-container > div');
+      const variants = [];
+      
+      varRows.forEach(row => {
+        const name = row.querySelector('.var-name-input').value.trim();
+        const price = Number(row.querySelector('.var-price-input').value) || 0;
+        const originalPrice = Number(row.querySelector('.var-orig-price-input').value) || 0;
+        const rawItems = row.querySelector('.var-items-input').value.trim();
+        const desc = row.querySelector('.var-desc-input').value.trim();
+        const terms = row.querySelector('.var-terms-input').value.trim();
+        const items = rawItems ? rawItems.split('\n').map(i => i.trim()).filter(Boolean) : [];
+        
+        if (name) { 
+          variants.push({ name, price, originalPrice, stock: items.length, items, desc, terms }); 
+        }
+      });
+
+      const rawImageInput = document.getElementById('prod-form-image').value.trim();
+      const imageLines = rawImageInput ? rawImageInput.split('\n').map(i => i.trim()).filter(Boolean) : ['https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png'];
+
+      const existingProd = currentEditingProductId ? products.find(p => p.id === currentEditingProductId) : null;
+
+      const newProductData = {
+        id: currentEditingProductId ? currentEditingProductId : Date.now(),
+        name: document.getElementById('prod-form-name').value.trim(),
+        category: document.getElementById('prod-form-category').value.trim(),
+        warranty: document.getElementById('prod-form-warranty').value.trim(),
+        image: imageLines[0],        
+        images: imageLines,        
+        description: variants.length > 0 ? variants[0].desc : '',
+        terms: variants.length > 0 ? variants[0].terms : '',
+        isBestSeller: document.getElementById('prod-form-bestseller').checked,
+        isHot: document.getElementById('prod-form-hot').checked,
+        sold: Number(document.getElementById('prod-form-sold').value) || 0,
+        rating: document.getElementById('prod-form-rating').value.trim() || '5.0',
+        hidden: existingProd ? Boolean(existingProd.hidden) : false, // Simpan status sembunyi
+        variants: variants,
+        customReviews: existingProd ? (existingProd.customReviews || []) : []
+      };
+
+      if (currentEditingProductId) {
+        const idx = products.findIndex(p => p.id === currentEditingProductId);
+        if (idx !== -1) products[idx] = newProductData;
+      } else {
+        products.unshift(newProductData);
+      }
+
+      closeProductModal();
+      renderAdminProductsList(products);
+      await saveAllProductsToKV();
+    }
+
+    async function deleteProduct(productId) {
+      if (!confirm('Yakin ingin menghapus produk ini? Jika hanya ingin menyembunyikan, gunakan tombol ikon Mata.')) return;
+      products = products.filter(p => p.id !== productId);
+      renderAdminProductsList(products);
+      await saveAllProductsToKV();
+    }
+
+    function handleImageFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const maxDim = 400;
+          let width = img.width, height = img.height;
+          if (width > height) { if (width > maxDim) { height *= maxDim / width; width = maxDim; } }
+          else { if (height > maxDim) { width *= maxDim / height; height = maxDim; } }
+          canvas.width = width; canvas.height = height;
+          const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
+          const compressed = canvas.toDataURL('image/webp', 0.85);
+          document.getElementById('prod-form-image').value = compressed;
+          updateImagePreview(compressed);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function updateImagePreviewFromInput(url) { updateImagePreview(url.trim()); }
+    function updateImagePreview(src) {
+      const imgElem = document.getElementById('prod-img-preview');
+      const iconElem = document.getElementById('prod-img-placeholder-icon');
+      if (src && src.length > 5) {
+        imgElem.src = src; imgElem.classList.remove('hidden'); iconElem.classList.add('hidden');
+      } else {
+        imgElem.src = ''; imgElem.classList.add('hidden'); iconElem.classList.remove('hidden');
+      }
+    }
+
+    let selectedReviewProductId = null;
+    function populateReviewProductSelector() {
+      const select = document.getElementById('review-product-selector');
+      if (!select) return;
+      select.innerHTML = products.map(p => `<option value="${p.id}">${p.name} (${p.category})</option>`).join('');
+      if (products.length > 0) {
+        selectedReviewProductId = Number(select.value);
+        renderReviewsForSelectedProduct(selectedReviewProductId);
+      }
+    }
+
+    function renderReviewsForSelectedProduct(prodId) {
+      selectedReviewProductId = Number(prodId);
+      const product = products.find(p => p.id === selectedReviewProductId);
+      const container = document.getElementById('admin-reviews-container');
+      const badge = document.getElementById('review-count-badge');
+      if (!product) return;
+      if (!product.customReviews) product.customReviews = [];
+      badge.innerText = `Total: ${product.customReviews.length} Ulasan Kustom`;
+
+      if (product.customReviews.length === 0) {
+        container.innerHTML = `<div class="bg-white p-8 rounded-3xl border text-center text-slate-400 text-xs">Belum ada ulasan untuk ${product.name}.</div>`;
+        return;
+      }
+
+      container.innerHTML = product.customReviews.map((rev, rIdx) => `
+        <div class="bg-white border rounded-3xl p-4 space-y-2">
+          <div class="flex items-center justify-between">
+            <p class="font-bold text-xs">${rev.user} (${'★'.repeat(rev.rating)})</p>
+            <button onclick="deleteReview(${rIdx})" class="text-rose-600 text-xs font-bold p-1">Hapus</button>
+          </div>
+          <p class="text-xs text-slate-600">${rev.comment}</p>
+        </div>
+      `).join('');
+    }
+
+    function openAddReviewModal() {
+      document.getElementById('rev-form-user').value = 'b***' + Math.floor(Math.random() * 9 + 1);
+      document.getElementById('rev-form-comment').value = '';
+      document.getElementById('review-modal').classList.remove('hidden');
+    }
+    function closeReviewModal() { document.getElementById('review-modal').classList.add('hidden'); }
+
+    async function handleSaveReview(e) {
+      e.preventDefault();
+      const product = products.find(p => p.id === selectedReviewProductId);
+      if (!product) return;
+      if (!product.customReviews) product.customReviews = [];
+      
+      product.customReviews.unshift({
+        user: document.getElementById('rev-form-user').value.trim(),
+        rating: Number(document.getElementById('rev-form-rating').value) || 5,
+        tag: document.getElementById('rev-form-tag').value,
+        variant: document.getElementById('rev-form-variant').value.trim() || '1 Bulan',
+        date: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
+        comment: document.getElementById('rev-form-comment').value.trim()
+      });
+
+      closeReviewModal();
+      renderReviewsForSelectedProduct(selectedReviewProductId);
+      await saveAllProductsToKV();
+    }
+
+    async function deleteReview(index) {
+      const product = products.find(p => p.id === selectedReviewProductId);
+      if (!product) return;
+      product.customReviews.splice(index, 1);
+      renderReviewsForSelectedProduct(selectedReviewProductId);
+      await saveAllProductsToKV();
+    }
+
+    function refreshPhonePreview() {
+      const iframe = document.getElementById('phone-preview-iframe');
+      if (iframe) iframe.src = iframe.src;
+    }
+    function toggleMobileSidebar() { document.querySelector('aside').classList.toggle('hidden'); }
+
+    loadProductsFromKV();
+    lucide.createIcons();
+  </script>
+</body>
+</html>
