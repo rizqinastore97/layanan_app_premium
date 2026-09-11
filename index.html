@@ -666,13 +666,15 @@
             <p id="res-subtitle" class="text-[11px] text-slate-500 mt-1 font-medium">Terima kasih, akun Anda siap digunakan.</p>
           </div>
           
-          <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3 text-center mt-2 shadow-sm" id="box-warning-pdf">
-              <p class="text-[10px] font-black text-amber-800 mb-1 tracking-wide flex justify-center items-center gap-1.5">
-                  <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i> SIMPAN PDF INVOICE INI!
-              </p>
-              <p class="text-[9px] text-amber-700 leading-relaxed font-medium">Mohon unduh <b>Invoice PDF</b> di bawah ini. Dokumen ini wajib dilampirkan ke WhatsApp Admin agar pesanan segera diproses.</p>
-          </div>
-
+          <!-- KODE BARU: DITAMBAHKAN PERINGATAN SCREENSHOT BUKTI TRANSFER -->
+<div class="bg-amber-50 border border-amber-200 rounded-2xl p-3 text-center mt-2 shadow-sm" id="box-warning-pdf">
+    <p class="text-[10px] font-black text-amber-800 mb-1 tracking-wide flex justify-center items-center gap-1.5">
+        <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-amber-600"></i> PERHATIAN: WAJIB LAMPIRKAN BUKTI TRANSFER!
+    </p>
+    <p class="text-[9.5px] text-amber-900 leading-relaxed font-medium">
+      Mohon unduh <b>Invoice PDF</b> dan pastikan Anda melampirkan <b>tangkapan layar (screenshot) bukti transfer asli</b> saat konfirmasi ke WhatsApp agar pesanan dapat langsung diverifikasi dan dikirim.
+    </p>
+</div>
           <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3.5 shadow-sm mt-2" id="account-result-container">
             <div class="flex items-center justify-between mb-2">
               <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1.5"><i data-lucide="key" class="w-3.5 h-3.5"></i> Status / Akun Anda:</span>
@@ -1895,17 +1897,18 @@
       });
     };
 
-    window.confirmViaWA = function() {
-        const name = window.currentBuyerData.name || document.getElementById('pay-buyer-name')?.value.trim() || "-";
-        const email = window.currentBuyerData.email || document.getElementById('pay-buyer-email')?.value.trim() || "-";
-        const wa = window.currentBuyerData.wa || document.getElementById('pay-buyer-wa')?.value.trim() || "-";
-        
-        const inv = window.currentInvoiceNo || "INV-DIGITAL";
-        const item = window.currentInvoiceItem || "-";
-        const total = window.currentInvoiceTotal || "Rp 0";
-        const tanggal = window.currentOrderDate || new Date().toLocaleString('id-ID');
-        
-        const msg = 
+   // Ganti fungsi confirmViaWA yang lama dengan ini:
+window.confirmViaWA = function() {
+    const name = window.currentBuyerData.name || document.getElementById('pay-buyer-name')?.value.trim() || "-";
+    const email = window.currentBuyerData.email || document.getElementById('pay-buyer-email')?.value.trim() || "-";
+    const wa = window.currentBuyerData.wa || document.getElementById('pay-buyer-wa')?.value.trim() || "-";
+    
+    const inv = window.currentInvoiceNo || "INV-DIGITAL";
+    const item = window.currentInvoiceItem || "-";
+    const total = window.currentInvoiceTotal || "Rp 0";
+    const tanggal = window.currentOrderDate || new Date().toLocaleString('id-ID');
+    
+    const msg = 
 `🧾 *INVOICE PEMBAYARAN LUNAS*
 ━━━━━━━━━━━━━━━━━━━━━
 *No. Invoice :* ${inv}
@@ -1923,11 +1926,14 @@ ${item}
 💰 *TOTAL YANG SUDAH DIBAYAR*
 *${total}* (Metode: ${window.isPromo0Order ? 'Promo Gratis Rp 0' : 'GoPay QRIS'})
 ━━━━━━━━━━━━━━━━━━━━━
-_Halo Admin DigitalHub, saya sudah menyelesaikan pesanan di atas. Dokumen invoice PDF sudah saya simpan. Terima kasih!_`;
-        
-        const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
-        window.open(waLink, '_blank');
-    };
+⚠️ *PERHATIAN:*
+_Saya melampirkan file Invoice PDF beserta *TANGKAPAN LAYAR (SCREENSHOT) BUKTI TRANSFER ASLI* pada pesan ini._
+
+_Halo Admin DigitalHub, mohon segera diverifikasi dan dikirimkan pesanannya. Terima kasih!_`;
+    
+    const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+    window.open(waLink, '_blank');
+};
 
     window.openChatModalWithProduct = function(prodName, varName, price) {
       openChatModal();
