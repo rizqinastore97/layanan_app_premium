@@ -666,14 +666,15 @@
             <p id="res-subtitle" class="text-[11px] text-slate-500 mt-1 font-medium">Terima kasih, akun Anda siap digunakan.</p>
           </div>
           
-          <!-- KODE BARU: DITAMBAHKAN PERINGATAN SCREENSHOT BUKTI TRANSFER -->
-<div class="bg-amber-50 border border-amber-200 rounded-2xl p-3 text-center mt-2 shadow-sm" id="box-warning-pdf">
-    <p class="text-[10px] font-black text-amber-800 mb-1 tracking-wide flex justify-center items-center gap-1.5">
-        <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-amber-600"></i> PERHATIAN: WAJIB LAMPIRKAN BUKTI TRANSFER!
-    </p>
-    <p class="text-[9.5px] text-amber-900 leading-relaxed font-medium">
-      Mohon unduh <b>Invoice PDF</b> dan pastikan Anda melampirkan <b>tangkapan layar (screenshot) bukti transfer asli</b> saat konfirmasi ke WhatsApp agar pesanan dapat langsung diverifikasi dan dikirim.
-    </p>
+        <!-- KODE BARU: UKURAN BESAR, KONTRAS & ANTI-LEWAT -->
+<div class="bg-rose-50 border-2 border-rose-400 rounded-2xl p-4 text-center mt-2 shadow-sm" id="box-warning-pdf">
+  <div class="inline-flex items-center justify-center gap-2 text-rose-700 font-black text-xs sm:text-sm tracking-wide mb-1.5 uppercase">
+    <i data-lucide="alert-circle" class="w-5 h-5 text-rose-600 flex-shrink-0"></i>
+    <span>Wajib Sertakan Bukti Transfer!</span>
+  </div>
+  <p class="text-xs sm:text-[13px] font-bold text-slate-800 leading-snug">
+    Pesanan <span class="text-rose-600 underline">tidak akan diproses</span> sebelum Anda mengirimkan tangkapan layar (screenshot) struk bukti transfer asli bersama file Invoice PDF ke WhatsApp Admin.
+  </p>
 </div>
           <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3.5 shadow-sm mt-2" id="account-result-container">
             <div class="flex items-center justify-between mb-2">
@@ -1753,12 +1754,12 @@
       // JIKA INI ORDER BIASA (QRIS)
       document.getElementById('step-pay').classList.add('hidden');
       document.getElementById('step-result').classList.remove('hidden');
-      
-      document.getElementById('res-title').innerText = "Menunggu Konfirmasi!";
-      document.getElementById('res-subtitle').innerText = "Terima kasih, silakan konfirmasi untuk menerima pesanan Anda.";
+      document.getElementById('res-title').innerText = "Verifikasi Pembayaran";
+document.getElementById('res-subtitle').innerText = "Kirim bukti transaksi Anda agar pesanan segera dicek oleh Admin.";
       document.getElementById('box-warning-pdf').classList.remove('hidden');
       document.getElementById('regular-order-cta').classList.remove('hidden');
-      document.getElementById('account-data').innerText = "Pesanan sedang diproses. Pembayaran terverifikasi lunas.";
+document.getElementById('account-data').innerText = "MENUNGGU VERIFIKASI PEMBAYARAN.\nKirimkan tangkapan layar (screenshot) bukti transfer asli ke WhatsApp Admin untuk validasi & pengiriman akses akun.";
+      
 
       const pName = window.currentIsCart ? "Keranjang Belanja" : (currentSelectedProduct ? currentSelectedProduct.name : "Produk");
       const vName = window.currentIsCart ? "Berbagai Produk" : (currentSelectedVariant ? currentSelectedVariant.name : "-");
