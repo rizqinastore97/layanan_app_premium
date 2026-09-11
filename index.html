@@ -241,69 +241,66 @@
       </div>
     </div>
 
-   <!-- KOTAK BANNER PROMO (PROPORSIONAL, TIDAK TERPOTONG & COMPACT DI HP) -->
-<div id="promo0-banner-wrapper" class="hidden bg-white border border-slate-200/80 rounded-2xl sm:rounded-3xl shadow-md overflow-hidden relative group">
-  
-  <!-- AREA GAMBAR BANNER: MENGIKUTI RASIO ASLI 100% TANPA KROP -->
-  <div class="w-full relative bg-slate-950 cursor-pointer overflow-hidden aspect-[10/3]" onclick="startPromo0Checkout()">
-    <img 
-      id="promo0-img" 
-      src="" 
-      class="w-full h-full object-contain sm:object-cover transition-transform duration-500 group-hover:scale-[1.01]" 
-      alt="Banner Promo" 
-    />
-    <span id="promo0-badge-txt" class="absolute top-2 left-2 bg-amber-400 text-amber-950 text-[8px] sm:text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow-md">
-      FLASH SALE
-    </span>
-  </div>
+    <!-- KOTAK BANNER PROMO MEMANJANG (PROPORSIONAL 10:3, TIDAK TERPOTONG & COMPACT DI HP) -->
+    <div id="promo0-banner-wrapper" class="hidden bg-white border border-slate-200/80 rounded-2xl sm:rounded-3xl shadow-md overflow-hidden relative group">
+      <!-- AREA GAMBAR BANNER LENGKAP -->
+      <div class="w-full relative bg-slate-950 cursor-pointer overflow-hidden aspect-[10/3]" onclick="startPromo0Checkout()">
+        <img 
+          id="promo0-img" 
+          src="" 
+          class="w-full h-full object-contain sm:object-cover transition-transform duration-500 group-hover:scale-[1.01]" 
+          alt="Banner Promo" 
+        />
+        <span id="promo0-badge-txt" class="absolute top-2 left-2 bg-amber-400 text-amber-950 text-[8px] sm:text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow-md">
+          FLASH SALE
+        </span>
+      </div>
 
-  <!-- BARIS KONTROL DI BAWAH BANNER: COMPACT SEPERTI DESKTOP -->
-  <div class="px-2.5 py-2 sm:p-3.5 bg-gradient-to-r from-rose-600 via-[#f5125e] to-pink-600 text-white flex items-center justify-between gap-2">
-    
-    <!-- JUDUL & DESKRIPSI SINGKAT -->
-    <div class="min-w-0 flex-1 pr-1">
-      <h3 id="promo0-title-txt" class="text-[11px] sm:text-sm font-black truncate tracking-tight leading-tight">
-        Gemini Pro 18 Bulan
-      </h3>
-      <p id="promo0-desc-txt" class="text-[9.5px] sm:text-xs text-rose-100 truncate opacity-90 hidden sm:block">
-        Promo Terbatas
-      </p>
+      <!-- BARIS DETAIL & KONTROL BANNER SATU BARIS COMPACT -->
+      <div class="px-2.5 py-2 sm:p-3.5 bg-gradient-to-r from-rose-600 via-[#f5125e] to-pink-600 text-white flex items-center justify-between gap-2">
+        <div class="min-w-0 flex-1 pr-1">
+          <h3 id="promo0-title-txt" class="text-[11px] sm:text-sm font-black truncate tracking-tight leading-tight">
+            Gemini Pro 18 Bulan
+          </h3>
+          <p id="promo0-desc-txt" class="text-[9.5px] sm:text-xs text-rose-100 truncate opacity-90 hidden sm:block">
+            Promo Terbatas
+          </p>
+        </div>
+
+        <!-- COUNTDOWN TIMER -->
+        <div class="flex items-center gap-0.5 text-center flex-shrink-0">
+          <div class="bg-black/35 backdrop-blur-xs px-1.5 py-0.5 sm:px-2 sm:py-1 rounded min-w-[24px] sm:min-w-[32px] border border-white/10">
+            <span id="promo0-timer-days" class="font-black text-[10px] sm:text-xs block leading-none">00</span>
+            <span class="text-[6.5px] sm:text-[7.5px] uppercase text-rose-200 block">H</span>
+          </div>
+          <span class="font-black text-[10px] sm:text-xs">:</span>
+          <div class="bg-black/35 backdrop-blur-xs px-1.5 py-0.5 sm:px-2 sm:py-1 rounded min-w-[24px] sm:min-w-[32px] border border-white/10">
+            <span id="promo0-timer-hours" class="font-black text-[10px] sm:text-xs block leading-none">00</span>
+            <span class="text-[6.5px] sm:text-[7.5px] uppercase text-rose-200 block">J</span>
+          </div>
+          <span class="font-black text-[10px] sm:text-xs">:</span>
+          <div class="bg-black/35 backdrop-blur-xs px-1.5 py-0.5 sm:px-2 sm:py-1 rounded min-w-[24px] sm:min-w-[32px] border border-white/10">
+            <span id="promo0-timer-mins" class="font-black text-[10px] sm:text-xs block leading-none">00</span>
+            <span class="text-[6.5px] sm:text-[7.5px] uppercase text-rose-200 block">M</span>
+          </div>
+          <span class="font-black text-[10px] sm:text-xs">:</span>
+          <div class="bg-black/35 backdrop-blur-xs px-1.5 py-0.5 sm:px-2 sm:py-1 rounded min-w-[24px] sm:min-w-[32px] border border-white/10">
+            <span id="promo0-timer-secs" class="font-black text-[10px] sm:text-xs block leading-none text-amber-300">00</span>
+            <span class="text-[6.5px] sm:text-[7.5px] uppercase text-rose-200 block">D</span>
+          </div>
+        </div>
+
+        <!-- TOMBOL AKSI OTOMATIS -->
+        <button 
+          id="promo0-btn-claim" 
+          onclick="startPromo0Checkout()" 
+          class="bg-amber-400 hover:bg-amber-300 text-amber-950 font-black text-[10px] sm:text-xs px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-lg shadow-sm transition-transform active:scale-95 flex items-center justify-center gap-1 whitespace-nowrap flex-shrink-0"
+        >
+          <i data-lucide="shopping-bag" class="w-3 h-3 sm:w-3.5 sm:h-3.5"></i>
+          <span id="promo0-btn-text">BELI SEKARANG</span>
+        </button>
+      </div>
     </div>
-
-    <!-- COUNTDOWN TIMER KECIL & RAMPING -->
-    <div class="flex items-center gap-0.5 text-center flex-shrink-0">
-      <div class="bg-black/35 backdrop-blur-xs px-1.5 py-0.5 sm:px-2 sm:py-1 rounded min-w-[24px] sm:min-w-[32px] border border-white/10">
-        <span id="promo0-timer-days" class="font-black text-[10px] sm:text-xs block leading-none">00</span>
-        <span class="text-[6.5px] sm:text-[7.5px] uppercase text-rose-200 block">H</span>
-      </div>
-      <span class="font-black text-[10px] sm:text-xs">:</span>
-      <div class="bg-black/35 backdrop-blur-xs px-1.5 py-0.5 sm:px-2 sm:py-1 rounded min-w-[24px] sm:min-w-[32px] border border-white/10">
-        <span id="promo0-timer-hours" class="font-black text-[10px] sm:text-xs block leading-none">00</span>
-        <span class="text-[6.5px] sm:text-[7.5px] uppercase text-rose-200 block">J</span>
-      </div>
-      <span class="font-black text-[10px] sm:text-xs">:</span>
-      <div class="bg-black/35 backdrop-blur-xs px-1.5 py-0.5 sm:px-2 sm:py-1 rounded min-w-[24px] sm:min-w-[32px] border border-white/10">
-        <span id="promo0-timer-mins" class="font-black text-[10px] sm:text-xs block leading-none">00</span>
-        <span class="text-[6.5px] sm:text-[7.5px] uppercase text-rose-200 block">M</span>
-      </div>
-      <span class="font-black text-[10px] sm:text-xs">:</span>
-      <div class="bg-black/35 backdrop-blur-xs px-1.5 py-0.5 sm:px-2 sm:py-1 rounded min-w-[24px] sm:min-w-[32px] border border-white/10">
-        <span id="promo0-timer-secs" class="font-black text-[10px] sm:text-xs block leading-none text-amber-300">00</span>
-        <span class="text-[6.5px] sm:text-[7.5px] uppercase text-rose-200 block">D</span>
-      </div>
-    </div>
-
-    <!-- TOMBOL AKSI COMPACT SATU BARIS -->
-    <button 
-      id="promo0-btn-claim" 
-      onclick="startPromo0Checkout()" 
-      class="bg-amber-400 hover:bg-amber-300 text-amber-950 font-black text-[10px] sm:text-xs px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-lg shadow-sm transition-transform active:scale-95 flex items-center justify-center gap-1 whitespace-nowrap flex-shrink-0"
-    >
-      <i data-lucide="gift" class="w-3 h-3 sm:w-3.5 sm:h-3.5"></i>
-      <span id="promo0-btn-text">KLAIM</span>
-    </button>
-  </div>
-</div>
 
     <!-- Kategori Menu -->
     <div class="bg-white rounded-2xl p-3.5 sm:p-5 shadow-2xs border border-slate-200/80 overflow-hidden">
@@ -683,7 +680,7 @@
             <p id="res-subtitle" class="text-[11px] text-slate-500 mt-1 font-medium">Kirim bukti transaksi Anda agar pesanan segera dicek oleh Admin.</p>
           </div>
           
-          <!-- KOTAK PERINGATAN BESAR, KONTRAS & TEGAS -->
+          <!-- KOTAK PERINGATAN BESAR, KONTRAS & ANTI-LEWAT -->
           <div class="bg-rose-50 border-2 border-rose-400 rounded-2xl p-4 text-center mt-2 shadow-sm" id="box-warning-pdf">
             <div class="inline-flex items-center justify-center gap-2 text-rose-700 font-black text-xs sm:text-sm tracking-wide mb-1.5 uppercase">
               <i data-lucide="alert-circle" class="w-5 h-5 text-rose-600 flex-shrink-0"></i>
@@ -1049,6 +1046,7 @@
       }
     }
 
+    // PENGATURAN BANNER PROMO (RP 0 ATAU DISKON POTONGAN HARGA)
     function applyPromo0Config(promo) {
       promo0Data = promo;
       const wrapper = document.getElementById('promo0-banner-wrapper');
@@ -1065,18 +1063,20 @@
       }
 
       document.getElementById('promo0-img').src = promo.image || 'https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png';
-      document.getElementById('promo0-badge-txt').innerText = promo.badge || (Number(promo.promoPrice || 0) > 0 ? 'FLASH SALE DISKON' : 'FLASH SALE RP 0');
       document.getElementById('promo0-title-txt').innerText = promo.title || 'Produk Promo';
-      document.getElementById('promo0-desc-txt').innerText = promo.desc || 'Klaim penawaran terbatas sekarang!';
+      document.getElementById('promo0-desc-txt').innerText = promo.desc || 'Klaim promo spesial sekarang!';
       
       const promoPrice = Number(promo.promoPrice || 0);
-      const btnText = document.getElementById('promo0-btn-text');
-      if (btnText) {
-        if (promoPrice > 0) {
-          btnText.innerText = `BELI SEKARANG (${formatIDR(promoPrice)})`;
-        } else {
-          btnText.innerText = 'KLAIM SEKARANG';
-        }
+      const badgeTxt = document.getElementById('promo0-badge-txt');
+      const btnText = document.getElementById('promo0-btn-text') || document.querySelector('#promo0-banner-wrapper button span');
+
+      // Deteksi otomatis: Jika ada harga -> Mode Diskon. Jika 0 -> Mode Gratis Rp 0
+      if (promoPrice > 0) {
+        if (badgeTxt) badgeTxt.innerText = promo.badge || 'FLASH SALE DISKON';
+        if (btnText) btnText.innerText = `BELI SEKARANG (${formatIDR(promoPrice)})`;
+      } else {
+        if (badgeTxt) badgeTxt.innerText = promo.badge || 'FLASH SALE RP 0';
+        if (btnText) btnText.innerText = 'KLAIM RP 0 SEKARANG';
       }
 
       wrapper.classList.remove('hidden');
@@ -1108,11 +1108,11 @@
     // SISTEM DETEKSI: KLAIM RP 0 (GRATIS) ATAU PROMO POTONGAN HARGA (QRIS)
     window.startPromo0Checkout = function() {
       if (!promo0Data) return;
-      
-      const discountPrice = Number(promo0Data.promoPrice || 0);
 
-      // JIKA HARGA 0 (PROMO GRATIS)
-      if (discountPrice <= 0) {
+      const promoPrice = Number(promo0Data.promoPrice || 0);
+
+      // KONDISI A: JIKA PROMO RP 0 (GRATIS)
+      if (promoPrice <= 0) {
         window.isPromo0Order = true;
         window.currentIsCart = false;
 
@@ -1145,17 +1145,21 @@
         document.getElementById('step-result').classList.add('hidden');
         openPaymentModal();
       } 
-      // JIKA MEMILIKI HARGA (PROMO DISKON BAYAR VIA QRIS BIASA)
+      // KONDISI B: JIKA PROMO DISKON BERBAYAR (LANGSUNG KASIR QRIS)
       else {
-        const promoProductObj = {
-          id: promo0Data.id || 'PROMO_SPECIAL',
+        window.isPromo0Order = false;
+
+        const promoProduct = {
+          id: promo0Data.id || 'PROMO_BANNER',
           name: promo0Data.title || 'Flash Sale Promo'
         };
-        const promoVariantObj = {
-          name: promo0Data.badge || 'Harga Diskon Spesial',
-          price: discountPrice
+
+        const promoVariant = {
+          name: promo0Data.badge || 'Harga Flash Sale',
+          price: promoPrice
         };
-        startNormalCheckout(promoProductObj, promoVariantObj, 1, false);
+
+        startNormalCheckout(promoProduct, promoVariant, 1, false);
       }
 
       if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -1676,7 +1680,7 @@
         localStorage.setItem('my_digital_orders', JSON.stringify(history));
     };
 
-    // ================= SISTEM CHECKOUT BIASA =================
+    // ================= SISTEM CHECKOUT BIASA (QRIS GOPAY) =================
     async function startNormalCheckout(product, variant, qty = 1, isCart = false) {
       trackActivity('click'); 
       window.isPromo0Order = false;
@@ -1799,7 +1803,7 @@
         return;
       }
 
-      // JIKA INI ORDER BIASA (QRIS)
+      // JIKA INI ORDER BIASA / FLASH SALE QRIS
       document.getElementById('step-pay').classList.add('hidden');
       document.getElementById('step-result').classList.remove('hidden');
       document.getElementById('res-title').innerText = "Verifikasi Pembayaran";
