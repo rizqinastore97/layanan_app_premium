@@ -1799,14 +1799,16 @@
         timerTxt.classList.add('hidden');
         btnAction.innerText = 'SAYA SUDAH TRANSFER (MANUAL)';
         btnAction.className = 'w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:opacity-95 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all active:scale-95 shadow-md';
-      } else {
+     } else {
         if (cardManual) {
           cardManual.className = 'p-2.5 rounded-xl border-2 border-slate-200 bg-white hover:border-[#f5125e] cursor-pointer transition-all flex flex-col justify-between';
         }
         if (cardGateway) {
           cardGateway.className = 'p-2.5 rounded-xl border-2 border-emerald-500 bg-emerald-50/60 cursor-pointer transition-all flex flex-col justify-between shadow-2xs';
         }
-        instrTxt.innerText = 'QRIS Xoftware (Cek Otomatis Real-Time):';
+        instrTxt.innerText = 'Lengkapi data di atas, lalu klik tombol untuk memunculkan QRIS Xoftware:';
+        qrisImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=SILAHKAN_KLIK_PROSES_OTOMATIS';
+        timerTxt.classList.add('hidden');
         btnAction.innerText = 'PROSES PEMBAYARAN OTOMATIS';
         btnAction.className = 'w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:opacity-95 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all active:scale-95 shadow-md';
       }
