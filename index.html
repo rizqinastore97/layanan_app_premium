@@ -664,7 +664,7 @@
               <div onclick="selectCheckoutMethod('gateway')" id="method-card-gateway" class="p-2.5 rounded-xl border-2 border-slate-200 bg-white hover:border-emerald-400 cursor-pointer transition-all flex flex-col justify-between">
                 <div>
                   <span class="text-[10.5px] font-black text-slate-800 block">⚡ QRIS Otomatis</span>
-                  <span class="text-[9.5px] text-slate-500 block mt-0.5">TriPay Instan</span>
+                 <span class="text-[9.5px] text-slate-500 block mt-0.5">Xoftware Instan</span>
                 </div>
                 <span class="text-[8.5px] font-bold text-emerald-600 mt-1.5">Langsung Aktif</span>
               </div>
@@ -1806,7 +1806,7 @@
         if (cardGateway) {
           cardGateway.className = 'p-2.5 rounded-xl border-2 border-emerald-500 bg-emerald-50/60 cursor-pointer transition-all flex flex-col justify-between shadow-2xs';
         }
-        instrTxt.innerText = 'QRIS TriPay (Cek Otomatis Real-Time):';
+        instrTxt.innerText = 'QRIS Xoftware (Cek Otomatis Real-Time):';
         btnAction.innerText = 'PROSES PEMBAYARAN OTOMATIS';
         btnAction.className = 'w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:opacity-95 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all active:scale-95 shadow-md';
       }
@@ -1904,7 +1904,7 @@
       document.getElementById('step-result').classList.remove('hidden');
 
       document.getElementById('res-title').innerText = "🎉 Pembayaran Lunas Terverifikasi!";
-      document.getElementById('res-subtitle').innerText = "Gateway TriPay mengonfirmasi transaksi Anda berhasil.";
+      document.getElementById('res-subtitle').innerText = "Gateway Xoftware mengonfirmasi transaksi Anda berhasil.";
       document.getElementById('box-warning-pdf').classList.add('hidden');
       document.getElementById('btn-confirm-wa').classList.add('hidden');
 
