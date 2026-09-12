@@ -479,7 +479,10 @@
 
       <div class="p-4 overflow-y-auto space-y-4 text-xs sm:text-sm flex-1 bg-white">
         <div>
-          <h4 class="font-bold text-slate-800 mb-1.5 flex items-center justify-between text-xs"><span>Pilihan Varian / Layanan:</span></h4>
+          <h4 class="font-bold text-slate-800 mb-1.5 flex items-center justify-between text-xs">
+            <span>Pilihan Varian / Layanan:</span>
+            <span id="modal-stock-indicator" class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100">Stok Siap Kirim</span>
+          </h4>
           <div id="modal-variants-list" class="flex flex-wrap gap-2"></div>
         </div>
         <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex items-center justify-around text-center">
@@ -642,6 +645,16 @@
                   <p id="pay-total-amount" class="text-sm font-black text-[#f5125e]"></p>
                 </div>
               </div>
+
+              <!-- KOTAK KUPON DISKON / VOUCHER -->
+              <div class="bg-rose-50/50 border border-dashed border-rose-200 rounded-xl p-2.5 flex gap-2">
+                <input type="text" id="coupon-code-input" placeholder="Punya voucher? (Cth: HEMAT10)" class="flex-1 text-[11px] uppercase font-bold text-slate-800 px-3 py-1.5 bg-white border border-slate-200 rounded-lg focus:outline-none focus:border-[#f5125e]" />
+                <button type="button" onclick="applyStoreCoupon()" class="bg-[#f5125e] hover:bg-[#d40c4e] text-white text-[10.5px] font-bold px-3 py-1.5 rounded-lg active:scale-95 transition flex-shrink-0">Gunakan</button>
+              </div>
+              <div id="coupon-applied-info" class="hidden text-[10.5px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-lg flex justify-between items-center">
+                <span id="coupon-applied-text">Voucher Berhasil Dipakai</span>
+                <button type="button" onclick="removeStoreCoupon()" class="text-rose-500 hover:text-rose-700 ml-2 font-black text-xs">Batalkan</button>
+              </div>
             </div>
           </div>
 
@@ -719,9 +732,13 @@
           <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3.5 shadow-sm mt-2" id="account-result-container">
             <div class="flex items-center justify-between mb-2">
               <span id="account-status-label" class="text-[10px] text-amber-400 font-bold uppercase tracking-wider flex items-center gap-1.5"><i data-lucide="clock" class="w-3.5 h-3.5"></i> Status Pesanan Anda:</span>
-              <button onclick="copyAccountData()" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-white font-bold px-2 py-0.5 rounded border border-slate-600 transition-colors flex items-center gap-1">
-                <i data-lucide="copy" class="w-3 h-3"></i> Salin
-              </button>
+              <div class="flex items-center gap-1">
+                <button onclick="copyAccountSmart('user')" class="text-[9.5px] bg-slate-800 hover:bg-slate-700 text-white font-bold px-2 py-0.5 rounded border border-slate-600 transition-colors">User</button>
+                <button onclick="copyAccountSmart('pass')" class="text-[9.5px] bg-slate-800 hover:bg-slate-700 text-white font-bold px-2 py-0.5 rounded border border-slate-600 transition-colors">Pass</button>
+                <button onclick="copyAccountData()" class="text-[9.5px] bg-emerald-700 hover:bg-emerald-600 text-white font-bold px-2 py-0.5 rounded transition-colors flex items-center gap-1">
+                  <i data-lucide="copy" class="w-3 h-3"></i> Salin Semua
+                </button>
+              </div>
             </div>
             <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
                <pre id="account-data" class="font-mono text-[11px] sm:text-xs text-amber-300 whitespace-pre-wrap select-all"></pre>
@@ -878,6 +895,7 @@
     window.currentCheckoutVariant = null;
     window.currentCheckoutQty = 1;
     window.tripayCheckInterval = null;
+    window.appliedCouponDiscount = 0;
 
     let products = [];
     let cart = [];
@@ -1411,7 +1429,7 @@
       trackActivity('click'); 
       currentSelectedProduct = p;
       if (!p.variants || p.variants.length === 0) {
-          p.variants = [{ name: 'Default', price: p.price || 0, originalPrice: p.originalPrice || 0 }];
+          p.variants = [{ name: 'Default', price: p.price || 0, originalPrice: p.originalPrice || 0, items: [] }];
       }
       currentSelectedVariant = p.variants[0];
       
@@ -1573,6 +1591,19 @@
       window.updateModalPriceDisplay();
       document.getElementById('modal-desc').innerText = currentSelectedVariant.desc || currentSelectedProduct.description || 'Tidak ada deskripsi.';
       document.getElementById('modal-terms').innerText = currentSelectedVariant.terms || currentSelectedProduct.terms || 'Mengikuti kebijakan garansi toko.';
+      
+      // Update Indikator Stok Real-Time
+      const stockBadge = document.getElementById('modal-stock-indicator');
+      if (stockBadge) {
+        const stockCount = Array.isArray(currentSelectedVariant.items) ? currentSelectedVariant.items.length : 0;
+        if (stockCount > 0) {
+          stockBadge.innerText = `Tersedia ${stockCount} Akun Instan`;
+          stockBadge.className = 'text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100';
+        } else {
+          stockBadge.innerText = 'Stok Ready (Diproses Cepat)';
+          stockBadge.className = 'text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100';
+        }
+      }
     };
 
     window.selectVariant = function(idx) {
@@ -1709,6 +1740,7 @@
       window.currentCheckoutProduct = product;
       window.currentCheckoutVariant = variant;
       window.currentCheckoutQty = qty;
+      window.appliedCouponDiscount = 0;
 
       if (window.tripayCheckInterval) clearInterval(window.tripayCheckInterval);
       
@@ -1717,6 +1749,12 @@
 
       document.getElementById('promo0-checkout-box').classList.add('hidden');
       document.getElementById('qris-container-box').classList.remove('hidden');
+
+      // Reset info kupon
+      const cInfo = document.getElementById('coupon-applied-info');
+      const cInput = document.getElementById('coupon-code-input');
+      if (cInfo) cInfo.classList.add('hidden');
+      if (cInput) cInput.value = '';
 
       const unitPrice = Number(variant.price) || 0;
       const totalPrice = isCart ? unitPrice : (unitPrice * qty); 
@@ -1755,7 +1793,7 @@
 
       if (allowedMode === 'both') {
         methodSelectBox.classList.remove('hidden');
-        selectCheckoutMethod('manual'); // Pilihan awal
+        selectCheckoutMethod('manual'); 
       } else if (allowedMode === 'gateway') {
         methodSelectBox.classList.add('hidden');
         selectCheckoutMethod('gateway');
@@ -1933,6 +1971,80 @@
       showToast('Pembayaran berhasil dikonfirmasi secara otomatis! 🚀');
       if (typeof lucide !== 'undefined') lucide.createIcons();
     }
+
+    // ==== FUNGSI KUPON DISKON / VOUCHER TOKO ====
+    window.applyStoreCoupon = async function() {
+      const codeInput = document.getElementById('coupon-code-input');
+      const code = (codeInput?.value || '').trim();
+      if (!code) {
+        showToast('Ketik kode voucher terlebih dahulu!', 'error');
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_URL}/check-coupon`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code: code, amount: window.currentInvoiceAmountNumeric })
+        });
+        const result = await res.json();
+
+        if (result.valid) {
+          window.appliedCouponDiscount = result.discountAmount;
+          const newTotal = result.finalAmount;
+          window.currentInvoiceAmountNumeric = newTotal;
+          window.currentInvoiceTotal = formatIDR(newTotal);
+
+          document.getElementById('pay-total-amount').innerText = window.currentInvoiceTotal;
+          document.getElementById('coupon-applied-text').innerText = `${result.message} (-${formatIDR(result.discountAmount)})`;
+          document.getElementById('coupon-applied-info').classList.remove('hidden');
+          showToast(`Berhasil hemat ${formatIDR(result.discountAmount)}! 🎉`);
+          
+          if (window.activeCheckoutMethod === 'gateway') {
+            window.startGatewayPayment();
+          }
+        } else {
+          showToast(result.message || 'Kupon tidak berlaku', 'error');
+        }
+      } catch (e) {
+        showToast('Gagal memverifikasi kupon', 'error');
+      }
+    };
+
+    window.removeStoreCoupon = function() {
+      window.appliedCouponDiscount = 0;
+      document.getElementById('coupon-applied-info').classList.add('hidden');
+      document.getElementById('coupon-code-input').value = '';
+      if (currentSelectedVariant) {
+        const originalTotal = (Number(currentSelectedVariant.price) || 0) * currentSelectedQuantity;
+        window.currentInvoiceAmountNumeric = originalTotal;
+        window.currentInvoiceTotal = formatIDR(originalTotal);
+        document.getElementById('pay-total-amount').innerText = window.currentInvoiceTotal;
+      }
+      showToast('Kupon dibatalkan');
+      if (window.activeCheckoutMethod === 'gateway') {
+        window.startGatewayPayment();
+      }
+    };
+
+    // ==== FUNGSI SMART COPY (USER / PASS / ALL) ====
+    window.copyAccountSmart = function(type) {
+      const fullText = document.getElementById('account-data')?.innerText || '';
+      if (!fullText) return;
+
+      let extracted = '';
+      if (fullText.includes('|')) {
+        const parts = fullText.split('|').map(s => s.trim());
+        if (type === 'user') extracted = parts[0];
+        if (type === 'pass') extracted = parts[1] || parts[0];
+      } else {
+        extracted = fullText;
+      }
+
+      navigator.clipboard.writeText(extracted).then(() => {
+        showToast(`Berhasil salin ${type === 'user' ? 'Username / Email' : 'Password'}! 📋`);
+      });
+    };
 
     // ==== FUNGSI MANUAL PAYMENT SUCCESS & KLAIM PROMO 1 BARIS OTOMATIS ====
     window.manualPaymentSuccess = async function() {
@@ -2258,10 +2370,10 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
                   <div>
                     <span class="text-[9.5px] font-bold text-[#f5125e] bg-rose-50 border border-rose-100 px-2 py-0.5 rounded font-mono">${item.reference}</span>
                     <h4 class="font-bold text-xs sm:text-sm text-slate-800 mt-1">${item.productName} ${item.variantName && item.variantName !== '-' ? `(${item.variantName})` : ''}</h4>
-                    <p class="text-[10px] text-slate-400 mt-0.5"><i data-lucide="clock" class="w-3 h-3 inline pb-0.5"></i> ${item.date}</p>
+                    <p class="text-[10px] text-slate-400 mt-0.5"><i data-lucide="clock" class="w-3.5 h-3.5 inline pb-0.5"></i> ${item.date}</p>
                   </div>
                   <span class="inline-flex items-center gap-1 bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-bold px-2 py-1 rounded-lg">
-                    <i data-lucide="clock" class="w-3 h-3"></i> ${item.status || 'Diproses'}
+                    <i data-lucide="clock" class="w-3.5 h-3.5"></i> ${item.status || 'Diproses'}
                   </span>
                 </div>
 
@@ -2817,5 +2929,16 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
       }
     }, 2000);
   </script>
+
+  <!-- FLOATING ACTION CHAT WIDGET (POJOK KANAN BAWAH) -->
+  <div class="fixed bottom-20 md:bottom-8 right-4 z-40 flex flex-col items-end gap-2.5">
+    <div id="quick-help-bubble" class="hidden bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-2xl shadow-xl border border-rose-100 text-[11px] font-bold text-slate-800 animate-bounce-soft">
+      Butuh bantuan? Chat kami 👋
+    </div>
+    <button onclick="openChatModal()" class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-[#f5125e] to-[#ff477e] text-white flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all relative border-2 border-white group">
+      <i data-lucide="message-square-more" class="w-6 h-6"></i>
+      <span class="absolute top-0 right-0 w-3.5 h-3.5 bg-emerald-400 border-2 border-white rounded-full"></span>
+    </button>
+  </div>
 </body>
 </html>
