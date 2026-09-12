@@ -14,7 +14,7 @@
   <link rel="icon" type="image/png" href="https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png" />
   <link rel="apple-touch-icon" href="https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png" />
 
-  <!-- GOOGLE FONT OUTFIT (FONT GEMINI PRO) -->
+  <!-- GOOGLE FONT OUTFIT -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -40,11 +40,6 @@
   <style>
     * {
       font-family: 'Outfit', sans-serif !important;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      -webkit-touch-callout: none;
     }
 
     pre, code, #account-data, #pay-invoice-no {
@@ -59,16 +54,8 @@
       scroll-snap-align: start;
       flex-shrink: 0;
     }
-    
-    input, textarea, select {
-      -webkit-user-select: text !important;
-      -moz-user-select: text !important;
-      -ms-user-select: text !important;
-      user-select: text !important;
-    }
 
-    img { -webkit-user-drag: none; user-drag: none; pointer-events: none; }
-    button img, a img, .cursor-pointer img { pointer-events: auto; }
+    img { -webkit-user-drag: none; user-drag: none; }
 
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -600,7 +587,7 @@
     </div>
   </div>
 
-  <!-- MODAL PEMBAYARAN: MENDUKUNG MANUAL, GATEWAY OTOMATIS & PILIHAN KASIR -->
+  <!-- MODAL PEMBAYARAN -->
   <div id="payment-modal" class="fixed inset-0 z-[80] overflow-hidden hidden">
     <div class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
     <div class="fixed inset-0 flex items-center justify-center p-4 z-[80]">
@@ -889,8 +876,8 @@
     window.isPromo0Order = false;
 
     // PENGATURAN PEMBAYARAN GLOBAL & AKTIF
-    window.storePaymentMode = 'both'; // 'both' | 'manual' | 'gateway'
-    window.activeCheckoutMethod = 'manual'; // 'manual' | 'gateway'
+    window.storePaymentMode = 'both';
+    window.activeCheckoutMethod = 'manual';
     window.currentCheckoutProduct = null;
     window.currentCheckoutVariant = null;
     window.currentCheckoutQty = 1;
@@ -1592,7 +1579,6 @@
       document.getElementById('modal-desc').innerText = currentSelectedVariant.desc || currentSelectedProduct.description || 'Tidak ada deskripsi.';
       document.getElementById('modal-terms').innerText = currentSelectedVariant.terms || currentSelectedProduct.terms || 'Mengikuti kebijakan garansi toko.';
       
-      // Update Indikator Stok Real-Time
       const stockBadge = document.getElementById('modal-stock-indicator');
       if (stockBadge) {
         const stockCount = Array.isArray(currentSelectedVariant.items) ? currentSelectedVariant.items.length : 0;
@@ -1721,6 +1707,8 @@
             variantName: variantName,
             total: totalAmount || "Rp 0",
             buyerName: buyerData?.name || "-",
+            buyerEmail: buyerData?.email || "-",
+            buyerWA: buyerData?.wa || "-",
             status: isGateway ? "Lunas Otomatis (TriPay)" : "Menunggu Verifikasi",
             date: new Date().toLocaleString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
         });
@@ -1750,7 +1738,6 @@
       document.getElementById('promo0-checkout-box').classList.add('hidden');
       document.getElementById('qris-container-box').classList.remove('hidden');
 
-      // Reset info kupon
       const cInfo = document.getElementById('coupon-applied-info');
       const cInput = document.getElementById('coupon-code-input');
       if (cInfo) cInfo.classList.add('hidden');
@@ -1781,7 +1768,6 @@
       document.getElementById('pay-buyer-email').value = '';
       document.getElementById('pay-buyer-wa').value = '';
 
-      // Evaluasi Mode Pembayaran Produk & Toko
       const prodPayType = product.paymentType || 'default';
       let allowedMode = 'both';
 
@@ -1839,8 +1825,6 @@
         }
         instrTxt.innerText = 'Menyiapkan QRIS TriPay Otomatis...';
         timerTxt.classList.add('hidden');
-        
-        // Panggil pembuatan QRIS TriPay secara otomatis
         window.startGatewayPayment();
       }
       if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -1858,7 +1842,6 @@
       }
     };
 
-    // EKSEKUSI PEMBAYARAN GATEWAY OTOMATIS (TRIPAY)
     window.startGatewayPayment = async function() {
       const name = document.getElementById('pay-buyer-name').value.trim();
       const email = document.getElementById('pay-buyer-email').value.trim();
@@ -1972,7 +1955,6 @@
       if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 
-    // ==== FUNGSI KUPON DISKON / VOUCHER TOKO ====
     window.applyStoreCoupon = async function() {
       const codeInput = document.getElementById('coupon-code-input');
       const code = (codeInput?.value || '').trim();
@@ -2027,7 +2009,6 @@
       }
     };
 
-    // ==== FUNGSI SMART COPY (USER / PASS / ALL) ====
     window.copyAccountSmart = function(type) {
       const fullText = document.getElementById('account-data')?.innerText || '';
       if (!fullText) return;
@@ -2046,7 +2027,6 @@
       });
     };
 
-    // ==== FUNGSI MANUAL PAYMENT SUCCESS & KLAIM PROMO 1 BARIS OTOMATIS ====
     window.manualPaymentSuccess = async function() {
       const name = document.getElementById('pay-buyer-name').value.trim();
       const email = document.getElementById('pay-buyer-email').value.trim();
@@ -2064,7 +2044,6 @@
       btnAction.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin inline mr-1"></i> Mengambil Akun...`;
       if (typeof lucide !== 'undefined') lucide.createIcons();
 
-      // JIKA INI ORDER PROMO RP 0
       if (window.isPromo0Order) {
         try {
           const res = await fetch(`${API_URL}/claim-promo`, {
@@ -2115,7 +2094,6 @@
         return;
       }
 
-      // JIKA INI ORDER BIASA (MANUAL QRIS GOPAY + WA)
       document.getElementById('step-pay').classList.add('hidden');
       document.getElementById('step-result').classList.remove('hidden');
       document.getElementById('res-title').innerText = "Verifikasi Pembayaran";
@@ -2181,77 +2159,93 @@
       );
     };
 
-    window.downloadPDF = function() {
+    // =========================================================================
+    // FUNGSI UNDUH PDF INVOICE TANPA BLANK (PENUH & DETAIL)
+    // =========================================================================
+    window.downloadPDF = function(customOrderData) {
       showToast('Menyiapkan file PDF Invoice...');
-      const name = window.currentBuyerData.name || document.getElementById('pay-buyer-name').value.trim();
-      const email = window.currentBuyerData.email || document.getElementById('pay-buyer-email').value.trim();
-      const wa = window.currentBuyerData.wa || document.getElementById('pay-buyer-wa').value.trim();
-      const isGateway = window.activeCheckoutMethod === 'gateway';
+      
+      const order = customOrderData || null;
+
+      const name = order?.buyerName || window.currentBuyerData?.name || document.getElementById('pay-buyer-name')?.value.trim() || "Pelanggan Setia";
+      const email = order?.buyerEmail || window.currentBuyerData?.email || document.getElementById('pay-buyer-email')?.value.trim() || "-";
+      const wa = order?.buyerWA || window.currentBuyerData?.wa || document.getElementById('pay-buyer-wa')?.value.trim() || "-";
+      
+      const invNo = order?.reference || window.currentInvoiceNo || `INV-${Date.now()}`;
+      const invDate = order?.date || window.currentOrderDate || new Date().toLocaleString('id-ID');
+      const invTotal = order?.totalAmount || order?.total || window.currentInvoiceTotal || "Rp 0";
+      
+      let invItem = order ? `${order.productName || 'Produk Digital'} (${order.variantName || 'Paket'})` : window.currentInvoiceItem;
+      if (!invItem) invItem = "Pembelian Layanan Digital";
+
+      const isGateway = (order?.status && order.status.toLowerCase().includes('lunas')) || window.activeCheckoutMethod === 'gateway';
+      const isFree = window.isPromo0Order || invTotal.includes('GRATIS') || invTotal === 'Rp 0';
       
       const invoiceElement = document.createElement('div');
-      invoiceElement.style.padding = '30px';
-      invoiceElement.style.fontFamily = 'sans-serif';
+      invoiceElement.style.padding = '35px';
+      invoiceElement.style.fontFamily = 'Helvetica, Arial, sans-serif';
       invoiceElement.style.color = '#1e293b';
       invoiceElement.style.background = '#ffffff';
+      invoiceElement.style.boxSizing = 'border-box';
       
       invoiceElement.innerHTML = `
           <div style="border-bottom: 3px solid #f5125e; padding-bottom: 15px; margin-bottom: 25px;">
-              <h1 style="color: #f5125e; margin: 0; font-size: 28px; letter-spacing: -1px;">DIGITALHUB</h1>
-              <p style="margin: 5px 0 0; font-size: 14px; color: #64748b; font-weight: bold;">E-Invoice Pembayaran</p>
+              <h1 style="color: #f5125e; margin: 0; font-size: 28px; letter-spacing: -1px; font-weight: 900;">DIGITALHUB</h1>
+              <p style="margin: 5px 0 0; font-size: 13px; color: #64748b; font-weight: bold;">E-Invoice Pembayaran Resmi</p>
           </div>
-          <table style="width: 100%; margin-bottom: 25px;">
+          <table style="width: 100%; margin-bottom: 25px; border-collapse: collapse;">
               <tr>
                   <td style="width: 50%; vertical-align: top;">
-                      <p style="margin: 0 0 5px; font-size: 12px; color: #94a3b8; text-transform: uppercase;">Nomor Invoice</p>
-                      <p style="margin: 0 0 15px; font-size: 16px; font-weight: bold;">${window.currentInvoiceNo}</p>
-                      <p style="margin: 0 0 5px; font-size: 12px; color: #94a3b8; text-transform: uppercase;">Tanggal Pesanan</p>
-                      <p style="margin: 0; font-size: 14px; font-weight: bold;">${window.currentOrderDate}</p>
+                      <p style="margin: 0 0 4px; font-size: 11px; color: #94a3b8; text-transform: uppercase; font-weight: bold;">Nomor Invoice</p>
+                      <p style="margin: 0 0 15px; font-size: 15px; font-weight: bold; font-family: monospace; color: #0f172a;">${invNo}</p>
+                      <p style="margin: 0 0 4px; font-size: 11px; color: #94a3b8; text-transform: uppercase; font-weight: bold;">Tanggal Pesanan</p>
+                      <p style="margin: 0; font-size: 13px; font-weight: bold; color: #334155;">${invDate}</p>
                   </td>
                   <td style="width: 50%; text-align: right; vertical-align: top;">
-                      <p style="margin: 0 0 5px; font-size: 12px; color: #94a3b8; text-transform: uppercase;">Metode Pembayaran</p>
-                      <p style="margin: 0 0 15px; font-size: 14px; font-weight: bold;">${window.isPromo0Order ? 'Promo Gratis Rp 0' : (isGateway ? 'TriPay Gateway QRIS' : 'QRIS GoPay')}</p>
-                      <p style="margin: 0 0 5px; font-size: 12px; color: #94a3b8; text-transform: uppercase;">Status Pembayaran</p>
-                      <span style="display: inline-block; background: ${isGateway ? '#dcfce7' : '#fef3c7'}; color: ${isGateway ? '#16a34a' : '#b45309'}; padding: 4px 12px; border-radius: 4px; font-size: 13px; font-weight: bold;">${isGateway ? 'LUNAS TERVERIFIKASI' : 'MENUNGGU VERIFIKASI BUKTI'}</span>
+                      <p style="margin: 0 0 4px; font-size: 11px; color: #94a3b8; text-transform: uppercase; font-weight: bold;">Metode Pembayaran</p>
+                      <p style="margin: 0 0 15px; font-size: 13px; font-weight: bold; color: #0f172a;">${isFree ? 'Promo Gratis Rp 0' : (isGateway ? 'TriPay Gateway QRIS' : 'QRIS GoPay')}</p>
+                      <p style="margin: 0 0 4px; font-size: 11px; color: #94a3b8; text-transform: uppercase; font-weight: bold;">Status Pembayaran</p>
+                      <span style="display: inline-block; background: ${isGateway ? '#dcfce7' : '#fef3c7'}; color: ${isGateway ? '#16a34a' : '#b45309'}; padding: 5px 12px; border-radius: 6px; font-size: 11px; font-weight: 800; border: 1px solid ${isGateway ? '#bbf7d0' : '#fde68a'};">${isGateway ? 'LUNAS TERVERIFIKASI' : 'MENUNGGU VERIFIKASI BUKTI'}</span>
                   </td>
               </tr>
           </table>
-          <div style="background: #f8fafc; padding: 20px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #e2e8f0;">
-              <h3 style="margin: 0 0 10px; font-size: 16px; color: #334155;">Detail Pembeli</h3>
-              <table style="width: 100%; font-size: 14px;">
-                  <tr><td style="padding: 4px 0; width: 100px; color: #64748b;">Nama</td><td>: <b>${name}</b></td></tr>
-                  <tr><td style="padding: 4px 0; color: #64748b;">Email</td><td>: <b>${email}</b></td></tr>
-                  <tr><td style="padding: 4px 0; color: #64748b;">No. WA</td><td>: <b>${wa}</b></td></tr>
+          <div style="background: #f8fafc; padding: 16px 20px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #e2e8f0;">
+              <h3 style="margin: 0 0 8px; font-size: 13px; color: #334155; font-weight: bold; text-transform: uppercase;">Detail Pembeli</h3>
+              <table style="width: 100%; font-size: 12.5px; border-collapse: collapse;">
+                  <tr><td style="padding: 3px 0; width: 90px; color: #64748b;">Nama</td><td>: <b>${name}</b></td></tr>
+                  <tr><td style="padding: 3px 0; color: #64748b;">Email</td><td>: <b>${email}</b></td></tr>
+                  <tr><td style="padding: 3px 0; color: #64748b;">No. WA</td><td>: <b>${wa}</b></td></tr>
               </table>
           </div>
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px;">
               <thead>
                   <tr style="background: #f5125e; color: white;">
-                      <th style="padding: 12px 15px; text-align: left; border-radius: 8px 0 0 8px;">Deskripsi Item</th>
-                      <th style="padding: 12px 15px; text-align: right; border-radius: 0 8px 8px 0;">Total Tagihan</th>
+                      <th style="padding: 12px 15px; text-align: left; font-size: 12px; border-radius: 6px 0 0 6px;">Deskripsi Item / Layanan</th>
+                      <th style="padding: 12px 15px; text-align: right; font-size: 12px; border-radius: 0 6px 6px 0;">Total</th>
                   </tr>
               </thead>
               <tbody>
-                  <tr>
-                      <td style="padding: 15px; border-bottom: 1px solid #e2e8f0; font-size: 14px; white-space: pre-wrap;">${window.currentInvoiceItem}</td>
-                      <td style="padding: 15px; text-align: right; border-bottom: 1px solid #e2e8f0; font-weight: bold; font-size: 16px;">${window.currentInvoiceTotal}</td>
+                  <tr style="background: #ffffff;">
+                      <td style="padding: 14px 15px; border-bottom: 1px solid #e2e8f0; font-size: 13px; white-space: pre-wrap; font-weight: 600; color: #1e293b;">${invItem}</td>
+                      <td style="padding: 14px 15px; text-align: right; border-bottom: 1px solid #e2e8f0; font-weight: 800; font-size: 14px; color: #f5125e;">${invTotal}</td>
                   </tr>
               </tbody>
           </table>
-          <div style="text-align: right; font-size: 20px; margin-bottom: 40px;">
-              <span style="color: #64748b; font-size: 14px; margin-right: 15px;">Total Tagihan:</span>
-              <strong style="color: #f5125e;">${window.currentInvoiceTotal}</strong>
+          <div style="text-align: right; font-size: 18px; margin-bottom: 35px;">
+              <span style="color: #64748b; font-size: 13px; margin-right: 12px; font-weight: bold;">Total Tagihan:</span>
+              <strong style="color: #f5125e; font-size: 20px;">${invTotal}</strong>
           </div>
-          <div style="text-align: center; color: #94a3b8; font-size: 12px; border-top: 1px solid #e2e8f0; padding-top: 20px;">
-              <p style="margin: 0; color: #e11d48; font-weight: bold;">${isGateway ? 'TERIMA KASIH ATAS PESANAN ANDA.' : 'WAJIB LAMPIRKAN TANGKAPAN LAYAR BUKTI TRANSFER SAAT KONFIRMASI KE WHATSAPP.'}</p>
-              <p style="margin: 5px 0 0;">Dokumen ini adalah bukti transaksi resmi di DigitalHub.</p>
+          <div style="text-align: center; color: #94a3b8; font-size: 11px; border-top: 1px dashed #cbd5e1; padding-top: 20px;">
+              <p style="margin: 0; color: #e11d48; font-weight: 800;">${isGateway ? 'TERIMA KASIH ATAS PESANAN ANDA.' : 'WAJIB LAMPIRKAN TANGKAPAN LAYAR BUKTI TRANSFER SAAT KONFIRMASI KE WHATSAPP.'}</p>
+              <p style="margin: 5px 0 0; color: #64748b;">Dokumen ini adalah bukti transaksi digital resmi di DigitalHub Store.</p>
           </div>
       `;
 
       const opt = {
-          margin: 0.5,
-          filename: `${window.currentInvoiceNo}.pdf`,
+          margin: 0.4,
+          filename: `${invNo}.pdf`,
           image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2 },
+          html2canvas: { scale: 2, useCORS: true },
           jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
       };
 
@@ -2467,7 +2461,7 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
         `;
 
         document.getElementById('btn-download-from-preview').onclick = function() {
-          window.downloadPDF();
+          window.downloadPDF(item);
         };
 
         document.getElementById('invoice-preview-modal').classList.remove('hidden');
@@ -2890,45 +2884,9 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
     if(typeof lucide !== 'undefined') lucide.createIcons();
   </script>
 
-  <div id="digitalhub-copyright" style="text-align:center; padding:15px; font-size:11px; color:#94a3b8; border-top:1px solid #e2e8f0; margin-top:20px;">
-    &copy; 2026 <b>DigitalHub Store Manager</b>. All Rights Reserved. Protected System.
-  </div>
-
-  <script>
-    document.addEventListener('contextmenu', e => e.preventDefault()); 
-    document.addEventListener('keydown', function(e) {
-      if (
-        e.keyCode === 123 || 
-        (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || 
-        (e.ctrlKey && e.keyCode === 85) || 
-        (e.ctrlKey && e.keyCode === 83)
-      ) {
-        e.preventDefault();
-        alert('Aksi dilarang! Sistem keamanan DigitalHub aktif.');
-        window.location.href = "about:blank";
-        return false;
-      }
-    });
-
-    setInterval(function() {
-      const threshold = 160;
-      if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
-        document.body.innerHTML = "<h1 style='text-align:center;margin-top:20vh;color:red;font-family:sans-serif;'>⚠️ AKSES DITOLAK\nDeveloper Tools terdeteksi aktif.</h1>";
-        throw new Error("Security Violation: Inspector Detected.");
-      }
-    }, 1000);
-
-    setInterval(function() {
-      const copyrightEl = document.getElementById('digitalhub-copyright');
-      
-      if (!copyrightEl || !copyrightEl.innerText.includes("DigitalHub Store Manager") || copyrightEl.style.display === 'none' || copyrightEl.style.visibility === 'hidden') {
-        document.body.innerHTML = "<div style='background:black;color:red;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:monospace;text-align:center;padding:20px;'><h1>CRITICAL SYSTEM ERROR [Code: 403-TAMPER]</h1><p>Pelanggaran Hak Cipta terdeteksi: Elemen Hak Cipta Website telah dimodifikasi atau dihapus secara ilegal. Sistem dikunci.</p></div>";
-        localStorage.clear();
-        sessionStorage.clear();
-        throw new Error("CRITICAL_TAMPER_PROTECTION_TRIGGERED");
-      }
-    }, 2000);
-  </script>
+  <footer class="text-center py-6 text-xs text-slate-400 border-t border-slate-100 mt-8">
+    &copy; 2026 <b>DigitalHub Store</b>. All Rights Reserved. Layanan Digital Terpercaya.
+  </footer>
 
   <!-- FLOATING ACTION CHAT WIDGET (POJOK KANAN BAWAH) -->
   <div class="fixed bottom-20 md:bottom-8 right-4 z-40 flex flex-col items-end gap-2.5">
