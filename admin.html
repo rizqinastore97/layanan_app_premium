@@ -47,7 +47,7 @@
 
       <button onclick="switchTab('banner')" id="tab-btn-banner" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left">
         <i data-lucide="image" class="w-5 h-5 text-sky-400"></i>
-        <span>Tema, Banner & Promo</span>
+        <span>Tema, Banner & Pembayaran</span>
       </button>
 
       <button onclick="switchTab('reviews')" id="tab-btn-reviews" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left">
@@ -70,9 +70,9 @@
 
       <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 px-3 pt-5 pb-2">Integrasi & Sistem</div>
       
-      <button onclick="showToast('Koneksi Cloudflare KV & GoPay Aktif 24 Jam')" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left">
+      <button onclick="showToast('Sistem Manual GoPay & Gateway TriPay Terkoneksi')" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left">
         <i data-lucide="qr-code" class="w-5 h-5 text-sky-400"></i>
-        <span>GoPay Auto QRIS</span>
+        <span>Dual Payment Gateway</span>
       </button>
 
       <a href="index.html" target="_blank" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left">
@@ -105,7 +105,7 @@
           <h2 class="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
             <span id="view-title">Manajemen Produk</span>
           </h2>
-          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Kelola produk, sembunyikan/tampilkan, promo Rp 0 & diskon, serta stok</p>
+          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Kelola produk, sembunyikan/tampilkan, sistem bayar, promo, dan stok</p>
         </div>
         <div class="flex items-center gap-2" id="action-buttons-container">
           <button onclick="openProductModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-2xl shadow-sm transition-all flex items-center gap-1.5">
@@ -115,7 +115,7 @@
         </div>
       </div>
 
-      <!-- TAB 1: DAFTAR PRODUK (FITUR SEMBUNYIKAN PRODUK) -->
+      <!-- TAB 1: DAFTAR PRODUK -->
       <section id="section-products" class="space-y-4">
         <div class="flex items-center gap-2">
           <div class="relative flex-1">
@@ -131,7 +131,7 @@
         <div class="bg-slate-100 border border-slate-200 rounded-2xl p-3 text-xs text-slate-700 flex items-center justify-between">
           <span class="flex items-center gap-1.5 font-medium">
             <i data-lucide="info" class="w-4 h-4 text-indigo-600"></i>
-            Klik tombol <b>Ikon Mata</b> pada produk untuk menyembunyikan/menampilkannya tanpa perlu menghapus produk.
+            Klik ikon <b>Mata</b> untuk sembunyikan produk, dan atur mode bayar khusus langsung saat edit produk.
           </span>
         </div>
 
@@ -270,15 +270,51 @@
         </div>
       </section>
 
-      <!-- TAB 2: PENGATURAN TEMA & BANNER -->
+      <!-- TAB 2: PENGATURAN TEMA, BANNER & METODE PEMBAYARAN GLOBAL -->
       <section id="section-banner" class="space-y-4 hidden">
         <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-xs space-y-5">
           <div>
             <h3 class="font-bold text-sm sm:text-base text-slate-800 flex items-center gap-2">
-              <i data-lucide="image" class="w-5 h-5 text-indigo-600"></i>
-              <span>Pengaturan Tema & Banner Promosi</span>
+              <i data-lucide="wallet" class="w-5 h-5 text-indigo-600"></i>
+              <span>Pengaturan Sistem Pembayaran & Tampilan Toko</span>
             </h3>
-            <p class="text-xs text-slate-500 mt-0.5">Ubah tampilan toko dan atur banner promosi utama</p>
+            <p class="text-xs text-slate-500 mt-0.5">Tentukan metode pembayaran default kasir, tema toko, dan banner promosi</p>
+          </div>
+
+          <!-- KONTROL METODE PEMBAYARAN GLOBAL TOKO -->
+          <div class="bg-emerald-50/60 border border-emerald-200 p-4 rounded-2xl space-y-3">
+            <div class="flex items-center justify-between">
+              <h4 class="font-bold text-emerald-950 text-xs sm:text-sm flex items-center gap-1.5">
+                <i data-lucide="credit-card" class="w-4 h-4 text-emerald-600"></i> Sistem Pembayaran Default Toko (Kasir)
+              </h4>
+              <span class="text-[10px] font-black uppercase bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md border border-emerald-200">Global</span>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+              <label class="border-2 border-slate-200 p-3 rounded-2xl flex flex-col justify-between gap-2 cursor-pointer hover:border-emerald-500 bg-white transition-all" id="label-pay-both">
+                <div class="flex items-center gap-2">
+                  <input type="radio" name="store_payment_mode" value="both" onchange="bannerSettings.paymentMode = this.value" class="accent-emerald-600" checked />
+                  <span class="font-black text-slate-800">Keduanya Aktif</span>
+                </div>
+                <p class="text-[10px] text-slate-500 leading-tight">Pembeli bebas memilih transfer manual atau gateway otomatis di kasir.</p>
+              </label>
+
+              <label class="border-2 border-slate-200 p-3 rounded-2xl flex flex-col justify-between gap-2 cursor-pointer hover:border-emerald-500 bg-white transition-all" id="label-pay-manual">
+                <div class="flex items-center gap-2">
+                  <input type="radio" name="store_payment_mode" value="manual" onchange="bannerSettings.paymentMode = this.value" class="accent-emerald-600" />
+                  <span class="font-black text-slate-800">Hanya Manual</span>
+                </div>
+                <p class="text-[10px] text-slate-500 leading-tight">Hanya QRIS GoPay Statis + wajib konfirmasi bukti transfer via WhatsApp.</p>
+              </label>
+
+              <label class="border-2 border-slate-200 p-3 rounded-2xl flex flex-col justify-between gap-2 cursor-pointer hover:border-emerald-500 bg-white transition-all" id="label-pay-gateway">
+                <div class="flex items-center gap-2">
+                  <input type="radio" name="store_payment_mode" value="gateway" onchange="bannerSettings.paymentMode = this.value" class="accent-emerald-600" />
+                  <span class="font-black text-slate-800">Hanya Gateway</span>
+                </div>
+                <p class="text-[10px] text-slate-500 leading-tight">QRIS Otomatis TriPay tanpa perlu konfirmasi struk WhatsApp.</p>
+              </label>
+            </div>
           </div>
 
           <div class="bg-indigo-50/50 border border-indigo-100 p-4 rounded-2xl space-y-4">
@@ -374,7 +410,7 @@
 
           <button onclick="saveBannerSettings()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-2xl text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2">
             <i data-lucide="save" class="w-4 h-4 text-emerald-400"></i>
-            <span>Simpan Pengaturan Tema & Banner</span>
+            <span>Simpan Pengaturan Pembayaran, Tema & Banner</span>
           </button>
         </div>
       </section>
@@ -496,7 +532,7 @@
 
   </div>
 
-  <!-- MODAL PRODUK -->
+  <!-- MODAL PRODUK (DENGAN PILIHAN SISTEM BAYAR PER PRODUK) -->
   <div id="product-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div onclick="closeProductModal()" class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
     <div class="fixed inset-0 flex items-center justify-center p-4">
@@ -539,6 +575,21 @@
               <label class="font-bold text-slate-700 block mb-1">Garansi:</label>
               <input type="text" id="prod-form-warranty" placeholder="Resmi 1 Bulan" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
             </div>
+          </div>
+
+          <!-- FITUR PILIHAN METODE BAYAR PER-PRODUK -->
+          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 space-y-2">
+            <label class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+              <i data-lucide="wallet" class="w-4 h-4 text-emerald-600"></i> Sistem Pembayaran Produk Ini:
+            </label>
+            <select id="prod-form-payment-type" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-bold text-xs text-slate-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+              <option value="default">🌐 Ikuti Pengaturan Toko (Bawaan)</option>
+              <option value="gateway">⚡ Wajib Gateway Otomatis (TriPay QRIS)</option>
+              <option value="manual">💬 Wajib Manual (GoPay QRIS + Chat WA)</option>
+            </select>
+            <p class="text-[10.5px] text-slate-500 leading-snug">
+              Pilih <b>Wajib Manual</b> jika produk butuh komunikasi materi (contoh: Jasa Web), atau <b>Wajib Gateway</b> untuk akun otomatis langsung kirim.
+            </p>
           </div>
 
           <!-- Lencana -->
@@ -680,7 +731,8 @@
       imageUrl: '',
       theme: 'default',
       showTemplateWeb: false,
-      showJasaWeb: false
+      showJasaWeb: false,
+      paymentMode: 'both' // 'both' | 'manual' | 'gateway'
     };
 
     let promo0Settings = {
@@ -753,7 +805,8 @@
               imageUrl: bannerObj.imageUrl || '',
               theme: bannerObj.theme || 'default',
               showTemplateWeb: Boolean(bannerObj.showTemplateWeb),
-              showJasaWeb: Boolean(bannerObj.showJasaWeb)
+              showJasaWeb: Boolean(bannerObj.showJasaWeb),
+              paymentMode: bannerObj.paymentMode || 'both'
             };
           }
 
@@ -780,11 +833,11 @@
         populateReviewProductSelector();
         loadBannerSettingsToUI();
         loadPromo0SettingsToUI();
-        showToast('Data produk & ulasan berhasil disinkron!');
+        showToast('Data produk & sistem pembayaran disinkron!');
       } catch (err) {
         if (!products) products = [];
         renderAdminProductsList(products);
-        showToast('Mode siap digunakan.', 'info');
+        showToast('Mode offline/lokal siap digunakan.', 'info');
       }
     }
 
@@ -1075,7 +1128,7 @@
       } else if (tab === 'banner') {
         document.getElementById('section-banner').classList.remove('hidden');
         document.getElementById('tab-btn-banner').className = activeBtnClasses;
-        document.getElementById('view-title').innerText = 'Pengaturan Tema & Promo';
+        document.getElementById('view-title').innerText = 'Pengaturan Pembayaran, Tema & Promo';
         loadBannerSettingsToUI();
       } else if (tab === 'reviews') {
         document.getElementById('section-reviews').classList.remove('hidden');
@@ -1174,6 +1227,12 @@
       const toggleJasa = document.getElementById('toggle-menu-jasa');
       if (toggleJasa) toggleJasa.checked = bannerSettings.showJasaWeb;
 
+      // Sinkronkan Mode Pembayaran Global
+      const payModeRadios = document.getElementsByName('store_payment_mode');
+      for (const r of payModeRadios) {
+        r.checked = (r.value === (bannerSettings.paymentMode || 'both'));
+      }
+
       const typeRadios = document.getElementsByName('banner_type');
       for (const r of typeRadios) { r.checked = (r.value === bannerSettings.type); }
       document.getElementById('banner-url-input').value = bannerSettings.imageUrl || '';
@@ -1223,6 +1282,14 @@
     }
 
     async function saveBannerSettings() {
+      // Ambil nilai mode bayar global
+      const payModeRadios = document.getElementsByName('store_payment_mode');
+      for (const r of payModeRadios) {
+        if (r.checked) {
+          bannerSettings.paymentMode = r.value;
+          break;
+        }
+      }
       await saveAllProductsToKV();
     }
 
@@ -1237,7 +1304,8 @@
           imageUrl: bannerSettings.imageUrl, 
           theme: bannerSettings.theme,
           showTemplateWeb: bannerSettings.showTemplateWeb,
-          showJasaWeb: bannerSettings.showJasaWeb
+          showJasaWeb: bannerSettings.showJasaWeb,
+          paymentMode: bannerSettings.paymentMode || 'both'
         },
         {
           id: "__PROMO0_CONFIG__",
@@ -1282,6 +1350,14 @@
         const minPrice = Math.min(...prices);
         const totalStock = prod.variants.reduce((acc, v) => acc + (v.items ? v.items.length : (Number(v.stock) || 0)), 0);
         const isHidden = Boolean(prod.hidden);
+        const payType = prod.paymentType || 'default';
+
+        let payBadge = '';
+        if (payType === 'gateway') {
+          payBadge = `<span class="text-[8.5px] font-black uppercase text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded">⚡ TriPay</span>`;
+        } else if (payType === 'manual') {
+          payBadge = `<span class="text-[8.5px] font-black uppercase text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">💬 WA Manual</span>`;
+        }
 
         return `
           <div class="bg-white rounded-3xl p-3.5 sm:p-4 border ${isHidden ? 'border-amber-300 bg-amber-50/20 opacity-80' : 'border-slate-200'} shadow-2xs hover:border-indigo-500 transition-all flex items-center justify-between gap-3 group">
@@ -1296,6 +1372,7 @@
                 <div class="flex items-center gap-1.5 flex-wrap">
                   <span class="text-[9px] uppercase font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md">${prod.category}</span>
                   <span class="text-[9.5px] font-bold text-slate-400">• Stok: ${totalStock}</span>
+                  ${payBadge}
                   ${isHidden ? `<span class="text-[9px] uppercase font-black text-amber-700 bg-amber-100 border border-amber-200 px-2 py-0.5 rounded-md flex items-center gap-1"><i data-lucide="eye-off" class="w-2.5 h-2.5"></i> Sembunyi</span>` : ''}
                 </div>
                 <h3 class="text-xs sm:text-sm font-bold text-slate-800 truncate mt-0.5 ${isHidden ? 'line-through text-slate-500' : ''}">${prod.name}</h3>
@@ -1303,7 +1380,6 @@
               </div>
             </div>
             <div class="flex items-center gap-1.5 flex-shrink-0">
-              <!-- TOMBOL SEMBUNYIKAN / TAMPILKAN DENGAN IKON MATA -->
               <button onclick="toggleHideProduct(${prod.id})" title="${isHidden ? 'Tampilkan Kembali ke Toko' : 'Sembunyikan dari Toko'}" class="${isHidden ? 'bg-amber-100 text-amber-800 hover:bg-amber-200' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'} text-xs font-bold p-2 rounded-xl transition-all">
                 <i data-lucide="${isHidden ? 'eye-off' : 'eye'}" class="w-3.5 h-3.5"></i>
               </button>
@@ -1336,6 +1412,7 @@
       document.getElementById('prod-form-id').value = '';
       document.getElementById('prod-form-name').value = '';
       document.getElementById('prod-form-image').value = '';
+      document.getElementById('prod-form-payment-type').value = 'default';
       updateImagePreview('');
       
       document.getElementById('variants-form-container').innerHTML = '';
@@ -1354,6 +1431,7 @@
       document.getElementById('prod-form-name').value = p.name;
       document.getElementById('prod-form-category').value = p.category;
       document.getElementById('prod-form-warranty').value = p.warranty || 'Resmi';
+      document.getElementById('prod-form-payment-type').value = p.paymentType || 'default';
       document.getElementById('prod-form-bestseller').checked = Boolean(p.isBestSeller);
       document.getElementById('prod-form-hot').checked = Boolean(p.isHot);
       document.getElementById('prod-form-sold').value = p.sold || '0';
@@ -1445,6 +1523,7 @@
         name: document.getElementById('prod-form-name').value.trim(),
         category: document.getElementById('prod-form-category').value.trim(),
         warranty: document.getElementById('prod-form-warranty').value.trim(),
+        paymentType: document.getElementById('prod-form-payment-type').value || 'default', // Simpan override bayar
         image: imageLines[0],        
         images: imageLines,        
         description: variants.length > 0 ? variants[0].desc : '',
@@ -1453,7 +1532,7 @@
         isHot: document.getElementById('prod-form-hot').checked,
         sold: Number(document.getElementById('prod-form-sold').value) || 0,
         rating: document.getElementById('prod-form-rating').value.trim() || '5.0',
-        hidden: existingProd ? Boolean(existingProd.hidden) : false, // Simpan status sembunyi
+        hidden: existingProd ? Boolean(existingProd.hidden) : false,
         variants: variants,
         customReviews: existingProd ? (existingProd.customReviews || []) : []
       };
