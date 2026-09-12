@@ -47,7 +47,7 @@
 
       <button onclick="switchTab('banner')" id="tab-btn-banner" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left">
         <i data-lucide="image" class="w-5 h-5 text-sky-400"></i>
-        <span>Tema, Banner & Pembayaran</span>
+        <span>Tema, Banner & Toko</span>
       </button>
 
       <button onclick="switchTab('reviews')" id="tab-btn-reviews" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left">
@@ -70,9 +70,13 @@
 
       <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 px-3 pt-5 pb-2">Integrasi & Sistem</div>
       
-      <button onclick="showToast('Sistem Manual GoPay & Gateway TriPay Terkoneksi')" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left">
-        <i data-lucide="qr-code" class="w-5 h-5 text-sky-400"></i>
-        <span>Dual Payment Gateway</span>
+      <!-- Tombol Aktif Pengaturan Payment Gateway -->
+      <button onclick="switchTab('gateway')" id="tab-btn-gateway" class="w-full flex items-center justify-between px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left">
+        <div class="flex items-center gap-3">
+          <i data-lucide="credit-card" class="w-5 h-5 text-sky-400"></i>
+          <span>Dual Payment Gateway</span>
+        </div>
+        <span class="bg-emerald-500/20 text-emerald-400 text-[9px] font-black uppercase px-2 py-0.5 rounded-full border border-emerald-500/30">Aktif</span>
       </button>
 
       <a href="index.html" target="_blank" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left">
@@ -143,6 +147,68 @@
         </div>
       </section>
 
+      <!-- TAB GATEWAY: PENGATURAN DUAL PAYMENT GATEWAY -->
+      <section id="section-gateway" class="space-y-4 hidden">
+        <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-xs space-y-5">
+          <div>
+            <h3 class="font-bold text-sm sm:text-base text-slate-800 flex items-center gap-2">
+              <i data-lucide="credit-card" class="w-5 h-5 text-indigo-600"></i>
+              <span>Konfigurasi Dual Payment Gateway</span>
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5">Tentukan bagaimana kasir website memproses transaksi pelanggan Anda</p>
+          </div>
+
+          <div class="bg-emerald-50/70 border border-emerald-200 p-4 rounded-2xl space-y-3">
+            <div class="flex items-center justify-between">
+              <h4 class="font-bold text-emerald-950 text-xs sm:text-sm flex items-center gap-1.5">
+                <i data-lucide="wallet" class="w-4 h-4 text-emerald-600"></i> Mode Pembayaran Aktif di Kasir (Global)
+              </h4>
+              <span class="text-[10px] font-black uppercase bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md border border-emerald-200">Pengaturan Toko</span>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+              <label class="border-2 border-slate-200 p-3 rounded-2xl flex flex-col justify-between gap-2 cursor-pointer hover:border-emerald-500 bg-white transition-all">
+                <div class="flex items-center gap-2">
+                  <input type="radio" name="store_payment_mode_gateway" value="both" onchange="syncPaymentModeChoice(this.value)" class="accent-emerald-600" checked />
+                  <span class="font-black text-slate-800">Keduanya Aktif</span>
+                </div>
+                <p class="text-[10px] text-slate-500 leading-tight">Pembeli bebas memilih transfer manual atau gateway otomatis di kasir.</p>
+              </label>
+
+              <label class="border-2 border-slate-200 p-3 rounded-2xl flex flex-col justify-between gap-2 cursor-pointer hover:border-emerald-500 bg-white transition-all">
+                <div class="flex items-center gap-2">
+                  <input type="radio" name="store_payment_mode_gateway" value="manual" onchange="syncPaymentModeChoice(this.value)" class="accent-emerald-600" />
+                  <span class="font-black text-slate-800">Hanya Manual</span>
+                </div>
+                <p class="text-[10px] text-slate-500 leading-tight">Hanya QRIS GoPay Statis + wajib upload tangkapan layar bukti transfer ke WA.</p>
+              </label>
+
+              <label class="border-2 border-slate-200 p-3 rounded-2xl flex flex-col justify-between gap-2 cursor-pointer hover:border-emerald-500 bg-white transition-all">
+                <div class="flex items-center gap-2">
+                  <input type="radio" name="store_payment_mode_gateway" value="gateway" onchange="syncPaymentModeChoice(this.value)" class="accent-emerald-600" />
+                  <span class="font-black text-slate-800">Hanya Gateway</span>
+                </div>
+                <p class="text-[10px] text-slate-500 leading-tight">QRIS Xoftware Otomatis (Realtime settlement fee Rp 0 ke seller).</p>
+              </label>
+            </div>
+          </div>
+
+          <div class="border border-slate-200 rounded-2xl p-4 bg-slate-50 space-y-2 text-xs text-slate-600">
+            <h5 class="font-bold text-slate-800 flex items-center gap-1.5"><i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i> Status Gateway Terkoneksi:</h5>
+            <div class="space-y-1 text-[11.5px]">
+              <p>• <b>Xoftware Gateway:</b> Aktif via Cloudflare Worker (`/create-tripay-tx` & `/check-status`)</p>
+              <p>• <b>Saluran Terpasang:</b> QRIS Realtime (Seller fee: Rp 0)</p>
+              <p>• <b>Override per Produk:</b> Anda juga bisa mengunci metode tertentu pada tiap produk di menu Katalog Produk.</p>
+            </div>
+          </div>
+
+          <button onclick="saveBannerSettings()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-2xl text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2">
+            <i data-lucide="save" class="w-4 h-4 text-emerald-400"></i>
+            <span>Simpan Pengaturan Pembayaran</span>
+          </button>
+        </div>
+      </section>
+
       <!-- TAB PROMO BANNER: RP 0 ATAU DISKON POTONGAN HARGA -->
       <section id="section-promo0" class="space-y-4 hidden">
         <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-xs space-y-5">
@@ -164,8 +230,6 @@
           </div>
 
           <div class="space-y-4 text-xs sm:text-sm">
-            
-            <!-- PILIHAN MODEL PROMO BANNER -->
             <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-3">
               <div>
                 <label class="text-xs font-bold text-slate-800 block mb-1.5">Pilih Model Promo Banner:</label>
@@ -181,7 +245,6 @@
                 </div>
               </div>
 
-              <!-- KOLOM HARGA PROMO -->
               <div id="promo-price-container" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2.5 border-t border-slate-200">
                 <div>
                   <label class="text-[11px] font-bold text-slate-700 block mb-1">Harga Promo Pembeli (Rp):</label>
@@ -221,7 +284,6 @@
               </div>
             </div>
 
-            <!-- Pengaturan Timer Hitung Mundur -->
             <div class="bg-rose-50 border border-rose-100 rounded-2xl p-4 space-y-3">
               <h4 class="font-bold text-rose-900 text-xs flex items-center gap-1.5">
                 <i data-lucide="clock" class="w-4 h-4 text-rose-600"></i> Pengaturan Batas Waktu / Countdown Timer
@@ -259,7 +321,6 @@
                 </span>
               </div>
               <textarea id="promo0-account-data" rows="5" oninput="updatePromoStockCounter(this.value)" placeholder="Masukkan 1 akun per baris (tekan Enter untuk akun berikutnya):&#10;user1@gmail.com | pass1&#10;user2@gmail.com | pass2&#10;https://link-aktivasi-3..." class="w-full px-3.5 py-2.5 bg-slate-900 text-emerald-400 font-mono text-xs border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500"></textarea>
-              <p class="text-[10px] text-slate-400 mt-1">💡 <b>Catatan:</b> Jika memilih Gratis Rp 0, 1 akun akan diambil otomatis per klaim. Jika memilih Diskon QRIS, akun dikirim admin via WhatsApp setelah bukti transfer dicek.</p>
             </div>
 
             <button onclick="savePromo0Settings()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-3.5 rounded-2xl text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2">
@@ -270,51 +331,15 @@
         </div>
       </section>
 
-      <!-- TAB 2: PENGATURAN TEMA, BANNER & METODE PEMBAYARAN GLOBAL -->
+      <!-- TAB 2: PENGATURAN TEMA & BANNER -->
       <section id="section-banner" class="space-y-4 hidden">
         <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-xs space-y-5">
           <div>
             <h3 class="font-bold text-sm sm:text-base text-slate-800 flex items-center gap-2">
-              <i data-lucide="wallet" class="w-5 h-5 text-indigo-600"></i>
-              <span>Pengaturan Sistem Pembayaran & Tampilan Toko</span>
+              <i data-lucide="image" class="w-5 h-5 text-indigo-600"></i>
+              <span>Pengaturan Tema & Tampilan Toko</span>
             </h3>
-            <p class="text-xs text-slate-500 mt-0.5">Tentukan metode pembayaran default kasir, tema toko, dan banner promosi</p>
-          </div>
-
-          <!-- KONTROL METODE PEMBAYARAN GLOBAL TOKO -->
-          <div class="bg-emerald-50/60 border border-emerald-200 p-4 rounded-2xl space-y-3">
-            <div class="flex items-center justify-between">
-              <h4 class="font-bold text-emerald-950 text-xs sm:text-sm flex items-center gap-1.5">
-                <i data-lucide="credit-card" class="w-4 h-4 text-emerald-600"></i> Sistem Pembayaran Default Toko (Kasir)
-              </h4>
-              <span class="text-[10px] font-black uppercase bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md border border-emerald-200">Global</span>
-            </div>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
-              <label class="border-2 border-slate-200 p-3 rounded-2xl flex flex-col justify-between gap-2 cursor-pointer hover:border-emerald-500 bg-white transition-all" id="label-pay-both">
-                <div class="flex items-center gap-2">
-                  <input type="radio" name="store_payment_mode" value="both" onchange="bannerSettings.paymentMode = this.value" class="accent-emerald-600" checked />
-                  <span class="font-black text-slate-800">Keduanya Aktif</span>
-                </div>
-                <p class="text-[10px] text-slate-500 leading-tight">Pembeli bebas memilih transfer manual atau gateway otomatis di kasir.</p>
-              </label>
-
-              <label class="border-2 border-slate-200 p-3 rounded-2xl flex flex-col justify-between gap-2 cursor-pointer hover:border-emerald-500 bg-white transition-all" id="label-pay-manual">
-                <div class="flex items-center gap-2">
-                  <input type="radio" name="store_payment_mode" value="manual" onchange="bannerSettings.paymentMode = this.value" class="accent-emerald-600" />
-                  <span class="font-black text-slate-800">Hanya Manual</span>
-                </div>
-                <p class="text-[10px] text-slate-500 leading-tight">Hanya QRIS GoPay Statis + wajib konfirmasi bukti transfer via WhatsApp.</p>
-              </label>
-
-              <label class="border-2 border-slate-200 p-3 rounded-2xl flex flex-col justify-between gap-2 cursor-pointer hover:border-emerald-500 bg-white transition-all" id="label-pay-gateway">
-                <div class="flex items-center gap-2">
-                  <input type="radio" name="store_payment_mode" value="gateway" onchange="bannerSettings.paymentMode = this.value" class="accent-emerald-600" />
-                  <span class="font-black text-slate-800">Hanya Gateway</span>
-                </div>
-                <p class="text-[10px] text-slate-500 leading-tight">QRIS Otomatis TriPay tanpa perlu konfirmasi struk WhatsApp.</p>
-              </label>
-            </div>
+            <p class="text-xs text-slate-500 mt-0.5">Ubah tema tampilan website dan aktifkan kategori menu</p>
           </div>
 
           <div class="bg-indigo-50/50 border border-indigo-100 p-4 rounded-2xl space-y-4">
@@ -328,7 +353,6 @@
 
             <div class="pt-3 border-t border-indigo-100">
               <h4 class="font-bold text-slate-800 text-sm mb-3"><i data-lucide="toggle-right" class="w-4 h-4 inline-block text-indigo-600 mr-1"></i> On/Off Kategori Menu</h4>
-              
               <div class="space-y-2">
                 <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200">
                   <div>
@@ -369,7 +393,7 @@
           <div class="space-y-3">
             <label class="text-xs font-bold text-slate-700 block">Pilih Tipe Tampilan Banner:</label>
             <div class="grid grid-cols-2 gap-3">
-              <label class="border-2 border-slate-200 p-3 rounded-2xl flex items-center gap-2.5 cursor-pointer hover:border-indigo-500 transition-colors" id="label-type-custom">
+              <label class="border-2 border-slate-200 p-3 rounded-2xl flex items-center gap-2.5 cursor-pointer hover:border-indigo-500 transition-colors">
                 <input type="radio" name="banner_type" value="image" onchange="setBannerType('image')" class="accent-indigo-600" checked />
                 <div>
                   <p class="font-bold text-xs text-slate-800">Gambar Banner</p>
@@ -377,7 +401,7 @@
                 </div>
               </label>
 
-              <label class="border-2 border-slate-200 p-3 rounded-2xl flex items-center gap-2.5 cursor-pointer hover:border-indigo-500 transition-colors" id="label-type-text">
+              <label class="border-2 border-slate-200 p-3 rounded-2xl flex items-center gap-2.5 cursor-pointer hover:border-indigo-500 transition-colors">
                 <input type="radio" name="banner_type" value="text" onchange="setBannerType('text')" class="accent-indigo-600" />
                 <div>
                   <p class="font-bold text-xs text-slate-800">LazFlash Bawaan</p>
@@ -389,7 +413,6 @@
 
           <div id="banner-image-form-box" class="space-y-3 pt-2 border-t border-slate-100">
             <label class="text-xs font-bold text-slate-700 block">Upload Gambar Banner (Rasio 16:6 / 3:1):</label>
-            
             <div class="w-full aspect-[16/6] bg-slate-100 rounded-2xl border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden relative">
               <img id="banner-preview-img" src="" class="w-full h-full object-cover hidden" />
               <div id="banner-placeholder-icon" class="flex flex-col items-center justify-center text-slate-400 text-xs">
@@ -397,7 +420,6 @@
                 <span>Belum ada gambar banner</span>
               </div>
             </div>
-
             <div class="flex flex-col sm:flex-row items-center gap-2">
               <label for="banner-file-input" class="w-full sm:w-auto bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-bold px-4 py-2.5 rounded-xl text-xs cursor-pointer transition-colors flex items-center justify-center gap-1.5 flex-shrink-0">
                 <i data-lucide="upload" class="w-4 h-4"></i>
@@ -410,7 +432,7 @@
 
           <button onclick="saveBannerSettings()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-2xl text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2">
             <i data-lucide="save" class="w-4 h-4 text-emerald-400"></i>
-            <span>Simpan Pengaturan Pembayaran, Tema & Banner</span>
+            <span>Simpan Pengaturan Tema & Banner</span>
           </button>
         </div>
       </section>
@@ -532,7 +554,7 @@
 
   </div>
 
-  <!-- MODAL PRODUK (DENGAN PILIHAN SISTEM BAYAR PER PRODUK) -->
+  <!-- MODAL PRODUK -->
   <div id="product-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div onclick="closeProductModal()" class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
     <div class="fixed inset-0 flex items-center justify-center p-4">
@@ -577,19 +599,16 @@
             </div>
           </div>
 
-          <!-- FITUR PILIHAN METODE BAYAR PER-PRODUK -->
+          <!-- PILIHAN METODE BAYAR PER PRODUK -->
           <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 space-y-2">
             <label class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
               <i data-lucide="wallet" class="w-4 h-4 text-emerald-600"></i> Sistem Pembayaran Produk Ini:
             </label>
             <select id="prod-form-payment-type" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-bold text-xs text-slate-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
               <option value="default">🌐 Ikuti Pengaturan Toko (Bawaan)</option>
-              <option value="gateway">⚡ Wajib Gateway Otomatis (TriPay QRIS)</option>
+              <option value="gateway">⚡ Wajib Gateway Otomatis (Xoftware QRIS)</option>
               <option value="manual">💬 Wajib Manual (GoPay QRIS + Chat WA)</option>
             </select>
-            <p class="text-[10.5px] text-slate-500 leading-snug">
-              Pilih <b>Wajib Manual</b> jika produk butuh komunikasi materi (contoh: Jasa Web), atau <b>Wajib Gateway</b> untuk akun otomatis langsung kirim.
-            </p>
           </div>
 
           <!-- Lencana -->
@@ -640,10 +659,8 @@
               </div>
             </div>
             <textarea id="prod-form-image" rows="3" oninput="updateImagePreviewFromInput(this.value)" placeholder="Masukkan URL gambar (1 URL per baris jika ingin banyak gambar untuk slide)..." class="w-full px-3.5 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 text-xs text-slate-600 font-mono"></textarea>
-            <p class="text-[10px] text-slate-400">💡 Tips: Jika ingin 2 gambar berbeda untuk slide, masukkan link gambar pertama di baris 1, lalu enter dan masukkan link gambar kedua di baris ke-2.</p>
           </div>
 
-          <!-- Varian Per Paket -->
           <div class="border-t border-slate-200 pt-4 space-y-3">
             <div class="flex justify-between items-center bg-indigo-50 p-2.5 rounded-xl border border-indigo-100">
               <label class="font-bold text-indigo-900 text-xs sm:text-sm flex items-center gap-1.5"><i data-lucide="layers" class="w-4 h-4"></i> Daftar Varian/Paket Harga</label>
@@ -732,7 +749,7 @@
       theme: 'default',
       showTemplateWeb: false,
       showJasaWeb: false,
-      paymentMode: 'both' // 'both' | 'manual' | 'gateway'
+      paymentMode: 'both'
     };
 
     let promo0Settings = {
@@ -1097,6 +1114,7 @@
 
     function switchTab(tab) {
       document.getElementById('section-products').classList.add('hidden');
+      document.getElementById('section-gateway').classList.add('hidden');
       document.getElementById('section-promo0').classList.add('hidden');
       document.getElementById('section-banner').classList.add('hidden');
       document.getElementById('section-reviews').classList.add('hidden');
@@ -1111,6 +1129,7 @@
       document.getElementById('tab-btn-banner').className = btnClasses;
       document.getElementById('tab-btn-reviews').className = btnClasses;
       document.getElementById('tab-btn-stats').className = btnClasses;
+      document.getElementById('tab-btn-gateway').className = 'w-full flex items-center justify-between px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left';
       document.getElementById('tab-btn-orders').className = 'w-full flex items-center justify-between px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left';
 
       document.getElementById('action-buttons-container').classList.add('hidden');
@@ -1120,6 +1139,10 @@
         document.getElementById('tab-btn-products').className = activeBtnClasses;
         document.getElementById('view-title').innerText = 'Manajemen Produk';
         document.getElementById('action-buttons-container').classList.remove('hidden');
+      } else if (tab === 'gateway') {
+        document.getElementById('section-gateway').classList.remove('hidden');
+        document.getElementById('tab-btn-gateway').className = 'w-full flex items-center justify-between px-4 py-3 rounded-2xl bg-indigo-600 text-white font-extrabold text-sm sm:text-base shadow-sm text-left';
+        document.getElementById('view-title').innerText = 'Dual Payment Gateway';
       } else if (tab === 'promo0') {
         document.getElementById('section-promo0').classList.remove('hidden');
         document.getElementById('tab-btn-promo0').className = activeBtnClasses;
@@ -1128,7 +1151,7 @@
       } else if (tab === 'banner') {
         document.getElementById('section-banner').classList.remove('hidden');
         document.getElementById('tab-btn-banner').className = activeBtnClasses;
-        document.getElementById('view-title').innerText = 'Pengaturan Pembayaran, Tema & Promo';
+        document.getElementById('view-title').innerText = 'Pengaturan Tema & Tampilan Toko';
         loadBannerSettingsToUI();
       } else if (tab === 'reviews') {
         document.getElementById('section-reviews').classList.remove('hidden');
@@ -1147,6 +1170,10 @@
         loadOrdersData();
       }
       lucide.createIcons();
+    }
+
+    function syncPaymentModeChoice(val) {
+      bannerSettings.paymentMode = val;
     }
 
     function triggerAiGenerateDescription() {
@@ -1209,7 +1236,7 @@
       return {
         category: category,
         warranty: warranty,
-        desc: `Beli layanan ${name} resmi dan bergaransi penuh di DigitalHub. Solusi ${tagKeyword} berkualitas dengan proses pengiriman instan.\n\n✨ Keunggulan Layanan:\n• Fitur Premium / VIP terbuka penuh tanpa batasan\n• Stabil, aman, dan anti-suspend\n• Harga paling terjangkau dengan kualitas nomor satu\n\n⚡ Pengiriman: Otomatis via QRIS GoPay (< 5 Detik)\n🛡️ Garansi: ${warranty}`,
+        desc: `Beli layanan ${name} resmi dan bergaransi penuh di DigitalHub. Solusi ${tagKeyword} berkualitas dengan proses pengiriman instan.\n\n✨ Keunggulan Layanan:\n• Fitur Premium / VIP terbuka penuh tanpa batasan\n• Stabil, aman, dan anti-suspend\n• Harga paling terjangkau dengan kualitas nomor satu\n\n⚡ Pengiriman: Otomatis via QRIS Xoftware / GoPay (< 5 Detik)\n🛡️ Garansi: ${warranty}`,
         terms: `1. Gunakan ${name} sesuai aturan dan panduan yang diberikan.\n2. Dilarang melakukan tindakan yang melanggar ketentuan layanan.\n3. Simpan Nomor Invoice sebagai bukti klaim garansi sah via WhatsApp Admin.`,
         variants: [{ name: 'Paket Reguler', price: 5000 }, { name: 'Paket VIP Premium', price: 15000 }]
       };
@@ -1227,8 +1254,8 @@
       const toggleJasa = document.getElementById('toggle-menu-jasa');
       if (toggleJasa) toggleJasa.checked = bannerSettings.showJasaWeb;
 
-      // Sinkronkan Mode Pembayaran Global
-      const payModeRadios = document.getElementsByName('store_payment_mode');
+      // Sinkronkan Mode Pembayaran Global ke Radio Gateway
+      const payModeRadios = document.getElementsByName('store_payment_mode_gateway');
       for (const r of payModeRadios) {
         r.checked = (r.value === (bannerSettings.paymentMode || 'both'));
       }
@@ -1282,8 +1309,7 @@
     }
 
     async function saveBannerSettings() {
-      // Ambil nilai mode bayar global
-      const payModeRadios = document.getElementsByName('store_payment_mode');
+      const payModeRadios = document.getElementsByName('store_payment_mode_gateway');
       for (const r of payModeRadios) {
         if (r.checked) {
           bannerSettings.paymentMode = r.value;
@@ -1329,7 +1355,6 @@
       } catch (err) { showToast('Gagal terhubung ke Cloudflare', 'error'); }
     }
 
-    // FUNGSI TOGGLE SEMBUNYIKAN / TAMPILKAN PRODUK
     async function toggleHideProduct(productId) {
       const prod = products.find(p => p.id === productId);
       if (!prod) return;
@@ -1354,7 +1379,7 @@
 
         let payBadge = '';
         if (payType === 'gateway') {
-          payBadge = `<span class="text-[8.5px] font-black uppercase text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded">⚡ TriPay</span>`;
+          payBadge = `<span class="text-[8.5px] font-black uppercase text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded">⚡ Xoftware</span>`;
         } else if (payType === 'manual') {
           payBadge = `<span class="text-[8.5px] font-black uppercase text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">💬 WA Manual</span>`;
         }
@@ -1523,7 +1548,7 @@
         name: document.getElementById('prod-form-name').value.trim(),
         category: document.getElementById('prod-form-category').value.trim(),
         warranty: document.getElementById('prod-form-warranty').value.trim(),
-        paymentType: document.getElementById('prod-form-payment-type').value || 'default', // Simpan override bayar
+        paymentType: document.getElementById('prod-form-payment-type').value || 'default',
         image: imageLines[0],        
         images: imageLines,        
         description: variants.length > 0 ? variants[0].desc : '',
@@ -1566,8 +1591,7 @@
           const canvas = document.createElement('canvas');
           const maxDim = 400;
           let width = img.width, height = img.height;
-          if (width > height) { if (width > maxDim) { height *= maxDim / width; width = maxDim; } }
-          else { if (height > maxDim) { width *= maxDim / height; height = maxDim; } }
+          if (width > maxDim) { height *= maxDim / width; width = maxDim; }
           canvas.width = width; canvas.height = height;
           const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
           const compressed = canvas.toDataURL('image/webp', 0.85);
