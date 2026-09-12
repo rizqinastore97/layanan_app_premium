@@ -241,9 +241,8 @@
       </div>
     </div>
 
-    <!-- KOTAK BANNER PROMO MEMANJANG (PROPORSIONAL 10:3, TIDAK TERPOTONG & COMPACT DI HP) -->
+    <!-- KOTAK BANNER PROMO MEMANJANG -->
     <div id="promo0-banner-wrapper" class="hidden bg-white border border-slate-200/80 rounded-2xl sm:rounded-3xl shadow-md overflow-hidden relative group">
-      <!-- AREA GAMBAR BANNER LENGKAP -->
       <div class="w-full relative bg-slate-950 cursor-pointer overflow-hidden aspect-[10/3]" onclick="startPromo0Checkout()">
         <img 
           id="promo0-img" 
@@ -256,7 +255,6 @@
         </span>
       </div>
 
-      <!-- BARIS DETAIL & KONTROL BANNER SATU BARIS COMPACT -->
       <div class="px-2.5 py-2 sm:p-3.5 bg-gradient-to-r from-rose-600 via-[#f5125e] to-pink-600 text-white flex items-center justify-between gap-2">
         <div class="min-w-0 flex-1 pr-1">
           <h3 id="promo0-title-txt" class="text-[11px] sm:text-sm font-black truncate tracking-tight leading-tight">
@@ -267,7 +265,6 @@
           </p>
         </div>
 
-        <!-- COUNTDOWN TIMER -->
         <div class="flex items-center gap-0.5 text-center flex-shrink-0">
           <div class="bg-black/35 backdrop-blur-xs px-1.5 py-0.5 sm:px-2 sm:py-1 rounded min-w-[24px] sm:min-w-[32px] border border-white/10">
             <span id="promo0-timer-days" class="font-black text-[10px] sm:text-xs block leading-none">00</span>
@@ -290,7 +287,6 @@
           </div>
         </div>
 
-        <!-- TOMBOL AKSI OTOMATIS -->
         <button 
           id="promo0-btn-claim" 
           onclick="startPromo0Checkout()" 
@@ -649,11 +645,11 @@
             </div>
           </div>
 
-          <!-- KARTU PILIHAN METODE PEMBAYARAN (JIKA TOKO/PRODUK AKTIFKAN KEDUANYA) -->
+          <!-- KARTU PILIHAN METODE PEMBAYARAN -->
           <div id="checkout-method-selection" class="hidden text-left space-y-2">
             <p class="text-[11px] font-bold text-slate-700">Pilih Jalur Pembayaran:</p>
             <div class="grid grid-cols-2 gap-2 text-xs">
-              <div onclick="selectCheckoutMethod('manual')" id="method-card-manual" class="p-2.5 rounded-xl border-2 border-[#f5125e] bg-rose-50/50 cursor-pointer transition-all flex flex-col justify-between">
+              <div onclick="selectCheckoutMethod('manual')" id="method-card-manual" class="p-2.5 rounded-xl border-2 border-[#f5125e] bg-rose-50/50 cursor-pointer transition-all flex flex-col justify-between shadow-2xs">
                 <div>
                   <span class="text-[10.5px] font-black text-slate-800 block">💬 QRIS Manual</span>
                   <span class="text-[9.5px] text-slate-500 block mt-0.5">GoPay + Bukti WA</span>
@@ -696,7 +692,7 @@
           </div>
           
           <div class="mt-4">
-            <button id="btn-pay-action" onclick="handlePayActionClick()" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:opacity-95 text-white py-3 rounded-xl font-black text-[11px] uppercase tracking-wider transition-all active:scale-95 shadow-md">SAYA SUDAH TRANSFER</button>
+            <button id="btn-pay-action" onclick="handlePayActionClick()" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:opacity-95 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all active:scale-95 shadow-md">SAYA SUDAH TRANSFER (MANUAL)</button>
           </div>
         </div>
 
@@ -709,7 +705,7 @@
             <p id="res-subtitle" class="text-[11px] text-slate-500 mt-1 font-medium">Kirim bukti transaksi Anda agar pesanan segera dicek oleh Admin.</p>
           </div>
           
-          <!-- KOTAK PERINGATAN BUKTI TRANSFER (OTOMATIS SEMBUNYI JIKA TRIPAY OTOMATIS) -->
+          <!-- KOTAK PERINGATAN BUKTI TRANSFER -->
           <div class="bg-rose-50 border-2 border-rose-400 rounded-2xl p-4 text-center mt-2 shadow-sm" id="box-warning-pdf">
             <div class="inline-flex items-center justify-center gap-2 text-rose-700 font-black text-xs sm:text-sm tracking-wide mb-1.5 uppercase">
               <i data-lucide="alert-circle" class="w-5 h-5 text-rose-600 flex-shrink-0"></i>
@@ -1040,7 +1036,6 @@
 
       if (!config) return;
       
-      // Ambil preferensi mode bayar global
       window.storePaymentMode = config.paymentMode || 'both';
 
       if (config.theme === 'shopee') {
@@ -1078,7 +1073,6 @@
       }
     }
 
-    // PENGATURAN BANNER PROMO (RP 0 ATAU DISKON POTONGAN HARGA)
     function applyPromo0Config(promo) {
       promo0Data = promo;
       const wrapper = document.getElementById('promo0-banner-wrapper');
@@ -1136,7 +1130,6 @@
       document.getElementById('promo0-timer-secs').innerText = String(secs).padStart(2, '0');
     }
 
-    // CHECKOUT PROMO (RP 0 ATAU DISKON POTONGAN HARGA)
     window.startPromo0Checkout = function() {
       if (!promo0Data) return;
 
@@ -1806,10 +1799,11 @@
         if (cardGateway) {
           cardGateway.className = 'p-2.5 rounded-xl border-2 border-emerald-500 bg-emerald-50/60 cursor-pointer transition-all flex flex-col justify-between shadow-2xs';
         }
-        instrTxt.innerText = 'QRIS TriPay (Cek Otomatis Real-Time):';
+        instrTxt.innerText = 'Menyiapkan QRIS TriPay Otomatis...';
         timerTxt.classList.add('hidden');
-        btnAction.innerText = 'PROSES PEMBAYARAN OTOMATIS';
-        btnAction.className = 'w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:opacity-95 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all active:scale-95 shadow-md';
+        
+        // Panggil pembuatan QRIS TriPay secara otomatis
+        window.startGatewayPayment();
       }
       if (typeof lucide !== 'undefined') lucide.createIcons();
     };
@@ -1833,7 +1827,15 @@
       const wa = document.getElementById('pay-buyer-wa').value.trim();
 
       if (!name || !email || !wa) {
-         showToast('Tolong lengkapi Nama, Email, dan No WA Anda!', 'error');
+         showToast('Lengkapi Nama, Email, dan No WA di formulir atas terlebih dahulu!', 'error');
+         const instrTxt = document.getElementById('qris-instruction-txt');
+         if (instrTxt) instrTxt.innerText = 'Isi data pemesan di atas, lalu klik tombol di bawah untuk membuat QRIS TriPay:';
+         const btnAction = document.getElementById('btn-pay-action');
+         if (btnAction) {
+           btnAction.disabled = false;
+           btnAction.innerText = 'PROSES PEMBAYARAN OTOMATIS';
+           btnAction.className = 'w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:opacity-95 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all active:scale-95 shadow-md';
+         }
          return;
       }
 
@@ -1842,6 +1844,7 @@
       const loadBox = document.getElementById('gateway-loading-box');
       const qrisImg = document.getElementById('qris-img');
       const timerTxt = document.getElementById('gateway-timer-txt');
+      const instrTxt = document.getElementById('qris-instruction-txt');
 
       btnAction.disabled = true;
       btnAction.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin inline mr-1"></i> Menghubungkan Gateway TriPay...`;
@@ -1866,15 +1869,17 @@
         });
         const data = await res.json();
 
-        if (data && data.qr_url) {
-          qrisImg.src = data.qr_url;
+        const finalQrUrl = data.qr_url || data.data?.qr_url;
+
+        if (data && (data.success || data.status) && finalQrUrl) {
+          qrisImg.src = finalQrUrl;
           loadBox.classList.add('hidden');
           timerTxt.classList.remove('hidden');
+          if (instrTxt) instrTxt.innerText = 'Scan QRIS TriPay Resmi di bawah ini:';
           btnAction.innerText = 'MENUNGGU PEMBAYARAN ANDA...';
           btnAction.className = 'w-full bg-slate-800 text-slate-300 py-3 rounded-xl font-bold text-xs uppercase tracking-wider cursor-wait';
 
-          // Jalankan polling pengecekan status otomatis tiap 4 detik
-          const tripayRef = data.reference || window.currentInvoiceNo;
+          const tripayRef = data.reference || data.data?.reference || window.currentInvoiceNo;
           startTripayStatusPolling(tripayRef);
         } else {
           throw new Error(data.message || 'Gagal memuat QRIS gateway.');
@@ -1882,8 +1887,9 @@
       } catch (e) {
         loadBox.classList.add('hidden');
         showToast(e.message || 'Gateway sibuk, silakan gunakan QRIS Manual', 'error');
-        selectCheckoutMethod('manual');
         btnAction.disabled = false;
+        btnAction.innerText = 'PROSES PEMBAYARAN OTOMATIS';
+        btnAction.className = 'w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:opacity-95 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all active:scale-95 shadow-md';
       }
     };
 
@@ -2252,7 +2258,7 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
                   <div>
                     <span class="text-[9.5px] font-bold text-[#f5125e] bg-rose-50 border border-rose-100 px-2 py-0.5 rounded font-mono">${item.reference}</span>
                     <h4 class="font-bold text-xs sm:text-sm text-slate-800 mt-1">${item.productName} ${item.variantName && item.variantName !== '-' ? `(${item.variantName})` : ''}</h4>
-                    <p class="text-[10px] text-slate-400 mt-0.5"><i data-lucide="clock" class="w-3.5 h-3.5 inline pb-0.5"></i> ${item.date}</p>
+                    <p class="text-[10px] text-slate-400 mt-0.5"><i data-lucide="clock" class="w-3 h-3 inline pb-0.5"></i> ${item.date}</p>
                   </div>
                   <span class="inline-flex items-center gap-1 bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-bold px-2 py-1 rounded-lg">
                     <i data-lucide="clock" class="w-3 h-3"></i> ${item.status || 'Diproses'}
