@@ -471,19 +471,19 @@
         <div id="admin-reviews-container" class="space-y-3"></div>
       </section>
 
-      <!-- TAB 4: STATISTIK TOKO -->
+      <!-- TAB 4: STATISTIK TOKO & PENGHASILAN -->
       <section id="section-stats" class="space-y-4 hidden">
         <div class="flex items-center justify-between bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs">
            <div>
              <h2 class="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
                <i data-lucide="bar-chart-2" class="w-5 h-5 text-emerald-500"></i> Statistik Pengunjung & Keuangan
              </h2>
-             <p class="text-xs text-slate-500 mt-0.5">Pantau ringkasan omzet penjualan, konfirmasi pesanan, dan trafik toko</p>
+             <p class="text-xs text-slate-500 mt-0.5">Pantau ringkasan omzet penjualan, konfirmasi pesanan, dan grafik trafik toko</p>
            </div>
            <button onclick="fetchStoreStats()" class="p-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-slate-600 transition-colors"><i data-lucide="refresh-cw" class="w-4 h-4"></i></button>
         </div>
 
-        <!-- 4 KARTU METRIK RINGKASAN PENGHASILAN OTOMATIS -->
+        <!-- 4 KARTU METRIK RINGKASAN PENGHASILAN -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
           <!-- Total Pendapatan Bersih -->
           <div class="bg-gradient-to-br from-emerald-500 to-teal-700 text-white rounded-3xl p-4 shadow-sm relative overflow-hidden flex flex-col justify-between">
@@ -1027,14 +1027,13 @@
 
            if(statList) statList.innerHTML = `<div class="text-center text-slate-400 text-xs py-8">Memuat data IP...</div>`;
            
-           // 1. Ambil data analitik views & clicks
            const res = await fetch(`${API_URL}/stats`, { method: "GET" });
            const stats = await res.json();
 
            if(viewEl) viewEl.innerText = stats.views || 0;
            if(clickEl) clickEl.innerText = stats.clicks || 0;
 
-           // 2. Ambil data pesanan untuk menghitung data penghasilan toko
+           // Ambil dan hitung omzet pesanan
            try {
              const resOrders = await fetch(`${API_URL}/orders`, { method: "GET" });
              const orders = await resOrders.json();
@@ -1081,7 +1080,6 @@
              }
            } catch(eOrders) {}
 
-           // 3. Render grafik views & clicks 7 hari terakhir
            if (stats.history && stats.history.length > 0) {
                let maxVal = 1;
                stats.history.forEach(h => {
@@ -1111,7 +1109,6 @@
                graphContainer.innerHTML = `<div class="w-full text-center text-slate-400 text-xs py-8">Belum ada grafik.</div>`;
            }
 
-           // 4. Render Tracker IP
            if (stats.ips && Object.keys(stats.ips).length > 0) {
                let ipsArray = Object.keys(stats.ips).map(ip => ({
                    ip: ip,
@@ -1160,6 +1157,35 @@
           loadOrdersData();
         } else {
           showToast(data.message || "Gagal memperbarui status", "error");
+        }
+      } catch (err) {
+        showToast("Gagal menghubungi server Worker", "error");
+      }
+    };
+
+    // =========================================================================
+    // FUNGSI HAPUS PESANAN DOBEL / SALAH DARI DATABASE KV
+    // =========================================================================
+    window.deleteOrder = async function(reference) {
+      if (!confirm(`Yakin ingin menghapus permanen pesanan ${reference}?\n\nData pesanan dobel/salah ini akan dibuang dari database.`)) {
+        return;
+      }
+
+      showToast(`Menghapus ${reference}...`);
+
+      try {
+        const res = await fetch(`${API_URL}/orders/delete`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ reference: reference })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          showToast(`🗑️ Pesanan ${reference} berhasil dihapus!`);
+          loadOrdersData();
+        } else {
+          showToast(data.message || "Gagal menghapus pesanan", "error");
         }
       } catch (err) {
         showToast("Gagal menghubungi server Worker", "error");
@@ -1240,16 +1266,16 @@
                             </div>
                         </div>
 
-                        <!-- TOMBOL AKSI: CHAT WA & KONFIRMASI SUKSES -->
+                        <!-- TOMBOL AKSI: CHAT WA, KONFIRMASI SUKSES & HAPUS -->
                         <div class="mt-3 pt-3 border-t border-slate-200/60 flex flex-wrap items-center gap-2">
                             ${wa !== '-' ? `
-                              <a href="https://wa.me/${wa.replace(/^0/, '62')}" target="_blank" class="flex-1 min-w-[130px] inline-flex items-center justify-center gap-1.5 text-[11px] font-bold text-white bg-emerald-600 hover:bg-emerald-700 px-3 py-2 rounded-xl transition-all shadow-xs">
-                                <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> Chat WA Pembeli
+                              <a href="https://wa.me/${wa.replace(/^0/, '62')}" target="_blank" class="flex-1 min-w-[120px] inline-flex items-center justify-center gap-1.5 text-[11px] font-bold text-white bg-emerald-600 hover:bg-emerald-700 px-3 py-2 rounded-xl transition-all shadow-xs">
+                                <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> Chat WA
                               </a>
                             ` : ''}
 
                             ${!isFinished ? `
-                              <button onclick="confirmOrderSuccess('${order.reference}')" class="flex-1 min-w-[130px] inline-flex items-center justify-center gap-1.5 text-[11px] font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-2 rounded-xl transition-all active:scale-95 shadow-xs cursor-pointer">
+                              <button onclick="confirmOrderSuccess('${order.reference}')" class="flex-1 min-w-[120px] inline-flex items-center justify-center gap-1.5 text-[11px] font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-2 rounded-xl transition-all active:scale-95 shadow-xs cursor-pointer">
                                 <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-300"></i> Konfirmasi Sukses
                               </button>
                             ` : `
@@ -1257,6 +1283,11 @@
                                 <i data-lucide="check" class="w-3 h-3"></i> Sudah Selesai
                               </span>
                             `}
+
+                            <!-- TOMBOL HAPUS PESANAN DOBEL -->
+                            <button onclick="deleteOrder('${order.reference}')" title="Hapus Pesanan Ini" class="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 p-2 rounded-xl transition-all active:scale-95 shadow-2xs flex items-center justify-center cursor-pointer">
+                              <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
                         </div>
                     </div>
                     
