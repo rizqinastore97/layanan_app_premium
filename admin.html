@@ -476,11 +476,62 @@
         <div class="flex items-center justify-between bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs">
            <div>
              <h2 class="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
-               <i data-lucide="bar-chart-2" class="w-5 h-5 text-emerald-500"></i> Statistik Pengunjung
+               <i data-lucide="bar-chart-2" class="w-5 h-5 text-emerald-500"></i> Statistik Pengunjung & Keuangan
              </h2>
-             <p class="text-xs text-slate-500 mt-0.5">Pantau grafik tayangan dan klik secara real-time</p>
+             <p class="text-xs text-slate-500 mt-0.5">Pantau ringkasan omzet penjualan, konfirmasi pesanan, dan trafik toko</p>
            </div>
            <button onclick="fetchStoreStats()" class="p-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-slate-600 transition-colors"><i data-lucide="refresh-cw" class="w-4 h-4"></i></button>
+        </div>
+
+        <!-- 4 KARTU METRIK RINGKASAN PENGHASILAN OTOMATIS -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
+          <!-- Total Pendapatan Bersih -->
+          <div class="bg-gradient-to-br from-emerald-500 to-teal-700 text-white rounded-3xl p-4 shadow-sm relative overflow-hidden flex flex-col justify-between">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-100">Total Pendapatan</span>
+              <div class="w-7 h-7 bg-white/20 rounded-xl flex items-center justify-center"><i data-lucide="wallet" class="w-4 h-4 text-white"></i></div>
+            </div>
+            <div class="mt-3">
+              <h3 id="stat-income-total" class="text-lg sm:text-xl font-black truncate">Rp 0</h3>
+              <p class="text-[9.5px] text-emerald-100 mt-0.5 font-medium">Dari semua order sukses</p>
+            </div>
+          </div>
+
+          <!-- Penghasilan Hari Ini -->
+          <div class="bg-white border border-slate-200/80 rounded-3xl p-4 shadow-xs flex flex-col justify-between">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Hari Ini</span>
+              <div class="w-7 h-7 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center"><i data-lucide="trending-up" class="w-4 h-4"></i></div>
+            </div>
+            <div class="mt-3">
+              <h3 id="stat-income-today" class="text-lg sm:text-xl font-black text-slate-800 truncate">Rp 0</h3>
+              <p class="text-[9.5px] text-emerald-600 font-bold mt-0.5">Penjualan 24 jam ini</p>
+            </div>
+          </div>
+
+          <!-- Total Order Sukses -->
+          <div class="bg-white border border-slate-200/80 rounded-3xl p-4 shadow-xs flex flex-col justify-between">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Order Sukses</span>
+              <div class="w-7 h-7 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center"><i data-lucide="check-circle" class="w-4 h-4"></i></div>
+            </div>
+            <div class="mt-3">
+              <h3 id="stat-orders-count" class="text-lg sm:text-xl font-black text-slate-800">0</h3>
+              <p class="text-[9.5px] text-slate-400 mt-0.5 font-medium">Transaksi lunas/selesai</p>
+            </div>
+          </div>
+
+          <!-- Menunggu Verifikasi -->
+          <div class="bg-white border border-slate-200/80 rounded-3xl p-4 shadow-xs flex flex-col justify-between">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Perlu Cek</span>
+              <div class="w-7 h-7 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center"><i data-lucide="clock" class="w-4 h-4"></i></div>
+            </div>
+            <div class="mt-3">
+              <h3 id="stat-pending-count" class="text-lg sm:text-xl font-black text-amber-600">0</h3>
+              <p class="text-[9.5px] text-amber-600/80 mt-0.5 font-medium">Menunggu Verifikasi</p>
+            </div>
+          </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -976,12 +1027,61 @@
 
            if(statList) statList.innerHTML = `<div class="text-center text-slate-400 text-xs py-8">Memuat data IP...</div>`;
            
+           // 1. Ambil data analitik views & clicks
            const res = await fetch(`${API_URL}/stats`, { method: "GET" });
            const stats = await res.json();
 
-           viewEl.innerText = stats.views || 0;
-           clickEl.innerText = stats.clicks || 0;
+           if(viewEl) viewEl.innerText = stats.views || 0;
+           if(clickEl) clickEl.innerText = stats.clicks || 0;
 
+           // 2. Ambil data pesanan untuk menghitung data penghasilan toko
+           try {
+             const resOrders = await fetch(`${API_URL}/orders`, { method: "GET" });
+             const orders = await resOrders.json();
+
+             if (Array.isArray(orders)) {
+               let totalIncome = 0;
+               let todayIncome = 0;
+               let successCount = 0;
+               let pendingCount = 0;
+
+               const now = new Date();
+               const todayStr1 = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
+               const todayStr2 = `${now.getDate()} `;
+
+               orders.forEach(o => {
+                 const status = String(o.status || "").toLowerCase();
+                 const isSuccess = status.includes("sukses") || status.includes("selesai") || status === "paid" || status.includes("lunas");
+                 const isPending = status.includes("menunggu") || status.includes("proses");
+
+                 if (isPending) pendingCount++;
+
+                 if (isSuccess) {
+                   successCount++;
+                   const rawNominal = String(o.totalAmount || o.total || "0").replace(/[^0-9]/g, "");
+                   const amount = parseInt(rawNominal, 10) || 0;
+                   totalIncome += amount;
+
+                   const orderDate = String(o.date || "");
+                   if (orderDate.includes(todayStr1) || orderDate.startsWith(todayStr2)) {
+                     todayIncome += amount;
+                   }
+                 }
+               });
+
+               const elIncomeTotal = document.getElementById('stat-income-total');
+               const elIncomeToday = document.getElementById('stat-income-today');
+               const elSuccess = document.getElementById('stat-orders-count');
+               const elPending = document.getElementById('stat-pending-count');
+
+               if (elIncomeTotal) elIncomeTotal.innerText = `Rp ${totalIncome.toLocaleString('id-ID')}`;
+               if (elIncomeToday) elIncomeToday.innerText = `Rp ${todayIncome.toLocaleString('id-ID')}`;
+               if (elSuccess) elSuccess.innerText = successCount;
+               if (elPending) elPending.innerText = pendingCount;
+             }
+           } catch(eOrders) {}
+
+           // 3. Render grafik views & clicks 7 hari terakhir
            if (stats.history && stats.history.length > 0) {
                let maxVal = 1;
                stats.history.forEach(h => {
@@ -1011,6 +1111,7 @@
                graphContainer.innerHTML = `<div class="w-full text-center text-slate-400 text-xs py-8">Belum ada grafik.</div>`;
            }
 
+           // 4. Render Tracker IP
            if (stats.ips && Object.keys(stats.ips).length > 0) {
                let ipsArray = Object.keys(stats.ips).map(ip => ({
                    ip: ip,
@@ -1030,6 +1131,7 @@
            } else {
                statList.innerHTML = `<div class="text-center text-slate-400 text-xs py-8">Belum ada pengunjung.</div>`;
            }
+           if (typeof lucide !== 'undefined') lucide.createIcons();
        } catch(e) {
            showToast("Gagal memuat statistik", "error");
        }
