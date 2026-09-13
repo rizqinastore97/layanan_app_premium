@@ -1580,14 +1580,31 @@
       document.getElementById('modal-terms').innerText = currentSelectedVariant.terms || currentSelectedProduct.terms || 'Mengikuti kebijakan garansi toko.';
       
       const stockBadge = document.getElementById('modal-stock-indicator');
+      const btnBuy = document.getElementById('modal-btn-buy');
+      const btnCart = document.getElementById('modal-btn-cart');
+      const stockCount = Array.isArray(currentSelectedVariant.items) ? currentSelectedVariant.items.length : 0;
+
       if (stockBadge) {
-        const stockCount = Array.isArray(currentSelectedVariant.items) ? currentSelectedVariant.items.length : 0;
         if (stockCount > 0) {
           stockBadge.innerText = `Tersedia ${stockCount} Akun Instan`;
           stockBadge.className = 'text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100';
+          
+          if (btnBuy) {
+            btnBuy.disabled = false;
+            btnBuy.innerText = 'Beli Sekarang';
+            btnBuy.className = 'col-span-2 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white font-bold rounded-xl text-xs py-2.5 shadow-xs transition-transform active:scale-95 cursor-pointer';
+          }
+          if (btnCart) btnCart.disabled = false;
         } else {
-          stockBadge.innerText = 'Stok Ready (Diproses Cepat)';
-          stockBadge.className = 'text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100';
+          stockBadge.innerText = 'Stok Habis';
+          stockBadge.className = 'text-[10px] font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-md border border-rose-200';
+          
+          if (btnBuy) {
+            btnBuy.disabled = true;
+            btnBuy.innerText = 'Stok Habis';
+            btnBuy.className = 'col-span-2 bg-slate-300 text-slate-500 font-bold rounded-xl text-xs py-2.5 cursor-not-allowed';
+          }
+          if (btnCart) btnCart.disabled = true;
         }
       }
     };
