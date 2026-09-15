@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Dashboard - DigitalHub Store Manager</title>
-  <!-- Google Fonts: Plus Jakarta Sans (Sama dengan Index) -->
+  <!-- Google Fonts: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -78,7 +78,6 @@
 
       <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 px-3 pt-5 pb-2">Integrasi & Sistem</div>
       
-      <!-- Tombol Aktif Pengaturan Payment Gateway -->
       <button onclick="switchTab('gateway')" id="tab-btn-gateway" class="w-full flex items-center justify-between px-4 py-3 rounded-2xl text-slate-300 hover:bg-slate-800 hover:text-white font-bold text-sm sm:text-base transition-all text-left">
         <div class="flex items-center gap-3">
           <i data-lucide="credit-card" class="w-5 h-5 text-sky-400"></i>
@@ -485,7 +484,6 @@
 
         <!-- 4 KARTU METRIK RINGKASAN PENGHASILAN -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
-          <!-- Total Pendapatan Bersih -->
           <div class="bg-gradient-to-br from-emerald-500 to-teal-700 text-white rounded-3xl p-4 shadow-sm relative overflow-hidden flex flex-col justify-between">
             <div class="flex items-center justify-between">
               <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-100">Total Pendapatan</span>
@@ -497,7 +495,6 @@
             </div>
           </div>
 
-          <!-- Penghasilan Hari Ini -->
           <div class="bg-white border border-slate-200/80 rounded-3xl p-4 shadow-xs flex flex-col justify-between">
             <div class="flex items-center justify-between">
               <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Hari Ini</span>
@@ -509,7 +506,6 @@
             </div>
           </div>
 
-          <!-- Total Order Sukses -->
           <div class="bg-white border border-slate-200/80 rounded-3xl p-4 shadow-xs flex flex-col justify-between">
             <div class="flex items-center justify-between">
               <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Order Sukses</span>
@@ -521,7 +517,6 @@
             </div>
           </div>
 
-          <!-- Menunggu Verifikasi -->
           <div class="bg-white border border-slate-200/80 rounded-3xl p-4 shadow-xs flex flex-col justify-between">
             <div class="flex items-center justify-between">
               <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Perlu Cek</span>
@@ -566,17 +561,28 @@
         </div>
       </section>
 
-      <!-- TAB 5: DATA PESANAN & PEMBELI -->
+      <!-- TAB 5: DATA PESANAN & PEMBELI DENGAN TOMBOL KONFIRMASI MASSAL -->
       <section id="section-orders" class="space-y-4 hidden">
         <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 border-b border-slate-100 pb-4">
             <div>
-              <h3 class="font-bold text-sm sm:text-base text-slate-800 flex items-center gap-2"><i data-lucide="users" class="w-5 h-5 text-indigo-600"></i> Data Pesanan & Pembeli</h3>
+              <h3 class="font-bold text-sm sm:text-base text-slate-800 flex items-center gap-2">
+                <i data-lucide="users" class="w-5 h-5 text-indigo-600"></i> Data Pesanan & Pembeli
+              </h3>
               <p class="text-xs text-slate-500 mt-1">Daftar transaksi dan detail info pembeli (Nama, Email, WhatsApp)</p>
             </div>
-            <button onclick="loadOrdersData()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs px-3 py-2 rounded-xl transition-colors flex items-center gap-1.5 border border-indigo-200">
-              <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refresh Data
-            </button>
+
+            <!-- TOMBOL AKSI: REFRESH & KONFIRMASI SEMUA (MASSAL) -->
+            <div class="flex items-center gap-2">
+              <button onclick="loadOrdersData()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs px-3 py-2 rounded-xl transition-colors flex items-center gap-1.5 border border-slate-200">
+                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refresh
+              </button>
+
+              <button id="btn-confirm-all-orders" onclick="confirmAllPendingOrders()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3.5 py-2 rounded-xl transition-all shadow-xs flex items-center gap-1.5 active:scale-95 cursor-pointer">
+                <i data-lucide="check-check" class="w-4 h-4"></i>
+                <span id="label-confirm-all">Konfirmasi Semua (Massal)</span>
+              </button>
+            </div>
           </div>
           
           <div id="admin-orders-list" class="space-y-4 text-xs">
@@ -800,6 +806,7 @@
     const API_URL = "https://toko-digital-api.rizqinastore97.workers.dev";
     let products = [];
     let currentEditingProductId = null;
+    window.currentLoadedOrders = [];
 
     let bannerSettings = {
       active: false,
@@ -1033,7 +1040,6 @@
            if(viewEl) viewEl.innerText = stats.views || 0;
            if(clickEl) clickEl.innerText = stats.clicks || 0;
 
-           // Ambil dan hitung omzet pesanan
            try {
              const resOrders = await fetch(`${API_URL}/orders`, { method: "GET" });
              const orders = await resOrders.json();
@@ -1135,7 +1141,53 @@
     }
 
     // =========================================================================
-    // FUNGSI KONFIRMASI PESANAN MANUAL DARI ADMIN (BACKUP AMAN)
+    // FUNGSI KONFIRMASI MASSAL SEMUA PESANAN (BARU)
+    // =========================================================================
+    window.confirmAllPendingOrders = async function() {
+      const pendingOrders = (window.currentLoadedOrders || []).filter(o => {
+        const s = String(o.status || "").toLowerCase();
+        return !s.includes("sukses") && !s.includes("selesai") && s !== "paid" && !s.includes("lunas");
+      });
+
+      if (pendingOrders.length === 0) {
+        showToast("Tidak ada pesanan tertunda yang perlu dikonfirmasi.", "info");
+        return;
+      }
+
+      if (!confirm(`Konfirmasi sekaligus ${pendingOrders.length} pesanan yang sedang menunggu verifikasi menjadi "Sukses / Selesai"?`)) {
+        return;
+      }
+
+      const btnAll = document.getElementById('btn-confirm-all-orders');
+      const labelAll = document.getElementById('label-confirm-all');
+      if (btnAll) btnAll.disabled = true;
+      if (labelAll) labelAll.innerText = `Memproses (${pendingOrders.length})...`;
+
+      showToast(`Memproses ${pendingOrders.length} pesanan secara massal...`);
+
+      let successCount = 0;
+
+      await Promise.all(pendingOrders.map(async (order) => {
+        try {
+          const res = await fetch(`${API_URL}/orders/update-status`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ reference: order.reference, status: 'Sukses / Selesai' })
+          });
+          const data = await res.json();
+          if (data && data.success) successCount++;
+        } catch(e) {}
+      }));
+
+      if (btnAll) btnAll.disabled = false;
+      if (labelAll) labelAll.innerText = 'Konfirmasi Semua (Massal)';
+
+      showToast(`🎉 Sukses menyelesaikan ${successCount} pesanan sekaligus!`);
+      loadOrdersData();
+    };
+
+    // =========================================================================
+    // FUNGSI KONFIRMASI PESANAN MANUAL DARI ADMIN (SATU PER SATU)
     // =========================================================================
     window.confirmOrderSuccess = async function(reference) {
       if (!confirm(`Konfirmasi dan selesaikan pesanan invoice: ${reference}?\n\nStatus akan langsung diset Sukses / Selesai di sistem KV.`)) {
@@ -1228,6 +1280,7 @@
     }
 
     function renderOrdersList(orders) {
+        window.currentLoadedOrders = orders || [];
         const container = document.getElementById('admin-orders-list');
         if (!orders || orders.length === 0) {
             container.innerHTML = `<div class="p-8 text-center text-slate-400 border border-dashed rounded-2xl">Belum ada data pesanan pembeli.</div>`;
