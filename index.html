@@ -735,7 +735,7 @@
             </div>
           </div>
           
-          <div class="mt-4 space-y-2" id="regular-order-cta">
+        <div class="mt-4 space-y-2" id="regular-order-cta">
              <button onclick="downloadPDF()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold text-[11px] uppercase tracking-wider flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md">
                <i data-lucide="download" class="w-4 h-4"></i> 1. Download Invoice PDF
              </button>
@@ -743,14 +743,15 @@
              <button id="btn-confirm-wa" onclick="confirmViaWA()" class="w-full bg-[#25D366] hover:bg-[#1ebd5a] text-white py-3 rounded-xl font-bold text-[11px] uppercase tracking-wider flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md shadow-emerald-500/20">
                <i data-lucide="message-circle" class="w-4 h-4"></i> 2. Konfirmasi ke WhatsApp
              </button>
+
+             <!-- CATATAN ESTIMASI WAKTU PROSES & JAM KERJA -->
+             <div class="bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-center mt-2">
+               <p class="text-[10px] sm:text-[10.5px] text-slate-600 leading-relaxed font-medium">
+                 🕒 <b>Jam Pelayanan Verifikasi Manual:</b> 08.00 – 22.00 WIB (Proses 5–30 menit).<br/>
+                 <span class="text-slate-500 text-[9.5px]">Pesanan di luar jam kerja tetap aman dan akan diproses pada antrean pertama pagi hari.</span>
+               </p>
+             </div>
           </div>
-
-          <button onclick="forceClosePaymentModal()" class="w-full mt-1 bg-white border border-slate-200 text-slate-600 py-2.5 rounded-xl text-xs font-bold hover:bg-slate-50 active:scale-95 transition-all">Tutup Halaman Ini</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- MODAL RIWAYAT PESANAN -->
   <div id="history-modal" class="fixed inset-0 z-[60] overflow-hidden hidden flex items-center justify-center p-4">
     <div onclick="closeHistoryModal()" class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
