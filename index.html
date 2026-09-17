@@ -506,7 +506,7 @@
         </div>
 
         <!-- Seksi Ulasan & Rating -->
-        <div class="pt-3 border-t border-slate-100 space-y-3">
+        <div id="product-review-section" class="pt-3 border-t border-slate-100 space-y-3">
           <div class="flex items-center justify-between">
             <div>
               <h4 class="font-bold text-slate-800 text-xs sm:text-sm flex items-center gap-1.5">
@@ -526,7 +526,7 @@
           </div>
 
           <!-- Form Berikan Ulasan -->
-          <div class="bg-rose-50/60 border border-rose-100 rounded-2xl p-3 space-y-2.5 mt-2">
+          <div id="product-review-form-box" class="bg-rose-50/60 border border-rose-100 rounded-2xl p-3 space-y-2.5 mt-2">
             <h5 class="font-bold text-slate-800 text-xs flex items-center gap-1">
               <i data-lucide="message-square-plus" class="w-3.5 h-3.5 text-[#f5125e]"></i> Tulis Ulasan Anda
             </h5>
@@ -848,37 +848,66 @@
     </div>
   </div>
 
-  <!-- MODAL RIWAYAT PESANAN -->
-  <div id="history-modal" class="fixed inset-0 z-[60] overflow-hidden hidden flex items-center justify-center p-4">
+  <!-- ========================================================================= -->
+  <!-- MODAL RIWAYAT PESANAN SAYA (DESAIN MARKETPLACE GAYA SHOPEE) -->
+  <!-- ========================================================================= -->
+  <div id="history-modal" class="fixed inset-0 z-[60] overflow-hidden hidden flex items-center justify-center p-2 sm:p-4">
     <div onclick="closeHistoryModal()" class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
-    <div id="history-modal-card" class="bg-white w-full max-w-lg rounded-3xl shadow-2xl p-5 flex flex-col max-h-[90vh] relative z-10">
-      <div class="flex justify-between items-center pb-3 border-b border-slate-100">
-        <h3 class="font-bold text-sm sm:text-base text-slate-800 flex items-center gap-2">
-          <i data-lucide="history" class="w-5 h-5 text-[#f5125e]"></i> Riwayat Pesanan Saya
-        </h3>
-        <button onclick="closeHistoryModal()" class="text-slate-400 hover:text-slate-600">
+    <div id="history-modal-card" class="bg-slate-100 w-full max-w-xl rounded-3xl shadow-2xl flex flex-col h-[94vh] sm:h-auto sm:max-h-[92vh] relative z-10 overflow-hidden border border-slate-200/80">
+      
+      <!-- Top Header Shopee Style -->
+      <div class="bg-white px-4 py-3.5 border-b border-slate-200 flex items-center justify-between flex-shrink-0">
+        <div class="flex items-center gap-2">
+          <button onclick="closeHistoryModal()" class="text-slate-600 hover:text-slate-900 p-1 -ml-1 rounded-full">
+            <i data-lucide="arrow-left" class="w-5 h-5"></i>
+          </button>
+          <h3 class="font-extrabold text-sm sm:text-base text-slate-800 tracking-tight">Pesanan Saya</h3>
+        </div>
+        <button onclick="closeHistoryModal()" class="text-slate-400 hover:text-slate-600 p-1">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
-      <div class="pt-3">
+      <!-- Form Pencarian Kontak -->
+      <div class="bg-white px-4 py-3 border-b border-slate-200/70 flex-shrink-0">
         <form onsubmit="fetchOnlineHistory(event)" class="flex gap-2">
-          <input 
-            type="text" 
-            id="history-search-input" 
-            placeholder="Masukkan No. WhatsApp / Email order..." 
-            class="flex-1 text-xs border border-slate-200 rounded-xl px-3 py-2.5 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#f5125e]" 
-            required 
-          />
-          <button type="submit" class="bg-[#f5125e] hover:bg-[#d40c4e] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-1 flex-shrink-0">
-            <i data-lucide="search" class="w-3.5 h-3.5"></i>
+          <div class="relative flex-1">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+            <input 
+              type="text" 
+              id="history-search-input" 
+              placeholder="No. WhatsApp / Email / Invoice..." 
+              class="w-full text-xs pl-9 pr-3 py-2 bg-slate-100 focus:bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#f5125e] font-semibold text-slate-800" 
+              required 
+            />
+          </div>
+          <button type="submit" class="bg-gradient-to-r from-[#f5125e] to-[#ff2b56] hover:opacity-95 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-xs flex items-center gap-1 flex-shrink-0">
             <span>Cari</span>
           </button>
         </form>
-        <p class="text-[10px] text-slate-400 mt-1 pl-1">Bisa dibuka dari HP mana pun menggunakan kontak saat order.</p>
       </div>
 
-      <div id="history-list" class="flex-1 overflow-y-auto space-y-3 pr-1 mt-3"></div>
+      <!-- Tab Filter Status Shopee -->
+      <div class="bg-white border-b border-slate-200 grid grid-cols-3 text-center text-xs font-bold text-slate-500 flex-shrink-0">
+        <button type="button" onclick="filterHistoryStatus('all')" id="tab-hist-all" class="py-3 border-b-2 border-[#f5125e] text-[#f5125e] transition-colors">
+          Semua
+        </button>
+        <button type="button" onclick="filterHistoryStatus('pending')" id="tab-hist-pending" class="py-3 border-b-2 border-transparent hover:text-slate-800 transition-colors">
+          Menunggu / Proses
+        </button>
+        <button type="button" onclick="filterHistoryStatus('done')" id="tab-hist-done" class="py-3 border-b-2 border-transparent hover:text-slate-800 transition-colors">
+          Selesai
+        </button>
+      </div>
+
+      <!-- List Pesanan Shopee Style Container -->
+      <div id="history-list" class="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3.5 no-scrollbar">
+        <div class="py-16 text-center text-slate-400 text-xs">
+          <i data-lucide="search" class="w-9 h-9 mx-auto mb-2 stroke-1 text-slate-300"></i>
+          Masukkan nomor WhatsApp atau Email saat order untuk menampilkan riwayat belanja Anda.
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -987,6 +1016,10 @@
     window.currentCheckoutQty = 1;
     window.tripayCheckInterval = null;
     window.appliedCouponDiscount = 0;
+
+    // DATA RIWAYAT SEMENTARA UNTUK TAB FILTER SHOPEE
+    window.currentFetchedOrderList = [];
+    window.currentHistoryFilter = 'all';
 
     let products = [];
     let cart = [];
@@ -2454,12 +2487,32 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
         window.fetchOnlineHistory(null, savedContact);
       } else {
         document.getElementById('history-list').innerHTML = `
-          <div class="py-12 text-center text-slate-400 text-xs">
-            <i data-lucide="search" class="w-8 h-8 mx-auto mb-2 stroke-1 text-slate-300"></i>
-            Masukkan nomor WhatsApp atau Email Anda untuk menampilkan riwayat pesanan.
+          <div class="py-16 text-center text-slate-400 text-xs">
+            <i data-lucide="search" class="w-9 h-9 mx-auto mb-2 stroke-1 text-slate-300"></i>
+            Masukkan nomor WhatsApp atau Email saat order untuk menampilkan riwayat belanja Anda.
           </div>`;
       }
       if (typeof lucide !== 'undefined') lucide.createIcons();
+    };
+
+    // =========================================================================
+    // FUNGSI TAB FILTER & TAMPILAN PESANAN SAYA GAYA SHOPEE
+    // =========================================================================
+    window.filterHistoryStatus = function(statusType) {
+      window.currentHistoryFilter = statusType;
+      
+      const tabAll = document.getElementById('tab-hist-all');
+      const tabPending = document.getElementById('tab-hist-pending');
+      const tabDone = document.getElementById('tab-hist-done');
+
+      const normalClass = "py-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition-colors cursor-pointer";
+      const activeClass = "py-3 border-b-2 border-[#f5125e] text-[#f5125e] font-extrabold transition-colors cursor-pointer";
+
+      if (tabAll) tabAll.className = statusType === 'all' ? activeClass : normalClass;
+      if (tabPending) tabPending.className = statusType === 'pending' ? activeClass : normalClass;
+      if (tabDone) tabDone.className = statusType === 'done' ? activeClass : normalClass;
+
+      renderShopeeOrderCards();
     };
 
     window.fetchOnlineHistory = async function(event, directValue = null) {
@@ -2470,9 +2523,9 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
 
       const container = document.getElementById('history-list');
       container.innerHTML = `
-        <div class="py-12 text-center text-slate-400 text-xs flex flex-col items-center gap-2">
-          <i data-lucide="loader-2" class="w-6 h-6 animate-spin text-[#f5125e]"></i>
-          <span>Mencari pesanan Anda...</span>
+        <div class="py-16 text-center text-slate-400 text-xs flex flex-col items-center gap-2">
+          <i data-lucide="loader-2" class="w-7 h-7 animate-spin text-[#f5125e]"></i>
+          <span class="font-bold text-slate-600">Memuat pesanan Anda...</span>
         </div>`;
       if (typeof lucide !== 'undefined') lucide.createIcons();
 
@@ -2483,59 +2536,173 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
         const historyData = await response.json();
 
         if (!Array.isArray(historyData) || historyData.length === 0) {
+          window.currentFetchedOrderList = [];
           container.innerHTML = `
-            <div class="py-12 text-center text-slate-400 text-xs">
-              <i data-lucide="package-x" class="w-8 h-8 mx-auto mb-2 stroke-1 text-rose-300"></i>
+            <div class="py-16 text-center text-slate-400 text-xs bg-white rounded-2xl border border-slate-200">
+              <i data-lucide="package-x" class="w-10 h-10 mx-auto mb-2 stroke-1 text-rose-400"></i>
               Tidak ditemukan pesanan dengan kontak: <b>${escapeHtml(query)}</b>
             </div>`;
         } else {
-          container.innerHTML = historyData.map((item) => {
-            const waChatLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Halo Admin DigitalHub, saya mau cek pesanan saya:\nNo. Invoice: ${item.reference}\nProduk: ${item.productName}`)}`;
-            const itemBase64 = btoa(unescape(encodeURIComponent(JSON.stringify(item))));
-
-            const rawSt = String(item.status || "").toLowerCase();
-            const isDone = rawSt.includes('sukses') || rawSt.includes('selesai') || rawSt.includes('lunas') || rawSt === 'paid';
-
-            return `
-              <div class="bg-white border border-slate-200 rounded-2xl p-3.5 space-y-2.5 shadow-xs">
-                <div class="flex justify-between items-start">
-                  <div>
-                    <span class="text-[9.5px] font-bold text-[#f5125e] bg-rose-50 border border-rose-100 px-2 py-0.5 rounded font-mono">${item.reference}</span>
-                    <h4 class="font-bold text-xs sm:text-sm text-slate-800 mt-1">${item.productName} ${item.variantName && item.variantName !== '-' ? `(${item.variantName})` : ''}</h4>
-                    <p class="text-[10px] text-slate-400 mt-0.5"><i data-lucide="clock" class="w-3.5 h-3.5 inline pb-0.5"></i> ${item.date}</p>
-                  </div>
-                  <span class="inline-flex items-center gap-1 ${isDone ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200'} border text-[10px] font-bold px-2 py-1 rounded-lg">
-                    <i data-lucide="${isDone ? 'check-circle' : 'clock'}" class="w-3.5 h-3.5"></i> ${item.status || 'Diproses'}
-                  </span>
-                </div>
-
-                <div class="bg-slate-50 border border-slate-100 rounded-xl p-2.5 flex items-center justify-between text-[11px]">
-                  <div>
-                    <span class="text-[9.5px] text-slate-400 block">Pemesan:</span>
-                    <span class="font-bold text-slate-700 text-xs">${item.buyerName || '-'}</span>
-                  </div>
-                  <div class="flex items-center gap-1.5">
-                    <button onclick="viewInvoiceFromData('${itemBase64}')" class="flex items-center gap-1 bg-rose-50 hover:bg-rose-100 text-[#f5125e] border border-rose-200 font-bold px-2.5 py-1.5 rounded-lg text-[10px] transition-colors shadow-2xs">
-                      <i data-lucide="file-text" class="w-3 h-3"></i> Lihat Invoice
-                    </button>
-                    <a href="${waChatLink}" target="_blank" class="flex items-center gap-1 bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-2.5 py-1.5 rounded-lg text-[10px] transition-colors shadow-2xs">
-                      <i data-lucide="message-circle" class="w-3 h-3"></i> Hubungi CS
-                    </a>
-                  </div>
-                </div>
-              </div>
-            `;
-          }).join('');
+          window.currentFetchedOrderList = historyData;
+          renderShopeeOrderCards();
         }
       } catch (err) {
         container.innerHTML = `
-          <div class="py-12 text-center text-rose-500 text-xs">
-            <i data-lucide="alert-circle" class="w-7 h-7 mx-auto mb-1"></i>
+          <div class="py-16 text-center text-rose-500 text-xs bg-white rounded-2xl border border-rose-200">
+            <i data-lucide="alert-circle" class="w-8 h-8 mx-auto mb-2 text-rose-500"></i>
             Gagal memuat pesanan. Periksa koneksi internet Anda.
           </div>`;
       }
 
       if (typeof lucide !== 'undefined') lucide.createIcons();
+    };
+
+    function renderShopeeOrderCards() {
+      const container = document.getElementById('history-list');
+      if (!container) return;
+
+      let list = [...(window.currentFetchedOrderList || [])];
+
+      if (window.currentHistoryFilter === 'pending') {
+        list = list.filter(item => {
+          const s = String(item.status || "").toLowerCase();
+          return !s.includes('sukses') && !s.includes('selesai') && !s.includes('lunas') && s !== 'paid';
+        });
+      } else if (window.currentHistoryFilter === 'done') {
+        list = list.filter(item => {
+          const s = String(item.status || "").toLowerCase();
+          return s.includes('sukses') || s.includes('selesai') || s.includes('lunas') || s === 'paid';
+        });
+      }
+
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div class="py-16 text-center text-slate-400 text-xs bg-white rounded-2xl border border-slate-200">
+            <i data-lucide="inbox" class="w-10 h-10 mx-auto mb-2 stroke-1 text-slate-300"></i>
+            Tidak ada pesanan pada kategori ini.
+          </div>`;
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+        return;
+      }
+
+      container.innerHTML = list.map((item) => {
+        const rawSt = String(item.status || "").toLowerCase();
+        const isDone = rawSt.includes('sukses') || rawSt.includes('selesai') || rawSt.includes('lunas') || rawSt === 'paid';
+
+        // Cari data foto produk jika tersedia di katalog
+        const matchedProd = products.find(p => String(item.productName || "").toLowerCase().includes(String(p.name || "").toLowerCase()));
+        const itemImg = matchedProd?.image || 'https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png';
+
+        const itemBase64 = btoa(unescape(encodeURIComponent(JSON.stringify(item))));
+        const waChatLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Halo Admin DigitalHub, saya mau cek pesanan saya:\nNo. Invoice: ${item.reference}\nProduk: ${item.productName}`)}`;
+
+        return `
+          <div class="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden transition-all hover:shadow-md">
+            
+            <!-- Header Kartu Shopee: Toko & Status -->
+            <div class="px-3.5 py-2.5 border-b border-slate-100 flex items-center justify-between text-xs bg-slate-50/50">
+              <div class="flex items-center gap-1.5 font-black text-slate-800">
+                <i data-lucide="store" class="w-4 h-4 text-[#f5125e]"></i>
+                <span>DigitalHub Store</span>
+                <span class="text-[9.5px] font-mono text-slate-400 ml-1 font-medium hidden sm:inline">#${item.reference}</span>
+              </div>
+              <span class="text-[10px] font-black uppercase ${isDone ? 'text-emerald-600' : 'text-amber-600'}">
+                ${isDone ? 'Selesai' : 'Diproses / Menunggu'}
+              </span>
+            </div>
+
+            <!-- Isi Produk Shopee Style -->
+            <div class="p-3.5 flex gap-3 cursor-pointer" onclick="viewInvoiceFromData('${itemBase64}')">
+              <img src="${itemImg}" onerror="this.src='https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png'" class="w-16 h-16 rounded-xl object-contain bg-slate-50 border border-slate-100 p-1 flex-shrink-0" />
+              
+              <div class="flex-1 min-w-0 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1 leading-tight">${item.productName}</h4>
+                  <p class="text-[10.5px] text-slate-500 mt-0.5">${item.variantName && item.variantName !== '-' ? `Variasi: ${item.variantName}` : 'Variasi: Resmi'}</p>
+                </div>
+                <div class="flex items-center justify-between mt-1 text-xs">
+                  <span class="text-slate-400 text-[10px]">x1</span>
+                  <span class="font-extrabold text-slate-800">${item.totalAmount || item.total || 'Rp 0'}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Banner Koin / Garansi Shopee Style -->
+            <div class="px-3.5 py-2 bg-amber-50/40 border-t border-slate-100 flex items-center justify-between text-[11px] text-amber-900">
+              <div class="flex items-center gap-1.5 font-bold">
+                <i data-lucide="shield-check" class="w-4 h-4 text-amber-500"></i>
+                <span>Garansi Resmi DigitalHub Aktif</span>
+              </div>
+              <span class="text-[10px] text-slate-400 font-medium">${item.date || '-'}</span>
+            </div>
+
+            <!-- Rincian Total Produk & Tombol Aksi Shopee -->
+            <div class="p-3.5 border-t border-slate-100 space-y-3 bg-white">
+              <div class="flex justify-end items-baseline gap-2 text-xs">
+                <span class="text-slate-500 text-[11px]">Total 1 produk:</span>
+                <span class="text-sm font-black text-[#f5125e]">${item.totalAmount || item.total || 'Rp 0'}</span>
+              </div>
+
+              <div class="flex items-center justify-end gap-2 pt-1 flex-wrap">
+                <!-- Tombol Lihat Invoice -->
+                <button onclick="viewInvoiceFromData('${itemBase64}')" class="px-3 py-1.5 rounded-xl border border-slate-200 text-slate-700 font-bold text-[11px] hover:bg-slate-50 transition active:scale-95 cursor-pointer">
+                  Lihat Invoice
+                </button>
+
+                <!-- Tombol Beli Lagi -->
+                <button onclick="reorderProduct('${matchedProd ? matchedProd.id : ''}')" class="px-3 py-1.5 rounded-xl border border-slate-200 text-slate-700 font-bold text-[11px] hover:bg-slate-50 transition active:scale-95 cursor-pointer">
+                  Beli Lagi
+                </button>
+
+                <!-- Tombol Nilai (Khusus Pesanan Selesai) -->
+                ${isDone ? `
+                  <button onclick="openReviewModalFromOrder('${matchedProd ? matchedProd.id : ''}', '${escapeHtml(item.productName)}', '${escapeHtml(item.buyerName || '')}')" class="px-4 py-1.5 rounded-xl bg-[#f5125e] hover:bg-[#d40c4e] text-white font-bold text-[11px] transition active:scale-95 shadow-2xs cursor-pointer">
+                    Nilai
+                  </button>
+                ` : `
+                  <a href="${waChatLink}" target="_blank" class="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] transition active:scale-95 shadow-2xs flex items-center gap-1 cursor-pointer">
+                    <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> Hubungi CS
+                  </a>
+                `}
+              </div>
+            </div>
+
+          </div>
+        `;
+      }).join('');
+
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    // Helper: Beli lagi produk yang sama
+    window.reorderProduct = function(productId) {
+      if (!productId) {
+        closeHistoryModal();
+        showToast('Silakan pilih produk langsung di katalog beranda.');
+        return;
+      }
+      closeHistoryModal();
+      openDetailModal(productId);
+    };
+
+    // Helper: Langsung beri nilai produk dari kartu pesanan Shopee
+    window.openReviewModalFromOrder = function(productId, productName, buyerName) {
+      closeHistoryModal();
+      if (!productId) {
+        const p = products.find(item => String(productName).toLowerCase().includes(item.name.toLowerCase()));
+        if (p) productId = p.id;
+      }
+      if (productId) {
+        openDetailModal(productId);
+        const nameInput = document.getElementById('rev-user-name');
+        if (nameInput && buyerName) nameInput.value = buyerName;
+        setTimeout(() => {
+          const formBox = document.getElementById('product-review-form-box');
+          if (formBox) formBox.scrollIntoView({ behavior: 'smooth' });
+        }, 300);
+      } else {
+        showToast('Silakan berikan ulasan melalui halaman produk.');
+      }
     };
 
     window.viewInvoiceFromData = function(base64Str) {
@@ -2563,7 +2730,7 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
               <p style="margin: 0; color: #94a3b8; text-transform: uppercase;">Metode Pembayaran</p>
               <p style="margin: 2px 0 8px; font-weight: bold;">${item.variantName === 'Promo Gratis Rp 0' ? 'Promo Gratis Rp 0' : 'QRIS GoPay'}</p>
               <p style="margin: 0; color: #94a3b8; text-transform: uppercase;">Status</p>
-              <span style="display: inline-block; background: ${isDone ? '#dcfce7' : '#fef3c7'}; color: ${isDone ? '#16a34a' : '#b45309'}; padding: 2px 8px; border-radius: 6px; font-weight: bold; font-size: 10px; border: 1px solid ${isDone ? '#bbf7d0' : '#fde68a'};">${item.status || 'DIPROSES'}</span>
+              <span style="display: inline-block; background: ${isDone ? '#dcfce7' : '#fef3c7'}; color: ${isDone ? '#16a34a' : '#b45309'}; padding: 2px 8px; border-radius: 6px; font-weight: bold; font-size: 10px; border: 1px solid ${isDone ? '#bbf7d0' : '#fde68a'};">${isDone ? 'SUKSES / LUNAS' : 'DIPROSES'}</span>
             </div>
           </div>
 
