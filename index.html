@@ -933,6 +933,10 @@
               <span>🔍 Cek Stok & Harga Produk</span>
               <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
             </button>
+            <button onclick="sendQuickReply('menu_cara_cek_invoice')" class="w-full text-left bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 p-2 rounded-xl text-[11px] font-medium text-slate-700 transition-all flex items-center justify-between">
+              <span>🧾 Cara Cek & Unduh Invoice</span>
+              <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
+            </button>
             <button onclick="sendQuickReply('menu_cara_beli')" class="w-full text-left bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 p-2 rounded-xl text-[11px] font-medium text-slate-700 transition-all flex items-center justify-between">
               <span>⚡ Cara Beli & Info Garansi</span>
               <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
@@ -948,7 +952,7 @@
             <input 
               type="text" 
               id="user-chat-input" 
-              placeholder="Ketik pertanyaan (Contoh: Harga Canva)..." 
+              placeholder="Ketik pertanyaan (Contoh: Cara cek invoice / Harga Canva)..." 
               class="flex-1 bg-slate-100 text-slate-800 text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#f5125e] focus:bg-white" 
               autocomplete="off" 
             />
@@ -2289,7 +2293,7 @@
     };
 
     // =========================================================================
-    // FUNGSI UNDUH PDF INVOICE TANPA BLANK (PENUH & DETAIL)
+    // FUNGSI UNDUH PDF INVOICE DENGAN STATUS AKURAT (SUKSES / LUNAS / MENUNGGU)
     // =========================================================================
     window.downloadPDF = function(customOrderData) {
       showToast('Menyiapkan file PDF Invoice...');
@@ -2307,7 +2311,9 @@
       let invItem = order ? `${order.productName || 'Produk Digital'} (${order.variantName || 'Paket'})` : window.currentInvoiceItem;
       if (!invItem) invItem = "Pembelian Layanan Digital";
 
-      const isGateway = (order?.status && order.status.toLowerCase().includes('lunas')) || window.activeCheckoutMethod === 'gateway';
+      // Logika Penentuan Status: Cek apakah sudah lunas / sukses / selesai dari admin / gateway
+      const rawStatus = String(order?.status || "").toLowerCase();
+      const isSuccessOrPaid = rawStatus.includes('sukses') || rawStatus.includes('selesai') || rawStatus.includes('lunas') || rawStatus === 'paid' || window.activeCheckoutMethod === 'gateway';
       const isFree = window.isPromo0Order || invTotal.includes('GRATIS') || invTotal === 'Rp 0';
       
       const invoiceElement = document.createElement('div');
@@ -2332,9 +2338,9 @@
                   </td>
                   <td style="width: 50%; text-align: right; vertical-align: top;">
                       <p style="margin: 0 0 4px; font-size: 11px; color: #94a3b8; text-transform: uppercase; font-weight: bold;">Metode Pembayaran</p>
-                      <p style="margin: 0 0 15px; font-size: 13px; font-weight: bold; color: #0f172a;">${isFree ? 'Promo Gratis Rp 0' : (isGateway ? 'TriPay Gateway QRIS' : 'QRIS GoPay')}</p>
+                      <p style="margin: 0 0 15px; font-size: 13px; font-weight: bold; color: #0f172a;">${isFree ? 'Promo Gratis Rp 0' : (rawStatus.includes('tripay') || window.activeCheckoutMethod === 'gateway' ? 'TriPay Gateway QRIS' : 'QRIS GoPay')}</p>
                       <p style="margin: 0 0 4px; font-size: 11px; color: #94a3b8; text-transform: uppercase; font-weight: bold;">Status Pembayaran</p>
-                      <span style="display: inline-block; background: ${isGateway ? '#dcfce7' : '#fef3c7'}; color: ${isGateway ? '#16a34a' : '#b45309'}; padding: 5px 12px; border-radius: 6px; font-size: 11px; font-weight: 800; border: 1px solid ${isGateway ? '#bbf7d0' : '#fde68a'};">${isGateway ? 'LUNAS TERVERIFIKASI' : 'MENUNGGU VERIFIKASI BUKTI'}</span>
+                      <span style="display: inline-block; background: ${isSuccessOrPaid ? '#dcfce7' : '#fef3c7'}; color: ${isSuccessOrPaid ? '#16a34a' : '#b45309'}; padding: 5px 12px; border-radius: 6px; font-size: 11px; font-weight: 800; border: 1px solid ${isSuccessOrPaid ? '#bbf7d0' : '#fde68a'};">${isSuccessOrPaid ? 'SUKSES / LUNAS TERVERIFIKASI' : 'MENUNGGU VERIFIKASI BUKTI'}</span>
                   </td>
               </tr>
           </table>
@@ -2365,7 +2371,7 @@
               <strong style="color: #f5125e; font-size: 20px;">${invTotal}</strong>
           </div>
           <div style="text-align: center; color: #94a3b8; font-size: 11px; border-top: 1px dashed #cbd5e1; padding-top: 20px;">
-              <p style="margin: 0; color: #e11d48; font-weight: 800;">${isGateway ? 'TERIMA KASIH ATAS PESANAN ANDA.' : 'WAJIB LAMPIRKAN TANGKAPAN LAYAR BUKTI TRANSFER SAAT KONFIRMASI KE WHATSAPP.'}</p>
+              <p style="margin: 0; color: ${isSuccessOrPaid ? '#16a34a' : '#e11d48'}; font-weight: 800;">${isSuccessOrPaid ? 'PESANAN TELAH TERVERIFIKASI & SELESAI. TERIMA KASIH TELAH BERBELANJA!' : 'WAJIB LAMPIRKAN TANGKAPAN LAYAR BUKTI TRANSFER SAAT KONFIRMASI KE WHATSAPP.'}</p>
               <p style="margin: 5px 0 0; color: #64748b;">Dokumen ini adalah bukti transaksi digital resmi di DigitalHub Store.</p>
           </div>
       `;
@@ -2487,6 +2493,9 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
             const waChatLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Halo Admin DigitalHub, saya mau cek pesanan saya:\nNo. Invoice: ${item.reference}\nProduk: ${item.productName}`)}`;
             const itemBase64 = btoa(unescape(encodeURIComponent(JSON.stringify(item))));
 
+            const rawSt = String(item.status || "").toLowerCase();
+            const isDone = rawSt.includes('sukses') || rawSt.includes('selesai') || rawSt.includes('lunas') || rawSt === 'paid';
+
             return `
               <div class="bg-white border border-slate-200 rounded-2xl p-3.5 space-y-2.5 shadow-xs">
                 <div class="flex justify-between items-start">
@@ -2495,8 +2504,8 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
                     <h4 class="font-bold text-xs sm:text-sm text-slate-800 mt-1">${item.productName} ${item.variantName && item.variantName !== '-' ? `(${item.variantName})` : ''}</h4>
                     <p class="text-[10px] text-slate-400 mt-0.5"><i data-lucide="clock" class="w-3.5 h-3.5 inline pb-0.5"></i> ${item.date}</p>
                   </div>
-                  <span class="inline-flex items-center gap-1 bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-bold px-2 py-1 rounded-lg">
-                    <i data-lucide="clock" class="w-3.5 h-3.5"></i> ${item.status || 'Diproses'}
+                  <span class="inline-flex items-center gap-1 ${isDone ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200'} border text-[10px] font-bold px-2 py-1 rounded-lg">
+                    <i data-lucide="${isDone ? 'check-circle' : 'clock'}" class="w-3.5 h-3.5"></i> ${item.status || 'Diproses'}
                   </span>
                 </div>
 
@@ -2534,6 +2543,9 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
         const item = JSON.parse(decodeURIComponent(escape(atob(base64Str))));
         const contentBox = document.getElementById('invoice-preview-content');
 
+        const rawSt = String(item.status || "").toLowerCase();
+        const isDone = rawSt.includes('sukses') || rawSt.includes('selesai') || rawSt.includes('lunas') || rawSt === 'paid';
+
         contentBox.innerHTML = `
           <div style="border-bottom: 2px solid #f5125e; padding-bottom: 12px; margin-bottom: 15px;">
             <h2 style="color: #f5125e; margin: 0; font-size: 20px; font-weight: 900; letter-spacing: -0.5px;">DIGITALHUB</h2>
@@ -2551,7 +2563,7 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
               <p style="margin: 0; color: #94a3b8; text-transform: uppercase;">Metode Pembayaran</p>
               <p style="margin: 2px 0 8px; font-weight: bold;">${item.variantName === 'Promo Gratis Rp 0' ? 'Promo Gratis Rp 0' : 'QRIS GoPay'}</p>
               <p style="margin: 0; color: #94a3b8; text-transform: uppercase;">Status</p>
-              <span style="display: inline-block; background: #fef3c7; color: #b45309; padding: 2px 8px; border-radius: 6px; font-weight: bold; font-size: 10px;">${item.status || 'DIPROSES'}</span>
+              <span style="display: inline-block; background: ${isDone ? '#dcfce7' : '#fef3c7'}; color: ${isDone ? '#16a34a' : '#b45309'}; padding: 2px 8px; border-radius: 6px; font-weight: bold; font-size: 10px; border: 1px solid ${isDone ? '#bbf7d0' : '#fde68a'};">${item.status || 'DIPROSES'}</span>
             </div>
           </div>
 
@@ -2585,7 +2597,7 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
           </table>
 
           <div style="text-align: center; color: #94a3b8; font-size: 10px; border-top: 1px dashed #e2e8f0; padding-top: 10px;">
-            <p style="margin: 0;">Dokumen ini merupakan bukti transaksi digital sah di DigitalHub.</p>
+            <p style="margin: 0; font-weight: bold; color: ${isDone ? '#16a34a' : '#64748b'};">${isDone ? 'Pesanan ini sudah sukses terverifikasi & bergaransi penuh.' : 'Dokumen ini merupakan bukti transaksi digital sah di DigitalHub.'}</p>
           </div>
         `;
 
@@ -2868,6 +2880,13 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
         appendUserChatMessage("Saya ingin mengecek stok atau harga produk.");
         showBotTyping();
         setTimeout(() => { removeBotTyping(); appendBotChatMessage(`Boleh Kak! Silakan ketik nama produk yang ingin dicek (Contoh: "Harga Canva", "Apakah Netflix ready?").`); }, 800);
+      } else if (action === 'menu_cara_cek_invoice') {
+        appendUserChatMessage("Bagaimana cara cek riwayat pesanan dan mengunduh Invoice PDF saya?");
+        showBotTyping();
+        setTimeout(() => {
+          removeBotTyping();
+          appendBotChatMessage(`**Panduan Cek Pesanan & Unduh Invoice:**\n\n1. Klik menu **"Pesanan"** di bar navigasi bawah (atau menu atas jika di PC/Laptop).\n2. Masukkan **Nomor WhatsApp** atau **Email** yang Kakak gunakan saat checkout.\n3. Klik tombol **"Cari"**.\n4. Riwayat pesanan akan muncul. Klik **"Lihat Invoice"** lalu pilih tombol merah **"Unduh PDF"** untuk menyimpan bukti berstatus sukses/lunas! 📄✨\n\n👉 <button onclick="closeChatModal(); openHistoryModal();" class="text-rose-600 font-black underline bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-lg inline-block mt-1.5 shadow-2xs cursor-pointer">Buka Menu Riwayat Sekarang</button>`);
+        }, 800);
       } else if (action === 'menu_cara_beli') {
         appendUserChatMessage("Bagaimana cara beli produk via QRIS dan sistem garansinya?");
         showBotTyping();
@@ -2908,6 +2927,11 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
       if (text === 'menu' || text === 'bantuan' || text === 'help') {
         appendBotChatMessage(`Tentu Kak, ini menu bantuan yang bisa Kakak pilih:`);
         document.getElementById('chat-menu-buttons').classList.remove('hidden');
+        return;
+      }
+
+      if (text.includes('invoice') || text.includes('struk') || text.includes('nota') || text.includes('riwayat') || text.includes('cek pesanan') || text.includes('unduh pdf')) {
+        appendBotChatMessage(`Untuk mengecek atau mengunduh ulang **Invoice PDF** Kakak:\n\n1. Buka menu **Pesanan** di bagian bawah.\n2. Masukkan nomor WA / Email yang Kakak pakai saat membeli.\n3. Klik **Lihat Invoice** lalu tekan **Unduh PDF**.\n\n👉 <button onclick="closeChatModal(); openHistoryModal();" class="text-rose-600 font-black underline bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-lg inline-block mt-1 shadow-2xs cursor-pointer">Buka Riwayat Pesanan</button>`);
         return;
       }
       
@@ -2970,7 +2994,7 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
         return;
       }
 
-      appendBotChatMessage(`Maaf Kak, bot kurang memahami maksudnya. 🙏\n\nKakak bisa mengetik **"menu"** untuk melihat opsi yang tersedia, atau ketik nama aplikasi yang ingin dicek (Contoh: *"Harga Canva"* atau *"Apakah Netflix ready?"*).`);
+      appendBotChatMessage(`Maaf Kak, bot kurang memahami maksudnya. 🙏\n\nKakak bisa mengetik **"menu"** untuk melihat opsi yang tersedia, atau ketik pertanyaan seputar stok, harga, atau **cara cek invoice**.`);
     }
 
     function appendUserChatMessage(text) {
