@@ -1938,12 +1938,18 @@
       document.getElementById('pay-buyer-email').value = '';
       document.getElementById('pay-buyer-wa').value = '';
 
-      const prodPayType = product.paymentType || 'default';
+      // KODE BARU (Prioritaskan cek varian/paket terlebih dahulu):
       let allowedMode = 'both';
+      const varPayType = variant?.paymentType || 'default';
+      const prodPayType = product?.paymentType || 'default';
 
-      if (prodPayType === 'gateway') allowedMode = 'gateway';
-      else if (prodPayType === 'manual') allowedMode = 'manual';
-      else allowedMode = window.storePaymentMode || 'both';
+      if (varPayType !== 'default') {
+        allowedMode = varPayType; // Membaca setting varian 'Gemini Head 18 Bulan'
+      } else if (prodPayType !== 'default') {
+        allowedMode = prodPayType;
+      } else {
+        allowedMode = window.storePaymentMode || 'both';
+      }
 
       const methodSelectBox = document.getElementById('checkout-method-selection');
 
