@@ -345,7 +345,7 @@
       </div>
     </div>
 
-    <!-- Seksi Produk Populer / Terlaris -->
+    <!-- Seksi Produk Populer -->
     <div id="popular-section" class="space-y-3 hidden">
       <div class="flex items-center justify-between px-1">
         <h2 class="text-xs sm:text-sm font-black text-slate-800 uppercase tracking-wide flex items-center gap-1.5">
@@ -404,7 +404,7 @@
     </div>
   </main>
 
-  <!-- MODAL LIHAT INVOICE LANGSUNG DI WEB -->
+  <!-- MODAL LIHAT INVOICE -->
   <div id="invoice-preview-modal" class="fixed inset-0 z-[85] overflow-hidden hidden flex items-center justify-center p-3 sm:p-4">
     <div onclick="closeInvoicePreviewModal()" class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
     <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden relative z-10 flex flex-col max-h-[92vh]">
@@ -430,7 +430,7 @@
     </div>
   </div>
 
-  <!-- MODAL ZOOM GAMBAR ULASAN -->
+  <!-- MODAL ZOOM GAMBAR -->
   <div id="image-zoom-modal" class="fixed inset-0 z-[90] overflow-hidden hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs" onclick="closeImageZoom()">
     <div class="relative max-w-md max-h-[85vh] flex flex-col items-center">
       <img id="image-zoom-src" src="" class="max-w-full max-h-[80vh] rounded-2xl object-contain shadow-2xl" />
@@ -443,14 +443,11 @@
     <button onclick="setCategory('Semua')" class="flex flex-col items-center gap-0.5 text-[#f5125e]"><i data-lucide="home" class="w-4 h-4"></i><span>Beranda</span></button>
     <button onclick="triggerPwaPromptUI()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="download" class="w-4 h-4 text-emerald-600"></i><span>App</span></button>
     <button onclick="openHistoryModal()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="receipt" class="w-4 h-4"></i><span>Pesanan</span></button>
-    
-    <!-- TOMBOL LIVE ORDER WA (MOBILE) -->
     <button type="button" onclick="openCommunityModal()" class="flex flex-col items-center gap-0.5 text-emerald-600 font-bold relative">
       <span class="absolute -top-1 right-2 w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
       <i data-lucide="message-circle" class="w-4 h-4"></i>
       <span>Live Order WA</span>
     </button>
-
     <button onclick="toggleCart(true)" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="shopping-bag" class="w-4 h-4"></i><span>Keranjang</span></button>
     <button onclick="openChatModal()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="message-square-more" class="w-4 h-4"></i><span>Chat CS</span></button>
   </div>
@@ -758,7 +755,6 @@
                <i data-lucide="message-circle" class="w-4 h-4"></i> 2. Konfirmasi ke WhatsApp
              </button>
 
-             <!-- CATATAN ESTIMASI WAKTU PROSES & JAM KERJA -->
              <div class="bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-center mt-2">
                <p class="text-[10px] sm:text-[10.5px] text-slate-600 leading-relaxed font-medium">
                  🕒 <b>Jam Pelayanan Verifikasi Manual:</b> 08.00 – 22.00 WIB (Proses 5–30 menit).<br/>
@@ -773,7 +769,7 @@
     </div>
   </div>
 
-  <!-- MODAL POP-UP KOMUNITAS & LIVE ORDER WHATSAPP -->
+  <!-- MODAL POP-UP KOMUNITAS -->
   <div id="community-modal" class="fixed inset-0 z-[85] overflow-hidden hidden flex items-center justify-center p-4">
     <div onclick="closeCommunityModal()" class="absolute inset-0 bg-black/70 backdrop-blur-2xs"></div>
     <div class="bg-white text-slate-800 w-full max-w-sm rounded-3xl shadow-2xl p-5 relative z-10 text-center space-y-3.5 max-h-[92vh] overflow-y-auto">
@@ -797,9 +793,7 @@
 
       <div class="bg-slate-50 border border-slate-200/90 rounded-2xl p-3.5 text-left space-y-2.5 text-xs shadow-2xs">
         <div class="flex items-start gap-2.5">
-          <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">
-            <i data-lucide="zap" class="w-4 h-4"></i>
-          </div>
+          <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5"><i data-lucide="zap" class="w-4 h-4"></i></div>
           <div>
             <h4 class="font-bold text-slate-800 text-[11.5px]">Info Flash Sale & Akun Restock</h4>
             <p class="text-[10px] text-slate-500">Dapatkan notifikasi akun murah sebelum kehabisan di website.</p>
@@ -807,9 +801,7 @@
         </div>
 
         <div class="flex items-start gap-2.5">
-          <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">
-            <i data-lucide="shield-check" class="w-4 h-4"></i>
-          </div>
+          <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5"><i data-lucide="shield-check" class="w-4 h-4"></i></div>
           <div>
             <h4 class="font-bold text-slate-800 text-[11.5px]">100% Real Transaksi & Testimoni</h4>
             <p class="text-[10px] text-slate-500">Pantau ratusan bukti order dan kepuasan pelanggan setiap hari.</p>
@@ -817,9 +809,7 @@
         </div>
 
         <div class="flex items-start gap-2.5">
-          <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">
-            <i data-lucide="heart-handshake" class="w-4 h-4"></i>
-          </div>
+          <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5"><i data-lucide="heart-handshake" class="w-4 h-4"></i></div>
           <div>
             <h4 class="font-bold text-slate-800 text-[11.5px]">Bantuan Cepat via Chat</h4>
             <p class="text-[10px] text-slate-500">Tanya jawab dan konsultasi pesanan langsung dibantu admin.</p>
@@ -828,19 +818,10 @@
       </div>
 
       <div class="space-y-2 pt-1">
-        <a 
-          href="https://chat.whatsapp.com/KA7ko2Fmn1r8aQLcGJQBTa?s=cl&p=a&mlu=4&ilr=4" 
-          target="_blank" 
-          onclick="closeCommunityModal()"
-          class="w-full bg-[#25D366] hover:bg-[#1ebd5a] text-white py-3.5 rounded-2xl font-black text-xs uppercase tracking-wider transition-transform active:scale-95 shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 cursor-pointer"
-        >
+        <a href="https://chat.whatsapp.com/KA7ko2Fmn1r8aQLcGJQBTa?s=cl&p=a&mlu=4&ilr=4" target="_blank" onclick="closeCommunityModal()" class="w-full bg-[#25D366] hover:bg-[#1ebd5a] text-white py-3.5 rounded-2xl font-black text-xs uppercase tracking-wider transition-transform active:scale-95 shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 cursor-pointer">
           <i data-lucide="users" class="w-4 h-4"></i> Masuk Grup WhatsApp (Gratis)
         </a>
-        <button 
-          type="button" 
-          onclick="closeCommunityModal()" 
-          class="w-full py-1 text-[11px] text-slate-400 font-bold hover:text-slate-600 transition-colors cursor-pointer"
-        >
+        <button type="button" onclick="closeCommunityModal()" class="w-full py-1 text-[11px] text-slate-400 font-bold hover:text-slate-600 transition-colors cursor-pointer">
           Lanjut Belanja di Web Saja
         </button>
       </div>
@@ -849,13 +830,12 @@
   </div>
 
   <!-- ========================================================================= -->
-  <!-- MODAL RIWAYAT PESANAN SAYA (DESAIN MARKETPLACE GAYA SHOPEE) -->
+  <!-- MODAL RIWAYAT PESANAN SAYA (SHOPEE STYLE) -->
   <!-- ========================================================================= -->
   <div id="history-modal" class="fixed inset-0 z-[60] overflow-hidden hidden flex items-center justify-center p-2 sm:p-4">
     <div onclick="closeHistoryModal()" class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
     <div id="history-modal-card" class="bg-slate-100 w-full max-w-xl rounded-3xl shadow-2xl flex flex-col h-[94vh] sm:h-auto sm:max-h-[92vh] relative z-10 overflow-hidden border border-slate-200/80">
       
-      <!-- Top Header Shopee Style -->
       <div class="bg-white px-4 py-3.5 border-b border-slate-200 flex items-center justify-between flex-shrink-0">
         <div class="flex items-center gap-2">
           <button onclick="closeHistoryModal()" class="text-slate-600 hover:text-slate-900 p-1 -ml-1 rounded-full">
@@ -868,18 +848,11 @@
         </button>
       </div>
 
-      <!-- Form Pencarian Kontak -->
       <div class="bg-white px-4 py-3 border-b border-slate-200/70 flex-shrink-0">
         <form onsubmit="fetchOnlineHistory(event)" class="flex gap-2">
           <div class="relative flex-1">
             <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
-            <input 
-              type="text" 
-              id="history-search-input" 
-              placeholder="No. WhatsApp / Email / Invoice..." 
-              class="w-full text-xs pl-9 pr-3 py-2 bg-slate-100 focus:bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#f5125e] font-semibold text-slate-800" 
-              required 
-            />
+            <input type="text" id="history-search-input" placeholder="No. WhatsApp / Email / Invoice..." class="w-full text-xs pl-9 pr-3 py-2 bg-slate-100 focus:bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#f5125e] font-semibold text-slate-800" required />
           </div>
           <button type="submit" class="bg-gradient-to-r from-[#f5125e] to-[#ff2b56] hover:opacity-95 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-xs flex items-center gap-1 flex-shrink-0">
             <span>Cari</span>
@@ -887,20 +860,12 @@
         </form>
       </div>
 
-      <!-- Tab Filter Status Shopee -->
       <div class="bg-white border-b border-slate-200 grid grid-cols-3 text-center text-xs font-bold text-slate-500 flex-shrink-0">
-        <button type="button" onclick="filterHistoryStatus('all')" id="tab-hist-all" class="py-3 border-b-2 border-[#f5125e] text-[#f5125e] transition-colors">
-          Semua
-        </button>
-        <button type="button" onclick="filterHistoryStatus('pending')" id="tab-hist-pending" class="py-3 border-b-2 border-transparent hover:text-slate-800 transition-colors">
-          Menunggu / Proses
-        </button>
-        <button type="button" onclick="filterHistoryStatus('done')" id="tab-hist-done" class="py-3 border-b-2 border-transparent hover:text-slate-800 transition-colors">
-          Selesai
-        </button>
+        <button type="button" onclick="filterHistoryStatus('all')" id="tab-hist-all" class="py-3 border-b-2 border-[#f5125e] text-[#f5125e] transition-colors cursor-pointer">Semua</button>
+        <button type="button" onclick="filterHistoryStatus('pending')" id="tab-hist-pending" class="py-3 border-b-2 border-transparent hover:text-slate-800 transition-colors cursor-pointer">Menunggu / Proses</button>
+        <button type="button" onclick="filterHistoryStatus('done')" id="tab-hist-done" class="py-3 border-b-2 border-transparent hover:text-slate-800 transition-colors cursor-pointer">Selesai</button>
       </div>
 
-      <!-- List Pesanan Shopee Style Container -->
       <div id="history-list" class="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3.5 no-scrollbar">
         <div class="py-16 text-center text-slate-400 text-xs">
           <i data-lucide="search" class="w-9 h-9 mx-auto mb-2 stroke-1 text-slate-300"></i>
@@ -929,7 +894,7 @@
     </div>
   </div>
 
-  <!-- MODAL & DRAWER LIVE CHAT CS ASISTEN -->
+  <!-- LIVE CHAT CS BOT -->
   <div id="chat-modal" class="fixed inset-0 z-[70] overflow-hidden hidden">
     <div onclick="closeChatModal()" class="absolute inset-0 bg-black/50 backdrop-blur-2xs"></div>
     <div class="fixed inset-y-0 right-0 max-w-full flex pl-10 z-[70]">
@@ -937,9 +902,7 @@
         <div class="p-3.5 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white flex items-center justify-between shadow-xs">
           <div class="flex items-center gap-2.5">
             <div class="relative">
-              <div class="w-9 h-9 bg-white text-[#f5125e] rounded-full flex items-center justify-center font-bold text-sm shadow-xs">
-                <i data-lucide="bot" class="w-5 h-5"></i>
-              </div>
+              <div class="w-9 h-9 bg-white text-[#f5125e] rounded-full flex items-center justify-center font-bold text-sm shadow-xs"><i data-lucide="bot" class="w-5 h-5"></i></div>
               <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 border-2 border-white rounded-full"></span>
             </div>
             <div>
@@ -978,16 +941,8 @@
         </div>
         <div class="p-2.5 border-t border-slate-200 bg-white">
           <form onsubmit="handleUserChatSubmit(event)" class="flex items-center gap-1.5">
-            <input 
-              type="text" 
-              id="user-chat-input" 
-              placeholder="Ketik pertanyaan (Contoh: Cara cek invoice / Harga Canva)..." 
-              class="flex-1 bg-slate-100 text-slate-800 text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#f5125e] focus:bg-white" 
-              autocomplete="off" 
-            />
-            <button type="submit" class="bg-[#f5125e] hover:bg-[#d40c4e] text-white p-2.5 rounded-xl transition-colors">
-              <i data-lucide="send" class="w-4 h-4"></i>
-            </button>
+            <input type="text" id="user-chat-input" placeholder="Ketik pertanyaan..." class="flex-1 bg-slate-100 text-slate-800 text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#f5125e] focus:bg-white" autocomplete="off" />
+            <button type="submit" class="bg-[#f5125e] hover:bg-[#d40c4e] text-white p-2.5 rounded-xl transition-colors"><i data-lucide="send" class="w-4 h-4"></i></button>
           </form>
         </div>
       </div>
@@ -1008,7 +963,6 @@
     window.currentIsCart = false;
     window.isPromo0Order = false;
 
-    // PENGATURAN PEMBAYARAN GLOBAL & AKTIF
     window.storePaymentMode = 'both';
     window.activeCheckoutMethod = 'manual';
     window.currentCheckoutProduct = null;
@@ -1017,7 +971,6 @@
     window.tripayCheckInterval = null;
     window.appliedCouponDiscount = 0;
 
-    // DATA RIWAYAT SEMENTARA UNTUK TAB FILTER SHOPEE
     window.currentFetchedOrderList = [];
     window.currentHistoryFilter = 'all';
 
@@ -1069,22 +1022,12 @@
 
     function timeAgo(dateInput, fallbackDays = 1) {
       let timeMs = 0;
-      if (
-        dateInput &&
-        !isNaN(new Date(dateInput).getTime()) &&
-        dateInput !== 'Baru saja' &&
-        dateInput !== 'Hari ini' &&
-        dateInput !== 'Kemarin' &&
-        !String(dateInput).includes('lalu')
-      ) {
+      if (dateInput && !isNaN(new Date(dateInput).getTime()) && dateInput !== 'Baru saja') {
         timeMs = new Date(dateInput).getTime();
       } else {
         timeMs = Date.now() - (fallbackDays * 24 * 60 * 60 * 1000);
       }
-
-      const now = Date.now();
-      const diffSeconds = Math.max(0, Math.floor((now - timeMs) / 1000));
-
+      const diffSeconds = Math.max(0, Math.floor((Date.now() - timeMs) / 1000));
       if (diffSeconds < 60) return 'Baru saja';
       const diffMinutes = Math.floor(diffSeconds / 60);
       if (diffMinutes < 60) return `${diffMinutes} menit lalu`;
@@ -1092,10 +1035,7 @@
       if (diffHours < 24) return `${diffHours} jam lalu`;
       const diffDays = Math.floor(diffHours / 24);
       if (diffDays === 1) return 'Kemarin';
-      if (diffDays < 30) return `${diffDays} hari lalu`;
-      const diffMonths = Math.floor(diffDays / 30);
-      if (diffMonths < 12) return `${diffMonths} bulan lalu`;
-      return `${Math.floor(diffMonths / 12)} tahun lalu`;
+      return `${diffDays} hari lalu`;
     }
 
     function trackActivity(actionType) {
@@ -1106,17 +1046,12 @@
       }).catch(e => {}); 
     }
     
-    window.addEventListener('DOMContentLoaded', () => {
-      trackActivity('view');
-    });
+    window.addEventListener('DOMContentLoaded', () => { trackActivity('view'); });
 
     let livePurchasesData = [
       { user: 'Budi S. (Surabaya)', product: 'Gemini Pro Advanced', time: '1 menit lalu' },
       { user: 'Rian P. (Jakarta Selatan)', product: 'CapCut Pro 1 Tahun', time: '2 menit lalu' },
-      { user: 'Dewi Anggraini (Bandung)', product: 'Alight Motion 1 Tahun', time: 'Baru saja' },
-      { user: 'Andi Wibowo (Yogyakarta)', product: 'YouTube Premium 3 Bulan', time: '3 menit lalu' },
-      { user: 'Siti Marwah (Semarang)', product: 'Template Web Bisnis Pro', time: '5 menit lalu' },
-      { user: 'Dimas K. (Malang)', product: 'Jasa Pembuatan Landing Page', time: '1 menit lalu' }
+      { user: 'Dewi Anggraini (Bandung)', product: 'Alight Motion 1 Tahun', time: 'Baru saja' }
     ];
 
     function startSocialProofNotifications() {
@@ -1138,25 +1073,19 @@
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPwaPrompt = e;
-      const hasDismissed = sessionStorage.getItem('pwa_popup_dismissed');
-      if (!hasDismissed) { setTimeout(() => { triggerPwaPromptUI(); }, 2000); }
+      if (!sessionStorage.getItem('pwa_popup_dismissed')) setTimeout(() => { triggerPwaPromptUI(); }, 2000);
     });
 
-    window.triggerPwaPromptUI = function() {
-      const popup = document.getElementById('pwa-install-popup');
-      if (popup) popup.classList.remove('hidden');
-    };
-
+    window.triggerPwaPromptUI = function() { document.getElementById('pwa-install-popup')?.classList.remove('hidden'); };
     window.dismissPwaPopup = function() {
-      const popup = document.getElementById('pwa-install-popup');
-      if (popup) popup.classList.add('hidden');
+      document.getElementById('pwa-install-popup')?.classList.add('hidden');
       sessionStorage.setItem('pwa_popup_dismissed', 'true');
     };
 
     window.executePwaInstall = async function() {
       if (!deferredPwaPrompt) {
         dismissPwaPopup();
-        showToast('Untuk install: Klik ikon titik 3 browser > Tambahkan ke Layar Utama');
+        showToast('Klik ikon titik 3 browser > Tambahkan ke Layar Utama');
         return;
       }
       deferredPwaPrompt.prompt();
@@ -1165,53 +1094,34 @@
       dismissPwaPopup();
     };
 
-    window.addEventListener('appinstalled', () => {
-      dismissPwaPopup();
-      showToast('Aplikasi berhasil dipasang di HP!');
-    });
-
     function applyBannerConfig(config) {
+      if (!config) return;
+      window.storePaymentMode = config.paymentMode || 'both';
+      if (config.theme === 'shopee') document.body.classList.add('theme-shopee');
+      else document.body.classList.remove('theme-shopee');
+      
+      const menuTemplate = document.getElementById('menu-template-web');
+      const menuJasa = document.getElementById('menu-jasa-web');
+      if (menuTemplate) menuTemplate.classList.toggle('hidden', !config.showTemplateWeb);
+      if (menuJasa) menuJasa.classList.toggle('hidden', !config.showJasaWeb);
+
       const wrapper = document.getElementById('store-banner-wrapper');
       const imgBox = document.getElementById('banner-image-container');
       const textBox = document.getElementById('banner-text-container');
       const mainImg = document.getElementById('main-banner-image');
 
-      if (!config) return;
-      
-      window.storePaymentMode = config.paymentMode || 'both';
-
-      if (config.theme === 'shopee') {
-        document.body.classList.add('theme-shopee');
-      } else {
-        document.body.classList.remove('theme-shopee');
-      }
-      
-      const menuTemplate = document.getElementById('menu-template-web');
-      const menuJasa = document.getElementById('menu-jasa-web');
-
-      if (menuTemplate) {
-        if (config.showTemplateWeb) menuTemplate.classList.remove('hidden');
-        else menuTemplate.classList.add('hidden');
-      }
-
-      if (menuJasa) {
-        if (config.showJasaWeb) menuJasa.classList.remove('hidden');
-        else menuJasa.classList.add('hidden');
-      }
-      
       if (!config.active) {
-        if (wrapper) { wrapper.classList.add('hidden'); wrapper.style.display = 'none'; }
+        if (wrapper) wrapper.classList.add('hidden');
         return;
       }
-
-      if (wrapper) { wrapper.classList.remove('hidden'); wrapper.style.display = 'block'; }
+      if (wrapper) wrapper.classList.remove('hidden');
       if (config.type === 'image' && config.imageUrl) {
-        if (imgBox) { imgBox.classList.remove('hidden'); imgBox.style.display = 'block'; }
-        if (textBox) { textBox.classList.add('hidden'); textBox.style.display = 'none'; }
+        if (imgBox) imgBox.classList.remove('hidden');
+        if (textBox) textBox.classList.add('hidden');
         if (mainImg) mainImg.src = config.imageUrl;
       } else {
-        if (imgBox) { imgBox.classList.add('hidden'); imgBox.style.display = 'none'; }
-        if (textBox) { textBox.classList.remove('hidden'); textBox.style.display = 'flex'; }
+        if (imgBox) imgBox.classList.add('hidden');
+        if (textBox) textBox.classList.remove('hidden');
       }
     }
 
@@ -1236,7 +1146,7 @@
       
       const promoPrice = Number(promo.promoPrice || 0);
       const badgeTxt = document.getElementById('promo0-badge-txt');
-      const btnText = document.getElementById('promo0-btn-text') || document.querySelector('#promo0-banner-wrapper button span');
+      const btnText = document.getElementById('promo0-btn-text');
 
       if (promoPrice > 0) {
         if (badgeTxt) badgeTxt.innerText = promo.badge || 'FLASH SALE DISKON';
@@ -1247,11 +1157,10 @@
       }
 
       wrapper.classList.remove('hidden');
-
       if (promoTimerInterval) clearInterval(promoTimerInterval);
       updatePromoTimer(targetTime);
       promoTimerInterval = setInterval(() => updatePromoTimer(targetTime), 1000);
-      if (typeof lucide !== 'undefined') lucide.createIcons();
+      lucide.createIcons();
     }
 
     function updatePromoTimer(targetTime) {
@@ -1274,7 +1183,6 @@
 
     window.startPromo0Checkout = function() {
       if (!promo0Data) return;
-
       const promoPrice = Number(promo0Data.promoPrice || 0);
 
       if (promoPrice <= 0) {
@@ -1313,19 +1221,11 @@
         openPaymentModal();
       } else {
         window.isPromo0Order = false;
-        const promoProduct = {
-          id: promo0Data.id || 'PROMO_BANNER',
-          name: promo0Data.title || 'Flash Sale Promo',
-          paymentType: 'default'
-        };
-        const promoVariant = {
-          name: promo0Data.badge || 'Harga Flash Sale',
-          price: promoPrice
-        };
+        const promoProduct = { id: promo0Data.id || 'PROMO_BANNER', name: promo0Data.title || 'Flash Sale Promo', paymentType: 'default' };
+        const promoVariant = { name: promo0Data.badge || 'Harga Flash Sale', price: promoPrice, paymentType: 'default' };
         startNormalCheckout(promoProduct, promoVariant, 1, false);
       }
-
-      if (typeof lucide !== 'undefined') lucide.createIcons();
+      lucide.createIcons();
     };
 
     async function loadProducts() {
@@ -1360,18 +1260,14 @@
       if (badge) badge.innerText = activeCategory;
 
       const popSec = document.getElementById('popular-section');
-      if (activeCategory.toLowerCase() === 'semua') {
-         renderPopularSection(); 
-      } else {
-         if (popSec) popSec.classList.add('hidden');
-      }
+      if (activeCategory.toLowerCase() === 'semua') renderPopularSection();
+      else if (popSec) popSec.classList.add('hidden');
 
       const buttons = document.querySelectorAll('.category-btn');
       buttons.forEach(btn => {
         const btnCat = btn.getAttribute('data-cat');
         const iconBox = btn.querySelector('.cat-icon-box');
         const label = btn.querySelector('span');
-        
         if (!iconBox || !label) return;
         
         if (btnCat && btnCat.toLowerCase() === activeCategory.toLowerCase()) {
@@ -1383,7 +1279,7 @@
         }
       });
       renderProducts();
-      if(typeof lucide !== 'undefined') lucide.createIcons();
+      lucide.createIcons();
     };
 
     window.handleSearch = function(q) { searchQuery = (q || '').toLowerCase(); renderProducts(); };
@@ -1423,11 +1319,7 @@
     function renderPopularSection() {
       const popSec = document.getElementById('popular-section');
       const popGrid = document.getElementById('popular-grid');
-      
-      const bestProducts = products.filter(p => {
-          const cat = (p.category || '').toLowerCase();
-          return !p.hidden && (p.isBestSeller || p.isHot) && !cat.includes('landing');
-      });
+      const bestProducts = products.filter(p => !p.hidden && (p.isBestSeller || p.isHot) && !(p.category || '').toLowerCase().includes('landing'));
       
       if (bestProducts.length === 0 || activeCategory.toLowerCase() !== 'semua') { 
           if(popSec) popSec.classList.add('hidden'); 
@@ -1454,7 +1346,7 @@
           </div>
         `;
       }).join('');
-      if(typeof lucide !== 'undefined') lucide.createIcons();
+      lucide.createIcons();
     }
 
     function renderProducts() {
@@ -1463,25 +1355,12 @@
 
       let filtered = products.filter(item => {
         if (item.hidden) return false;
-
         const itemCat = (item.category || '').toLowerCase().trim();
         const targetCat = (activeCategory || 'semua').toLowerCase().trim();
         
         let matchesCategory = false;
         if (targetCat === 'semua') {
           matchesCategory = !itemCat.includes('landing') && !itemCat.includes('blogger') && !itemCat.includes('template') && !itemCat.includes('jasa');
-        } else if (targetCat === 'ai') {
-          matchesCategory = itemCat === 'ai' || itemCat.includes('gemini') || itemCat.includes('chatgpt') || itemCat.includes('claude');
-        } else if (targetCat === 'editor') {
-          matchesCategory = (itemCat === 'editor' || itemCat.includes('app') || itemCat.includes('capcut') || itemCat.includes('alight')) && !itemCat.includes('web');
-        } else if (targetCat === 'template web') {
-          matchesCategory = itemCat === 'template web' || itemCat.includes('blogger') || itemCat.includes('template');
-        } else if (targetCat === 'landing') {
-          matchesCategory = itemCat === 'landing' || itemCat.includes('website');
-        } else if (targetCat === 'jasa web') {
-          matchesCategory = itemCat === 'jasa web' || itemCat.includes('jasa') || itemCat.includes('bikin web');
-        } else if (targetCat === 'stream') {
-          matchesCategory = itemCat === 'stream' || itemCat.includes('youtube') || itemCat.includes('netflix') || itemCat.includes('spotify');
         } else {
           matchesCategory = itemCat.includes(targetCat);
         }
@@ -1492,25 +1371,19 @@
           const desc = (item.description || '').toLowerCase();
           matchesSearch = name.includes(searchQuery) || desc.includes(searchQuery);
         }
-
         return matchesCategory && matchesSearch;
       });
 
-      if (currentSort === 'popular') {
-        filtered.sort((a, b) => Number(b.sold || 0) - Number(a.sold || 0));
-      } else if (currentSort === 'price-asc') {
-        filtered.sort((a, b) => Math.min(...(a.variants && a.variants.length > 0 ? a.variants : [{price: a.price||0}]).map(v => Number(v.price||0))) - Math.min(...(b.variants && b.variants.length > 0 ? b.variants : [{price: b.price||0}]).map(v => Number(v.price||0))));
-      } else if (currentSort === 'price-desc') {
-        filtered.sort((a, b) => Math.min(...(b.variants && b.variants.length > 0 ? b.variants : [{price: b.price||0}]).map(v => Number(v.price||0))) - Math.min(...(a.variants && a.variants.length > 0 ? a.variants : [{price: a.price||0}]).map(v => Number(v.price||0))));
-      } else if (currentSort === 'rating') {
-        filtered.sort((a, b) => Number(b.rating || 5) - Number(a.rating || 5));
-      }
+      if (currentSort === 'popular') filtered.sort((a, b) => Number(b.sold || 0) - Number(a.sold || 0));
+      else if (currentSort === 'price-asc') filtered.sort((a, b) => Math.min(...a.variants.map(v => Number(v.price||0))) - Math.min(...b.variants.map(v => Number(v.price||0))));
+      else if (currentSort === 'price-desc') filtered.sort((a, b) => Math.min(...b.variants.map(v => Number(v.price||0))) - Math.min(...a.variants.map(v => Number(v.price||0))));
+      else if (currentSort === 'rating') filtered.sort((a, b) => Number(b.rating || 5) - Number(a.rating || 5));
 
       document.getElementById('product-count').innerText = `(${filtered.length} Produk)`;
 
       if (filtered.length === 0) {
         grid.innerHTML = `<div class="col-span-full py-16 text-center text-slate-400 text-xs"><i data-lucide="package-x" class="w-10 h-10 mx-auto mb-2 stroke-1"></i>Tidak ada produk yang cocok.</div>`;
-        if(typeof lucide !== 'undefined') lucide.createIcons();
+        lucide.createIcons();
         return;
       }
 
@@ -1541,10 +1414,10 @@
           </div>
         `;
       }).join('');
-      if(typeof lucide !== 'undefined') lucide.createIcons();
+      lucide.createIcons();
     }
 
-    // ================= FUNGSI MODAL DETAIL =================
+    // ================= DETAIL PRODUK =================
     window.openDetailModal = function(id) {
       history.pushState({ modalOpen: true }, '', '#detail');
       const p = products.find(i => i.id == id);
@@ -1553,25 +1426,20 @@
       trackActivity('click'); 
       currentSelectedProduct = p;
       if (!p.variants || p.variants.length === 0) {
-          p.variants = [{ name: 'Default', price: p.price || 0, originalPrice: p.originalPrice || 0, items: [] }];
+          p.variants = [{ name: 'Default', price: p.price || 0, originalPrice: p.originalPrice || 0, items: [], paymentType: 'default' }];
       }
       currentSelectedVariant = p.variants[0];
-      
       currentSelectedQuantity = 1;
+      
       const qtyElem = document.getElementById('modal-quantity');
       if(qtyElem) qtyElem.innerText = currentSelectedQuantity;
 
       document.getElementById('modal-name').innerText = p.name || 'Produk';
       document.getElementById('modal-category').innerText = p.category || 'Umum';
       document.getElementById('modal-sold').innerText = formatSoldCount(p.sold);
-      
-      const ratingNum = Math.round(Number(p.rating || 5));
-      document.getElementById('modal-rating').innerHTML = `<span class="text-amber-500">${'★'.repeat(ratingNum)}</span>`;
-      
-      const warrElem = document.getElementById('modal-warranty');
-      const warrBox = document.getElementById('modal-warranty-box');
-      if(warrElem) warrElem.innerText = p.warranty || 'Resmi';
-      if(warrBox) warrBox.innerText = p.warranty || 'Resmi';
+      document.getElementById('modal-rating').innerHTML = `<span class="text-amber-500">${'★'.repeat(Math.round(Number(p.rating || 5)))}</span>`;
+      document.getElementById('modal-warranty').innerText = p.warranty || 'Resmi';
+      document.getElementById('modal-warranty-box').innerText = p.warranty || 'Resmi';
 
       const sliderWrapper = document.getElementById('modal-slider-wrapper');
       const dotsContainer = document.getElementById('modal-slider-dots');
@@ -1595,17 +1463,13 @@
       window.removeReviewImage();
       window.loadProductReviews(p.id);
       document.getElementById('detail-modal').classList.remove('hidden');
-      if(typeof lucide !== 'undefined') lucide.createIcons();
+      lucide.createIcons();
     };
 
-    window.closeDetailModal = function() { 
-        document.getElementById('detail-modal').classList.add('hidden'); 
-    };
-
+    window.closeDetailModal = function() { document.getElementById('detail-modal').classList.add('hidden'); };
     window.toggleCart = function(open) {
       const cartModal = document.getElementById('cart-modal');
       const cartDrawer = document.getElementById('cart-drawer');
-      
       if (open) { 
         history.pushState({ modalOpen: true }, '', '#cart');
         cartModal.classList.remove('hidden'); 
@@ -1616,16 +1480,13 @@
       }
     };
 
-    window.closeHistoryModal = function() { 
-        document.getElementById('history-modal').classList.add('hidden'); 
-    };
-
+    window.closeHistoryModal = function() { document.getElementById('history-modal').classList.add('hidden'); };
     window.openChatModal = function() {
       history.pushState({ modalOpen: true }, '', '#chat');
       document.getElementById('chat-modal').classList.remove('hidden');
       setTimeout(() => document.getElementById('chat-drawer').classList.remove('translate-x-full'), 10);
       chatBotState = 'normal'; 
-      if(typeof lucide !== 'undefined') lucide.createIcons();
+      lucide.createIcons();
     };
 
     window.closeChatModal = function() {
@@ -1633,42 +1494,27 @@
       setTimeout(() => document.getElementById('chat-modal').classList.add('hidden'), 250);
     };
 
-    window.openPaymentModal = function() {
-      document.getElementById('payment-modal').classList.remove('hidden');
-    }
-
+    window.openPaymentModal = function() { document.getElementById('payment-modal').classList.remove('hidden'); };
     window.closePaymentModal = function() { 
       if (window.tripayCheckInterval) clearInterval(window.tripayCheckInterval);
       document.getElementById('payment-modal').classList.add('hidden'); 
     };
-
-    window.forceClosePaymentModal = function() { 
-      if (window.tripayCheckInterval) clearInterval(window.tripayCheckInterval);
-      document.getElementById('payment-modal').classList.add('hidden'); 
-    };
-
-    // ================= FUNGSI MODAL KOMUNITAS / LIVE ORDER WA =================
+    window.forceClosePaymentModal = function() { window.closePaymentModal(); };
     window.openCommunityModal = function() {
       history.pushState({ modalOpen: true }, '', '#live-wa');
       document.getElementById('community-modal').classList.remove('hidden');
-      if (typeof lucide !== 'undefined') lucide.createIcons();
+      lucide.createIcons();
     };
+    window.closeCommunityModal = function() { document.getElementById('community-modal').classList.add('hidden'); };
 
-    window.closeCommunityModal = function() {
-      document.getElementById('community-modal').classList.add('hidden');
-    };
-
-    window.addEventListener('popstate', function(event) {
+    window.addEventListener('popstate', function() {
       if (window.tripayCheckInterval) clearInterval(window.tripayCheckInterval);
       document.getElementById('detail-modal')?.classList.add('hidden');
-      document.getElementById('cart-drawer')?.classList.add('translate-x-full');
-      setTimeout(() => document.getElementById('cart-modal')?.classList.add('hidden'), 250);
+      document.getElementById('cart-modal')?.classList.add('hidden');
       document.getElementById('history-modal')?.classList.add('hidden');
-      document.getElementById('chat-drawer')?.classList.add('translate-x-full');
-      setTimeout(() => document.getElementById('chat-modal')?.classList.add('hidden'), 250);
+      document.getElementById('chat-modal')?.classList.add('hidden');
       document.getElementById('payment-modal')?.classList.add('hidden');
       document.getElementById('invoice-preview-modal')?.classList.add('hidden');
-      document.getElementById('image-zoom-modal')?.classList.add('hidden');
       document.getElementById('community-modal')?.classList.add('hidden');
     });
 
@@ -1677,7 +1523,6 @@
       if (newQty < 1) newQty = 1;
       if (newQty > 99) newQty = 99; 
       currentSelectedQuantity = newQty;
-      
       const qtyElem = document.getElementById('modal-quantity');
       if(qtyElem) qtyElem.innerText = currentSelectedQuantity;
       window.updateModalPriceDisplay();
@@ -1689,10 +1534,8 @@
       const originalPrice = Number(currentSelectedVariant.originalPrice) || 0;
       const totalPrice = unitPrice * currentSelectedQuantity;
       
-      const priceElem = document.getElementById('modal-price');
+      document.getElementById('modal-price').innerText = formatIDR(totalPrice);
       const origPriceElem = document.getElementById('modal-original-price');
-      
-      if(priceElem) priceElem.innerText = formatIDR(totalPrice);
       if(origPriceElem) {
         if (originalPrice > unitPrice) {
           origPriceElem.innerText = formatIDR(originalPrice * currentSelectedQuantity);
@@ -1704,17 +1547,9 @@
     };
 
     window.updateSliderDotsOnScroll = function(element) {
-      const scrollLeft = element.scrollLeft;
-      const itemWidth = element.clientWidth;
-      const activeIndex = Math.round(scrollLeft / itemWidth);
-      
-      const dots = document.querySelectorAll('.slider-dot');
-      dots.forEach((dot, idx) => {
-        if (idx === activeIndex) {
-          dot.className = 'slider-dot w-4 h-2 rounded-full bg-white transition-all';
-        } else {
-          dot.className = 'slider-dot w-2 h-2 rounded-full bg-white/50 transition-all';
-        }
+      const activeIndex = Math.round(element.scrollLeft / element.clientWidth);
+      document.querySelectorAll('.slider-dot').forEach((dot, idx) => {
+        dot.className = idx === activeIndex ? 'slider-dot w-4 h-2 rounded-full bg-white transition-all' : 'slider-dot w-2 h-2 rounded-full bg-white/50 transition-all';
       });
     };
 
@@ -1737,7 +1572,6 @@
         if (stockCount > 0) {
           stockBadge.innerText = `Tersedia ${stockCount} Akun Instan`;
           stockBadge.className = 'text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100';
-          
           if (btnBuy) {
             btnBuy.disabled = false;
             btnBuy.innerText = 'Beli Sekarang';
@@ -1747,7 +1581,6 @@
         } else {
           stockBadge.innerText = 'Stok Habis';
           stockBadge.className = 'text-[10px] font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-md border border-rose-200';
-          
           if (btnBuy) {
             btnBuy.disabled = true;
             btnBuy.innerText = 'Stok Habis';
@@ -1764,21 +1597,11 @@
     };
 
     window.handleModalCart = function() {
-        try {
-            if (!currentSelectedProduct) {
-                showToast("Data produk belum dimuat", "error");
-                return;
-            }
-            let variant = currentSelectedVariant;
-            if (!variant && currentSelectedProduct.variants && currentSelectedProduct.variants.length > 0) {
-                variant = currentSelectedProduct.variants[0];
-            }
-            window.addToCart(currentSelectedProduct, variant, currentSelectedQuantity); 
-            window.closeDetailModal(); 
-            setTimeout(() => { window.toggleCart(true); }, 150);
-        } catch (e) {
-            showToast("Gagal memproses keranjang", "error");
-        }
+        if (!currentSelectedProduct) return;
+        let variant = currentSelectedVariant || currentSelectedProduct.variants[0];
+        window.addToCart(currentSelectedProduct, variant, currentSelectedQuantity); 
+        window.closeDetailModal(); 
+        setTimeout(() => { window.toggleCart(true); }, 150);
     };
 
     window.handleModalChat = function() {
@@ -1796,21 +1619,18 @@
       try {
         trackActivity('click'); 
         if (!cart || !Array.isArray(cart)) cart = [];
-        const prodName = p && p.name ? p.name : 'Produk';
-        const varName = v && v.name ? v.name : '';
+        const prodName = p?.name || 'Produk';
+        const varName = v?.name || '';
         const finalName = (varName && varName !== 'Default') ? `${prodName} (${varName}) x${qty}` : `${prodName} x${qty}`;
-        const unitPrice = v && v.price ? Number(v.price) : (p && p.price ? Number(p.price) : 0);
+        const unitPrice = Number(v?.price || p?.price || 0);
         const finalPrice = unitPrice * qty; 
-        const img = p && p.image ? p.image : 'https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png';
-        const id = p && p.id ? p.id : Date.now();
+        const img = p?.image || 'https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png';
 
-        cart.push({ id: id, name: finalName, price: finalPrice, image: img, quantity: qty });
+        cart.push({ id: p?.id || Date.now(), name: finalName, price: finalPrice, image: img, quantity: qty });
         localStorage.setItem('my_digital_cart', JSON.stringify(cart));
         renderCart();
         showToast('Berhasil dimasukkan ke keranjang!');
-      } catch(e) {
-        showToast('Gagal masuk ke keranjang', 'error');
-      }
+      } catch(e) {}
     };
     
     window.removeItemFromCart = function(idx) {
@@ -1824,39 +1644,27 @@
     function renderCart() {
       try {
           if (!Array.isArray(cart)) cart = [];
-          const titleCount = document.getElementById('cart-title-count');
-          if(titleCount) titleCount.innerText = cart.length;
+          document.getElementById('cart-title-count').innerText = cart.length;
           const badge = document.getElementById('cart-badge');
           if(badge) {
               badge.innerText = cart.length;
-              if (cart.length > 0) badge.classList.remove('hidden');
-              else badge.classList.add('hidden');
+              badge.classList.toggle('hidden', cart.length === 0);
           }
-          const footer = document.getElementById('cart-footer');
-          if(footer) {
-              if (cart.length > 0) footer.classList.remove('hidden');
-              else footer.classList.add('hidden');
-          }
-          const cartItems = document.getElementById('cart-items');
-          if(cartItems) {
-              cartItems.innerHTML = cart.map((i, idx) => `
-                <div class="flex items-center justify-between gap-3 p-2.5 bg-slate-50 rounded-xl border border-slate-100 shadow-sm">
-                  <img src="${i.image || 'https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png'}" onerror="this.src='https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png'" class="w-12 h-12 rounded-lg object-contain bg-white border p-1" />
-                  <div class="flex-1 min-w-0">
-                    <h4 class="text-xs font-bold text-slate-800 line-clamp-1">${i.name}</h4>
-                    <p class="text-xs text-[#f5125e] font-black mt-0.5">${formatIDR(Number(i.price) || 0)}</p>
-                  </div>
-                  <button onclick="removeItemFromCart(${idx})" class="text-slate-400 hover:text-rose-500 bg-white border border-slate-200 hover:border-rose-200 p-1.5 rounded-lg transition-colors">
-                    <i data-lucide="trash-2" class="w-4 h-4"></i>
-                  </button>
-                </div>
-              `).join('');
-          }
-          const totalPrice = document.getElementById('cart-total-price');
-          if(totalPrice) {
-              totalPrice.innerText = formatIDR(cart.reduce((a, b) => a + (Number(b.price) || 0), 0));
-          }
-          if(typeof lucide !== 'undefined') lucide.createIcons();
+          document.getElementById('cart-footer')?.classList.toggle('hidden', cart.length === 0);
+          document.getElementById('cart-items').innerHTML = cart.map((i, idx) => `
+            <div class="flex items-center justify-between gap-3 p-2.5 bg-slate-50 rounded-xl border border-slate-100 shadow-sm">
+              <img src="${i.image || 'https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png'}" class="w-12 h-12 rounded-lg object-contain bg-white border p-1" />
+              <div class="flex-1 min-w-0">
+                <h4 class="text-xs font-bold text-slate-800 line-clamp-1">${i.name}</h4>
+                <p class="text-xs text-[#f5125e] font-black mt-0.5">${formatIDR(Number(i.price) || 0)}</p>
+              </div>
+              <button onclick="removeItemFromCart(${idx})" class="text-slate-400 hover:text-rose-500 bg-white border border-slate-200 hover:border-rose-200 p-1.5 rounded-lg transition-colors">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+          `).join('');
+          document.getElementById('cart-total-price').innerText = formatIDR(cart.reduce((a, b) => a + (Number(b.price) || 0), 0));
+          lucide.createIcons();
       } catch(e) {}
     }
 
@@ -1868,9 +1676,7 @@
         if (!Array.isArray(history)) history = [];
         
         history.unshift({
-            reference: ref,
-            productName: productName,
-            variantName: variantName,
+            reference: ref, productName, variantName,
             total: totalAmount || "Rp 0",
             buyerName: buyerData?.name || "-",
             buyerEmail: buyerData?.email || "-",
@@ -1878,15 +1684,11 @@
             status: isGateway ? "Lunas Otomatis (TriPay)" : "Menunggu Verifikasi",
             date: new Date().toLocaleString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
         });
-        
         if (history.length > 20) history = history.slice(0, 20);
         localStorage.setItem('my_digital_orders', JSON.stringify(history));
     };
 
-    // =========================================================================
-    // SISTEM LOGIKA PEMBAYARAN: DUAL-PAYMENT GATEWAY (MANUAL & OTOMATIS TRIPAY)
-    // =========================================================================
-
+    // ================= CHECKOUT PER PAKET / VARIAN =================
     async function startNormalCheckout(product, variant, qty = 1, isCart = false) {
       trackActivity('click'); 
       window.isPromo0Order = false;
@@ -1934,11 +1736,20 @@
       document.getElementById('pay-buyer-email').value = '';
       document.getElementById('pay-buyer-wa').value = '';
 
+      // --- LOGIKA PRIORITAS METODE BAYAR PER VARIAN / PRODUK ---
+      const variantPayType = variant.paymentType || 'default';
       const prodPayType = product.paymentType || 'default';
-      let allowedMode = 'both';
+      
+      let effectivePayType = 'default';
+      if (variantPayType !== 'default') {
+        effectivePayType = variantPayType; // Prioritas varian
+      } else if (prodPayType !== 'default') {
+        effectivePayType = prodPayType; // Prioritas produk
+      }
 
-      if (prodPayType === 'gateway') allowedMode = 'gateway';
-      else if (prodPayType === 'manual') allowedMode = 'manual';
+      let allowedMode = 'both';
+      if (effectivePayType === 'gateway') allowedMode = 'gateway';
+      else if (effectivePayType === 'manual') allowedMode = 'manual';
       else allowedMode = window.storePaymentMode || 'both';
 
       const methodSelectBox = document.getElementById('checkout-method-selection');
@@ -1957,7 +1768,7 @@
       document.getElementById('step-pay').classList.remove('hidden');
       document.getElementById('step-result').classList.add('hidden');
       openPaymentModal();
-      if(typeof lucide !== 'undefined') lucide.createIcons();
+      lucide.createIcons();
     }
 
     window.selectCheckoutMethod = function(method) {
@@ -1971,29 +1782,21 @@
       const timerTxt = document.getElementById('gateway-timer-txt');
 
       if (method === 'manual') {
-        if (cardManual) {
-          cardManual.className = 'p-2.5 rounded-xl border-2 border-[#f5125e] bg-rose-50/60 cursor-pointer transition-all flex flex-col justify-between shadow-2xs';
-        }
-        if (cardGateway) {
-          cardGateway.className = 'p-2.5 rounded-xl border-2 border-slate-200 bg-white hover:border-emerald-400 cursor-pointer transition-all flex flex-col justify-between';
-        }
+        if (cardManual) cardManual.className = 'p-2.5 rounded-xl border-2 border-[#f5125e] bg-rose-50/60 cursor-pointer transition-all flex flex-col justify-between shadow-2xs';
+        if (cardGateway) cardGateway.className = 'p-2.5 rounded-xl border-2 border-slate-200 bg-white hover:border-emerald-400 cursor-pointer transition-all flex flex-col justify-between';
         instrTxt.innerText = 'Scan QRIS GoPay di bawah ini:';
         qrisImg.src = QRIS_GOPAY_URL;
         timerTxt.classList.add('hidden');
         btnAction.innerText = 'SAYA SUDAH TRANSFER (MANUAL)';
-        btnAction.className = 'w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:opacity-95 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all active:scale-95 shadow-md';
+        btnAction.className = 'w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:opacity-95 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all active:scale-95 shadow-md cursor-pointer';
       } else {
-        if (cardManual) {
-          cardManual.className = 'p-2.5 rounded-xl border-2 border-slate-200 bg-white hover:border-[#f5125e] cursor-pointer transition-all flex flex-col justify-between';
-        }
-        if (cardGateway) {
-          cardGateway.className = 'p-2.5 rounded-xl border-2 border-emerald-500 bg-emerald-50/60 cursor-pointer transition-all flex flex-col justify-between shadow-2xs';
-        }
+        if (cardManual) cardManual.className = 'p-2.5 rounded-xl border-2 border-slate-200 bg-white hover:border-[#f5125e] cursor-pointer transition-all flex flex-col justify-between';
+        if (cardGateway) cardGateway.className = 'p-2.5 rounded-xl border-2 border-emerald-500 bg-emerald-50/60 cursor-pointer transition-all flex flex-col justify-between shadow-2xs';
         instrTxt.innerText = 'Menyiapkan QRIS TriPay Otomatis...';
         timerTxt.classList.add('hidden');
         window.startGatewayPayment();
       }
-      if (typeof lucide !== 'undefined') lucide.createIcons();
+      lucide.createIcons();
     };
 
     window.handlePayActionClick = function() {
@@ -2001,11 +1804,8 @@
         window.manualPaymentSuccess();
         return;
       }
-      if (window.activeCheckoutMethod === 'gateway') {
-        window.startGatewayPayment();
-      } else {
-        window.manualPaymentSuccess();
-      }
+      if (window.activeCheckoutMethod === 'gateway') window.startGatewayPayment();
+      else window.manualPaymentSuccess();
     };
 
     window.startGatewayPayment = async function() {
@@ -2021,7 +1821,7 @@
          if (btnAction) {
            btnAction.disabled = false;
            btnAction.innerText = 'PROSES PEMBAYARAN OTOMATIS';
-           btnAction.className = 'w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:opacity-95 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all active:scale-95 shadow-md';
+           btnAction.className = 'w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:opacity-95 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all active:scale-95 shadow-md cursor-pointer';
          }
          return;
       }
@@ -2036,7 +1836,7 @@
       btnAction.disabled = true;
       btnAction.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin inline mr-1"></i> Menghubungkan Gateway TriPay...`;
       loadBox.classList.remove('hidden');
-      if (typeof lucide !== 'undefined') lucide.createIcons();
+      lucide.createIcons();
 
       try {
         const res = await fetch(`${API_URL}/create-tripay-tx`, {
@@ -2055,7 +1855,6 @@
           })
         });
         const data = await res.json();
-
         const finalQrUrl = data.qr_url || data.data?.qr_url;
 
         if (data && (data.success || data.status) && finalQrUrl) {
@@ -2076,18 +1875,16 @@
         showToast(e.message || 'Gateway sibuk, silakan gunakan QRIS Manual', 'error');
         btnAction.disabled = false;
         btnAction.innerText = 'PROSES PEMBAYARAN OTOMATIS';
-        btnAction.className = 'w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:opacity-95 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all active:scale-95 shadow-md';
+        btnAction.className = 'w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:opacity-95 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all active:scale-95 shadow-md cursor-pointer';
       }
     };
 
     function startTripayStatusPolling(reference) {
       if (window.tripayCheckInterval) clearInterval(window.tripayCheckInterval);
-
       window.tripayCheckInterval = setInterval(async () => {
         try {
           const res = await fetch(`${API_URL}/check-status?ref=${encodeURIComponent(reference)}`);
           const result = await res.json();
-
           if (result && (result.status === 'PAID' || result.paid)) {
             clearInterval(window.tripayCheckInterval);
             onGatewayPaymentSuccess(result.account || 'Akun Anda telah diaktifkan secara otomatis!');
@@ -2099,7 +1896,6 @@
     function onGatewayPaymentSuccess(accountInfo) {
       document.getElementById('step-pay').classList.add('hidden');
       document.getElementById('step-result').classList.remove('hidden');
-
       document.getElementById('res-title').innerText = "🎉 Pembayaran Lunas Terverifikasi!";
       document.getElementById('res-subtitle').innerText = "Gateway TriPay mengonfirmasi transaksi Anda berhasil.";
       document.getElementById('box-warning-pdf').classList.add('hidden');
@@ -2118,21 +1914,17 @@
 
       window.saveOrderHistory(window.currentInvoiceNo, pName, vName, window.currentInvoiceTotal, window.currentBuyerData, true);
       showToast('Pembayaran berhasil dikonfirmasi secara otomatis! 🚀');
-      if (typeof lucide !== 'undefined') lucide.createIcons();
+      lucide.createIcons();
     }
 
     window.applyStoreCoupon = async function() {
       const codeInput = document.getElementById('coupon-code-input');
       const code = (codeInput?.value || '').trim();
-      if (!code) {
-        showToast('Ketik kode voucher terlebih dahulu!', 'error');
-        return;
-      }
+      if (!code) return showToast('Ketik kode voucher terlebih dahulu!', 'error');
 
       try {
         const res = await fetch(`${API_URL}/check-coupon`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ code: code, amount: window.currentInvoiceAmountNumeric })
         });
         const result = await res.json();
@@ -2148,15 +1940,11 @@
           document.getElementById('coupon-applied-info').classList.remove('hidden');
           showToast(`Berhasil hemat ${formatIDR(result.discountAmount)}! 🎉`);
           
-          if (window.activeCheckoutMethod === 'gateway') {
-            window.startGatewayPayment();
-          }
+          if (window.activeCheckoutMethod === 'gateway') window.startGatewayPayment();
         } else {
           showToast(result.message || 'Kupon tidak berlaku', 'error');
         }
-      } catch (e) {
-        showToast('Gagal memverifikasi kupon', 'error');
-      }
+      } catch (e) { showToast('Gagal memverifikasi kupon', 'error'); }
     };
 
     window.removeStoreCoupon = function() {
@@ -2170,15 +1958,12 @@
         document.getElementById('pay-total-amount').innerText = window.currentInvoiceTotal;
       }
       showToast('Kupon dibatalkan');
-      if (window.activeCheckoutMethod === 'gateway') {
-        window.startGatewayPayment();
-      }
+      if (window.activeCheckoutMethod === 'gateway') window.startGatewayPayment();
     };
 
     window.copyAccountSmart = function(type) {
       const fullText = document.getElementById('account-data')?.innerText || '';
       if (!fullText) return;
-
       let extracted = '';
       if (fullText.includes('|')) {
         const parts = fullText.split('|').map(s => s.trim());
@@ -2187,10 +1972,7 @@
       } else {
         extracted = fullText;
       }
-
-      navigator.clipboard.writeText(extracted).then(() => {
-        showToast(`Berhasil salin ${type === 'user' ? 'Username / Email' : 'Password'}! 📋`);
-      });
+      navigator.clipboard.writeText(extracted).then(() => showToast(`Berhasil salin ${type === 'user' ? 'Username / Email' : 'Password'}! 📋`));
     };
 
     window.manualPaymentSuccess = async function() {
@@ -2198,23 +1980,19 @@
       const email = document.getElementById('pay-buyer-email').value.trim();
       const wa = document.getElementById('pay-buyer-wa').value.trim();
 
-      if (!name || !email || !wa) {
-         showToast('Tolong lengkapi Nama, Email, dan No WA Anda!', 'error');
-         return;
-      }
+      if (!name || !email || !wa) return showToast('Tolong lengkapi Nama, Email, dan No WA Anda!', 'error');
 
       window.currentBuyerData = { name, email, wa };
       const btnAction = document.getElementById('btn-pay-action');
       const originalBtnText = btnAction.innerText;
       btnAction.disabled = true;
       btnAction.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin inline mr-1"></i> Mengambil Akun...`;
-      if (typeof lucide !== 'undefined') lucide.createIcons();
+      lucide.createIcons();
 
       if (window.isPromo0Order) {
         try {
           const res = await fetch(`${API_URL}/claim-promo`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ buyerName: name, buyerEmail: email, buyerWA: wa })
           });
           const claimResult = await res.json();
@@ -2226,36 +2004,20 @@
             return;
           }
 
-          const givenAccount = claimResult.account;
           window.currentInvoiceNo = claimResult.reference || window.currentInvoiceNo;
-
-          document.getElementById('step-pay').classList.add('hidden');
-          document.getElementById('step-result').classList.remove('hidden');
-
-          document.getElementById('res-title').innerText = "🎉 Klaim Rp 0 Berhasil!";
-          document.getElementById('res-subtitle').innerText = "Akun gratis Anda langsung aktif di bawah ini:";
-          document.getElementById('box-warning-pdf').classList.add('hidden');
-          document.getElementById('btn-confirm-wa').classList.remove('hidden');
-          document.getElementById('account-data').innerText = givenAccount;
-
-          window.saveOrderHistory(window.currentInvoiceNo, promo0Data?.title || "Promo Rp 0", "Promo Gratis Rp 0", "Rp 0 (GRATIS)", window.currentBuyerData);
-          showToast('Selamat! Akun promo berhasil didapatkan!');
-        } catch(e) {
-          let rawAccounts = (promo0Data?.accountData || "").split("\n").map(l => l.trim()).filter(Boolean);
-          let givenAccount = rawAccounts.length > 0 ? rawAccounts[0] : "Akun berhasil diklaim!";
           document.getElementById('step-pay').classList.add('hidden');
           document.getElementById('step-result').classList.remove('hidden');
           document.getElementById('res-title').innerText = "🎉 Klaim Rp 0 Berhasil!";
           document.getElementById('res-subtitle').innerText = "Akun gratis Anda langsung aktif di bawah ini:";
           document.getElementById('box-warning-pdf').classList.add('hidden');
           document.getElementById('btn-confirm-wa').classList.remove('hidden');
-          document.getElementById('account-data').innerText = givenAccount;
-          window.saveOrderHistory(window.currentInvoiceNo, promo0Data?.title || "Promo Rp 0", "Promo Gratis Rp 0", "Rp 0 (GRATIS)", window.currentBuyerData);
+          document.getElementById('account-data').innerText = claimResult.account;
+
+          window.saveOrderHistory(window.currentInvoiceNo, promo0Data?.title || "Promo Rp 0", "Promo Gratis Rp 0", "Rp 0 (GRATIS)", window.currentBuyerData, true);
           showToast('Selamat! Akun promo berhasil didapatkan!');
-        } finally {
+        } catch(e) {} finally {
           btnAction.disabled = false;
           btnAction.innerText = originalBtnText;
-          if (typeof lucide !== 'undefined') lucide.createIcons();
         }
         return;
       }
@@ -2274,36 +2036,21 @@
       window.saveOrderHistory(window.currentInvoiceNo, pName, vName, window.currentInvoiceTotal, window.currentBuyerData, false);
 
       fetch(`${API_URL}/orders`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-              reference: window.currentInvoiceNo,
-              date: window.currentOrderDate || new Date().toLocaleString('id-ID'),
-              productName: pName,
-              variantName: vName,
-              totalAmount: window.currentInvoiceTotal || "Rp 0",
-              buyerName: name,
-              buyerEmail: email,
-              buyerWA: wa,
-              status: "Menunggu Verifikasi"
+              reference: window.currentInvoiceNo, date: window.currentOrderDate || new Date().toLocaleString('id-ID'),
+              productName: pName, variantName: vName, totalAmount: window.currentInvoiceTotal || "Rp 0",
+              buyerName: name, buyerEmail: email, buyerWA: wa, status: "Menunggu Verifikasi"
           })
       }).catch(e => {});
 
-      livePurchasesData.unshift({
-        user: `${name} (Diproses)`,
-        product: `${pName} ${vName !== '-' ? `(${vName})` : ''}`,
-        time: 'Baru saja'
-      });
+      livePurchasesData.unshift({ user: `${name} (Diproses)`, product: `${pName} ${vName !== '-' ? `(${vName})` : ''}`, time: 'Baru saja' });
       
-      if (window.currentIsCart) {
-          cart = [];
-          localStorage.setItem('my_digital_cart', JSON.stringify(cart));
-          renderCart();
-      }
+      if (window.currentIsCart) { cart = []; localStorage.setItem('my_digital_cart', JSON.stringify(cart)); renderCart(); }
       showToast('Pemesanan dikirim! Silakan unduh PDF dan konfirmasi ke WhatsApp.');
       btnAction.disabled = false;
       btnAction.innerText = originalBtnText;
-      if (typeof lucide !== 'undefined') lucide.createIcons();
+      lucide.createIcons();
     };
 
     window.copyAccountData = function() {
@@ -2311,32 +2058,13 @@
       navigator.clipboard.writeText(text).then(() => showToast('Data status pesanan berhasil disalin!'));
     };
 
-    window.processCartCheckout = function() {
-      if (!cart || cart.length === 0) return;
-      toggleCart(false);
-      const totalPrice = cart.reduce((a, b) => a + (Number(b.price) || 0), 0);
-      const itemNames = cart.map(i => i.name).join('\n'); 
-      
-      startNormalCheckout(
-         { id: 'CART', name: 'Paket Bundle Keranjang', paymentType: 'default' }, 
-         { name: itemNames, price: totalPrice }, 
-         1, 
-         true
-      );
-    };
-
-    // =========================================================================
-    // FUNGSI UNDUH PDF INVOICE DENGAN STATUS AKURAT (SUKSES / LUNAS / MENUNGGU)
-    // =========================================================================
+    // ================= UNDUH PDF INVOICE =================
     window.downloadPDF = function(customOrderData) {
       showToast('Menyiapkan file PDF Invoice...');
-      
       const order = customOrderData || null;
-
       const name = order?.buyerName || window.currentBuyerData?.name || document.getElementById('pay-buyer-name')?.value.trim() || "Pelanggan Setia";
       const email = order?.buyerEmail || window.currentBuyerData?.email || document.getElementById('pay-buyer-email')?.value.trim() || "-";
       const wa = order?.buyerWA || window.currentBuyerData?.wa || document.getElementById('pay-buyer-wa')?.value.trim() || "-";
-      
       const invNo = order?.reference || window.currentInvoiceNo || `INV-${Date.now()}`;
       const invDate = order?.date || window.currentOrderDate || new Date().toLocaleString('id-ID');
       const invTotal = order?.totalAmount || order?.total || window.currentInvoiceTotal || "Rp 0";
@@ -2344,7 +2072,6 @@
       let invItem = order ? `${order.productName || 'Produk Digital'} (${order.variantName || 'Paket'})` : window.currentInvoiceItem;
       if (!invItem) invItem = "Pembelian Layanan Digital";
 
-      // Logika Penentuan Status: Cek apakah sudah lunas / sukses / selesai dari admin / gateway
       const rawStatus = String(order?.status || "").toLowerCase();
       const isSuccessOrPaid = rawStatus.includes('sukses') || rawStatus.includes('selesai') || rawStatus.includes('lunas') || rawStatus === 'paid' || window.activeCheckoutMethod === 'gateway';
       const isFree = window.isPromo0Order || invTotal.includes('GRATIS') || invTotal === 'Rp 0';
@@ -2409,26 +2136,13 @@
           </div>
       `;
 
-      const opt = {
-          margin: 0.4,
-          filename: `${invNo}.pdf`,
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true },
-          jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-      };
-
-      html2pdf().set(opt).from(invoiceElement).save().then(() => {
-          showToast('Invoice PDF berhasil diunduh!');
-      }).catch((err) => {
-          showToast('Gagal membuat PDF', 'error');
-      });
+      html2pdf().set({ margin: 0.4, filename: `${invNo}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } }).from(invoiceElement).save().then(() => showToast('Invoice PDF berhasil diunduh!')).catch(() => showToast('Gagal membuat PDF', 'error'));
     };
 
     window.confirmViaWA = function() {
         const name = window.currentBuyerData.name || document.getElementById('pay-buyer-name')?.value.trim() || "-";
         const email = window.currentBuyerData.email || document.getElementById('pay-buyer-email')?.value.trim() || "-";
         const wa = window.currentBuyerData.wa || document.getElementById('pay-buyer-wa')?.value.trim() || "-";
-        
         const inv = window.currentInvoiceNo || "INV-DIGITAL";
         const item = window.currentInvoiceItem || "-";
         const total = window.currentInvoiceTotal || "Rp 0";
@@ -2458,41 +2172,7 @@ _Saya melampirkan file Invoice PDF beserta *TANGKAPAN LAYAR (SCREENSHOT) BUKTI T
 
 _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_`;
         
-        const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
-        window.open(waLink, '_blank');
-    };
-
-    window.openChatModalWithProduct = function(prodName, varName, price) {
-      openChatModal();
-      const matched = products.find(p => p.name === prodName);
-      if (matched) lastDiscussedProduct = matched;
-
-      appendUserChatMessage(`Halo Admin CS, saya ingin tanya produk *${prodName}* (${varName}) seharga ${formatIDR(price)}.`);
-      showBotTyping();
-      setTimeout(() => {
-        removeBotTyping();
-        appendBotChatMessage(`Hai Kak! Untuk produk **${prodName} (${varName})** stoknya ready dan siap diproses. Kakak bisa langsung klik **Beli Sekarang** di katalog! 🚀`);
-      }, 1000);
-    };
-
-    window.openHistoryModal = function() {
-      history.pushState({ modalOpen: true }, '', '#history');
-      document.getElementById('history-modal').classList.remove('hidden');
-
-      const savedContact = localStorage.getItem('last_user_contact') || '';
-      const input = document.getElementById('history-search-input');
-      
-      if (savedContact && input) {
-        input.value = savedContact;
-        window.fetchOnlineHistory(null, savedContact);
-      } else {
-        document.getElementById('history-list').innerHTML = `
-          <div class="py-16 text-center text-slate-400 text-xs">
-            <i data-lucide="search" class="w-9 h-9 mx-auto mb-2 stroke-1 text-slate-300"></i>
-            Masukkan nomor WhatsApp atau Email saat order untuk menampilkan riwayat belanja Anda.
-          </div>`;
-      }
-      if (typeof lucide !== 'undefined') lucide.createIcons();
+        window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
     };
 
     // =========================================================================
@@ -2500,14 +2180,12 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
     // =========================================================================
     window.filterHistoryStatus = function(statusType) {
       window.currentHistoryFilter = statusType;
-      
-      const tabAll = document.getElementById('tab-hist-all');
-      const tabPending = document.getElementById('tab-hist-pending');
-      const tabDone = document.getElementById('tab-hist-done');
-
       const normalClass = "py-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition-colors cursor-pointer";
       const activeClass = "py-3 border-b-2 border-[#f5125e] text-[#f5125e] font-extrabold transition-colors cursor-pointer";
 
+      const tabAll = document.getElementById('tab-hist-all');
+      const tabPending = document.getElementById('tab-hist-pending');
+      const tabDone = document.getElementById('tab-hist-done');
       if (tabAll) tabAll.className = statusType === 'all' ? activeClass : normalClass;
       if (tabPending) tabPending.className = statusType === 'pending' ? activeClass : normalClass;
       if (tabDone) tabDone.className = statusType === 'done' ? activeClass : normalClass;
@@ -2517,50 +2195,34 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
 
     window.fetchOnlineHistory = async function(event, directValue = null) {
       if (event) event.preventDefault();
-      
       const query = directValue || document.getElementById('history-search-input').value.trim();
       if (!query) return;
 
       const container = document.getElementById('history-list');
-      container.innerHTML = `
-        <div class="py-16 text-center text-slate-400 text-xs flex flex-col items-center gap-2">
-          <i data-lucide="loader-2" class="w-7 h-7 animate-spin text-[#f5125e]"></i>
-          <span class="font-bold text-slate-600">Memuat pesanan Anda...</span>
-        </div>`;
-      if (typeof lucide !== 'undefined') lucide.createIcons();
+      container.innerHTML = `<div class="py-16 text-center text-slate-400 text-xs flex flex-col items-center gap-2"><i data-lucide="loader-2" class="w-7 h-7 animate-spin text-[#f5125e]"></i><span class="font-bold text-slate-600">Memuat pesanan Anda...</span></div>`;
+      lucide.createIcons();
 
       localStorage.setItem('last_user_contact', query);
 
       try {
         const response = await fetch(`${API_URL}/orders?wa=${encodeURIComponent(query)}`);
         const historyData = await response.json();
-
         if (!Array.isArray(historyData) || historyData.length === 0) {
           window.currentFetchedOrderList = [];
-          container.innerHTML = `
-            <div class="py-16 text-center text-slate-400 text-xs bg-white rounded-2xl border border-slate-200">
-              <i data-lucide="package-x" class="w-10 h-10 mx-auto mb-2 stroke-1 text-rose-400"></i>
-              Tidak ditemukan pesanan dengan kontak: <b>${escapeHtml(query)}</b>
-            </div>`;
+          container.innerHTML = `<div class="py-16 text-center text-slate-400 text-xs bg-white rounded-2xl border border-slate-200"><i data-lucide="package-x" class="w-10 h-10 mx-auto mb-2 stroke-1 text-rose-400"></i>Tidak ditemukan pesanan dengan kontak: <b>${escapeHtml(query)}</b></div>`;
         } else {
           window.currentFetchedOrderList = historyData;
           renderShopeeOrderCards();
         }
       } catch (err) {
-        container.innerHTML = `
-          <div class="py-16 text-center text-rose-500 text-xs bg-white rounded-2xl border border-rose-200">
-            <i data-lucide="alert-circle" class="w-8 h-8 mx-auto mb-2 text-rose-500"></i>
-            Gagal memuat pesanan. Periksa koneksi internet Anda.
-          </div>`;
+        container.innerHTML = `<div class="py-16 text-center text-rose-500 text-xs bg-white rounded-2xl border border-rose-200"><i data-lucide="alert-circle" class="w-8 h-8 mx-auto mb-2 text-rose-500"></i>Gagal memuat pesanan. Periksa koneksi internet Anda.</div>`;
       }
-
-      if (typeof lucide !== 'undefined') lucide.createIcons();
+      lucide.createIcons();
     };
 
     function renderShopeeOrderCards() {
       const container = document.getElementById('history-list');
       if (!container) return;
-
       let list = [...(window.currentFetchedOrderList || [])];
 
       if (window.currentHistoryFilter === 'pending') {
@@ -2576,29 +2238,21 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
       }
 
       if (list.length === 0) {
-        container.innerHTML = `
-          <div class="py-16 text-center text-slate-400 text-xs bg-white rounded-2xl border border-slate-200">
-            <i data-lucide="inbox" class="w-10 h-10 mx-auto mb-2 stroke-1 text-slate-300"></i>
-            Tidak ada pesanan pada kategori ini.
-          </div>`;
-        if (typeof lucide !== 'undefined') lucide.createIcons();
+        container.innerHTML = `<div class="py-16 text-center text-slate-400 text-xs bg-white rounded-2xl border border-slate-200"><i data-lucide="inbox" class="w-10 h-10 mx-auto mb-2 stroke-1 text-slate-300"></i>Tidak ada pesanan pada kategori ini.</div>`;
+        lucide.createIcons();
         return;
       }
 
       container.innerHTML = list.map((item) => {
         const rawSt = String(item.status || "").toLowerCase();
         const isDone = rawSt.includes('sukses') || rawSt.includes('selesai') || rawSt.includes('lunas') || rawSt === 'paid';
-
-        // Cari data foto produk jika tersedia di katalog
         const matchedProd = products.find(p => String(item.productName || "").toLowerCase().includes(String(p.name || "").toLowerCase()));
         const itemImg = matchedProd?.image || 'https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png';
-
         const itemBase64 = btoa(unescape(encodeURIComponent(JSON.stringify(item))));
-        const waChatLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Halo Admin DigitalHub, saya mau cek pesanan saya:\nNo. Invoice: ${item.reference}\nProduk: ${item.productName}`)}`;
+        const waChatLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Halo Admin DigitalHub, saya mau cek pesanan saya:\nNo. Invoice: ${item.reference}\nProduk:${item.productName}`)}`;
 
         return `
           <div class="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden transition-all hover:shadow-md">
-            
             <!-- Header Kartu Shopee: Toko & Status -->
             <div class="px-3.5 py-2.5 border-b border-slate-100 flex items-center justify-between text-xs bg-slate-50/50">
               <div class="flex items-center gap-1.5 font-black text-slate-800">
@@ -2606,15 +2260,12 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
                 <span>DigitalHub Store</span>
                 <span class="text-[9.5px] font-mono text-slate-400 ml-1 font-medium hidden sm:inline">#${item.reference}</span>
               </div>
-              <span class="text-[10px] font-black uppercase ${isDone ? 'text-emerald-600' : 'text-amber-600'}">
-                ${isDone ? 'Selesai' : 'Diproses / Menunggu'}
-              </span>
+              <span class="text-[10px] font-black uppercase ${isDone ? 'text-emerald-600' : 'text-amber-600'}">${isDone ? 'Selesai' : 'Diproses / Menunggu'}</span>
             </div>
 
             <!-- Isi Produk Shopee Style -->
             <div class="p-3.5 flex gap-3 cursor-pointer" onclick="viewInvoiceFromData('${itemBase64}')">
               <img src="${itemImg}" onerror="this.src='https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png'" class="w-16 h-16 rounded-xl object-contain bg-slate-50 border border-slate-100 p-1 flex-shrink-0" />
-              
               <div class="flex-1 min-w-0 flex flex-col justify-between">
                 <div>
                   <h4 class="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1 leading-tight">${item.productName}</h4>
@@ -2629,52 +2280,28 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
 
             <!-- Banner Koin / Garansi Shopee Style -->
             <div class="px-3.5 py-2 bg-amber-50/40 border-t border-slate-100 flex items-center justify-between text-[11px] text-amber-900">
-              <div class="flex items-center gap-1.5 font-bold">
-                <i data-lucide="shield-check" class="w-4 h-4 text-amber-500"></i>
-                <span>Garansi Resmi DigitalHub Aktif</span>
-              </div>
+              <div class="flex items-center gap-1.5 font-bold"><i data-lucide="shield-check" class="w-4 h-4 text-amber-500"></i><span>Garansi Resmi DigitalHub Aktif</span></div>
               <span class="text-[10px] text-slate-400 font-medium">${item.date || '-'}</span>
             </div>
 
             <!-- Rincian Total Produk & Tombol Aksi Shopee -->
             <div class="p-3.5 border-t border-slate-100 space-y-3 bg-white">
               <div class="flex justify-end items-baseline gap-2 text-xs">
-                <span class="text-slate-500 text-[11px]">Total 1 produk:</span>
+                <span class="text-slate-500 text-[11px]">Total tagihan:</span>
                 <span class="text-sm font-black text-[#f5125e]">${item.totalAmount || item.total || 'Rp 0'}</span>
               </div>
-
               <div class="flex items-center justify-end gap-2 pt-1 flex-wrap">
-                <!-- Tombol Lihat Invoice -->
-                <button onclick="viewInvoiceFromData('${itemBase64}')" class="px-3 py-1.5 rounded-xl border border-slate-200 text-slate-700 font-bold text-[11px] hover:bg-slate-50 transition active:scale-95 cursor-pointer">
-                  Lihat Invoice
-                </button>
-
-                <!-- Tombol Beli Lagi -->
-                <button onclick="reorderProduct('${matchedProd ? matchedProd.id : ''}')" class="px-3 py-1.5 rounded-xl border border-slate-200 text-slate-700 font-bold text-[11px] hover:bg-slate-50 transition active:scale-95 cursor-pointer">
-                  Beli Lagi
-                </button>
-
-                <!-- Tombol Nilai (Khusus Pesanan Selesai) -->
-                ${isDone ? `
-                  <button onclick="openReviewModalFromOrder('${matchedProd ? matchedProd.id : ''}', '${escapeHtml(item.productName)}', '${escapeHtml(item.buyerName || '')}')" class="px-4 py-1.5 rounded-xl bg-[#f5125e] hover:bg-[#d40c4e] text-white font-bold text-[11px] transition active:scale-95 shadow-2xs cursor-pointer">
-                    Nilai
-                  </button>
-                ` : `
-                  <a href="${waChatLink}" target="_blank" class="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] transition active:scale-95 shadow-2xs flex items-center gap-1 cursor-pointer">
-                    <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> Hubungi CS
-                  </a>
-                `}
+                <button onclick="viewInvoiceFromData('${itemBase64}')" class="px-3 py-1.5 rounded-xl border border-slate-200 text-slate-700 font-bold text-[11px] hover:bg-slate-50 transition active:scale-95 cursor-pointer">Lihat Invoice</button>
+                <button onclick="reorderProduct('${matchedProd ? matchedProd.id : ''}')" class="px-3 py-1.5 rounded-xl border border-slate-200 text-slate-700 font-bold text-[11px] hover:bg-slate-50 transition active:scale-95 cursor-pointer">Beli Lagi</button>
+                ${isDone ? `<button onclick="openReviewModalFromOrder('${matchedProd ? matchedProd.id : ''}', '${escapeHtml(item.productName)}', '${escapeHtml(item.buyerName || '')}')" class="px-4 py-1.5 rounded-xl bg-[#f5125e] hover:bg-[#d40c4e] text-white font-bold text-[11px] transition active:scale-95 shadow-2xs cursor-pointer">Nilai</button>` : `<a href="${waChatLink}" target="_blank" class="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] transition active:scale-95 shadow-2xs flex items-center gap-1 cursor-pointer"><i data-lucide="message-circle" class="w-3.5 h-3.5"></i> Hubungi CS</a>`}
               </div>
             </div>
-
           </div>
         `;
       }).join('');
-
-      if (typeof lucide !== 'undefined') lucide.createIcons();
+      lucide.createIcons();
     }
 
-    // Helper: Beli lagi produk yang sama
     window.reorderProduct = function(productId) {
       if (!productId) {
         closeHistoryModal();
@@ -2685,7 +2312,6 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
       openDetailModal(productId);
     };
 
-    // Helper: Langsung beri nilai produk dari kartu pesanan Shopee
     window.openReviewModalFromOrder = function(productId, productName, buyerName) {
       closeHistoryModal();
       if (!productId) {
@@ -2705,510 +2331,16 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
       }
     };
 
-    window.viewInvoiceFromData = function(base64Str) {
-      try {
-        const item = JSON.parse(decodeURIComponent(escape(atob(base64Str))));
-        const contentBox = document.getElementById('invoice-preview-content');
-
-        const rawSt = String(item.status || "").toLowerCase();
-        const isDone = rawSt.includes('sukses') || rawSt.includes('selesai') || rawSt.includes('lunas') || rawSt === 'paid';
-
-        contentBox.innerHTML = `
-          <div style="border-bottom: 2px solid #f5125e; padding-bottom: 12px; margin-bottom: 15px;">
-            <h2 style="color: #f5125e; margin: 0; font-size: 20px; font-weight: 900; letter-spacing: -0.5px;">DIGITALHUB</h2>
-            <p style="margin: 2px 0 0; font-size: 11px; color: #64748b; font-weight: bold;">E-Invoice Pembelian Resmi</p>
-          </div>
-
-          <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 11px;">
-            <div>
-              <p style="margin: 0; color: #94a3b8; text-transform: uppercase;">No. Invoice</p>
-              <p style="margin: 2px 0 8px; font-weight: bold; font-family: monospace; font-size: 12px;">${item.reference}</p>
-              <p style="margin: 0; color: #94a3b8; text-transform: uppercase;">Tanggal Pesanan</p>
-              <p style="margin: 2px 0 0; font-weight: bold;">${item.date}</p>
-            </div>
-            <div style="text-align: right;">
-              <p style="margin: 0; color: #94a3b8; text-transform: uppercase;">Metode Pembayaran</p>
-              <p style="margin: 2px 0 8px; font-weight: bold;">${item.variantName === 'Promo Gratis Rp 0' ? 'Promo Gratis Rp 0' : 'QRIS GoPay'}</p>
-              <p style="margin: 0; color: #94a3b8; text-transform: uppercase;">Status</p>
-              <span style="display: inline-block; background: ${isDone ? '#dcfce7' : '#fef3c7'}; color: ${isDone ? '#16a34a' : '#b45309'}; padding: 2px 8px; border-radius: 6px; font-weight: bold; font-size: 10px; border: 1px solid ${isDone ? '#bbf7d0' : '#fde68a'};">${isDone ? 'SUKSES / LUNAS' : 'DIPROSES'}</span>
-            </div>
-          </div>
-
-          <div style="background: #f8fafc; padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0; font-size: 11px; margin-bottom: 15px;">
-            <p style="margin: 0 0 6px; font-weight: bold; color: #334155;">Data Pembeli</p>
-            <div style="display: grid; grid-template-columns: 80px 1fr; gap: 4px;">
-              <span style="color: #64748b;">Nama</span><span style="font-weight: 600;">: ${item.buyerName || '-'}</span>
-              <span style="color: #64748b;">Email</span><span style="font-weight: 600;">: ${item.buyerEmail || '-'}</span>
-              <span style="color: #64748b;">WhatsApp</span><span style="font-weight: 600;">: ${item.buyerWA || '-'}</span>
-            </div>
-          </div>
-
-          <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 11.5px;">
-            <thead>
-              <tr style="background: #f5125e; color: white;">
-                <th style="padding: 8px 10px; text-align: left; border-radius: 6px 0 0 6px;">Produk</th>
-                <th style="padding: 8px 10px; text-align: right; border-radius: 0 6px 6px;">Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;">
-                  <b>${item.productName}</b><br>
-                  <span style="color: #64748b; font-size: 10.5px;">Variasi: ${item.variantName || 'Standar'}</span>
-                </td>
-                <td style="padding: 10px; text-align: right; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #f5125e;">
-                  ${item.totalAmount || item.total || 'Lunas'}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          <div style="text-align: center; color: #94a3b8; font-size: 10px; border-top: 1px dashed #e2e8f0; padding-top: 10px;">
-            <p style="margin: 0; font-weight: bold; color: ${isDone ? '#16a34a' : '#64748b'};">${isDone ? 'Pesanan ini sudah sukses terverifikasi & bergaransi penuh.' : 'Dokumen ini merupakan bukti transaksi digital sah di DigitalHub.'}</p>
-          </div>
-        `;
-
-        document.getElementById('btn-download-from-preview').onclick = function() {
-          window.downloadPDF(item);
-        };
-
-        document.getElementById('invoice-preview-modal').classList.remove('hidden');
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-      } catch (err) {
-        showToast('Gagal memuat invoice', 'error');
-      }
-    };
-
-    window.closeInvoicePreviewModal = function() {
-      document.getElementById('invoice-preview-modal').classList.add('hidden');
-    };
-
-    // ================= FUNGSI ULASAN PRODUK & GAMBAR =================
-    window.productOnlineReviews = {};
-    window.currentUploadedReviewImage = '';
-
-    window.handleReviewImagePick = function(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      if (file.size > 5 * 1024 * 1024) {
-        showToast('Ukuran gambar terlalu besar (Maksimal 5MB)', 'error');
-        event.target.value = '';
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const img = new Image();
-        img.onload = function() {
-          const canvas = document.createElement('canvas');
-          const maxDim = 800;
-          let width = img.width;
-          let height = img.height;
-
-          if (width > height && width > maxDim) {
-            height *= maxDim / width;
-            width = maxDim;
-          } else if (height > maxDim) {
-            width *= maxDim / height;
-            height = maxDim;
-          }
-
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, width, height);
-          window.currentUploadedReviewImage = canvas.toDataURL('image/jpeg', 0.7);
-
-          const previewContainer = document.getElementById('rev-image-preview-container');
-          const previewImg = document.getElementById('rev-image-preview');
-          previewImg.src = window.currentUploadedReviewImage;
-          previewContainer.classList.remove('hidden');
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    };
-
-    window.removeReviewImage = function() {
-      window.currentUploadedReviewImage = '';
-      const input = document.getElementById('rev-image-input');
-      if (input) input.value = '';
-      const previewContainer = document.getElementById('rev-image-preview-container');
-      if (previewContainer) previewContainer.classList.add('hidden');
-    };
-
-    window.zoomImage = function(src) {
-      document.getElementById('image-zoom-src').src = src;
-      document.getElementById('image-zoom-modal').classList.remove('hidden');
-    };
-
-    window.closeImageZoom = function() {
-      document.getElementById('image-zoom-modal').classList.add('hidden');
-    };
-
-    window.loadProductReviews = async function(productId) {
-      window.setReviewFilter('all');
-      try {
-        const res = await fetch(`${API_URL}/reviews?productId=${productId}`);
-        const data = await res.json();
-        if (Array.isArray(data)) {
-          window.productOnlineReviews[productId] = data;
-          displayFilteredReviews();
-        }
-      } catch (e) {}
-    };
-
-    window.handleReviewSubmit = async function(e) {
-      e.preventDefault();
-      if (!currentSelectedProduct) return;
-
-      const nameInput = document.getElementById('rev-user-name');
-      const ratingInput = document.getElementById('rev-rating');
-      const commentInput = document.getElementById('rev-comment');
-      const submitBtn = document.getElementById('btn-submit-review');
-
-      const name = nameInput.value.trim();
-      const rating = Number(ratingInput.value) || 5;
-      const comment = commentInput.value.trim();
-
-      if (!name || !comment) {
-        showToast("Tolong lengkapi nama dan ulasan Anda!", "error");
-        return;
-      }
-
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i> Mengirim...`;
-
-      const nowIso = new Date().toISOString();
-
-      const reviewPayload = {
-        productId: currentSelectedProduct.id,
-        user: name,
-        rating: rating,
-        comment: comment,
-        image: window.currentUploadedReviewImage || '',
-        variant: currentSelectedVariant?.name || 'Resmi',
-        createdAt: nowIso
-      };
-
-      try {
-        const res = await fetch(`${API_URL}/reviews`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(reviewPayload)
-        });
-        const data = await res.json();
-
-        if (data.success) {
-          showToast("Terima kasih atas ulasan Anda! ⭐");
-          nameInput.value = '';
-          commentInput.value = '';
-          const savedImg = window.currentUploadedReviewImage;
-          window.removeReviewImage();
-
-          if (!window.productOnlineReviews[currentSelectedProduct.id]) {
-            window.productOnlineReviews[currentSelectedProduct.id] = [];
-          }
-          window.productOnlineReviews[currentSelectedProduct.id].unshift({
-            user: name,
-            rating: rating,
-            comment: comment,
-            image: savedImg || '',
-            variant: currentSelectedVariant?.name || 'Resmi',
-            createdAt: nowIso,
-            date: nowIso,
-            avatarColor: 'bg-rose-100 text-[#f5125e]'
-          });
-
-          displayFilteredReviews();
-        } else {
-          showToast("Gagal mengirim ulasan", "error");
-        }
-      } catch (err) {
-        showToast("Koneksi gagal mengirim ulasan", "error");
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = `<i data-lucide="send" class="w-3.5 h-3.5"></i> Kirim Ulasan`;
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-      }
-    };
-
-    function getReviewsForProduct(p) {
-      const pName = p.name || 'Produk ini';
-      let cat = (p.category || '').toLowerCase();
-      
-      let commentsAll = [
-        `Sumpah mantap banget! Beli ${pName} di sini cepat prosesnya. Auto langganan! 🔥`,
-        `Awalnya ragu, tapi ternyata beneran full garansi. ${pName} nya work 100% tanpa kendala.`,
-        `Pelayanan super cepat. Pembayaran via GoPay QRIS gampang banget, langsung dapet akses ${pName}.`
-      ];
-      
-      if(cat.includes('ai') || cat.includes('gemini') || cat.includes('chatgpt')) {
-        commentsAll[1] = `Bantu banget buat nugas dan kerjaan. Akses ${pName} lancar jaya, AI nya responsif!`;
-      } else if(cat.includes('editor') || cat.includes('canva') || cat.includes('capcut')) {
-        commentsAll[1] = `Bisa langsung dipakai edit tanpa watermark. ${pName} premium memang beda, semua fitur pro kebuka.`;
-      } else if(cat.includes('sosmed') || cat.includes('jasa')) {
-        commentsAll[1] = `Amanah banget, pesanan ${pName} langsung diproses sesuai kesepakatan. Mantap!`;
-      } else if(cat.includes('stream') || cat.includes('netflix')) {
-        commentsAll[1] = `Nonton kualitas HD/4K lancar tanpa screen limit. Beli ${pName} di sini paling murah dan terpercaya.`;
-      }
-
-      return {
-        all: [
-          { user: "b***9", avatarColor: "bg-blue-100 text-blue-600", rating: 5, defaultOffset: 1, tag: "instant", comment: commentsAll[0] },
-          { user: "d***i", avatarColor: "bg-rose-100 text-rose-600", rating: 5, defaultOffset: 2, tag: "service", comment: commentsAll[1] },
-          { user: "r***a", avatarColor: "bg-emerald-100 text-emerald-600", rating: 5, defaultOffset: 4, tag: "instant", comment: commentsAll[2] }
-        ],
-        star5: [
-          { user: "f***y", avatarColor: "bg-amber-100 text-amber-600", rating: 5, defaultOffset: 2, tag: "instant", comment: `Bintang 5 buat ${pName}! Semua fungsi kebuka sempurna tanpa ada kendala sama sekali.` },
-          { user: "k***n", avatarColor: "bg-purple-100 text-purple-600", rating: 5, defaultOffset: 5, tag: "service", comment: `Kualitas bintang lima. Konfirmasi cepat dan ramah, dapet akses ${pName} super aman!` }
-        ],
-        instant: [
-          { user: "h***d", avatarColor: "bg-indigo-100 text-indigo-600", rating: 5, defaultOffset: 1, tag: "instant", comment: `⚡ Benar-benar kilat! Order ${pName} respon WA Admin nya cepet banget.` },
-          { user: "s***t", avatarColor: "bg-cyan-100 text-cyan-600", rating: 5, defaultOffset: 3, tag: "instant", comment: `⚡ Sistem pembayaran mudah pakai QRIS, lisensi ${pName} langsung diberikan setelah konfirmasi.` }
-        ],
-        service: [
-          { user: "a***n", avatarColor: "bg-rose-100 text-rose-600", rating: 5, defaultOffset: 3, tag: "service", comment: `🛡️ Garansi ${pName} terbukti 100% aman dan responsif. CS Admin WhatsApp sangat ramah membantu.` },
-          { user: "p***i", avatarColor: "bg-pink-100 text-pink-600", rating: 5, defaultOffset: 6, tag: "service", comment: `🛡️ File PDF Invoice langsung didownload, ga takut hilang bukti garansi buat pesanan ${pName}.` }
-        ]
-      };
-    }
-
-    window.setReviewFilter = function(filterType) {
-      activeReviewFilter = filterType;
-      document.querySelectorAll('.rf-btn').forEach(btn => {
-        btn.className = 'rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all text-[10px] cursor-pointer';
-      });
-      const activeBtn = document.getElementById(`rf-${filterType}`);
-      if (activeBtn) activeBtn.className = 'rf-btn bg-rose-50 text-[#f5125e] border border-rose-200 px-2.5 py-1 rounded-lg font-bold transition-all text-[10px] shadow-2xs cursor-pointer';
-      displayFilteredReviews();
-    };
-
-    function displayFilteredReviews() {
-      const container = document.getElementById('product-reviews-list');
-      if (!container || !currentSelectedProduct) return;
-      
-      const onlineList = window.productOnlineReviews[currentSelectedProduct.id] || [];
-      let listToShow = [...onlineList];
-
-      if (activeReviewFilter === 'star5') {
-        listToShow = listToShow.filter(r => Number(r.rating) === 5);
-      } else if (activeReviewFilter !== 'all') {
-        listToShow = listToShow.filter(r => r.tag === activeReviewFilter);
-      }
-
-      if (listToShow.length === 0) {
-        const dynamicReviews = getReviewsForProduct(currentSelectedProduct);
-        listToShow = dynamicReviews[activeReviewFilter] || dynamicReviews.all || [];
-      }
-
-      container.innerHTML = listToShow.map((rev, index) => {
-        const rawDate = rev.createdAt || rev.timestamp || rev.date;
-        const dynamicDate = timeAgo(rawDate, index + 1);
-
-        return `
-        <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 space-y-1.5 animate-review">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <div class="w-7 h-7 rounded-full ${rev.avatarColor || 'bg-rose-100 text-[#f5125e]'} flex items-center justify-center font-bold text-[10px]">
-                ${(rev.user || 'U').charAt(0).toUpperCase()}
-              </div>
-              <div>
-                <p class="font-bold text-[11px] text-slate-800 leading-tight">${escapeHtml(rev.user || 'Pengguna')}</p>
-                <div class="flex items-center gap-0.5 text-amber-500 text-[10px]">${'★'.repeat(Number(rev.rating) || 5)}</div>
-              </div>
-            </div>
-            <span class="text-[9.5px] text-slate-400 font-medium">${dynamicDate}</span>
-          </div>
-          <div class="text-[10px] text-slate-500 font-medium bg-white px-2 py-0.5 rounded border border-slate-100 w-max">Variasi: ${escapeHtml(rev.variant || currentSelectedVariant?.name || 'Resmi')}</div>
-          <p class="text-[11.5px] text-slate-700 leading-relaxed">${escapeHtml(rev.comment)}</p>
-          ${rev.image ? `
-            <div class="pt-1">
-              <img src="${rev.image}" onclick="zoomImage('${rev.image}')" alt="Bukti Ulasan" class="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-xl border border-slate-200 hover:opacity-90 transition-opacity cursor-pointer shadow-2xs" />
-            </div>
-          ` : ''}
-        </div>`;
-      }).join('');
-    }
-
-    setInterval(() => {
-      const modal = document.getElementById('detail-modal');
-      if (modal && !modal.classList.contains('hidden') && currentSelectedProduct) {
-        displayFilteredReviews();
-      }
-    }, 60000);
-
-    // ================= FUNGSI BOT CERDAS =================
-    window.sendQuickReply = function(action) {
-      document.getElementById('chat-menu-buttons').classList.add('hidden'); 
-      
-      if (action === 'menu_cek_produk') {
-        appendUserChatMessage("Saya ingin mengecek stok atau harga produk.");
-        showBotTyping();
-        setTimeout(() => { removeBotTyping(); appendBotChatMessage(`Boleh Kak! Silakan ketik nama produk yang ingin dicek (Contoh: "Harga Canva", "Apakah Netflix ready?").`); }, 800);
-      } else if (action === 'menu_cara_cek_invoice') {
-        appendUserChatMessage("Bagaimana cara cek riwayat pesanan dan mengunduh Invoice PDF saya?");
-        showBotTyping();
-        setTimeout(() => {
-          removeBotTyping();
-          appendBotChatMessage(`**Panduan Cek Pesanan & Unduh Invoice:**\n\n1. Klik menu **"Pesanan"** di bar navigasi bawah (atau menu atas jika di PC/Laptop).\n2. Masukkan **Nomor WhatsApp** atau **Email** yang Kakak gunakan saat checkout.\n3. Klik tombol **"Cari"**.\n4. Riwayat pesanan akan muncul. Klik **"Lihat Invoice"** lalu pilih tombol merah **"Unduh PDF"** untuk menyimpan bukti berstatus sukses/lunas! 📄✨\n\n👉 <button onclick="closeChatModal(); openHistoryModal();" class="text-rose-600 font-black underline bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-lg inline-block mt-1.5 shadow-2xs cursor-pointer">Buka Menu Riwayat Sekarang</button>`);
-        }, 800);
-      } else if (action === 'menu_cara_beli') {
-        appendUserChatMessage("Bagaimana cara beli produk via QRIS dan sistem garansinya?");
-        showBotTyping();
-        setTimeout(() => { removeBotTyping(); appendBotChatMessage(`**Cara Beli Sangat Mudah:**\n1. Pilih produk & paket yang diinginkan di beranda.\n2. Klik **Beli Sekarang** dan isi Form Pembeli.\n3. Scan QRIS GoPay atau TriPay yang muncul.\n4. Download Invoice PDF lalu konfirmasi ke WA Admin! ⚡\n\n**Info Garansi:**\nSemua produk bergaransi penuh sesuai masa aktif. Simpan File PDF Invoice untuk klaim penggantian jika ada kendala.`); }, 1200);
-      } else if (action === 'menu_hubungi_admin') {
-        appendUserChatMessage("Saya ingin menghubungi Admin CS via WhatsApp.");
-        chatBotState = 'awaiting_wa_reason'; 
-        showBotTyping();
-        setTimeout(() => { removeBotTyping(); appendBotChatMessage(`Baik Kak. Boleh kasih tahu kami dulu, kendala atau pertanyaan apa yang ingin disampaikan ke Admin? (Misal: 'Mau klaim garansi invoice INV123')`); }, 1000);
-      }
-    };
-
-    window.handleUserChatSubmit = function(e) {
-      e.preventDefault();
-      const input = document.getElementById('user-chat-input');
-      const text = input.value.trim();
-      if (!text) return;
-      input.value = '';
-      
-      appendUserChatMessage(text);
-      document.getElementById('chat-menu-buttons').classList.add('hidden'); 
-      
-      showBotTyping();
-      setTimeout(() => { processSmartBotResponse(text); }, 800);
-    };
-
-    function processSmartBotResponse(rawText) {
-      removeBotTyping();
-      const text = rawText.toLowerCase();
-
-      if (chatBotState === 'awaiting_wa_reason') {
-        chatBotState = 'normal'; 
-        const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Halo Admin DigitalHub, saya butuh bantuan terkait: ' + rawText)}`;
-        appendBotChatMessage(`Terima kasih informasinya Kak. Silakan klik tombol di bawah ini untuk terhubung langsung dengan Admin kami beserta detail pesan Kakak:\n\n👉 <a href="${waLink}" target="_blank" class="text-emerald-600 font-black underline bg-emerald-50 px-2 py-1 rounded inline-block mt-2 shadow-xs">Chat WhatsApp Admin</a>`);
-        return;
-      }
-
-      if (text === 'menu' || text === 'bantuan' || text === 'help') {
-        appendBotChatMessage(`Tentu Kak, ini menu bantuan yang bisa Kakak pilih:`);
-        document.getElementById('chat-menu-buttons').classList.remove('hidden');
-        return;
-      }
-
-      if (text.includes('invoice') || text.includes('struk') || text.includes('nota') || text.includes('riwayat') || text.includes('cek pesanan') || text.includes('unduh pdf')) {
-        appendBotChatMessage(`Untuk mengecek atau mengunduh ulang **Invoice PDF** Kakak:\n\n1. Buka menu **Pesanan** di bagian bawah.\n2. Masukkan nomor WA / Email yang Kakak pakai saat membeli.\n3. Klik **Lihat Invoice** lalu tekan **Unduh PDF**.\n\n👉 <button onclick="closeChatModal(); openHistoryModal();" class="text-rose-600 font-black underline bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-lg inline-block mt-1 shadow-2xs cursor-pointer">Buka Riwayat Pesanan</button>`);
-        return;
-      }
-      
-      if (text.includes('admin') || text.includes('cs') || text.includes('whatsapp') || text.includes('wa') || text.includes('hubung')) {
-        chatBotState = 'awaiting_wa_reason';
-        appendBotChatMessage("Boleh kasih tahu kami dulu Kak, kendala atau keluhan spesifik apa yang ingin disampaikan ke Admin sebelum disambungkan? (Contoh: 'Akun Netflix bermasalah' dll)");
-        return;
-      }
-
-      if (text.includes('garansi') || text.includes('awet') || text.includes('aman')) {
-        if (lastDiscussedProduct) {
-          let garansi = lastDiscussedProduct.warranty || 'Resmi & Full Garansi';
-          appendBotChatMessage(`Untuk produk **${lastDiscussedProduct.name}**, status garansinya adalah: **${garansi}**. 🛡️\n\nPastikan Kakak menyimpan file Invoice PDF untuk mempermudah klaim jika ada kendala di kemudian hari ya!`);
-        } else {
-          appendBotChatMessage(`Semua produk di DigitalHub 100% bergaransi sesuai masa aktif paketnya Kak! 🛡️\n\nBoleh sebutkan nama aplikasinya (misal: "Garansi Canva") agar saya bisa cek detail garansi khususnya?`);
-        }
-        return;
-      }
-      
-      if (text.includes('deskripsi') || text.includes('syarat') || text.includes('ketentuan') || text.includes('detail')) {
-        if (lastDiscussedProduct) {
-          let desc = lastDiscussedProduct.description || 'Produk digital premium dengan layanan memuaskan.';
-          appendBotChatMessage(`Tentu Kak, berikut adalah detail untuk **${lastDiscussedProduct.name}**:\n\n*${desc}*`);
-        } else {
-          appendBotChatMessage(`Tentu Kak, boleh sebutkan nama produknya dulu? (Contoh: "Deskripsi Canva")`);
-        }
-        return;
-      }
-
-      let matchedProduct = null;
-      const ignoreWords = ['berapa', 'harga', 'stok', 'ready', 'ada', 'kak', 'min', 'bot', 'beli', 'untuk', 'apakah', 'gimana', 'cara'];
-      
-      for (let p of products) {
-        if (p.hidden) continue;
-        let pName = p.name.toLowerCase();
-        if (text.includes(pName) && !ignoreWords.includes(pName)) {
-          matchedProduct = p; break;
-        }
-      }
-      if (!matchedProduct) {
-        const userWords = text.split(' ');
-        for (let word of userWords) {
-          if (word.length > 3 && !ignoreWords.includes(word)) {
-            matchedProduct = products.find(p => !p.hidden && p.name.toLowerCase().includes(word));
-            if(matchedProduct) break;
-          }
-        }
-      }
-
-      if (matchedProduct) {
-        lastDiscussedProduct = matchedProduct; 
-        const prices = matchedProduct.variants && matchedProduct.variants.length > 0 ? matchedProduct.variants.map(v => Number(v.price||0)) : [Number(matchedProduct.price||0)];
-        const minPrice = formatIDR(Math.min(...prices));
-        appendBotChatMessage(`Untuk produk **${matchedProduct.name}** saat ini stoknya **READY** dan bisa diproses cepat! 🎉\n\nHarganya mulai dari **${minPrice}**. Kakak bisa langsung cari produknya di katalog dan klik "Beli Sekarang".`);
-        return;
-      }
-
-      if (text === 'halo' || text === 'hai' || text === 'pagi' || text === 'siang' || text === 'sore' || text === 'malam' || text === 'ping' || text === 'p') {
-        appendBotChatMessage(`Halo Kak! 👋 Ada yang bisa dibantu hari ini? Kakak bisa ketik **"menu"** untuk melihat opsi bantuan kami.`);
-        return;
-      }
-
-      appendBotChatMessage(`Maaf Kak, bot kurang memahami maksudnya. 🙏\n\nKakak bisa mengetik **"menu"** untuk melihat opsi yang tersedia, atau ketik pertanyaan seputar stok, harga, atau **cara cek invoice**.`);
-    }
-
-    function appendUserChatMessage(text) {
-      const container = document.getElementById('chat-messages-container');
-      const div = document.createElement('div');
-      div.className = 'flex items-end justify-end gap-2';
-      div.innerHTML = `<div class="bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white p-3 rounded-2xl rounded-tr-none shadow-2xs max-w-[85%] leading-relaxed text-xs">${escapeHtml(text).replace(/\n/g, '<br>')}</div>`;
-      container.appendChild(div);
-      container.scrollTop = container.scrollHeight;
-    }
-
-    function appendBotChatMessage(text) {
-      const container = document.getElementById('chat-messages-container');
-      const div = document.createElement('div');
-      div.className = 'flex items-start gap-2';
-      div.innerHTML = `<div class="w-7 h-7 rounded-full bg-rose-100 text-[#f5125e] flex items-center justify-center flex-shrink-0 text-xs font-bold"><i data-lucide="bot" class="w-4 h-4"></i></div><div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs space-y-1 max-w-[85%] text-slate-800 leading-relaxed text-xs">${text.replace(/\n/g, '<br>')}</div>`;
-      container.appendChild(div);
-      container.scrollTop = container.scrollHeight;
-      if(typeof lucide !== 'undefined') lucide.createIcons();
-    }
-
-    function showBotTyping() {
-      const container = document.getElementById('chat-messages-container');
-      const div = document.createElement('div');
-      div.id = 'bot-typing-indicator';
-      div.className = 'flex items-start gap-2';
-      div.innerHTML = `<div class="w-7 h-7 rounded-full bg-rose-100 text-[#f5125e] flex items-center justify-center flex-shrink-0 text-xs font-bold"><i data-lucide="bot" class="w-4 h-4"></i></div><div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs text-slate-800 text-xs"><div class="typing-indicator"><span></span><span></span><span></span></div></div>`;
-      container.appendChild(div);
-      container.scrollTop = container.scrollHeight;
-      if(typeof lucide !== 'undefined') lucide.createIcons();
-    }
-
-    function removeBotTyping() {
-      const el = document.getElementById('bot-typing-indicator');
-      if (el) el.remove();
-    }
-
     loadProducts();
     startSocialProofNotifications();
-    if(typeof lucide !== 'undefined') lucide.createIcons();
+    lucide.createIcons();
   </script>
 
   <footer class="text-center py-6 text-xs text-slate-400 border-t border-slate-100 mt-8">
     &copy; 2026 <b>DigitalHub Store</b>. All Rights Reserved. Layanan Digital Terpercaya.
   </footer>
 
-  <!-- FLOATING ACTION CHAT WIDGET (POJOK KANAN BAWAH) -->
+  <!-- FLOATING ACTION CHAT WIDGET -->
   <div class="fixed bottom-20 md:bottom-8 right-4 z-40 flex flex-col items-end gap-2.5">
     <div id="quick-help-bubble" class="hidden bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-2xl shadow-xl border border-rose-100 text-[11px] font-bold text-slate-800 animate-bounce-soft">
       Butuh bantuan? Chat kami 👋
