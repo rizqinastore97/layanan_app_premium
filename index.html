@@ -133,11 +133,11 @@
         </p>
       </div>
       <div class="flex flex-col gap-2.5 pt-2">
-        <button onclick="executePwaInstall()" class="w-full py-3.5 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] hover:opacity-95 text-white font-black text-xs uppercase tracking-wider rounded-2xl shadow-lg active:scale-95 transition flex items-center justify-center gap-2">
+        <button onclick="executePwaInstall()" class="w-full py-3.5 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] hover:opacity-95 text-white font-black text-xs uppercase tracking-wider rounded-2xl shadow-lg active:scale-95 transition flex items-center justify-center gap-2 cursor-pointer">
           <i data-lucide="download" class="w-4 h-4"></i>
           <span>Ya, Pasang Sekarang</span>
         </button>
-        <button onclick="dismissPwaPopup()" class="w-full py-3 bg-slate-100 text-slate-500 font-bold uppercase rounded-2xl active:scale-95 transition text-[11px] hover:bg-slate-200">
+        <button onclick="dismissPwaPopup()" class="w-full py-3 bg-slate-100 text-slate-500 font-bold uppercase rounded-2xl active:scale-95 transition text-[11px] hover:bg-slate-200 cursor-pointer">
           Mungkin Nanti
         </button>
       </div>
@@ -185,35 +185,35 @@
             <i id="cam-loading-icon" data-lucide="loader-2" class="w-4 h-4 animate-spin hidden text-[#f5125e]"></i>
             <input type="file" id="camera-search-input" accept="image/*" onchange="handleCameraSearch(event)" class="hidden" />
           </label>
-          <button type="submit" class="bg-gradient-to-r from-[#f5125e] to-[#ff2b56] hover:opacity-95 text-white text-xs sm:text-sm font-bold px-3.5 sm:px-5 py-1.5 rounded-full transition-all flex-shrink-0">
+          <button type="submit" class="bg-gradient-to-r from-[#f5125e] to-[#ff2b56] hover:opacity-95 text-white text-xs sm:text-sm font-bold px-3.5 sm:px-5 py-1.5 rounded-full transition-all flex-shrink-0 cursor-pointer">
             Search
           </button>
         </form>
         
-        <button onclick="triggerPwaPromptUI()" class="hidden sm:flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 bg-slate-100 text-slate-500 hover:text-[#f5125e] hover:bg-rose-50 border border-slate-200 hover:border-rose-200 rounded-full transition-all flex-shrink-0" title="Install Aplikasi">
+        <button onclick="triggerPwaPromptUI()" class="hidden sm:flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 bg-slate-100 text-slate-500 hover:text-[#f5125e] hover:bg-rose-50 border border-slate-200 hover:border-rose-200 rounded-full transition-all flex-shrink-0 cursor-pointer" title="Install Aplikasi">
           <i data-lucide="arrow-down" class="w-4 h-4 sm:w-5 sm:h-5"></i>
         </button>
       </div>
 
       <div class="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
         <!-- TOMBOL LIVE ORDER WA (DESKTOP) -->
-        <button onclick="openCommunityModal()" class="hidden lg:flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3.5 py-2.5 rounded-xl transition-all shadow-2xs">
+        <button onclick="openCommunityModal()" class="hidden lg:flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3.5 py-2.5 rounded-xl transition-all shadow-2xs cursor-pointer">
           <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
           <i data-lucide="message-circle" class="w-4 h-4 text-emerald-600"></i>
           <span>Live Order WA</span>
         </button>
 
-        <button onclick="openHistoryModal()" class="hidden md:flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-rose-50 hover:text-[#f5125e] border border-slate-200 hover:border-rose-200 px-3.5 py-2.5 rounded-xl transition-all">
+        <button onclick="openHistoryModal()" class="hidden md:flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-rose-50 hover:text-[#f5125e] border border-slate-200 hover:border-rose-200 px-3.5 py-2.5 rounded-xl transition-all cursor-pointer">
           <i data-lucide="receipt" class="w-4 h-4 text-[#f5125e]"></i>
           <span>Riwayat Pesanan</span>
         </button>
 
-        <button onclick="toggleCart(true)" class="relative w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-slate-700 hover:text-[#f5125e] bg-slate-100 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 rounded-xl transition-all flex-shrink-0" title="Keranjang Belanja">
+        <button onclick="toggleCart(true)" class="relative w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-slate-700 hover:text-[#f5125e] bg-slate-100 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 rounded-xl transition-all flex-shrink-0 cursor-pointer" title="Keranjang Belanja">
           <i data-lucide="shopping-cart" class="w-4 h-4 sm:w-5 sm:h-5"></i>
           <span id="cart-badge" class="hidden absolute -top-1 -right-1 bg-[#f5125e] text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">0</span>
         </button>
 
-        <button onclick="openChatModal()" class="relative w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-slate-700 hover:text-[#f5125e] bg-slate-100 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 rounded-xl transition-all flex-shrink-0" title="Chat Bantuan CS">
+        <button onclick="openChatModal()" class="relative w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-slate-700 hover:text-[#f5125e] bg-slate-100 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 rounded-xl transition-all flex-shrink-0 cursor-pointer" title="Chat Bantuan CS">
           <i data-lucide="message-square-more" class="w-4 h-4 sm:w-5 sm:h-5 text-slate-700 hover:text-[#f5125e]"></i>
           <span class="absolute -top-1 -right-1 bg-emerald-500 text-white text-[8px] font-bold px-1 rounded-full border-2 border-white">CS</span>
         </button>
@@ -241,12 +241,7 @@
     <!-- KOTAK BANNER PROMO MEMANJANG -->
     <div id="promo0-banner-wrapper" class="hidden bg-white border border-slate-200/80 rounded-2xl sm:rounded-3xl shadow-md overflow-hidden relative group">
       <div class="w-full relative bg-slate-950 cursor-pointer overflow-hidden aspect-[10/3]" onclick="startPromo0Checkout()">
-        <img 
-          id="promo0-img" 
-          src="" 
-          class="w-full h-full object-contain sm:object-cover transition-transform duration-500 group-hover:scale-[1.01]" 
-          alt="Banner Promo" 
-        />
+        <img id="promo0-img" src="" class="w-full h-full object-contain sm:object-cover transition-transform duration-500 group-hover:scale-[1.01]" alt="Banner Promo" />
         <span id="promo0-badge-txt" class="absolute top-2 left-2 bg-amber-400 text-amber-950 text-[8px] sm:text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-md">
           FLASH SALE
         </span>
@@ -284,11 +279,7 @@
           </div>
         </div>
 
-        <button 
-          id="promo0-btn-claim" 
-          onclick="startPromo0Checkout()" 
-          class="bg-amber-400 hover:bg-amber-300 text-amber-950 font-black text-[10px] sm:text-xs px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-lg shadow-sm transition-transform active:scale-95 flex items-center justify-center gap-1 whitespace-nowrap flex-shrink-0"
-        >
+        <button id="promo0-btn-claim" onclick="startPromo0Checkout()" class="bg-amber-400 hover:bg-amber-300 text-amber-950 font-black text-[10px] sm:text-xs px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-lg shadow-sm transition-transform active:scale-95 flex items-center justify-center gap-1 whitespace-nowrap flex-shrink-0 cursor-pointer">
           <i data-lucide="shopping-bag" class="w-3 h-3 sm:w-3.5 sm:h-3.5"></i>
           <span id="promo0-btn-text">BELI SEKARANG</span>
         </button>
@@ -412,7 +403,7 @@
         <h3 class="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-1.5">
           <i data-lucide="file-text" class="w-4 h-4 text-[#f5125e]"></i> Lembar Invoice Pembelian
         </h3>
-        <button onclick="closeInvoicePreviewModal()" class="text-slate-400 hover:text-slate-600 p-1">
+        <button onclick="closeInvoicePreviewModal()" class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
@@ -420,10 +411,10 @@
       <div id="invoice-preview-content" class="p-4 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm"></div>
 
       <div class="p-3 border-t border-slate-100 bg-slate-50 flex gap-2">
-        <button onclick="closeInvoicePreviewModal()" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 py-2.5 rounded-xl font-bold text-xs transition">
+        <button onclick="closeInvoicePreviewModal()" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 py-2.5 rounded-xl font-bold text-xs transition cursor-pointer">
           Tutup
         </button>
-        <button id="btn-download-from-preview" class="flex-1 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition">
+        <button id="btn-download-from-preview" class="flex-1 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition cursor-pointer">
           <i data-lucide="download" class="w-3.5 h-3.5"></i> Unduh PDF
         </button>
       </div>
@@ -457,7 +448,7 @@
     <div onclick="closeDetailModal()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
     <div id="detail-modal-card" class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col h-[92vh] sm:h-auto sm:max-h-[94vh] relative z-10 overflow-hidden">
       
-      <button onclick="closeDetailModal()" class="absolute top-3 right-3 z-30 bg-black/50 hover:bg-black/75 text-white p-2 rounded-full transition-colors">
+      <button onclick="closeDetailModal()" class="absolute top-3 right-3 z-30 bg-black/50 hover:bg-black/75 text-white p-2 rounded-full transition-colors cursor-pointer">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
 
@@ -516,10 +507,10 @@
           </div>
 
           <div class="flex flex-wrap gap-1.5 text-[10px]" id="review-filter-buttons">
-            <button type="button" onclick="setReviewFilter('all')" id="rf-all" class="rf-btn bg-rose-50 text-[#f5125e] border border-rose-200 px-2.5 py-1 rounded-lg font-bold transition-all shadow-2xs">Semua</button>
-            <button type="button" onclick="setReviewFilter('star5')" id="rf-star5" class="rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all">Bintang 5</button>
-            <button type="button" onclick="setReviewFilter('instant')" id="rf-instant" class="rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all">⚡ Kirim Instan</button>
-            <button type="button" onclick="setReviewFilter('service')" id="rf-service" class="rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all">🛡️ Garansi Aman</button>
+            <button type="button" onclick="setReviewFilter('all')" id="rf-all" class="rf-btn bg-rose-50 text-[#f5125e] border border-rose-200 px-2.5 py-1 rounded-lg font-bold transition-all shadow-2xs cursor-pointer">Semua</button>
+            <button type="button" onclick="setReviewFilter('star5')" id="rf-star5" class="rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all cursor-pointer">Bintang 5</button>
+            <button type="button" onclick="setReviewFilter('instant')" id="rf-instant" class="rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all cursor-pointer">⚡ Kirim Instan</button>
+            <button type="button" onclick="setReviewFilter('service')" id="rf-service" class="rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all cursor-pointer">🛡️ Garansi Aman</button>
           </div>
 
           <!-- Form Berikan Ulasan -->
@@ -529,13 +520,7 @@
             </h5>
             <form onsubmit="handleReviewSubmit(event)" class="space-y-2">
               <div class="grid grid-cols-2 gap-2">
-                <input 
-                  type="text" 
-                  id="rev-user-name" 
-                  placeholder="Nama Anda..." 
-                  class="text-[11px] px-2.5 py-1.5 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-[#f5125e]" 
-                  required 
-                />
+                <input type="text" id="rev-user-name" placeholder="Nama Anda..." class="text-[11px] px-2.5 py-1.5 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-[#f5125e]" required />
                 <div class="flex items-center justify-between bg-white border border-slate-200 rounded-xl px-2.5 py-1">
                   <span class="text-[10px] text-slate-500 font-bold">Rating:</span>
                   <select id="rev-rating" class="text-xs font-bold text-amber-500 focus:outline-none bg-transparent">
@@ -546,13 +531,7 @@
                 </div>
               </div>
 
-              <textarea 
-                id="rev-comment" 
-                rows="2" 
-                placeholder="Bagikan pengalaman Anda menggunakan produk ini..." 
-                class="w-full text-[11px] p-2.5 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-[#f5125e] resize-none" 
-                required
-              ></textarea>
+              <textarea id="rev-comment" rows="2" placeholder="Bagikan pengalaman Anda menggunakan produk ini..." class="w-full text-[11px] p-2.5 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-[#f5125e] resize-none" required></textarea>
 
               <div class="flex items-center gap-2">
                 <label for="rev-image-input" class="cursor-pointer inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-600 bg-white border border-dashed border-slate-300 hover:border-[#f5125e] px-3 py-1.5 rounded-xl transition-colors">
@@ -563,11 +542,11 @@
                 
                 <div id="rev-image-preview-container" class="hidden relative inline-block">
                   <img id="rev-image-preview" src="" class="w-9 h-9 object-cover rounded-lg border border-slate-200 shadow-2xs" />
-                  <button type="button" onclick="removeReviewImage()" class="absolute -top-1.5 -right-1.5 bg-slate-800 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] shadow-xs">×</button>
+                  <button type="button" onclick="removeReviewImage()" class="absolute -top-1.5 -right-1.5 bg-slate-800 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] shadow-xs cursor-pointer">×</button>
                 </div>
               </div>
 
-              <button type="submit" id="btn-submit-review" class="w-full bg-[#f5125e] hover:bg-[#d40c4e] text-white py-2 rounded-xl font-bold text-[11px] uppercase tracking-wider transition active:scale-95 shadow-xs flex items-center justify-center gap-1.5">
+              <button type="submit" id="btn-submit-review" class="w-full bg-[#f5125e] hover:bg-[#d40c4e] text-white py-2 rounded-xl font-bold text-[11px] uppercase tracking-wider transition active:scale-95 shadow-xs flex items-center justify-center gap-1.5 cursor-pointer">
                 <i data-lucide="send" class="w-3.5 h-3.5"></i> Kirim Ulasan
               </button>
             </form>
@@ -581,19 +560,19 @@
         <div class="px-4 py-3 flex items-center justify-between border-b border-slate-100">
           <span class="font-bold text-slate-800 text-xs sm:text-sm">Jumlah Pembelian</span>
           <div class="flex items-center border border-slate-200 rounded-lg overflow-hidden bg-white shadow-sm">
-            <button type="button" onclick="changeQuantity(-1)" class="w-8 h-8 flex items-center justify-center text-slate-500 hover:bg-slate-100 transition active:bg-slate-200"><i data-lucide="minus" class="w-4 h-4"></i></button>
+            <button type="button" onclick="changeQuantity(-1)" class="w-8 h-8 flex items-center justify-center text-slate-500 hover:bg-slate-100 transition active:bg-slate-200 cursor-pointer"><i data-lucide="minus" class="w-4 h-4"></i></button>
             <span id="modal-quantity" class="w-10 text-center font-bold text-slate-800 text-sm border-x border-slate-200">1</span>
-            <button type="button" onclick="changeQuantity(1)" class="w-8 h-8 flex items-center justify-center text-[#f5125e] hover:bg-rose-50 transition active:bg-rose-100"><i data-lucide="plus" class="w-4 h-4"></i></button>
+            <button type="button" onclick="changeQuantity(1)" class="w-8 h-8 flex items-center justify-center text-[#f5125e] hover:bg-rose-50 transition active:bg-rose-100 cursor-pointer"><i data-lucide="plus" class="w-4 h-4"></i></button>
           </div>
         </div>
         <div class="p-3.5 bg-slate-50 grid grid-cols-5 gap-2 rounded-b-3xl sm:rounded-b-3xl">
-          <button id="modal-btn-chat" onclick="handleModalChat()" type="button" class="col-span-1 border border-rose-200 bg-rose-50 hover:bg-rose-100 text-[#f5125e] rounded-xl flex flex-col items-center justify-center p-2 transition-colors">
+          <button id="modal-btn-chat" onclick="handleModalChat()" type="button" class="col-span-1 border border-rose-200 bg-rose-50 hover:bg-rose-100 text-[#f5125e] rounded-xl flex flex-col items-center justify-center p-2 transition-colors cursor-pointer">
             <i data-lucide="message-square-more" class="w-4 h-4"></i><span class="text-[9px] font-bold">Chat</span>
           </button>
-          <button id="modal-btn-cart" onclick="handleModalCart()" type="button" class="col-span-2 bg-rose-50 text-[#f5125e] border border-rose-200 font-bold rounded-xl text-xs py-2.5 transition-colors">
+          <button id="modal-btn-cart" onclick="handleModalCart()" type="button" class="col-span-2 bg-rose-50 text-[#f5125e] border border-rose-200 font-bold rounded-xl text-xs py-2.5 transition-colors cursor-pointer">
             + Keranjang
           </button>
-          <button id="modal-btn-buy" onclick="handleModalBuy()" type="button" class="col-span-2 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white font-bold rounded-xl text-xs py-2.5 shadow-xs transition-transform active:scale-95">
+          <button id="modal-btn-buy" onclick="handleModalBuy()" type="button" class="col-span-2 bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white font-bold rounded-xl text-xs py-2.5 shadow-xs transition-transform active:scale-95 cursor-pointer">
             Beli Sekarang
           </button>
         </div>
@@ -608,7 +587,7 @@
       <div id="payment-modal-card" class="bg-white w-full max-w-sm sm:max-w-md rounded-3xl shadow-2xl overflow-hidden p-5 flex flex-col text-center max-h-[92vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-2 border-b border-slate-100 pb-3">
           <h3 class="font-black text-sm text-slate-800 flex items-center gap-1.5"><i data-lucide="wallet" class="w-4 h-4 text-[#f5125e]"></i> Kasir DigitalHub</h3>
-          <button onclick="closePaymentModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+          <button onclick="closePaymentModal()" class="text-slate-400 hover:text-slate-600 cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
         
         <div id="step-pay" class="space-y-3 mt-2">
@@ -650,11 +629,11 @@
               <!-- KOTAK KUPON DISKON / VOUCHER -->
               <div class="bg-rose-50/50 border border-dashed border-rose-200 rounded-xl p-2.5 flex gap-2">
                 <input type="text" id="coupon-code-input" placeholder="Punya voucher?" class="flex-1 text-[11px] uppercase font-bold text-slate-800 px-3 py-1.5 bg-white border border-slate-200 rounded-lg focus:outline-none focus:border-[#f5125e]" />
-                <button type="button" onclick="applyStoreCoupon()" class="bg-[#f5125e] hover:bg-[#d40c4e] text-white text-[10.5px] font-bold px-3 py-1.5 rounded-lg active:scale-95 transition flex-shrink-0">Gunakan</button>
+                <button type="button" onclick="applyStoreCoupon()" class="bg-[#f5125e] hover:bg-[#d40c4e] text-white text-[10.5px] font-bold px-3 py-1.5 rounded-lg active:scale-95 transition flex-shrink-0 cursor-pointer">Gunakan</button>
               </div>
               <div id="coupon-applied-info" class="hidden text-[10.5px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-lg flex justify-between items-center">
                 <span id="coupon-applied-text">Voucher Berhasil Dipakai</span>
-                <button type="button" onclick="removeStoreCoupon()" class="text-rose-500 hover:text-rose-700 ml-2 font-black text-xs">Batalkan</button>
+                <button type="button" onclick="removeStoreCoupon()" class="text-rose-500 hover:text-rose-700 ml-2 font-black text-xs cursor-pointer">Batalkan</button>
               </div>
             </div>
           </div>
@@ -706,7 +685,7 @@
           </div>
           
           <div class="mt-4">
-            <button id="btn-pay-action" onclick="handlePayActionClick()" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:opacity-95 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all active:scale-95 shadow-md">SAYA SUDAH TRANSFER (MANUAL)</button>
+            <button id="btn-pay-action" onclick="handlePayActionClick()" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:opacity-95 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all active:scale-95 shadow-md cursor-pointer">SAYA SUDAH TRANSFER (MANUAL)</button>
           </div>
         </div>
 
@@ -734,9 +713,9 @@
             <div class="flex items-center justify-between mb-2">
               <span id="account-status-label" class="text-[10px] text-amber-400 font-bold uppercase tracking-wider flex items-center gap-1.5"><i data-lucide="clock" class="w-3.5 h-3.5"></i> Status Pesanan Anda:</span>
               <div class="flex items-center gap-1">
-                <button onclick="copyAccountSmart('user')" class="text-[9.5px] bg-slate-800 hover:bg-slate-700 text-white font-bold px-2 py-0.5 rounded border border-slate-600 transition-colors">User</button>
-                <button onclick="copyAccountSmart('pass')" class="text-[9.5px] bg-slate-800 hover:bg-slate-700 text-white font-bold px-2 py-0.5 rounded border border-slate-600 transition-colors">Pass</button>
-                <button onclick="copyAccountData()" class="text-[9.5px] bg-emerald-700 hover:bg-emerald-600 text-white font-bold px-2 py-0.5 rounded transition-colors flex items-center gap-1">
+                <button onclick="copyAccountSmart('user')" class="text-[9.5px] bg-slate-800 hover:bg-slate-700 text-white font-bold px-2 py-0.5 rounded border border-slate-600 transition-colors cursor-pointer">User</button>
+                <button onclick="copyAccountSmart('pass')" class="text-[9.5px] bg-slate-800 hover:bg-slate-700 text-white font-bold px-2 py-0.5 rounded border border-slate-600 transition-colors cursor-pointer">Pass</button>
+                <button onclick="copyAccountData()" class="text-[9.5px] bg-emerald-700 hover:bg-emerald-600 text-white font-bold px-2 py-0.5 rounded transition-colors flex items-center gap-1 cursor-pointer">
                   <i data-lucide="copy" class="w-3 h-3"></i> Salin Semua
                 </button>
               </div>
@@ -747,11 +726,11 @@
           </div>
           
           <div class="mt-4 space-y-2" id="regular-order-cta">
-             <button onclick="downloadPDF()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold text-[11px] uppercase tracking-wider flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md">
+             <button onclick="downloadPDF()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold text-[11px] uppercase tracking-wider flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md cursor-pointer">
                <i data-lucide="download" class="w-4 h-4"></i> 1. Download Invoice PDF
              </button>
 
-             <button id="btn-confirm-wa" onclick="confirmViaWA()" class="w-full bg-[#25D366] hover:bg-[#1ebd5a] text-white py-3 rounded-xl font-bold text-[11px] uppercase tracking-wider flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md shadow-emerald-500/20">
+             <button id="btn-confirm-wa" onclick="confirmViaWA()" class="w-full bg-[#25D366] hover:bg-[#1ebd5a] text-white py-3 rounded-xl font-bold text-[11px] uppercase tracking-wider flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md shadow-emerald-500/20 cursor-pointer">
                <i data-lucide="message-circle" class="w-4 h-4"></i> 2. Konfirmasi ke WhatsApp
              </button>
 
@@ -763,7 +742,7 @@
              </div>
           </div>
 
-          <button onclick="forceClosePaymentModal()" class="w-full mt-1 bg-white border border-slate-200 text-slate-600 py-2.5 rounded-xl text-xs font-bold hover:bg-slate-50 active:scale-95 transition-all">Tutup Halaman Ini</button>
+          <button onclick="forceClosePaymentModal()" class="w-full mt-1 bg-white border border-slate-200 text-slate-600 py-2.5 rounded-xl text-xs font-bold hover:bg-slate-50 active:scale-95 transition-all cursor-pointer">Tutup Halaman Ini</button>
         </div>
       </div>
     </div>
@@ -829,21 +808,19 @@
     </div>
   </div>
 
-  <!-- ========================================================================= -->
   <!-- MODAL RIWAYAT PESANAN SAYA (SHOPEE STYLE) -->
-  <!-- ========================================================================= -->
   <div id="history-modal" class="fixed inset-0 z-[60] overflow-hidden hidden flex items-center justify-center p-2 sm:p-4">
     <div onclick="closeHistoryModal()" class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
     <div id="history-modal-card" class="bg-slate-100 w-full max-w-xl rounded-3xl shadow-2xl flex flex-col h-[94vh] sm:h-auto sm:max-h-[92vh] relative z-10 overflow-hidden border border-slate-200/80">
       
       <div class="bg-white px-4 py-3.5 border-b border-slate-200 flex items-center justify-between flex-shrink-0">
         <div class="flex items-center gap-2">
-          <button onclick="closeHistoryModal()" class="text-slate-600 hover:text-slate-900 p-1 -ml-1 rounded-full">
+          <button onclick="closeHistoryModal()" class="text-slate-600 hover:text-slate-900 p-1 -ml-1 rounded-full cursor-pointer">
             <i data-lucide="arrow-left" class="w-5 h-5"></i>
           </button>
           <h3 class="font-extrabold text-sm sm:text-base text-slate-800 tracking-tight">Pesanan Saya</h3>
         </div>
-        <button onclick="closeHistoryModal()" class="text-slate-400 hover:text-slate-600 p-1">
+        <button onclick="closeHistoryModal()" class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
@@ -854,7 +831,7 @@
             <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
             <input type="text" id="history-search-input" placeholder="No. WhatsApp / Email / Invoice..." class="w-full text-xs pl-9 pr-3 py-2 bg-slate-100 focus:bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#f5125e] font-semibold text-slate-800" required />
           </div>
-          <button type="submit" class="bg-gradient-to-r from-[#f5125e] to-[#ff2b56] hover:opacity-95 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-xs flex items-center gap-1 flex-shrink-0">
+          <button type="submit" class="bg-gradient-to-r from-[#f5125e] to-[#ff2b56] hover:opacity-95 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-xs flex items-center gap-1 flex-shrink-0 cursor-pointer">
             <span>Cari</span>
           </button>
         </form>
@@ -883,12 +860,12 @@
       <div id="cart-drawer" class="w-screen max-w-sm bg-white shadow-xl flex flex-col translate-x-full transition-transform duration-300">
         <div class="px-4 py-4 border-b border-slate-100 flex items-center justify-between">
           <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2"><i data-lucide="shopping-cart" class="w-4 h-4 text-[#f5125e]"></i> Keranjang Belanja (<span id="cart-title-count">0</span>)</h3>
-          <button onclick="toggleCart(false)" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+          <button onclick="toggleCart(false)" class="text-slate-400 hover:text-slate-600 cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
         <div id="cart-items" class="flex-1 overflow-y-auto p-4 space-y-2.5"></div>
         <div id="cart-footer" class="p-4 border-t border-slate-100 bg-slate-50 space-y-3 hidden">
           <div class="flex justify-between items-center text-xs sm:text-sm"><span class="text-slate-500 font-medium">Total Tagihan:</span><span id="cart-total-price" class="font-black text-[#f5125e] text-base">Rp 0</span></div>
-          <button onclick="processCartCheckout()" class="w-full bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white py-3 rounded-xl font-bold text-xs sm:text-sm shadow-md active:scale-95 transition-transform">Checkout Sekarang</button>
+          <button onclick="processCartCheckout()" class="w-full bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white py-3 rounded-xl font-bold text-xs sm:text-sm shadow-md active:scale-95 transition-transform cursor-pointer">Checkout Sekarang</button>
         </div>
       </div>
     </div>
@@ -910,7 +887,7 @@
               <p class="text-[10px] text-rose-100 flex items-center gap-1"><span class="w-1.5 h-1.5 bg-emerald-300 rounded-full"></span> Siap bantu cek stok & harga</p>
             </div>
           </div>
-          <button onclick="closeChatModal()" class="text-white/80 hover:text-white p-1 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+          <button onclick="closeChatModal()" class="text-white/80 hover:text-white p-1 rounded-full cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
         <div id="chat-messages-container" class="flex-1 p-3.5 overflow-y-auto space-y-3 bg-slate-50 text-xs scroll-smooth">
           <div class="flex items-start gap-2">
@@ -921,19 +898,19 @@
             </div>
           </div>
           <div id="chat-menu-buttons" class="space-y-1.5 pl-9">
-            <button onclick="sendQuickReply('menu_cek_produk')" class="w-full text-left bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 p-2 rounded-xl text-[11px] font-medium text-slate-700 transition-all flex items-center justify-between">
+            <button onclick="sendQuickReply('menu_cek_produk')" class="w-full text-left bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 p-2 rounded-xl text-[11px] font-medium text-slate-700 transition-all flex items-center justify-between cursor-pointer">
               <span>🔍 Cek Stok & Harga Produk</span>
               <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
             </button>
-            <button onclick="sendQuickReply('menu_cara_cek_invoice')" class="w-full text-left bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 p-2 rounded-xl text-[11px] font-medium text-slate-700 transition-all flex items-center justify-between">
+            <button onclick="sendQuickReply('menu_cara_cek_invoice')" class="w-full text-left bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 p-2 rounded-xl text-[11px] font-medium text-slate-700 transition-all flex items-center justify-between cursor-pointer">
               <span>🧾 Cara Cek & Unduh Invoice</span>
               <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
             </button>
-            <button onclick="sendQuickReply('menu_cara_beli')" class="w-full text-left bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 p-2 rounded-xl text-[11px] font-medium text-slate-700 transition-all flex items-center justify-between">
+            <button onclick="sendQuickReply('menu_cara_beli')" class="w-full text-left bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 p-2 rounded-xl text-[11px] font-medium text-slate-700 transition-all flex items-center justify-between cursor-pointer">
               <span>⚡ Cara Beli & Info Garansi</span>
               <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
             </button>
-            <button onclick="sendQuickReply('menu_hubungi_admin')" class="w-full text-left bg-white hover:bg-emerald-50 border border-slate-200 hover:border-rose-200 p-2 rounded-xl text-[11px] font-medium text-emerald-700 transition-all flex items-center justify-between">
+            <button onclick="sendQuickReply('menu_hubungi_admin')" class="w-full text-left bg-white hover:bg-emerald-50 border border-slate-200 hover:border-rose-200 p-2 rounded-xl text-[11px] font-medium text-emerald-700 transition-all flex items-center justify-between cursor-pointer">
               <span>💬 Hubungi Admin CS (WhatsApp)</span>
               <i data-lucide="external-link" class="w-3.5 h-3.5 text-emerald-500"></i>
             </button>
@@ -942,7 +919,7 @@
         <div class="p-2.5 border-t border-slate-200 bg-white">
           <form onsubmit="handleUserChatSubmit(event)" class="flex items-center gap-1.5">
             <input type="text" id="user-chat-input" placeholder="Ketik pertanyaan..." class="flex-1 bg-slate-100 text-slate-800 text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#f5125e] focus:bg-white" autocomplete="off" />
-            <button type="submit" class="bg-[#f5125e] hover:bg-[#d40c4e] text-white p-2.5 rounded-xl transition-colors"><i data-lucide="send" class="w-4 h-4"></i></button>
+            <button type="submit" class="bg-[#f5125e] hover:bg-[#d40c4e] text-white p-2.5 rounded-xl transition-colors cursor-pointer"><i data-lucide="send" class="w-4 h-4"></i></button>
           </form>
         </div>
       </div>
@@ -1214,7 +1191,7 @@
 
         const btnAction = document.getElementById('btn-pay-action');
         btnAction.innerText = 'KLAIM SEKARANG (GRATIS)';
-        btnAction.className = 'w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all active:scale-95 shadow-lg shadow-emerald-500/20';
+        btnAction.className = 'w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all active:scale-95 shadow-lg shadow-emerald-500/20 cursor-pointer';
 
         document.getElementById('step-pay').classList.remove('hidden');
         document.getElementById('step-result').classList.add('hidden');
@@ -1556,7 +1533,7 @@
     window.renderVariantSelection = function(activeIndex) {
       const container = document.getElementById('modal-variants-list');
       container.innerHTML = currentSelectedProduct.variants.map((v, idx) => `
-        <button onclick="selectVariant(${idx})" class="px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${idx === activeIndex ? 'bg-rose-50 border-[#f5125e] text-[#f5125e]' : 'bg-white border-slate-200 text-slate-600 hover:border-rose-200'}">${v.name}</button>
+        <button onclick="selectVariant(${idx})" class="px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${idx === activeIndex ? 'bg-rose-50 border-[#f5125e] text-[#f5125e]' : 'bg-white border-slate-200 text-slate-600 hover:border-rose-200'}">${v.name}</button>
       `).join('');
       
       window.updateModalPriceDisplay();
@@ -1658,7 +1635,7 @@
                 <h4 class="text-xs font-bold text-slate-800 line-clamp-1">${i.name}</h4>
                 <p class="text-xs text-[#f5125e] font-black mt-0.5">${formatIDR(Number(i.price) || 0)}</p>
               </div>
-              <button onclick="removeItemFromCart(${idx})" class="text-slate-400 hover:text-rose-500 bg-white border border-slate-200 hover:border-rose-200 p-1.5 rounded-lg transition-colors">
+              <button onclick="removeItemFromCart(${idx})" class="text-slate-400 hover:text-rose-500 bg-white border border-slate-200 hover:border-rose-200 p-1.5 rounded-lg transition-colors cursor-pointer">
                 <i data-lucide="trash-2" class="w-4 h-4"></i>
               </button>
             </div>
@@ -1736,15 +1713,15 @@
       document.getElementById('pay-buyer-email').value = '';
       document.getElementById('pay-buyer-wa').value = '';
 
-      // --- LOGIKA PRIORITAS METODE BAYAR PER VARIAN / PRODUK ---
+      // Prioritas metode pembayaran: Varian -> Produk -> Toko Global
       const variantPayType = variant.paymentType || 'default';
       const prodPayType = product.paymentType || 'default';
       
       let effectivePayType = 'default';
       if (variantPayType !== 'default') {
-        effectivePayType = variantPayType; // Prioritas varian
+        effectivePayType = variantPayType;
       } else if (prodPayType !== 'default') {
-        effectivePayType = prodPayType; // Prioritas produk
+        effectivePayType = prodPayType;
       }
 
       let allowedMode = 'both';
@@ -2058,6 +2035,20 @@
       navigator.clipboard.writeText(text).then(() => showToast('Data status pesanan berhasil disalin!'));
     };
 
+    window.processCartCheckout = function() {
+      if (!cart || cart.length === 0) return;
+      toggleCart(false);
+      const totalPrice = cart.reduce((a, b) => a + (Number(b.price) || 0), 0);
+      const itemNames = cart.map(i => i.name).join('\n'); 
+      
+      startNormalCheckout(
+         { id: 'CART', name: 'Paket Bundle Keranjang', paymentType: 'default' }, 
+         { name: itemNames, price: totalPrice, paymentType: 'default' }, 
+         1, 
+         true
+      );
+    };
+
     // ================= UNDUH PDF INVOICE =================
     window.downloadPDF = function(customOrderData) {
       showToast('Menyiapkan file PDF Invoice...');
@@ -2175,9 +2166,7 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
         window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
     };
 
-    // =========================================================================
-    // FUNGSI TAB FILTER & TAMPILAN PESANAN SAYA GAYA SHOPEE
-    // =========================================================================
+    // ================= TAB FILTER & TAMPILAN PESANAN SAYA SHOPEE =================
     window.filterHistoryStatus = function(statusType) {
       window.currentHistoryFilter = statusType;
       const normalClass = "py-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition-colors cursor-pointer";
@@ -2249,11 +2238,10 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
         const matchedProd = products.find(p => String(item.productName || "").toLowerCase().includes(String(p.name || "").toLowerCase()));
         const itemImg = matchedProd?.image || 'https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png';
         const itemBase64 = btoa(unescape(encodeURIComponent(JSON.stringify(item))));
-        const waChatLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Halo Admin DigitalHub, saya mau cek pesanan saya:\nNo. Invoice: ${item.reference}\nProduk:${item.productName}`)}`;
+        const waChatLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Halo Admin DigitalHub, saya mau cek pesanan saya:\nNo. Invoice: ${item.reference}\nProduk: ${item.productName}`)}`;
 
         return `
           <div class="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden transition-all hover:shadow-md">
-            <!-- Header Kartu Shopee: Toko & Status -->
             <div class="px-3.5 py-2.5 border-b border-slate-100 flex items-center justify-between text-xs bg-slate-50/50">
               <div class="flex items-center gap-1.5 font-black text-slate-800">
                 <i data-lucide="store" class="w-4 h-4 text-[#f5125e]"></i>
@@ -2263,7 +2251,6 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
               <span class="text-[10px] font-black uppercase ${isDone ? 'text-emerald-600' : 'text-amber-600'}">${isDone ? 'Selesai' : 'Diproses / Menunggu'}</span>
             </div>
 
-            <!-- Isi Produk Shopee Style -->
             <div class="p-3.5 flex gap-3 cursor-pointer" onclick="viewInvoiceFromData('${itemBase64}')">
               <img src="${itemImg}" onerror="this.src='https://i.ibb.co.com/q3xxHQ4v/Code-Generated-Image.png'" class="w-16 h-16 rounded-xl object-contain bg-slate-50 border border-slate-100 p-1 flex-shrink-0" />
               <div class="flex-1 min-w-0 flex flex-col justify-between">
@@ -2278,13 +2265,11 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
               </div>
             </div>
 
-            <!-- Banner Koin / Garansi Shopee Style -->
             <div class="px-3.5 py-2 bg-amber-50/40 border-t border-slate-100 flex items-center justify-between text-[11px] text-amber-900">
               <div class="flex items-center gap-1.5 font-bold"><i data-lucide="shield-check" class="w-4 h-4 text-amber-500"></i><span>Garansi Resmi DigitalHub Aktif</span></div>
               <span class="text-[10px] text-slate-400 font-medium">${item.date || '-'}</span>
             </div>
 
-            <!-- Rincian Total Produk & Tombol Aksi Shopee -->
             <div class="p-3.5 border-t border-slate-100 space-y-3 bg-white">
               <div class="flex justify-end items-baseline gap-2 text-xs">
                 <span class="text-slate-500 text-[11px]">Total tagihan:</span>
@@ -2331,6 +2316,464 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
       }
     };
 
+    window.viewInvoiceFromData = function(base64Str) {
+      try {
+        const item = JSON.parse(decodeURIComponent(escape(atob(base64Str))));
+        const contentBox = document.getElementById('invoice-preview-content');
+
+        const rawSt = String(item.status || "").toLowerCase();
+        const isDone = rawSt.includes('sukses') || rawSt.includes('selesai') || rawSt.includes('lunas') || rawSt === 'paid';
+
+        contentBox.innerHTML = `
+          <div style="border-bottom: 2px solid #f5125e; padding-bottom: 12px; margin-bottom: 15px;">
+            <h2 style="color: #f5125e; margin: 0; font-size: 20px; font-weight: 900; letter-spacing: -0.5px;">DIGITALHUB</h2>
+            <p style="margin: 2px 0 0; font-size: 11px; color: #64748b; font-weight: bold;">E-Invoice Pembelian Resmi</p>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 11px;">
+            <div>
+              <p style="margin: 0; color: #94a3b8; text-transform: uppercase;">No. Invoice</p>
+              <p style="margin: 2px 0 8px; font-weight: bold; font-family: monospace; font-size: 12px;">${item.reference}</p>
+              <p style="margin: 0; color: #94a3b8; text-transform: uppercase;">Tanggal Pesanan</p>
+              <p style="margin: 2px 0 0; font-weight: bold;">${item.date}</p>
+            </div>
+            <div style="text-align: right;">
+              <p style="margin: 0; color: #94a3b8; text-transform: uppercase;">Metode Pembayaran</p>
+              <p style="margin: 2px 0 8px; font-weight: bold;">${item.variantName === 'Promo Gratis Rp 0' ? 'Promo Gratis Rp 0' : 'QRIS GoPay'}</p>
+              <p style="margin: 0; color: #94a3b8; text-transform: uppercase;">Status</p>
+              <span style="display: inline-block; background: ${isDone ? '#dcfce7' : '#fef3c7'}; color: ${isDone ? '#16a34a' : '#b45309'}; padding: 2px 8px; border-radius: 6px; font-weight: bold; font-size: 10px; border: 1px solid ${isDone ? '#bbf7d0' : '#fde68a'};">${isDone ? 'SUKSES / LUNAS' : 'DIPROSES'}</span>
+            </div>
+          </div>
+
+          <div style="background: #f8fafc; padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0; font-size: 11px; margin-bottom: 15px;">
+            <p style="margin: 0 0 6px; font-weight: bold; color: #334155;">Data Pembeli</p>
+            <div style="display: grid; grid-template-columns: 80px 1fr; gap: 4px;">
+              <span style="color: #64748b;">Nama</span><span style="font-weight: 600;">: ${item.buyerName || '-'}</span>
+              <span style="color: #64748b;">Email</span><span style="font-weight: 600;">: ${item.buyerEmail || '-'}</span>
+              <span style="color: #64748b;">WhatsApp</span><span style="font-weight: 600;">: ${item.buyerWA || '-'}</span>
+            </div>
+          </div>
+
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 11.5px;">
+            <thead>
+              <tr style="background: #f5125e; color: white;">
+                <th style="padding: 8px 10px; text-align: left; border-radius: 6px 0 0 6px;">Produk</th>
+                <th style="padding: 8px 10px; text-align: right; border-radius: 0 6px 6px;">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;">
+                  <b>${item.productName}</b><br>
+                  <span style="color: #64748b; font-size: 10.5px;">Variasi: ${item.variantName || 'Standar'}</span>
+                </td>
+                <td style="padding: 10px; text-align: right; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #f5125e;">
+                  ${item.totalAmount || item.total || 'Lunas'}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="text-align: center; color: #94a3b8; font-size: 10px; border-top: 1px dashed #e2e8f0; padding-top: 10px;">
+            <p style="margin: 0; font-weight: bold; color: ${isDone ? '#16a34a' : '#64748b'};">${isDone ? 'Pesanan ini sudah sukses terverifikasi & bergaransi penuh.' : 'Dokumen ini merupakan bukti transaksi digital sah di DigitalHub.'}</p>
+          </div>
+        `;
+
+        document.getElementById('btn-download-from-preview').onclick = function() {
+          window.downloadPDF(item);
+        };
+
+        document.getElementById('invoice-preview-modal').classList.remove('hidden');
+        lucide.createIcons();
+      } catch (err) {
+        showToast('Gagal memuat invoice', 'error');
+      }
+    };
+
+    window.closeInvoicePreviewModal = function() {
+      document.getElementById('invoice-preview-modal').classList.add('hidden');
+    };
+
+    // ================= ULASAN & GAMBAR =================
+    window.productOnlineReviews = {};
+    window.currentUploadedReviewImage = '';
+
+    window.handleReviewImagePick = function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      if (file.size > 5 * 1024 * 1024) {
+        showToast('Ukuran gambar terlalu besar (Maksimal 5MB)', 'error');
+        event.target.value = '';
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const maxDim = 800;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height && width > maxDim) {
+            height *= maxDim / width;
+            width = maxDim;
+          } else if (height > maxDim) {
+            width *= maxDim / height;
+            height = maxDim;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          window.currentUploadedReviewImage = canvas.toDataURL('image/jpeg', 0.7);
+
+          const previewContainer = document.getElementById('rev-image-preview-container');
+          const previewImg = document.getElementById('rev-image-preview');
+          previewImg.src = window.currentUploadedReviewImage;
+          previewContainer.classList.remove('hidden');
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    };
+
+    window.removeReviewImage = function() {
+      window.currentUploadedReviewImage = '';
+      const input = document.getElementById('rev-image-input');
+      if (input) input.value = '';
+      const previewContainer = document.getElementById('rev-image-preview-container');
+      if (previewContainer) previewContainer.classList.add('hidden');
+    };
+
+    window.zoomImage = function(src) {
+      document.getElementById('image-zoom-src').src = src;
+      document.getElementById('image-zoom-modal').classList.remove('hidden');
+    };
+
+    window.closeImageZoom = function() {
+      document.getElementById('image-zoom-modal').classList.add('hidden');
+    };
+
+    window.loadProductReviews = async function(productId) {
+      window.setReviewFilter('all');
+      try {
+        const res = await fetch(`${API_URL}/reviews?productId=${productId}`);
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          window.productOnlineReviews[productId] = data;
+          displayFilteredReviews();
+        }
+      } catch (e) {}
+    };
+
+    window.handleReviewSubmit = async function(e) {
+      e.preventDefault();
+      if (!currentSelectedProduct) return;
+
+      const nameInput = document.getElementById('rev-user-name');
+      const ratingInput = document.getElementById('rev-rating');
+      const commentInput = document.getElementById('rev-comment');
+      const submitBtn = document.getElementById('btn-submit-review');
+
+      const name = nameInput.value.trim();
+      const rating = Number(ratingInput.value) || 5;
+      const comment = commentInput.value.trim();
+
+      if (!name || !comment) {
+        showToast("Tolong lengkapi nama dan ulasan Anda!", "error");
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i> Mengirim...`;
+
+      const nowIso = new Date().toISOString();
+
+      const reviewPayload = {
+        productId: currentSelectedProduct.id,
+        user: name,
+        rating: rating,
+        comment: comment,
+        image: window.currentUploadedReviewImage || '',
+        variant: currentSelectedVariant?.name || 'Resmi',
+        createdAt: nowIso
+      };
+
+      try {
+        const res = await fetch(`${API_URL}/reviews`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(reviewPayload)
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          showToast("Terima kasih atas ulasan Anda! ⭐");
+          nameInput.value = '';
+          commentInput.value = '';
+          const savedImg = window.currentUploadedReviewImage;
+          window.removeReviewImage();
+
+          if (!window.productOnlineReviews[currentSelectedProduct.id]) {
+            window.productOnlineReviews[currentSelectedProduct.id] = [];
+          }
+          window.productOnlineReviews[currentSelectedProduct.id].unshift({
+            user: name,
+            rating: rating,
+            comment: comment,
+            image: savedImg || '',
+            variant: currentSelectedVariant?.name || 'Resmi',
+            createdAt: nowIso,
+            date: nowIso,
+            avatarColor: 'bg-rose-100 text-[#f5125e]'
+          });
+
+          displayFilteredReviews();
+        } else {
+          showToast("Gagal mengirim ulasan", "error");
+        }
+      } catch (err) {
+        showToast("Koneksi gagal mengirim ulasan", "error");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<i data-lucide="send" class="w-3.5 h-3.5"></i> Kirim Ulasan`;
+        lucide.createIcons();
+      }
+    };
+
+    function getReviewsForProduct(p) {
+      const pName = p.name || 'Produk ini';
+      let cat = (p.category || '').toLowerCase();
+      
+      let commentsAll = [
+        `Sumpah mantap banget! Beli ${pName} di sini cepat prosesnya. Auto langganan! 🔥`,
+        `Awalnya ragu, tapi ternyata beneran full garansi. ${pName} nya work 100% tanpa kendala.`,
+        `Pelayanan super cepat. Pembayaran via GoPay QRIS gampang banget, langsung dapet akses ${pName}.`
+      ];
+      
+      if(cat.includes('ai') || cat.includes('gemini') || cat.includes('chatgpt')) {
+        commentsAll[1] = `Bantu banget buat nugas dan kerjaan. Akses ${pName} lancar jaya, AI nya responsif!`;
+      } else if(cat.includes('editor') || cat.includes('canva') || cat.includes('capcut')) {
+        commentsAll[1] = `Bisa langsung dipakai edit tanpa watermark. ${pName} premium memang beda, semua fitur pro kebuka.`;
+      } else if(cat.includes('stream') || cat.includes('netflix')) {
+        commentsAll[1] = `Nonton kualitas HD/4K lancar tanpa screen limit. Beli ${pName} di sini paling murah dan terpercaya.`;
+      }
+
+      return {
+        all: [
+          { user: "b***9", avatarColor: "bg-blue-100 text-blue-600", rating: 5, defaultOffset: 1, tag: "instant", comment: commentsAll[0] },
+          { user: "d***i", avatarColor: "bg-rose-100 text-rose-600", rating: 5, defaultOffset: 2, tag: "service", comment: commentsAll[1] },
+          { user: "r***a", avatarColor: "bg-emerald-100 text-emerald-600", rating: 5, defaultOffset: 4, tag: "instant", comment: commentsAll[2] }
+        ],
+        star5: [
+          { user: "f***y", avatarColor: "bg-amber-100 text-amber-600", rating: 5, defaultOffset: 2, tag: "instant", comment: `Bintang 5 buat ${pName}! Semua fungsi kebuka sempurna tanpa ada kendala sama sekali.` },
+          { user: "k***n", avatarColor: "bg-purple-100 text-purple-600", rating: 5, defaultOffset: 5, tag: "service", comment: `Kualitas bintang lima. Konfirmasi cepat dan ramah, dapet akses ${pName} super aman!` }
+        ],
+        instant: [
+          { user: "h***d", avatarColor: "bg-indigo-100 text-indigo-600", rating: 5, defaultOffset: 1, tag: "instant", comment: `⚡ Benar-benar kilat! Order ${pName} respon WA Admin nya cepet banget.` },
+          { user: "s***t", avatarColor: "bg-cyan-100 text-cyan-600", rating: 5, defaultOffset: 3, tag: "instant", comment: `⚡ Sistem pembayaran mudah pakai QRIS, lisensi ${pName} langsung diberikan setelah konfirmasi.` }
+        ],
+        service: [
+          { user: "a***n", avatarColor: "bg-rose-100 text-rose-600", rating: 5, defaultOffset: 3, tag: "service", comment: `🛡️ Garansi ${pName} terbukti 100% aman dan responsif. CS Admin WhatsApp sangat ramah membantu.` },
+          { user: "p***i", avatarColor: "bg-pink-100 text-pink-600", rating: 5, defaultOffset: 6, tag: "service", comment: `🛡️ File PDF Invoice langsung didownload, ga takut hilang bukti garansi buat pesanan ${pName}.` }
+        ]
+      };
+    }
+
+    window.setReviewFilter = function(filterType) {
+      activeReviewFilter = filterType;
+      document.querySelectorAll('.rf-btn').forEach(btn => {
+        btn.className = 'rf-btn bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1 rounded-lg font-medium transition-all text-[10px] cursor-pointer';
+      });
+      const activeBtn = document.getElementById(`rf-${filterType}`);
+      if (activeBtn) activeBtn.className = 'rf-btn bg-rose-50 text-[#f5125e] border border-rose-200 px-2.5 py-1 rounded-lg font-bold transition-all text-[10px] shadow-2xs cursor-pointer';
+      displayFilteredReviews();
+    };
+
+    function displayFilteredReviews() {
+      const container = document.getElementById('product-reviews-list');
+      if (!container || !currentSelectedProduct) return;
+      
+      const onlineList = window.productOnlineReviews[currentSelectedProduct.id] || [];
+      let listToShow = [...onlineList];
+
+      if (activeReviewFilter === 'star5') {
+        listToShow = listToShow.filter(r => Number(r.rating) === 5);
+      } else if (activeReviewFilter !== 'all') {
+        listToShow = listToShow.filter(r => r.tag === activeReviewFilter);
+      }
+
+      if (listToShow.length === 0) {
+        const dynamicReviews = getReviewsForProduct(currentSelectedProduct);
+        listToShow = dynamicReviews[activeReviewFilter] || dynamicReviews.all || [];
+      }
+
+      container.innerHTML = listToShow.map((rev, index) => {
+        const rawDate = rev.createdAt || rev.timestamp || rev.date;
+        const dynamicDate = timeAgo(rawDate, index + 1);
+
+        return `
+        <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 space-y-1.5 animate-review">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-full ${rev.avatarColor || 'bg-rose-100 text-[#f5125e]'} flex items-center justify-center font-bold text-[10px]">
+                ${(rev.user || 'U').charAt(0).toUpperCase()}
+              </div>
+              <div>
+                <p class="font-bold text-[11px] text-slate-800 leading-tight">${escapeHtml(rev.user || 'Pengguna')}</p>
+                <div class="flex items-center gap-0.5 text-amber-500 text-[10px]">${'★'.repeat(Number(rev.rating) || 5)}</div>
+              </div>
+            </div>
+            <span class="text-[9.5px] text-slate-400 font-medium">${dynamicDate}</span>
+          </div>
+          <div class="text-[10px] text-slate-500 font-medium bg-white px-2 py-0.5 rounded border border-slate-100 w-max">Variasi: ${escapeHtml(rev.variant || currentSelectedVariant?.name || 'Resmi')}</div>
+          <p class="text-[11.5px] text-slate-700 leading-relaxed">${escapeHtml(rev.comment)}</p>
+          ${rev.image ? `
+            <div class="pt-1">
+              <img src="${rev.image}" onclick="zoomImage('${rev.image}')" alt="Bukti Ulasan" class="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-xl border border-slate-200 hover:opacity-90 transition-opacity cursor-pointer shadow-2xs" />
+            </div>
+          ` : ''}
+        </div>`;
+      }).join('');
+    }
+
+    // ================= SMART CHATBOT =================
+    window.sendQuickReply = function(action) {
+      document.getElementById('chat-menu-buttons').classList.add('hidden'); 
+      
+      if (action === 'menu_cek_produk') {
+        appendUserChatMessage("Saya ingin mengecek stok atau harga produk.");
+        showBotTyping();
+        setTimeout(() => { removeBotTyping(); appendBotChatMessage(`Boleh Kak! Silakan ketik nama produk yang ingin dicek (Contoh: "Harga Canva", "Apakah Netflix ready?").`); }, 800);
+      } else if (action === 'menu_cara_cek_invoice') {
+        appendUserChatMessage("Bagaimana cara cek riwayat pesanan dan mengunduh Invoice PDF saya?");
+        showBotTyping();
+        setTimeout(() => {
+          removeBotTyping();
+          appendBotChatMessage(`**Panduan Cek Pesanan & Unduh Invoice:**\n\n1. Klik menu **"Pesanan"** di bar navigasi bawah (atau menu atas jika di PC/Laptop).\n2. Masukkan **Nomor WhatsApp** atau **Email** yang Kakak gunakan saat checkout.\n3. Klik tombol **"Cari"**.\n4. Riwayat pesanan akan muncul. Klik **"Lihat Invoice"** lalu pilih tombol merah **"Unduh PDF"** untuk menyimpan bukti berstatus sukses/lunas! 📄✨\n\n👉 <button onclick="closeChatModal(); openHistoryModal();" class="text-rose-600 font-black underline bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-lg inline-block mt-1.5 shadow-2xs cursor-pointer">Buka Menu Riwayat Sekarang</button>`);
+        }, 800);
+      } else if (action === 'menu_cara_beli') {
+        appendUserChatMessage("Bagaimana cara beli produk via QRIS dan sistem garansinya?");
+        showBotTyping();
+        setTimeout(() => { removeBotTyping(); appendBotChatMessage(`**Cara Beli Sangat Mudah:**\n1. Pilih produk & paket yang diinginkan di beranda.\n2. Klik **Beli Sekarang** dan isi Form Pembeli.\n3. Scan QRIS GoPay atau TriPay yang muncul.\n4. Download Invoice PDF lalu konfirmasi ke WA Admin! ⚡\n\n**Info Garansi:**\nSemua produk bergaransi penuh sesuai masa aktif. Simpan File PDF Invoice untuk klaim penggantian jika ada kendala.`); }, 1200);
+      } else if (action === 'menu_hubungi_admin') {
+        appendUserChatMessage("Saya ingin menghubungi Admin CS via WhatsApp.");
+        chatBotState = 'awaiting_wa_reason'; 
+        showBotTyping();
+        setTimeout(() => { removeBotTyping(); appendBotChatMessage(`Baik Kak. Boleh kasih tahu kami dulu, kendala atau pertanyaan apa yang ingin disampaikan ke Admin? (Misal: 'Mau klaim garansi invoice INV123')`); }, 1000);
+      }
+    };
+
+    window.handleUserChatSubmit = function(e) {
+      e.preventDefault();
+      const input = document.getElementById('user-chat-input');
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      
+      appendUserChatMessage(text);
+      document.getElementById('chat-menu-buttons').classList.add('hidden'); 
+      showBotTyping();
+      setTimeout(() => { processSmartBotResponse(text); }, 800);
+    };
+
+    function processSmartBotResponse(rawText) {
+      removeBotTyping();
+      const text = rawText.toLowerCase();
+
+      if (chatBotState === 'awaiting_wa_reason') {
+        chatBotState = 'normal'; 
+        const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Halo Admin DigitalHub, saya butuh bantuan terkait: ' + rawText)}`;
+        appendBotChatMessage(`Terima kasih informasinya Kak. Silakan klik tombol di bawah ini untuk terhubung langsung dengan Admin kami beserta detail pesan Kakak:\n\n👉 <a href="${waLink}" target="_blank" class="text-emerald-600 font-black underline bg-emerald-50 px-2 py-1 rounded inline-block mt-2 shadow-xs">Chat WhatsApp Admin</a>`);
+        return;
+      }
+
+      if (text === 'menu' || text === 'bantuan' || text === 'help') {
+        appendBotChatMessage(`Tentu Kak, ini menu bantuan yang bisa Kakak pilih:`);
+        document.getElementById('chat-menu-buttons').classList.remove('hidden');
+        return;
+      }
+
+      if (text.includes('invoice') || text.includes('struk') || text.includes('nota') || text.includes('riwayat') || text.includes('cek pesanan') || text.includes('unduh pdf')) {
+        appendBotChatMessage(`Untuk mengecek atau mengunduh ulang **Invoice PDF** Kakak:\n\n1. Buka menu **Pesanan** di bagian bawah.\n2. Masukkan nomor WA / Email yang Kakak pakai saat membeli.\n3. Klik **Lihat Invoice** lalu tekan **Unduh PDF**.\n\n👉 <button onclick="closeChatModal(); openHistoryModal();" class="text-rose-600 font-black underline bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-lg inline-block mt-1 shadow-2xs cursor-pointer">Buka Riwayat Pesanan</button>`);
+        return;
+      }
+      
+      if (text.includes('admin') || text.includes('cs') || text.includes('whatsapp') || text.includes('wa') || text.includes('hubung')) {
+        chatBotState = 'awaiting_wa_reason';
+        appendBotChatMessage("Boleh kasih tahu kami dulu Kak, kendala apa yang ingin disampaikan ke Admin sebelum disambungkan? (Contoh: 'Akun Netflix bermasalah' dll)");
+        return;
+      }
+
+      let matchedProduct = null;
+      const ignoreWords = ['berapa', 'harga', 'stok', 'ready', 'ada', 'kak', 'min', 'bot', 'beli', 'untuk', 'apakah', 'gimana', 'cara'];
+      for (let p of products) {
+        if (p.hidden) continue;
+        let pName = p.name.toLowerCase();
+        if (text.includes(pName) && !ignoreWords.includes(pName)) {
+          matchedProduct = p; break;
+        }
+      }
+      if (!matchedProduct) {
+        const userWords = text.split(' ');
+        for (let word of userWords) {
+          if (word.length > 3 && !ignoreWords.includes(word)) {
+            matchedProduct = products.find(p => !p.hidden && p.name.toLowerCase().includes(word));
+            if(matchedProduct) break;
+          }
+        }
+      }
+
+      if (matchedProduct) {
+        lastDiscussedProduct = matchedProduct; 
+        const prices = matchedProduct.variants && matchedProduct.variants.length > 0 ? matchedProduct.variants.map(v => Number(v.price||0)) : [Number(matchedProduct.price||0)];
+        const minPrice = formatIDR(Math.min(...prices));
+        appendBotChatMessage(`Untuk produk **${matchedProduct.name}** saat ini stoknya **READY** dan bisa diproses cepat! 🎉\n\nHarganya mulai dari **${minPrice}**. Kakak bisa langsung klik produknya di katalog dan pilih "Beli Sekarang".`);
+        return;
+      }
+
+      appendBotChatMessage(`Halo Kak! 👋 Ada yang bisa dibantu? Kakak bisa ketik **"menu"** untuk melihat opsi bantuan kami.`);
+    }
+
+    function appendUserChatMessage(text) {
+      const container = document.getElementById('chat-messages-container');
+      const div = document.createElement('div');
+      div.className = 'flex items-end justify-end gap-2';
+      div.innerHTML = `<div class="bg-gradient-to-r from-[#f5125e] to-[#ff2b56] text-white p-3 rounded-2xl rounded-tr-none shadow-2xs max-w-[85%] leading-relaxed text-xs">${escapeHtml(text).replace(/\n/g, '<br>')}</div>`;
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function appendBotChatMessage(text) {
+      const container = document.getElementById('chat-messages-container');
+      const div = document.createElement('div');
+      div.className = 'flex items-start gap-2';
+      div.innerHTML = `<div class="w-7 h-7 rounded-full bg-rose-100 text-[#f5125e] flex items-center justify-center flex-shrink-0 text-xs font-bold"><i data-lucide="bot" class="w-4 h-4"></i></div><div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs space-y-1 max-w-[85%] text-slate-800 leading-relaxed text-xs">${text.replace(/\n/g, '<br>')}</div>`;
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+      lucide.createIcons();
+    }
+
+    function showBotTyping() {
+      const container = document.getElementById('chat-messages-container');
+      const div = document.createElement('div');
+      div.id = 'bot-typing-indicator';
+      div.className = 'flex items-start gap-2';
+      div.innerHTML = `<div class="w-7 h-7 rounded-full bg-rose-100 text-[#f5125e] flex items-center justify-center flex-shrink-0 text-xs font-bold"><i data-lucide="bot" class="w-4 h-4"></i></div><div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-2xs text-slate-800 text-xs"><div class="typing-indicator"><span></span><span></span><span></span></div></div>`;
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+      lucide.createIcons();
+    }
+
+    function removeBotTyping() {
+      const el = document.getElementById('bot-typing-indicator');
+      if (el) el.remove();
+    }
+
     loadProducts();
     startSocialProofNotifications();
     lucide.createIcons();
@@ -2345,7 +2788,7 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
     <div id="quick-help-bubble" class="hidden bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-2xl shadow-xl border border-rose-100 text-[11px] font-bold text-slate-800 animate-bounce-soft">
       Butuh bantuan? Chat kami 👋
     </div>
-    <button onclick="openChatModal()" class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-[#f5125e] to-[#ff477e] text-white flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all relative border-2 border-white group">
+    <button onclick="openChatModal()" class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-[#f5125e] to-[#ff477e] text-white flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all relative border-2 border-white group cursor-pointer">
       <i data-lucide="message-square-more" class="w-6 h-6"></i>
       <span class="absolute top-0 right-0 w-3.5 h-3.5 bg-emerald-400 border-2 border-white rounded-full"></span>
     </button>
