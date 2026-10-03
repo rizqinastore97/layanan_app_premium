@@ -1262,16 +1262,37 @@
       setTimeout(() => loadOrdersData(), 1000);
     };
 
-    // =========================================================================
-    // FUNGSI HAPUS PESANAN DOBEL / SALAH DARI DATABASE KV
-    // =========================================================================
     window.deleteOrder = async function(reference, orderIndex) {
-      if (!confirm(`Yakin ingin menghapus pesanan ${reference}?\n\nData pesanan ini akan dibuang dari database.`)) {
+      if (!confirm(`Hapus pesanan ini dari daftar?`)) {
         return;
       }
 
-      showToast(`Menghapus ${reference}...`);
+      showToast(`Menghapus pesanan...`);
 
+      // 1. Hapus langsung dari memori tampilan layar agar seketika hilang
+      if (Array.isArray(window.currentLoadedOrders)) {
+        if (typeof orderIndex === 'number') {
+          window.currentLoadedOrders.splice(orderIndex, 1);
+        } else {
+          window.currentLoadedOrders = window.currentLoadedOrders.filter(o => o.reference !== reference);
+        }
+        renderOrdersList(window.currentLoadedOrders);
+      }
+
+      // 2. Bersihkan dari cadangan lokal (localStorage) jika ada
+      try {
+        let localOrders = JSON.parse(localStorage.getItem('my_digital_orders')) || [];
+        if (Array.isArray(localOrders)) {
+          if (typeof orderIndex === 'number') {
+            localOrders.splice(orderIndex, 1);
+          } else {
+            localOrders = localOrders.filter(o => o.reference !== reference);
+          }
+          localStorage.setItem('my_digital_orders', JSON.stringify(localOrders));
+        }
+      } catch(e) {}
+
+      // 3. Kirim permintaan hapus ke Cloudflare Worker
       try {
         const res = await fetch(`${API_URL}/orders/delete`, {
           method: 'POST',
@@ -1279,12 +1300,13 @@
           body: JSON.stringify({ reference: reference, index: orderIndex })
         });
         const data = await res.json();
-
-        if (data.success) {
+        if (data && data.success) {
           showToast(`🗑️ Pesanan berhasil dihapus!`);
         }
-      } catch (err) {}
-
+      } catch (err) {
+        showToast(`Pesanan dihapus dari tampilan.`);
+      }
+    };
       // Update state instan di layar
       if (window.currentLoadedOrders) {
         window.currentLoadedOrders = window.currentLoadedOrders.filter((o, idx) => !(o.reference === reference && idx === orderIndex));
