@@ -45,7 +45,7 @@
       font-family: 'Outfit', sans-serif !important;
     }
 
-    pre, code, #account-data, #pay-invoice-no {
+    pre, code, #account-data, #pay-invoice-no, #op-countdown-timer {
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
     }
     
@@ -159,6 +159,31 @@
     </div>
   </div>
 
+<!-- TOP BAR STATUS JAM OPERASIONAL & HITUNG MUNDUR REAL-TIME -->
+  <div id="store-op-banner" class="bg-slate-900 text-white px-3 sm:px-8 py-1.5 sm:py-2 text-[10px] sm:text-xs border-b border-slate-800 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-2">
+      
+      <!-- Sisi Kiri: Badge Status & Keterangan -->
+      <div class="flex items-center gap-2 flex-1 min-w-0">
+        <span id="op-status-badge" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2.5 py-1 sm:px-2 sm:py-0.5 rounded-full font-black text-[9px] sm:text-[10.5px] uppercase tracking-wider">
+          <span id="op-status-dot" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span id="op-status-text">TOKO BUKA</span>
+        </span>
+        <!-- Teks Keterangan disembunyikan di HP (hidden) dan muncul di layar lebih besar (sm:block) -->
+        <span id="op-schedule-desc" class="text-slate-300 font-medium truncate hidden sm:block">
+          Jam Kerja: <b>08.00 – 23.00 WIB</b> <span class="hidden md:inline text-slate-400">• Pesanan diproses cepat!</span>
+        </span>
+      </div>
+
+      <!-- Sisi Kanan: Timer Hitung Mundur -->
+      <div class="flex items-center gap-1.5 flex-shrink-0 bg-black/20 px-2.5 py-1 sm:px-2 sm:py-0.5 rounded-lg border border-white/10">
+        <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>
+        <span id="op-countdown-label" class="text-slate-300 font-semibold hidden sm:inline">Tutup dalam:</span>
+        <span id="op-countdown-timer" class="text-amber-300 font-black tracking-wider text-[10.5px] sm:text-[11px] font-mono">00:00:00</span>
+      </div>
+      
+    </div>
+  </div>
   <!-- Header Toko -->
   <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-rose-100/80 shadow-xs px-3 sm:px-8 py-3">
     <div class="w-full flex items-center justify-between gap-2.5 sm:gap-6">
@@ -393,6 +418,10 @@
       </div>
       <div class="space-y-2 text-xs">
         <details class="group bg-slate-50 rounded-xl p-3 border border-slate-100 cursor-pointer">
+          <summary class="font-bold text-slate-800 flex justify-between items-center list-none"><span>🕒 Kapan jam operasional toko?</span><i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i></summary>
+          <p class="text-slate-600 mt-2 leading-relaxed text-[11.5px]">Jam operasional & verifikasi manual kami buka setiap hari pukul <b>08.00 – 23.00 WIB</b>. Pembelian via QRIS Otomatis (TriPay) tetap aktif 24 jam, sedangkan order manual di luar jam kerja akan langsung diproses pada antrean pertama esok paginya pukul 08.00 WIB.</p>
+        </details>
+        <details class="group bg-slate-50 rounded-xl p-3 border border-slate-100 cursor-pointer">
           <summary class="font-bold text-slate-800 flex justify-between items-center list-none"><span>⚡ Berapa lama waktu pengiriman layanan?</span><i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i></summary>
           <p class="text-slate-600 mt-2 leading-relaxed text-[11.5px]">Sistem kami memproses transaksi seketika setelah pembayaran terkonfirmasi. Akses atau lisensi langsung siap digunakan.</p>
         </details>
@@ -611,6 +640,18 @@
         </div>
         
         <div id="step-pay" class="space-y-3 mt-2">
+          
+          <!-- PERINGATAN OTOMATIS JIKA ORDER DI LUAR JAM OPERASIONAL (23.00 - 08.00 WIB) -->
+          <div id="checkout-closed-notice" class="hidden bg-amber-50 border border-amber-300 rounded-2xl p-3 text-left shadow-2xs">
+            <div class="flex items-start gap-2">
+              <i data-lucide="moon" class="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5"></i>
+              <div class="text-[10.5px] leading-relaxed text-amber-900">
+                <p class="font-black uppercase tracking-wide text-amber-800">🌙 Info Order di Luar Jam Kerja (23.00 – 08.00 WIB)</p>
+                <p class="mt-0.5 font-medium">Toko tetap menerima pesanan. Pembayaran via <b>QRIS Otomatis (TriPay)</b> langsung aktif detik ini juga, sedangkan <b>QRIS Manual</b> tetap aman tercatat & akan diproses pada antrean pertama pukul <b>08.00 WIB</b>.</p>
+              </div>
+            </div>
+          </div>
+
           <div class="bg-white border-2 border-slate-100 rounded-2xl p-0 text-left shadow-sm relative overflow-hidden mb-3">
             <div class="bg-slate-50 p-3.5 border-b border-slate-100 flex justify-between items-center">
               <div>
@@ -766,8 +807,8 @@
              <!-- CATATAN ESTIMASI WAKTU PROSES & JAM KERJA -->
              <div class="bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-center mt-2">
                <p class="text-[10px] sm:text-[10.5px] text-slate-600 leading-relaxed font-medium">
-                 🕒 <b>Jam Pelayanan Verifikasi Manual:</b> 08.00 – 22.00 WIB (Proses 5–30 menit).<br/>
-                 <span class="text-slate-500 text-[9.5px]">Pesanan di luar jam kerja tetap aman dan akan diproses pada antrean pertama pagi hari.</span>
+                 🕒 <b>Jam Operasional Toko:</b> 08.00 – 23.00 WIB (Proses cepat 5–30 menit).<br/>
+                 <span class="text-slate-500 text-[9.5px]">Pesanan manual di luar jam kerja tetap aman tercatat dan langsung diproses pada antrean pertama pukul 08.00 WIB.</span>
                </p>
              </div>
           </div>
@@ -947,7 +988,7 @@
             </div>
             <div>
               <h3 class="text-xs sm:text-sm font-bold leading-tight">DigitalHub Bot (Online)</h3>
-              <p class="text-[10px] text-rose-100 flex items-center gap-1"><span class="w-1.5 h-1.5 bg-emerald-300 rounded-full"></span> Siap bantu cek stok & harga</p>
+              <p class="text-[10px] text-rose-100 flex items-center gap-1"><span class="w-1.5 h-1.5 bg-emerald-300 rounded-full"></span> Jam Kerja: 08.00 - 23.00 WIB</p>
             </div>
           </div>
           <button onclick="closeChatModal()" class="text-white/80 hover:text-white p-1 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
@@ -1003,6 +1044,11 @@
     const WHATSAPP_NUMBER = "6282243890517"; 
     const QRIS_GOPAY_URL = "https://i.ibb.co.com/PGRmz0G8/Whats-App-Image-2026-08-24-at-12-25-05.jpg"; 
 
+    // KONFIGURASI JAM OPERASIONAL TOKO (WIB / UTC+7)
+    const STORE_OPEN_HOUR = 8;   // Buka pukul 08:00 WIB
+    const STORE_CLOSE_HOUR = 23; // Tutup pukul 23:00 WIB
+    window.isStoreCurrentlyOpen = true;
+
     window.currentInvoiceNo = '';
     window.currentInvoiceItem = '';
     window.currentInvoiceTotal = '';
@@ -1046,6 +1092,75 @@
     let lastDiscussedProduct = null; 
     let promo0Data = null;
     let promoTimerInterval = null;
+
+    // =========================================================================
+    // FUNGSI REAL-TIME JAM OPERASIONAL & COUNTDOWN (SINKRON WIB / UTC+7)
+    // =========================================================================
+    function getWIBCurrentInfo() {
+      const now = new Date();
+      const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
+      const wibDate = new Date(utcMs + (7 * 3600000));
+      return {
+        hours: wibDate.getHours(),
+        minutes: wibDate.getMinutes(),
+        seconds: wibDate.getSeconds()
+      };
+    }
+
+    function updateStoreOperationalStatus() {
+      const wib = getWIBCurrentInfo();
+      const currentSecondsOfDay = (wib.hours * 3600) + (wib.minutes * 60) + wib.seconds;
+      const openSeconds = STORE_OPEN_HOUR * 3600;   // 08:00:00
+      const closeSeconds = STORE_CLOSE_HOUR * 3600; // 23:00:00
+
+      const isOpen = currentSecondsOfDay >= openSeconds && currentSecondsOfDay < closeSeconds;
+      window.isStoreCurrentlyOpen = isOpen;
+
+      let remainingSeconds = 0;
+      if (isOpen) {
+        remainingSeconds = closeSeconds - currentSecondsOfDay;
+      } else {
+        if (currentSecondsOfDay >= closeSeconds) {
+          remainingSeconds = (24 * 3600 - currentSecondsOfDay) + openSeconds;
+        } else {
+          remainingSeconds = openSeconds - currentSecondsOfDay;
+        }
+      }
+
+      const hrs = String(Math.floor(remainingSeconds / 3600)).padStart(2, '0');
+      const mins = String(Math.floor((remainingSeconds % 3600) / 60)).padStart(2, '0');
+      const secs = String(remainingSeconds % 60).padStart(2, '0');
+      const formattedCountdown = `${hrs}:${mins}:${secs}`;
+
+      const bannerEl = document.getElementById('store-op-banner');
+      const badgeEl = document.getElementById('op-status-badge');
+      const dotEl = document.getElementById('op-status-dot');
+      const textEl = document.getElementById('op-status-text');
+      const descEl = document.getElementById('op-schedule-desc');
+      const labelEl = document.getElementById('op-countdown-label');
+      const timerEl = document.getElementById('op-countdown-timer');
+      const closedCheckoutNotice = document.getElementById('checkout-closed-notice');
+
+      if (timerEl) timerEl.innerText = formattedCountdown;
+
+      if (isOpen) {
+        if (bannerEl) bannerEl.className = "bg-slate-900 text-white px-3 sm:px-8 py-1.5 text-[10px] sm:text-xs border-b border-slate-800 transition-colors duration-300";
+        if (badgeEl) badgeEl.className = "inline-flex items-center gap-1.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-black text-[9.5px] sm:text-[10.5px] uppercase tracking-wider";
+        if (dotEl) dotEl.className = "w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse";
+        if (textEl) textEl.innerText = "TOKO BUKA";
+        if (descEl) descEl.innerHTML = `Jam Kerja: <b>08.00 – 23.00 WIB</b> <span class="hidden md:inline text-emerald-300">• Admin aktif & siap memproses pesanan!</span>`;
+        if (labelEl) labelEl.innerText = "Tutup dalam:";
+        if (closedCheckoutNotice) closedCheckoutNotice.classList.add('hidden');
+      } else {
+        if (bannerEl) bannerEl.className = "bg-amber-950 text-amber-50 px-3 sm:px-8 py-1.5 text-[10px] sm:text-xs border-b border-amber-800/80 transition-colors duration-300";
+        if (badgeEl) badgeEl.className = "inline-flex items-center gap-1.5 bg-amber-500/20 text-amber-300 border border-amber-400/40 px-2 py-0.5 rounded-full font-black text-[9.5px] sm:text-[10.5px] uppercase tracking-wider";
+        if (dotEl) dotEl.className = "w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping";
+        if (textEl) textEl.innerText = "JAM ISTIRAHAT";
+        if (descEl) descEl.innerHTML = `Buka pukul <b>08.00 WIB</b> <span class="hidden sm:inline text-amber-200">• Tetap bisa order (Diproses antrean pagi / Otomatis via TriPay)</span>`;
+        if (labelEl) labelEl.innerText = "Buka kembali:";
+        if (closedCheckoutNotice && !window.isPromo0Order) closedCheckoutNotice.classList.remove('hidden');
+      }
+    }
 
     function escapeHtml(text) {
       if (!text) return '';
@@ -1111,6 +1226,8 @@
     
     window.addEventListener('DOMContentLoaded', () => {
       trackActivity('view');
+      updateStoreOperationalStatus();
+      setInterval(updateStoreOperationalStatus, 1000);
     });
 
     let livePurchasesData = [
@@ -1306,6 +1423,7 @@
         document.getElementById('checkout-method-selection').classList.add('hidden');
         document.getElementById('qris-container-box').classList.add('hidden');
         document.getElementById('promo0-checkout-box').classList.remove('hidden');
+        document.getElementById('checkout-closed-notice')?.classList.add('hidden');
 
         const btnAction = document.getElementById('btn-pay-action');
         btnAction.innerText = 'KLAIM SEKARANG (GRATIS)';
@@ -1639,6 +1757,7 @@
     };
 
     window.openPaymentModal = function() {
+      updateStoreOperationalStatus();
       document.getElementById('payment-modal').classList.remove('hidden');
     }
 
@@ -2325,10 +2444,14 @@
       document.getElementById('step-pay').classList.add('hidden');
       document.getElementById('step-result').classList.remove('hidden');
       document.getElementById('res-title').innerText = "Verifikasi Pembayaran";
-      document.getElementById('res-subtitle').innerText = "Kirim bukti transaksi Anda agar pesanan segera dicek oleh Admin.";
+      document.getElementById('res-subtitle').innerText = window.isStoreCurrentlyOpen
+        ? "Kirim bukti transaksi Anda agar pesanan segera dicek oleh Admin."
+        : "Toko sedang jam istirahat. Kirim bukti transfer ke WA agar pesanan masuk antrean pertama pukul 08.00 WIB.";
       document.getElementById('box-warning-pdf').classList.remove('hidden');
       document.getElementById('btn-confirm-wa').classList.remove('hidden');
-      document.getElementById('account-data').innerText = "MENUNGGU VERIFIKASI PEMBAYARAN.\nKirimkan tangkapan layar (screenshot) bukti transfer asli ke WhatsApp Admin untuk validasi & pengiriman akses akun.";
+      document.getElementById('account-data').innerText = window.isStoreCurrentlyOpen
+        ? "MENUNGGU VERIFIKASI PEMBAYARAN.\nKirimkan tangkapan layar (screenshot) bukti transfer asli ke WhatsApp Admin untuk validasi & pengiriman akses akun."
+        : "PESANAN TERCATAT (ORDER DI LUAR JAM OPERASIONAL).\nSilakan tetap kirim bukti transfer ke WhatsApp Admin. Pesanan Anda masuk antrean prioritas pertama pukul 08.00 WIB pagi.";
 
       // Tampilkan S&K di Layar Hasil Saja
       const termsBox = document.getElementById('checkout-terms-container');
@@ -2431,7 +2554,7 @@
       invoiceElement.innerHTML = `
           <div style="border-bottom: 3px solid #f5125e; padding-bottom: 15px; margin-bottom: 25px;">
               <h1 style="color: #f5125e; margin: 0; font-size: 28px; letter-spacing: -1px; font-weight: 900;">DIGITALHUB</h1>
-              <p style="margin: 5px 0 0; font-size: 13px; color: #64748b; font-weight: bold;">E-Invoice Pembayaran Resmi</p>
+              <p style="margin: 5px 0 0; font-size: 13px; color: #64748b; font-weight: bold;">E-Invoice Pembayaran Resmi • Jam Operasional: 08.00 - 23.00 WIB</p>
           </div>
           <table style="width: 100%; margin-bottom: 25px; border-collapse: collapse;">
               <tr>
@@ -2506,13 +2629,14 @@
         const total = window.currentInvoiceTotal || "Rp 0";
         const tanggal = window.currentOrderDate || new Date().toLocaleString('id-ID');
         const isGateway = window.activeCheckoutMethod === 'gateway';
+        const opNote = window.isStoreCurrentlyOpen ? '' : '\n🕒 *Info Jam Kerja:* _Order di Luar Jam Operasional (Antrean Prioritas 08.00 WIB)_';
         
         const msg = 
 `🧾 *KONFIRMASI PESANAN DIGITALHUB*
 ━━━━━━━━━━━━━━━━━━━━━
 *No. Invoice :* ${inv}
 *Tanggal      :* ${tanggal}
-*Status        :* ${isGateway ? '✅ *LUNAS (TRIPAY GATEWAY)*' : '⏳ *MENUNGGU VERIFIKASI PEMBAYARAN*'}
+*Status        :* ${isGateway ? '✅ *LUNAS (TRIPAY GATEWAY)*' : '⏳ *MENUNGGU VERIFIKASI PEMBAYARAN*'}${opNote}
 
 👤 *DATA PEMBELI*
 *Nama          :* ${name}
@@ -3126,7 +3250,7 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
       } else if (action === 'menu_cara_beli') {
         appendUserChatMessage("Bagaimana cara beli produk via QRIS dan sistem garansinya?");
         showBotTyping();
-        setTimeout(() => { removeBotTyping(); appendBotChatMessage(`**Cara Beli Sangat Mudah:**\n1. Pilih produk & paket yang diinginkan di beranda.\n2. Klik **Beli Sekarang** dan isi Form Pembeli.\n3. Scan QRIS GoPay atau TriPay yang muncul.\n4. Download Invoice PDF lalu konfirmasi ke WA Admin! ⚡\n\n**Info Garansi:**\nSemua produk bergaransi penuh sesuai masa aktif. Simpan File PDF Invoice untuk klaim penggantian jika ada kendala.`); }, 1200);
+        setTimeout(() => { removeBotTyping(); appendBotChatMessage(`**Cara Beli Sangat Mudah:**\n1. Pilih produk & paket yang diinginkan di beranda.\n2. Klik **Beli Sekarang** dan isi Form Pembeli.\n3. Scan QRIS GoPay atau TriPay yang muncul.\n4. Download Invoice PDF lalu konfirmasi ke WA Admin! ⚡\n\n**Jam Operasional:** 08.00 – 23.00 WIB (Order di luar jam kerja tetap aman & diproses pagi pukul 08.00 WIB).\n\n**Info Garansi:**\nSemua produk bergaransi penuh sesuai masa aktif.`); }, 1200);
       } else if (action === 'menu_hubungi_admin') {
         appendUserChatMessage("Saya ingin menghubungi Admin CS via WhatsApp.");
         chatBotState = 'awaiting_wa_reason'; 
@@ -3163,6 +3287,12 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
       if (text === 'menu' || text === 'bantuan' || text === 'help') {
         appendBotChatMessage(`Tentu Kak, ini menu bantuan yang bisa Kakak pilih:`);
         document.getElementById('chat-menu-buttons').classList.remove('hidden');
+        return;
+      }
+
+      if (text.includes('jam') || text.includes('buka') || text.includes('tutup') || text.includes('operasional')) {
+        const statusNow = window.isStoreCurrentlyOpen ? '🟢 **SEDANG BUKA**' : '🌙 **JAM ISTIRAHAT (TUTUP)**';
+        appendBotChatMessage(`Jadwal operasional toko kami adalah pukul **08.00 – 23.00 WIB** setiap hari.\nStatus saat ini: ${statusNow}\n\nPembelian via **QRIS Otomatis (TriPay)** tetap aktif 24 jam, sedangkan order manual di luar jam kerja tetap aman tercatat dan langsung diproses pukul **08.00 WIB** pagi! 🚀`);
         return;
       }
 
@@ -3230,7 +3360,7 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
         return;
       }
 
-      appendBotChatMessage(`Maaf Kak, bot kurang memahami maksudnya. 🙏\n\nKakak bisa mengetik **"menu"** untuk melihat opsi yang tersedia, atau ketik pertanyaan seputar stok, harga, atau **cara cek invoice**.`);
+      appendBotChatMessage(`Maaf Kak, bot kurang memahami maksudnya. 🙏\n\nKakak bisa mengetik **"menu"** untuk melihat opsi yang tersedia, atau ketik pertanyaan seputar stok, harga, **jam buka**, atau **cara cek invoice**.`);
     }
 
     function appendUserChatMessage(text) {
