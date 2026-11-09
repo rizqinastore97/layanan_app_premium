@@ -822,6 +822,11 @@
     window.currentLoadedOrders = [];
     window.currentOrdersSearchQuery = '';
 
+    // ==========================================
+    // TAMBAHAN: Variabel Global Ulasan Asli (Online)
+    // ==========================================
+    window.allOnlineReviewsCache = {};
+
     let bannerSettings = {
       active: false,
       type: 'image',
@@ -1967,7 +1972,11 @@
       }
     }
 
+    // ==========================================
+    // PERBAIKAN: FUNGSI RENDER ULASAN (GABUNGAN ASLI & KUSTOM)
+    // ==========================================
     let selectedReviewProductId = null;
+    
     function populateReviewProductSelector() {
       const select = document.getElementById('review-product-selector');
       if (!select) return;
@@ -1978,29 +1987,123 @@
       }
     }
 
-    function renderReviewsForSelectedProduct(prodId) {
+    // Memuat ulasan asli (online) dari server/API
+    async function loadOnlineReviewsForAdmin(prodId) {
+      try {
+        const res = await fetch(`${API_URL}/reviews?productId=${prodId}`);
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          window.allOnlineReviewsCache[prodId] = data;
+          return data;
+        }
+      } catch (e) {}
+      return [];
+    }
+
+    async function renderReviewsForSelectedProduct(prodId) {
       selectedReviewProductId = Number(prodId);
       const product = products.find(p => p.id === selectedReviewProductId);
       const container = document.getElementById('admin-reviews-container');
       const badge = document.getElementById('review-count-badge');
       if (!product) return;
-      if (!product.customReviews) product.customReviews = [];
-      badge.innerText = `Total: ${product.customReviews.length} Ulasan Kustom`;
+      
+      // Ambil ulasan kustom dari database produk
+      let customReviews = product.customReviews || [];
+      
+      // Tampilkan indikator loading sementara
+      container.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs"><i data-lucide="loader-2" class="w-5 h-5 animate-spin mx-auto mb-2 text-indigo-600"></i>Memuat Ulasan Asli Pembeli...</div>`;
+      if(typeof lucide !== 'undefined') lucide.createIcons();
 
-      if (product.customReviews.length === 0) {
-        container.innerHTML = `<div class="bg-white p-8 rounded-3xl border text-center text-slate-400 text-xs">Belum ada ulasan untuk ${product.name}.</div>`;
+      // Ambil ulasan asli/online dari server
+      let onlineReviews = await loadOnlineReviewsForAdmin(prodId);
+      
+      // Gabungkan ulasan kustom dan ulasan asli
+      let combinedReviews = [];
+      
+      // Tambahkan penanda tipe ulasan agar fungsi hapusnya tidak salah
+      customReviews.forEach((r, idx) => combinedReviews.push({...r, _type: 'custom', _originalIndex: idx}));
+      onlineReviews.forEach((r, idx) => combinedReviews.push({...r, _type: 'online', _originalIndex: idx}));
+      
+      // Urutkan berdasarkan tanggal terbaru
+      combinedReviews.sort((a, b) => {
+         let dateA = new Date(a.createdAt || a.date).getTime();
+         let dateB = new Date(b.createdAt || b.date).getTime();
+         if(isNaN(dateA)) dateA = 0;
+         if(isNaN(dateB)) dateB = 0;
+         return dateB - dateA; // Terbaru di atas
+      });
+
+      badge.innerText = `Total: ${combinedReviews.length} Ulasan`;
+
+      if (combinedReviews.length === 0) {
+        container.innerHTML = `<div class="bg-white p-8 rounded-3xl border text-center text-slate-400 text-xs">Belum ada ulasan (Kustom maupun Asli) untuk ${product.name}.</div>`;
         return;
       }
 
-      container.innerHTML = product.customReviews.map((rev, rIdx) => `
-        <div class="bg-white border rounded-3xl p-4 space-y-2">
+      container.innerHTML = combinedReviews.map((rev) => {
+        // Tentukan fungsi tombol hapus berdasarkan tipe ulasan
+        const deleteFunc = rev._type === 'custom' 
+          ? `deleteReviewCustom(${rev._originalIndex})` 
+          : `deleteReviewOnline('${rev.createdAt || rev.date}', '${escapeHtml(rev.user)}')`;
+          
+        const typeBadge = rev._type === 'online' 
+          ? `<span class="bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded text-[8px] uppercase font-black ml-2 border border-emerald-200">Asli Pembeli</span>`
+          : `<span class="bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded text-[8px] uppercase font-black ml-2 border border-slate-200">Buatan (Kustom)</span>`;
+
+        return `
+        <div class="bg-white border rounded-3xl p-4 space-y-2 relative">
           <div class="flex items-center justify-between">
-            <p class="font-bold text-xs">${rev.user} (${'★'.repeat(rev.rating)})</p>
-            <button onclick="deleteReview(${rIdx})" class="text-rose-600 text-xs font-bold p-1">Hapus</button>
+            <div class="flex items-center">
+               <p class="font-bold text-xs text-slate-800">${escapeHtml(rev.user)} <span class="text-amber-500 text-[10px] ml-1">(${'★'.repeat(rev.rating || 5)})</span></p>
+               ${typeBadge}
+            </div>
+            <button onclick="${deleteFunc}" class="text-rose-600 hover:bg-rose-50 px-2 py-1 rounded-lg text-[10px] font-bold flex items-center gap-1 transition">
+               <i data-lucide="trash-2" class="w-3 h-3"></i> Hapus
+            </button>
           </div>
-          <p class="text-xs text-slate-600">${rev.comment}</p>
+          <p class="text-[11.5px] text-slate-600 leading-relaxed bg-slate-50 p-2.5 rounded-xl border border-slate-100">${escapeHtml(rev.comment)}</p>
+          ${rev.image ? `<img src="${rev.image}" class="w-12 h-12 object-cover rounded-lg border border-slate-200 mt-2">` : ''}
         </div>
-      `).join('');
+      `}).join('');
+      
+      if(typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    // Fungsi menghapus ulasan Kustom (menyimpan ke Cloudflare KV)
+    async function deleteReviewCustom(index) {
+      if (!confirm("Hapus ulasan buatan ini?")) return;
+      const product = products.find(p => p.id === selectedReviewProductId);
+      if (!product) return;
+      product.customReviews.splice(index, 1);
+      renderReviewsForSelectedProduct(selectedReviewProductId);
+      await saveAllProductsToKV();
+      showToast("Ulasan kustom dihapus.");
+    }
+    
+    // Fungsi menghapus ulasan Asli Online (menyimpan ke endpoint delete API)
+    async function deleteReviewOnline(createdAt, user) {
+      if (!confirm("Hapus ulasan ASLI dari pembeli ini selamanya?")) return;
+      showToast("Menghapus ulasan pembeli...");
+      try {
+         const res = await fetch(`${API_URL}/reviews/delete`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+               productId: selectedReviewProductId,
+               createdAt: createdAt,
+               user: user
+            })
+         });
+         const data = await res.json();
+         if(data.success) {
+            showToast("Ulasan pembeli berhasil dihapus.");
+            renderReviewsForSelectedProduct(selectedReviewProductId);
+         } else {
+            showToast("Gagal menghapus ulasan: " + (data.message || 'Unknown'), "error");
+         }
+      } catch(e) {
+         showToast("Terjadi kesalahan jaringan saat menghapus", "error");
+      }
     }
 
     function openAddReviewModal() {
@@ -2008,6 +2111,7 @@
       document.getElementById('rev-form-comment').value = '';
       document.getElementById('review-modal').classList.remove('hidden');
     }
+    
     function closeReviewModal() { document.getElementById('review-modal').classList.add('hidden'); }
 
     async function handleSaveReview(e) {
@@ -2029,14 +2133,7 @@
       closeReviewModal();
       renderReviewsForSelectedProduct(selectedReviewProductId);
       await saveAllProductsToKV();
-    }
-
-    async function deleteReview(index) {
-      const product = products.find(p => p.id === selectedReviewProductId);
-      if (!product) return;
-      product.customReviews.splice(index, 1);
-      renderReviewsForSelectedProduct(selectedReviewProductId);
-      await saveAllProductsToKV();
+      showToast("Ulasan Kustom berhasil ditambahkan!");
     }
 
     function refreshPhonePreview() {
