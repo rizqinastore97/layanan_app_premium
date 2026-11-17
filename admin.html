@@ -317,7 +317,7 @@
 
             <div>
               <label class="font-bold text-slate-700 block mb-1">Deskripsi Singkat Promo:</label>
-              <textarea id="promo0-desc" rows="2" placeholder="Tuliskan keterangan singkat promo..." class="w-full px-3.5 py-2 border border-slate-200 rounded-xl text-xs"></textarea>
+              <textarea id="promo0-desc" rows="3" placeholder="Tuliskan keterangan singkat promo..." class="w-full px-3.5 py-2 border border-slate-200 rounded-xl text-xs"></textarea>
             </div>
 
             <div id="promo-accounts-box">
@@ -327,7 +327,7 @@
                   📦 Sisa Stok: 0 Akun
                 </span>
               </div>
-              <textarea id="promo0-account-data" rows="5" oninput="updatePromoStockCounter(this.value)" placeholder="Masukkan 1 akun per baris (tekan Enter untuk akun berikutnya):&#10;user1@gmail.com | pass1&#10;user2@gmail.com | pass2&#10;https://link-aktivasi-3..." class="w-full px-3.5 py-2.5 bg-slate-900 text-emerald-400 font-mono text-xs border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500"></textarea>
+              <textarea id="promo0-account-data" rows="6" oninput="updatePromoStockCounter(this.value)" placeholder="Masukkan 1 akun per baris (tekan Enter untuk akun berikutnya):&#10;user1@gmail.com | pass1&#10;user2@gmail.com | pass2&#10;https://link-aktivasi-3..." class="w-full px-3.5 py-2.5 bg-slate-900 text-emerald-400 font-mono text-xs border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500"></textarea>
             </div>
 
             <button onclick="savePromo0Settings()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-3.5 rounded-2xl text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2">
@@ -453,7 +453,7 @@
                 <i data-lucide="message-square" class="w-5 h-5 text-indigo-600"></i>
                 <span>Kelola Ulasan per Produk</span>
               </h3>
-              <p class="text-xs text-slate-500 mt-0.5">Pilih produk untuk mengedit ulasan pembeli</p>
+              <p class="text-xs text-slate-500 mt-0.5">Edit, sembunyikan, atau hapus ulasan pembeli</p>
             </div>
             <select id="review-product-selector" onchange="renderReviewsForSelectedProduct(this.value)" class="bg-slate-50 border border-slate-200 text-xs sm:text-sm font-bold px-3.5 py-2 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500"></select>
           </div>
@@ -632,19 +632,19 @@
 
   </div>
 
-  <!-- MODAL PRODUK -->
+  <!-- MODAL PRODUK (DIPERLEBAR RESPONSIF SEPERTI LEMBAR KERJA DOKUMEN) -->
   <div id="product-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div onclick="closeProductModal()" class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
-    <div class="fixed inset-0 flex items-center justify-center p-4">
-      <div class="bg-white w-full max-w-xl rounded-3xl shadow-2xl p-5 sm:p-6 flex flex-col max-h-[92vh] overflow-y-auto">
-        <div class="flex justify-between items-center pb-3 border-b border-slate-100">
-          <h3 id="modal-product-title" class="font-bold text-sm sm:text-base text-slate-800 flex items-center gap-1.5">
+    <div class="fixed inset-0 flex items-center justify-center p-2 sm:p-4 lg:p-6">
+      <div class="bg-white w-full max-w-4xl rounded-2xl sm:rounded-3xl shadow-2xl p-4 sm:p-6 lg:p-8 flex flex-col max-h-[95vh] overflow-y-auto">
+        <div class="flex justify-between items-center pb-3 border-b border-slate-100 sticky top-0 bg-white z-10">
+          <h3 id="modal-product-title" class="font-bold text-sm sm:text-lg text-slate-800 flex items-center gap-2">
             <i data-lucide="package-plus" class="w-5 h-5 text-indigo-600"></i> Tambah Produk Baru
           </h3>
-          <button onclick="closeProductModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+          <button onclick="closeProductModal()" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-xl hover:bg-slate-100"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
 
-        <form onsubmit="handleSaveProduct(event)" class="space-y-3.5 pt-3 text-xs sm:text-sm">
+        <form onsubmit="handleSaveProduct(event)" class="space-y-4 pt-4 text-xs sm:text-sm">
           <input type="hidden" id="prod-form-id" />
 
           <div>
@@ -658,7 +658,7 @@
             <input type="text" id="prod-form-name" required placeholder="Contoh: Gemini Pro / Netflix / CapCut" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none font-semibold text-slate-800" />
           </div>
 
-          <div class="grid grid-cols-2 gap-2.5">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label class="font-bold text-slate-700 block mb-1">Kategori:</label>
               <input type="text" id="prod-form-category" list="category-options" placeholder="Pilih atau ketik kategori..." class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none font-bold text-slate-700" required />
@@ -740,15 +740,15 @@
           </div>
 
           <div class="border-t border-slate-200 pt-4 space-y-3">
-            <div class="flex justify-between items-center bg-indigo-50 p-2.5 rounded-xl border border-indigo-100">
+            <div class="flex justify-between items-center bg-indigo-50 p-3 rounded-xl border border-indigo-100">
               <label class="font-bold text-indigo-900 text-xs sm:text-sm flex items-center gap-1.5"><i data-lucide="layers" class="w-4 h-4"></i> Daftar Varian/Paket Harga</label>
-              <button type="button" onclick="addVariantFormRow()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-1 rounded shadow-xs font-bold text-[10px]">+ Tambah Paket</button>
+              <button type="button" onclick="addVariantFormRow()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg shadow-xs font-bold text-xs">+ Tambah Paket</button>
             </div>
-            <div id="variants-form-container" class="space-y-3"></div>
+            <div id="variants-form-container" class="space-y-4"></div>
           </div>
 
-          <div class="pt-3 border-t border-slate-100 flex gap-2">
-            <button type="button" onclick="closeProductModal()" class="w-1/2 py-3 bg-slate-100 font-bold rounded-2xl text-slate-600 text-xs sm:text-sm">Batal</button>
+          <div class="pt-3 border-t border-slate-100 flex gap-2 sticky bottom-0 bg-white py-2">
+            <button type="button" onclick="closeProductModal()" class="w-1/2 py-3 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-slate-600 text-xs sm:text-sm">Batal</button>
             <button type="submit" class="w-1/2 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl shadow-sm text-xs sm:text-sm">Simpan Produk</button>
           </div>
         </form>
@@ -756,28 +756,63 @@
     </div>
   </div>
 
-  <!-- MODAL ULASAN -->
+  <!-- MODAL FULLSCREEN EDITOR (MODE DOKUMEN MS WORD UNTUK DESKRIPSI, S&K, & LISENSI) -->
+  <div id="fullscreen-doc-editor-modal" class="fixed inset-0 z-[70] bg-slate-900/80 backdrop-blur-xs hidden flex flex-col">
+    <div class="bg-slate-900 text-white px-4 py-3 flex items-center justify-between border-b border-slate-800 shadow-md">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <div class="w-8 h-8 rounded-xl bg-indigo-600 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="file-text" class="w-4 h-4 text-white"></i>
+        </div>
+        <div class="min-w-0">
+          <h4 id="fs-editor-title" class="font-bold text-sm sm:text-base truncate">Editor Dokumen Layar Penuh</h4>
+          <p id="fs-editor-stats" class="text-[11px] text-slate-400">0 Baris • 0 Karakter</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button type="button" onclick="insertTextInFsEditor('• ')" class="hidden sm:inline-flex items-center gap-1 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold px-2.5 py-1.5 rounded-lg border border-slate-700" title="Tambah Poin">• Poin</button>
+        <button type="button" onclick="insertTextInFsEditor('✨ ')" class="hidden sm:inline-flex items-center gap-1 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold px-2.5 py-1.5 rounded-lg border border-slate-700">✨</button>
+        <button type="button" onclick="insertTextInFsEditor('⚡ ')" class="hidden sm:inline-flex items-center gap-1 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold px-2.5 py-1.5 rounded-lg border border-slate-700">⚡</button>
+        <button type="button" onclick="insertTextInFsEditor('🛡️ ')" class="hidden sm:inline-flex items-center gap-1 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold px-2.5 py-1.5 rounded-lg border border-slate-700">🛡️</button>
+        <button type="button" onclick="closeFullscreenDocEditor()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-xl shadow-md flex items-center gap-1.5">
+          <i data-lucide="check" class="w-4 h-4"></i>
+          <span>Selesai Edit</span>
+        </button>
+      </div>
+    </div>
+    <div class="flex-1 bg-slate-100 p-2 sm:p-6 lg:p-8 flex justify-center overflow-hidden">
+      <div class="w-full max-w-4xl h-full bg-white rounded-2xl shadow-xl border border-slate-200 flex flex-col overflow-hidden">
+        <textarea 
+          id="fs-editor-textarea" 
+          oninput="syncFromFsEditor()" 
+          placeholder="Ketik atau tempel teks panjang di sini dengan nyaman..." 
+          class="w-full h-full p-4 sm:p-8 text-sm sm:text-base leading-relaxed focus:outline-none resize-none"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL ULASAN (TAMBAH & EDIT ULASAN) -->
   <div id="review-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
     <div onclick="closeReviewModal()" class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
     <div class="fixed inset-0 flex items-center justify-center p-4">
-      <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl p-5 sm:p-6 flex flex-col max-h-[90vh] overflow-y-auto">
+      <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl p-5 sm:p-6 flex flex-col max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center pb-3 border-b border-slate-100">
-          <h3 id="modal-review-title" class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
+          <h3 id="modal-review-title" class="font-bold text-sm sm:text-base text-slate-800 flex items-center gap-1.5">
             <i data-lucide="star" class="w-4 h-4 text-amber-500"></i> Buat Ulasan Produk Baru
           </h3>
           <button onclick="closeReviewModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
 
-        <form onsubmit="handleSaveReview(event)" class="space-y-3 pt-3 text-xs">
+        <form onsubmit="handleSaveReview(event)" class="space-y-3.5 pt-3 text-xs sm:text-sm">
           <input type="hidden" id="rev-form-index" />
           <div>
             <label class="font-bold text-slate-700 block mb-1">Nama Pembeli:</label>
-            <input type="text" id="rev-form-user" required placeholder="Contoh: b***9" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+            <input type="text" id="rev-form-user" required placeholder="Contoh: b***9" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
           </div>
-          <div class="grid grid-cols-2 gap-2">
+          <div class="grid grid-cols-2 gap-2.5">
             <div>
               <label class="font-bold text-slate-700 block mb-1">Jumlah Bintang:</label>
-              <select id="rev-form-rating" class="w-full px-3 py-2 border border-slate-200 rounded-xl font-bold text-amber-600">
+              <select id="rev-form-rating" class="w-full px-3 py-2.5 border border-slate-200 rounded-xl font-bold text-amber-600">
                 <option value="5">⭐⭐⭐⭐⭐ (5 Bintang)</option>
                 <option value="4">⭐⭐⭐⭐ (4 Bintang)</option>
                 <option value="3">⭐⭐⭐ (3 Bintang)</option>
@@ -785,26 +820,26 @@
             </div>
             <div>
               <label class="font-bold text-slate-700 block mb-1">Kategori Tag:</label>
-              <select id="rev-form-tag" class="w-full px-3 py-2 border border-slate-200 rounded-xl">
+              <select id="rev-form-tag" class="w-full px-3 py-2.5 border border-slate-200 rounded-xl">
                 <option value="instant">⚡ Kirim Instan</option>
                 <option value="service">🛡️ Garansi Aman</option>
                 <option value="general">Umum / Semua</option>
               </select>
             </div>
           </div>
-          <div class="grid grid-cols-2 gap-2">
+          <div class="grid grid-cols-2 gap-2.5">
             <div>
               <label class="font-bold text-slate-700 block mb-1">Varian:</label>
-              <input type="text" id="rev-form-variant" placeholder="Contoh: 1 Bulan" class="w-full px-3 py-2 border border-slate-200 rounded-xl" />
+              <input type="text" id="rev-form-variant" placeholder="Contoh: 1 Bulan" class="w-full px-3 py-2.5 border border-slate-200 rounded-xl" />
             </div>
             <div>
               <label class="font-bold text-slate-700 block mb-1">Waktu / Tanggal:</label>
-              <input type="text" id="rev-form-date" placeholder="2026-08-24 19:40" class="w-full px-3 py-2 border border-slate-200 rounded-xl" />
+              <input type="text" id="rev-form-date" placeholder="2026-08-24 19:40" class="w-full px-3 py-2.5 border border-slate-200 rounded-xl" />
             </div>
           </div>
           <div>
             <label class="font-bold text-slate-700 block mb-1">Isi Komentar / Testimoni:</label>
-            <textarea id="rev-form-comment" rows="3" required placeholder="Tuliskan ulasan kepuasan produk..." class="w-full px-3 py-2 border border-slate-200 rounded-xl"></textarea>
+            <textarea id="rev-form-comment" rows="5" required placeholder="Tuliskan ulasan kepuasan produk..." class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl leading-relaxed"></textarea>
           </div>
           <div class="pt-3 border-t border-slate-100 flex gap-2">
             <button type="button" onclick="closeReviewModal()" class="w-1/2 py-2.5 bg-slate-100 font-bold rounded-xl text-slate-600">Batal</button>
@@ -821,11 +856,86 @@
     let currentEditingProductId = null;
     window.currentLoadedOrders = [];
     window.currentOrdersSearchQuery = '';
+    window.allOnlineReviewsCache = {};
 
     // ==========================================
-    // TAMBAHAN: Variabel Global Ulasan Asli (Online)
+    // FUNGSI ESCAPE HTML (PERBAIKAN AGAR ULASAN MUNCUL)
     // ==========================================
-    window.allOnlineReviewsCache = {};
+    function escapeHtml(unsafe) {
+      if (unsafe === null || unsafe === undefined) return '';
+      return String(unsafe)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    // ==========================================
+    // FULLSCREEN DOCUMENT EDITOR (SEPERTI MS WORD)
+    // ==========================================
+    let activeTargetTextarea = null;
+
+    function openFullscreenDocEditor(btnElement, titleText, isDarkCode = false) {
+      const wrapper = btnElement.closest('.editor-field-group');
+      if (!wrapper) return;
+      const targetTextarea = wrapper.querySelector('textarea');
+      if (!targetTextarea) return;
+
+      activeTargetTextarea = targetTextarea;
+      const fsModal = document.getElementById('fullscreen-doc-editor-modal');
+      const fsTitle = document.getElementById('fs-editor-title');
+      const fsTextarea = document.getElementById('fs-editor-textarea');
+
+      fsTitle.innerText = titleText || 'Editor Layar Penuh';
+      fsTextarea.value = targetTextarea.value;
+
+      if (isDarkCode) {
+        fsTextarea.className = "w-full h-full p-4 sm:p-8 text-xs sm:text-sm leading-relaxed focus:outline-none resize-none bg-slate-900 text-emerald-400 font-mono";
+      } else {
+        fsTextarea.className = "w-full h-full p-4 sm:p-8 text-sm sm:text-base leading-relaxed focus:outline-none resize-none bg-white text-slate-800";
+      }
+
+      updateFsEditorStats();
+      fsModal.classList.remove('hidden');
+      fsTextarea.focus();
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    function syncFromFsEditor() {
+      const fsTextarea = document.getElementById('fs-editor-textarea');
+      if (activeTargetTextarea && fsTextarea) {
+        activeTargetTextarea.value = fsTextarea.value;
+      }
+      updateFsEditorStats();
+    }
+
+    function updateFsEditorStats() {
+      const fsTextarea = document.getElementById('fs-editor-textarea');
+      const statsEl = document.getElementById('fs-editor-stats');
+      if (!fsTextarea || !statsEl) return;
+      const val = fsTextarea.value || '';
+      const lines = val.trim() === '' ? 0 : val.split('\n').filter(l => l.trim() !== '').length;
+      statsEl.innerText = `${lines} Baris Aktif • ${val.length} Karakter`;
+    }
+
+    function insertTextInFsEditor(snippet) {
+      const fsTextarea = document.getElementById('fs-editor-textarea');
+      if (!fsTextarea) return;
+      const start = fsTextarea.selectionStart;
+      const end = fsTextarea.selectionEnd;
+      const text = fsTextarea.value;
+      fsTextarea.value = text.substring(0, start) + snippet + text.substring(end);
+      fsTextarea.selectionStart = fsTextarea.selectionEnd = start + snippet.length;
+      fsTextarea.focus();
+      syncFromFsEditor();
+    }
+
+    function closeFullscreenDocEditor() {
+      syncFromFsEditor();
+      document.getElementById('fullscreen-doc-editor-modal').classList.add('hidden');
+      activeTargetTextarea = null;
+    }
 
     let bannerSettings = {
       active: false,
@@ -1159,17 +1269,11 @@
        }
     }
 
-    // =========================================================================
-    // FUNGSI FILTER / PENCARIAN UNIVERSAL DATA PESANAN
-    // =========================================================================
     window.filterAdminOrders = function(query) {
       window.currentOrdersSearchQuery = (query || '').trim();
       renderOrdersList(window.currentLoadedOrders, true);
     };
 
-    // =========================================================================
-    // FUNGSI KONFIRMASI MASSAL SEMUA PESANAN
-    // =========================================================================
     window.confirmAllPendingOrders = async function() {
       const pendingOrders = (window.currentLoadedOrders || []).filter(o => {
         const s = String(o.status || "").toLowerCase();
@@ -1192,7 +1296,6 @@
 
       showToast(`Memproses ${pendingOrders.length} pesanan...`);
 
-      // 1. Eksekusi coba melalui endpoint bulk langsung di server jika didukung
       let bulkSucceeded = false;
       try {
         const bulkRes = await fetch(`${API_URL}/orders/confirm-all`, {
@@ -1206,7 +1309,6 @@
         }
       } catch(e) {}
 
-      // 2. Jika server belum ada /orders/confirm-all, lakukan update berurutan
       if (!bulkSucceeded) {
         for (let i = 0; i < pendingOrders.length; i++) {
           const order = pendingOrders[i];
@@ -1220,7 +1322,6 @@
         }
       }
 
-      // 3. Update juga cadangan data lokal (localStorage)
       try {
         let localOrders = JSON.parse(localStorage.getItem('my_digital_orders')) || [];
         if (Array.isArray(localOrders)) {
@@ -1229,7 +1330,6 @@
         }
       } catch(e) {}
 
-      // 4. Update status visual state instan
       window.currentLoadedOrders = window.currentLoadedOrders.map(o => ({
         ...o,
         status: 'Sukses / Selesai'
@@ -1243,9 +1343,6 @@
       setTimeout(() => loadOrdersData(), 1200);
     };
 
-    // =========================================================================
-    // FUNGSI KONFIRMASI PESANAN MANUAL DARI ADMIN (SATU PER SATU)
-    // =========================================================================
     window.confirmOrderSuccess = async function(reference, orderIndex) {
       if (!confirm(`Konfirmasi pesanan ${reference}?\n\nStatus akan langsung diset Sukses / Selesai.`)) {
         return;
@@ -1276,9 +1373,6 @@
       setTimeout(() => loadOrdersData(), 1000);
     };
 
-    // =========================================================================
-    // FUNGSI HAPUS PESANAN DOBEL / SALAH DARI DATABASE KV (SUDAH DIPERBAIKI)
-    // =========================================================================
     window.deleteOrder = async function(reference, orderIndex) {
       if (!confirm(`Hapus pesanan ${reference} dari daftar?`)) {
         return;
@@ -1286,7 +1380,6 @@
 
       showToast(`Menghapus pesanan...`);
 
-      // 1. Hapus langsung dari memori tampilan layar agar seketika hilang
       if (Array.isArray(window.currentLoadedOrders)) {
         if (typeof orderIndex === 'number') {
           window.currentLoadedOrders.splice(orderIndex, 1);
@@ -1296,7 +1389,6 @@
         renderOrdersList(window.currentLoadedOrders);
       }
 
-      // 2. Bersihkan dari cadangan lokal (localStorage) jika ada
       try {
         let localOrders = JSON.parse(localStorage.getItem('my_digital_orders')) || [];
         if (Array.isArray(localOrders)) {
@@ -1309,7 +1401,6 @@
         }
       } catch(e) {}
 
-      // 3. Kirim permintaan hapus ke Cloudflare Worker
       try {
         const res = await fetch(`${API_URL}/orders/delete`, {
           method: 'POST',
@@ -1361,7 +1452,6 @@
             return;
         }
 
-        // Simpan indeks asli agar tombol Konfirmasi & Hapus tetap akurat saat difilter
         const indexedOrders = sourceOrders.map((order, idx) => ({ order, originalIndex: idx }));
 
         const searchInputEl = document.getElementById('admin-orders-search-input');
@@ -1370,7 +1460,6 @@
         const filteredOrders = query === '' ? indexedOrders : indexedOrders.filter(({ order, originalIndex }) => {
             const refDisplay = order.reference || `INV-${originalIndex + 1}`;
             const statusText = order.status || "Menunggu Verifikasi";
-            // Gabungkan seluruh isi field & kalimat yang ada pada kartu pesanan untuk dicari
             const allValues = Object.values(order || {}).map(v => typeof v === 'object' ? JSON.stringify(v) : String(v)).join(' ');
             const searchableText = `${refDisplay} ${statusText} ${allValues}`.toLowerCase();
             return searchableText.includes(query);
@@ -1418,7 +1507,6 @@
                             </div>
                         </div>
 
-                        <!-- TOMBOL AKSI: CHAT WA, KONFIRMASI SUKSES & HAPUS -->
                         <div class="mt-3 pt-3 border-t border-slate-200/60 flex flex-wrap items-center gap-2">
                             ${wa !== '-' ? `
                               <a href="https://wa.me/${wa.replace(/^0/, '62')}" target="_blank" class="flex-1 min-w-[120px] inline-flex items-center justify-center gap-1.5 text-[11px] font-bold text-white bg-emerald-600 hover:bg-emerald-700 px-3 py-2 rounded-xl transition-all shadow-xs">
@@ -1436,7 +1524,6 @@
                               </span>
                             `}
 
-                            <!-- TOMBOL HAPUS PESANAN -->
                             <button onclick="deleteOrder('${order.reference || 'INV-XXX'}', ${orderIdx})" title="Hapus Pesanan Ini" class="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 p-2 rounded-xl transition-all active:scale-95 shadow-2xs flex items-center justify-center cursor-pointer">
                               <i data-lucide="trash-2" class="w-4 h-4"></i>
                             </button>
@@ -1825,50 +1912,76 @@
     function addVariantFormRow(name = '', price = 0, originalPrice = 0, items = '', desc = '', terms = '', paymentType = 'default') {
       const container = document.getElementById('variants-form-container');
       const div = document.createElement('div');
-      div.className = 'bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-2xs';
+      div.className = 'bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-4 shadow-2xs';
       div.innerHTML = `
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 border-b border-slate-100 pb-3">
           <div>
-            <label class="text-[10px] font-bold text-slate-700 block mb-0.5">Nama Paket:</label>
-            <input type="text" placeholder="Contoh: 1 Bulan Privat" value="${name}" class="var-name-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+            <label class="text-[11px] font-bold text-slate-700 block mb-1">Nama Paket:</label>
+            <input type="text" placeholder="Contoh: 1 Bulan Privat" value="${escapeHtml(name)}" class="var-name-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-bold text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
           </div>
           <div>
-            <label class="text-[10px] font-bold text-slate-700 block mb-0.5">Harga Jual (Rp):</label>
-            <input type="number" placeholder="25000" value="${price}" class="var-price-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+            <label class="text-[11px] font-bold text-slate-700 block mb-1">Harga Jual (Rp):</label>
+            <input type="number" placeholder="25000" value="${price}" class="var-price-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-bold text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
           </div>
           <div>
-            <label class="text-[10px] font-bold text-slate-700 block mb-0.5">Harga Coret (Opsional):</label>
-            <input type="number" placeholder="199000" value="${originalPrice || ''}" class="var-orig-price-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+            <label class="text-[11px] font-bold text-slate-700 block mb-1">Harga Coret (Opsional):</label>
+            <input type="number" placeholder="199000" value="${originalPrice || ''}" class="var-orig-price-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-bold text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
           </div>
         </div>
 
-        <div class="bg-indigo-50/40 border border-indigo-100 rounded-xl p-2.5">
-          <label class="text-[10.5px] font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+        <div class="bg-indigo-50/40 border border-indigo-100 rounded-xl p-3">
+          <label class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1.5">
             <i data-lucide="wallet" class="w-3.5 h-3.5 text-indigo-600"></i> Jalur Pembayaran Paket Ini:
           </label>
-          <select class="var-payment-type-input w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <select class="var-payment-type-input w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
             <option value="default" ${paymentType === 'default' ? 'selected' : ''}>🌐 Ikuti Bawaan Toko / Produk</option>
             <option value="gateway" ${paymentType === 'gateway' ? 'selected' : ''}>⚡ Wajib Gateway Otomatis (TriPay QRIS)</option>
             <option value="manual" ${paymentType === 'manual' ? 'selected' : ''}>💬 Wajib QRIS Pribadi (GoPay Manual + Bukti WA)</option>
           </select>
         </div>
         
-        <div class="space-y-2">
-          <div>
-            <label class="text-[10px] font-bold text-slate-700 block mb-0.5">Deskripsi Khusus Varian Ini:</label>
-            <textarea rows="2" class="var-desc-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs leading-relaxed text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Tuliskan fitur unggulan paket ini...">${desc}</textarea>
+        <div class="space-y-3.5">
+          <!-- KOLOM DESKRIPSI LEGA + TOMBOL FULLSCREEN MS WORD -->
+          <div class="editor-field-group">
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                <i data-lucide="align-left" class="w-3.5 h-3.5 text-indigo-600"></i> Deskripsi Khusus Varian Ini:
+              </label>
+              <button type="button" onclick="openFullscreenDocEditor(this, 'Edit Deskripsi Varian (Mode Layar Penuh)', false)" class="text-[11px] font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 px-2.5 py-1 rounded-lg flex items-center gap-1 transition-colors cursor-pointer">
+                <i data-lucide="maximize-2" class="w-3 h-3"></i> Perbesar Layar
+              </button>
+            </div>
+            <textarea rows="6" class="var-desc-input w-full min-h-[150px] px-3.5 py-3 bg-slate-50 focus:bg-white border border-slate-200 rounded-xl text-xs sm:text-sm leading-relaxed text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-y" placeholder="Tuliskan fitur unggulan paket ini...">${escapeHtml(desc)}</textarea>
           </div>
-          <div>
-            <label class="text-[10px] font-bold text-slate-700 block mb-0.5 flex items-center gap-1"><i data-lucide="shield-alert" class="w-3 h-3 text-amber-500"></i> Syarat & Ketentuan Varian Ini:</label>
-            <textarea rows="2" class="var-terms-input w-full px-3 py-2 bg-amber-50/30 border border-amber-200/60 rounded-xl text-xs leading-relaxed text-amber-900 focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="S&K yang berlaku...">${terms}</textarea>
+
+          <!-- KOLOM SYARAT & KETENTUAN LEGA + TOMBOL FULLSCREEN MS WORD -->
+          <div class="editor-field-group">
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-amber-500"></i> Syarat & Ketentuan Varian Ini:
+              </label>
+              <button type="button" onclick="openFullscreenDocEditor(this, 'Edit Syarat & Ketentuan (Mode Layar Penuh)', false)" class="text-[11px] font-bold text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-2.5 py-1 rounded-lg flex items-center gap-1 transition-colors cursor-pointer">
+                <i data-lucide="maximize-2" class="w-3 h-3"></i> Perbesar Layar
+              </button>
+            </div>
+            <textarea rows="6" class="var-terms-input w-full min-h-[150px] px-3.5 py-3 bg-amber-50/30 focus:bg-white border border-amber-200/80 rounded-xl text-xs sm:text-sm leading-relaxed text-amber-950 focus:outline-none focus:ring-2 focus:ring-amber-500 resize-y" placeholder="S&K yang berlaku...">${escapeHtml(terms)}</textarea>
           </div>
         </div>
 
-        <div class="pt-2 border-t border-slate-100">
-          <label class="text-[10px] font-bold text-slate-500 block mb-1">Kunci Akun / Lisensi / Link Download:</label>
-          <textarea rows="2" class="var-items-input w-full px-3 py-2 bg-slate-800 text-emerald-400 border border-slate-700 rounded-xl font-mono text-[11px] placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Link Google Drive / Akun otomatis...">${items}</textarea>
+        <!-- KOLOM KUNCI AKUN / LISENSI LEGA + TOMBOL FULLSCREEN MS WORD -->
+        <div class="pt-3 border-t border-slate-100 editor-field-group">
+          <div class="flex items-center justify-between mb-1.5">
+            <label class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+              <i data-lucide="key-round" class="w-3.5 h-3.5 text-emerald-600"></i> Kunci Akun / Lisensi / Link Download (1 Baris = 1 Stok):
+            </label>
+            <button type="button" onclick="openFullscreenDocEditor(this, 'Edit Kunci Akun / Lisensi (Mode Layar Penuh)', true)" class="text-[11px] font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-2.5 py-1 rounded-lg flex items-center gap-1 transition-colors cursor-pointer">
+              <i data-lucide="maximize-2" class="w-3 h-3"></i> Perbesar Layar
+            </button>
+          </div>
+          <textarea rows="6" class="var-items-input w-full min-h-[150px] px-3.5 py-3 bg-slate-900 text-emerald-400 border border-slate-700 rounded-xl font-mono text-xs sm:text-sm leading-relaxed placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-y" placeholder="Link Google Drive / Akun otomatis...">${escapeHtml(items)}</textarea>
         </div>
-        <button type="button" onclick="this.parentElement.remove()" class="text-[10px] text-rose-600 hover:underline font-bold w-full text-right mt-1 cursor-pointer">Hapus Paket Ini</button>
+
+        <button type="button" onclick="this.parentElement.remove()" class="text-xs text-rose-600 hover:underline font-bold w-full text-right mt-1 cursor-pointer">Hapus Paket Ini</button>
       `;
       container.appendChild(div);
       lucide.createIcons();
@@ -1973,21 +2086,20 @@
     }
 
     // ==========================================
-    // PERBAIKAN: FUNGSI RENDER ULASAN (GABUNGAN ASLI & KUSTOM)
+    // KELOLA ULASAN PRODUK (TAMPIL, EDIT, SEMBUNYIKAN, HAPUS)
     // ==========================================
     let selectedReviewProductId = null;
     
     function populateReviewProductSelector() {
       const select = document.getElementById('review-product-selector');
       if (!select) return;
-      select.innerHTML = products.map(p => `<option value="${p.id}">${p.name} (${p.category})</option>`).join('');
+      select.innerHTML = products.map(p => `<option value="${p.id}">${escapeHtml(p.name)} (${escapeHtml(p.category)})</option>`).join('');
       if (products.length > 0) {
         selectedReviewProductId = Number(select.value);
         renderReviewsForSelectedProduct(selectedReviewProductId);
       }
     }
 
-    // Memuat ulasan asli (online) dari server/API
     async function loadOnlineReviewsForAdmin(prodId) {
       try {
         const res = await fetch(`${API_URL}/reviews?productId=${prodId}`);
@@ -2007,61 +2119,71 @@
       const badge = document.getElementById('review-count-badge');
       if (!product) return;
       
-      // Ambil ulasan kustom dari database produk
       let customReviews = product.customReviews || [];
       
-      // Tampilkan indikator loading sementara
-      container.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs"><i data-lucide="loader-2" class="w-5 h-5 animate-spin mx-auto mb-2 text-indigo-600"></i>Memuat Ulasan Asli Pembeli...</div>`;
+      container.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs"><i data-lucide="loader-2" class="w-5 h-5 animate-spin mx-auto mb-2 text-indigo-600"></i>Memuat Ulasan Pembeli...</div>`;
       if(typeof lucide !== 'undefined') lucide.createIcons();
 
-      // Ambil ulasan asli/online dari server
       let onlineReviews = await loadOnlineReviewsForAdmin(prodId);
-      
-      // Gabungkan ulasan kustom dan ulasan asli
       let combinedReviews = [];
       
-      // Tambahkan penanda tipe ulasan agar fungsi hapusnya tidak salah
       customReviews.forEach((r, idx) => combinedReviews.push({...r, _type: 'custom', _originalIndex: idx}));
       onlineReviews.forEach((r, idx) => combinedReviews.push({...r, _type: 'online', _originalIndex: idx}));
       
-      // Urutkan berdasarkan tanggal terbaru
       combinedReviews.sort((a, b) => {
          let dateA = new Date(a.createdAt || a.date).getTime();
          let dateB = new Date(b.createdAt || b.date).getTime();
          if(isNaN(dateA)) dateA = 0;
          if(isNaN(dateB)) dateB = 0;
-         return dateB - dateA; // Terbaru di atas
+         return dateB - dateA;
       });
 
       badge.innerText = `Total: ${combinedReviews.length} Ulasan`;
 
       if (combinedReviews.length === 0) {
-        container.innerHTML = `<div class="bg-white p-8 rounded-3xl border text-center text-slate-400 text-xs">Belum ada ulasan (Kustom maupun Asli) untuk ${product.name}.</div>`;
+        container.innerHTML = `<div class="bg-white p-8 rounded-3xl border text-center text-slate-400 text-xs">Belum ada ulasan (Kustom maupun Asli) untuk ${escapeHtml(product.name)}.</div>`;
         return;
       }
 
       container.innerHTML = combinedReviews.map((rev) => {
-        // Tentukan fungsi tombol hapus berdasarkan tipe ulasan
+        const isHidden = Boolean(rev.hidden);
         const deleteFunc = rev._type === 'custom' 
           ? `deleteReviewCustom(${rev._originalIndex})` 
-          : `deleteReviewOnline('${rev.createdAt || rev.date}', '${escapeHtml(rev.user)}')`;
+          : `deleteReviewOnline('${escapeHtml(rev.createdAt || rev.date)}', '${escapeHtml(rev.user)}')`;
           
         const typeBadge = rev._type === 'online' 
           ? `<span class="bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded text-[8px] uppercase font-black ml-2 border border-emerald-200">Asli Pembeli</span>`
           : `<span class="bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded text-[8px] uppercase font-black ml-2 border border-slate-200">Buatan (Kustom)</span>`;
 
+        const hiddenBadge = isHidden
+          ? `<span class="bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded text-[8px] uppercase font-black ml-1.5 border border-amber-200">Disembunyikan</span>`
+          : '';
+
+        const customControls = rev._type === 'custom' ? `
+          <button onclick="toggleHideReviewCustom(${rev._originalIndex})" title="${isHidden ? 'Tampilkan Ulasan' : 'Sembunyikan Ulasan'}" class="${isHidden ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-600'} hover:opacity-80 px-2 py-1 rounded-lg text-[10px] font-bold flex items-center gap-1 transition">
+            <i data-lucide="${isHidden ? 'eye-off' : 'eye'}" class="w-3 h-3"></i> ${isHidden ? 'Tampilkan' : 'Sembunyikan'}
+          </button>
+          <button onclick="openEditReviewModal(${rev._originalIndex})" class="text-indigo-600 hover:bg-indigo-50 px-2 py-1 rounded-lg text-[10px] font-bold flex items-center gap-1 transition">
+            <i data-lucide="edit" class="w-3 h-3"></i> Edit
+          </button>
+        ` : '';
+
         return `
-        <div class="bg-white border rounded-3xl p-4 space-y-2 relative">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center">
+        <div class="bg-white border ${isHidden ? 'border-amber-300 bg-amber-50/20 opacity-75' : 'border-slate-200'} rounded-3xl p-4 space-y-2 relative">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center flex-wrap">
                <p class="font-bold text-xs text-slate-800">${escapeHtml(rev.user)} <span class="text-amber-500 text-[10px] ml-1">(${'★'.repeat(rev.rating || 5)})</span></p>
                ${typeBadge}
+               ${hiddenBadge}
             </div>
-            <button onclick="${deleteFunc}" class="text-rose-600 hover:bg-rose-50 px-2 py-1 rounded-lg text-[10px] font-bold flex items-center gap-1 transition">
-               <i data-lucide="trash-2" class="w-3 h-3"></i> Hapus
-            </button>
+            <div class="flex items-center gap-1.5">
+              ${customControls}
+              <button onclick="${deleteFunc}" class="text-rose-600 hover:bg-rose-50 px-2 py-1 rounded-lg text-[10px] font-bold flex items-center gap-1 transition">
+                 <i data-lucide="trash-2" class="w-3 h-3"></i> Hapus
+              </button>
+            </div>
           </div>
-          <p class="text-[11.5px] text-slate-600 leading-relaxed bg-slate-50 p-2.5 rounded-xl border border-slate-100">${escapeHtml(rev.comment)}</p>
+          <p class="text-[11.5px] text-slate-600 leading-relaxed bg-slate-50 p-2.5 rounded-xl border border-slate-100 ${isHidden ? 'line-through' : ''}">${escapeHtml(rev.comment)}</p>
           ${rev.image ? `<img src="${rev.image}" class="w-12 h-12 object-cover rounded-lg border border-slate-200 mt-2">` : ''}
         </div>
       `}).join('');
@@ -2069,7 +2191,32 @@
       if(typeof lucide !== 'undefined') lucide.createIcons();
     }
 
-    // Fungsi menghapus ulasan Kustom (menyimpan ke Cloudflare KV)
+    async function toggleHideReviewCustom(index) {
+      const product = products.find(p => p.id === selectedReviewProductId);
+      if (!product || !product.customReviews[index]) return;
+      product.customReviews[index].hidden = !product.customReviews[index].hidden;
+      renderReviewsForSelectedProduct(selectedReviewProductId);
+      await saveAllProductsToKV();
+      showToast(product.customReviews[index].hidden ? "Ulasan disembunyikan." : "Ulasan ditampilkan kembali.");
+    }
+
+    function openEditReviewModal(index) {
+      const product = products.find(p => p.id === selectedReviewProductId);
+      if (!product || !product.customReviews[index]) return;
+      const rev = product.customReviews[index];
+
+      document.getElementById('modal-review-title').innerHTML = `<i data-lucide="edit" class="w-4 h-4 text-indigo-600"></i> Edit Ulasan Produk`;
+      document.getElementById('rev-form-index').value = index;
+      document.getElementById('rev-form-user').value = rev.user || '';
+      document.getElementById('rev-form-rating').value = rev.rating || 5;
+      document.getElementById('rev-form-tag').value = rev.tag || 'instant';
+      document.getElementById('rev-form-variant').value = rev.variant || '1 Bulan';
+      document.getElementById('rev-form-date').value = rev.date || '';
+      document.getElementById('rev-form-comment').value = rev.comment || '';
+      document.getElementById('review-modal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
     async function deleteReviewCustom(index) {
       if (!confirm("Hapus ulasan buatan ini?")) return;
       const product = products.find(p => p.id === selectedReviewProductId);
@@ -2080,7 +2227,6 @@
       showToast("Ulasan kustom dihapus.");
     }
     
-    // Fungsi menghapus ulasan Asli Online (menyimpan ke endpoint delete API)
     async function deleteReviewOnline(createdAt, user) {
       if (!confirm("Hapus ulasan ASLI dari pembeli ini selamanya?")) return;
       showToast("Menghapus ulasan pembeli...");
@@ -2107,9 +2253,12 @@
     }
 
     function openAddReviewModal() {
+      document.getElementById('modal-review-title').innerHTML = `<i data-lucide="star" class="w-4 h-4 text-amber-500"></i> Buat Ulasan Produk Baru`;
+      document.getElementById('rev-form-index').value = '';
       document.getElementById('rev-form-user').value = 'b***' + Math.floor(Math.random() * 9 + 1);
       document.getElementById('rev-form-comment').value = '';
       document.getElementById('review-modal').classList.remove('hidden');
+      lucide.createIcons();
     }
     
     function closeReviewModal() { document.getElementById('review-modal').classList.add('hidden'); }
@@ -2119,21 +2268,31 @@
       const product = products.find(p => p.id === selectedReviewProductId);
       if (!product) return;
       if (!product.customReviews) product.customReviews = [];
-      
-      product.customReviews.unshift({
+
+      const editIdxVal = document.getElementById('rev-form-index').value;
+      const reviewPayload = {
         user: document.getElementById('rev-form-user').value.trim(),
         rating: Number(document.getElementById('rev-form-rating').value) || 5,
         tag: document.getElementById('rev-form-tag').value,
         variant: document.getElementById('rev-form-variant').value.trim() || '1 Bulan',
-        date: new Date().toISOString(),
+        date: document.getElementById('rev-form-date').value.trim() || new Date().toISOString(),
         createdAt: new Date().toISOString(),
         comment: document.getElementById('rev-form-comment').value.trim()
-      });
+      };
+
+      if (editIdxVal !== '') {
+        const idx = Number(editIdxVal);
+        reviewPayload.hidden = Boolean(product.customReviews[idx]?.hidden);
+        reviewPayload.createdAt = product.customReviews[idx]?.createdAt || reviewPayload.createdAt;
+        product.customReviews[idx] = reviewPayload;
+      } else {
+        product.customReviews.unshift(reviewPayload);
+      }
 
       closeReviewModal();
       renderReviewsForSelectedProduct(selectedReviewProductId);
       await saveAllProductsToKV();
-      showToast("Ulasan Kustom berhasil ditambahkan!");
+      showToast(editIdxVal !== '' ? "Ulasan berhasil diperbarui!" : "Ulasan Kustom berhasil ditambahkan!");
     }
 
     function refreshPhonePreview() {
