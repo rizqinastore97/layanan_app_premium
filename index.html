@@ -640,7 +640,7 @@
     </div>
   </div>
 
-  <!-- MODAL PEMBAYARAN -->
+  <!-- MODAL PEMBAYARAN (TANPA KOLOM GMAIL & VOUCHER) -->
   <div id="payment-modal" class="fixed inset-0 z-[80] overflow-hidden hidden">
     <div class="absolute inset-0 bg-black/60 backdrop-blur-2xs"></div>
     <div class="fixed inset-0 flex items-center justify-center p-4 z-[80]">
@@ -678,10 +678,7 @@
             <div class="p-3.5 space-y-3">
               <div>
                 <label for="pay-buyer-name" class="text-[10px] font-bold text-slate-500 mb-1 block">Nama Lengkap (Wajib):</label>
-                <input type="text" id="pay-buyer-name" placeholder="Ketik nama Anda..." class="w-full text-xs font-semibold text-slate-800 px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#f5125e] focus:ring-1 focus:ring-[#f5125e] bg-white transition-all mb-2" required autocomplete="off" />
-
-                <label for="pay-buyer-email" class="text-[10px] font-bold text-slate-500 mb-1 block">Masukan Gmail Yang Mau Diaktivasi:</label>
-                <input type="email" id="pay-buyer-email" placeholder="Ketik alamat Gmail..." class="w-full text-xs font-semibold text-slate-800 px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#f5125e] focus:ring-1 focus:ring-[#f5125e] bg-white transition-all mb-2" required autocomplete="off" />
+                <input type="text" id="pay-buyer-name" placeholder="Ketik nama Anda..." class="w-full text-xs font-semibold text-slate-800 px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#f5125e] focus:ring-1 focus:ring-[#f5125e] bg-white transition-all mb-2.5" required autocomplete="off" />
 
                 <label for="pay-buyer-wa" class="text-[10px] font-bold text-slate-500 mb-1 block">No WhatsApp (Wajib):</label>
                 <input type="tel" id="pay-buyer-wa" placeholder="Contoh: 08123456789" class="w-full text-xs font-semibold text-slate-800 px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#f5125e] focus:ring-1 focus:ring-[#f5125e] bg-white transition-all" required autocomplete="off" />
@@ -696,16 +693,6 @@
                   <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Total Tagihan</p>
                   <p id="pay-total-amount" class="text-sm font-black text-[#f5125e]"></p>
                 </div>
-              </div>
-
-              <!-- KOTAK KUPON DISKON / VOUCHER -->
-              <div class="bg-rose-50/50 border border-dashed border-rose-200 rounded-xl p-2.5 flex gap-2">
-                <input type="text" id="coupon-code-input" placeholder="Punya voucher?" class="flex-1 text-[11px] uppercase font-bold text-slate-800 px-3 py-1.5 bg-white border border-slate-200 rounded-lg focus:outline-none focus:border-[#f5125e]" />
-                <button type="button" onclick="applyStoreCoupon()" class="bg-[#f5125e] hover:bg-[#d40c4e] text-white text-[10.5px] font-bold px-3 py-1.5 rounded-lg active:scale-95 transition flex-shrink-0">Gunakan</button>
-              </div>
-              <div id="coupon-applied-info" class="hidden text-[10.5px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-lg flex justify-between items-center">
-                <span id="coupon-applied-text">Voucher Berhasil Dipakai</span>
-                <button type="button" onclick="removeStoreCoupon()" class="text-rose-500 hover:text-rose-700 ml-2 font-black text-xs">Batalkan</button>
               </div>
             </div>
           </div>
@@ -931,7 +918,7 @@
             <input 
               type="text" 
               id="history-search-input" 
-              placeholder="No. WhatsApp / Email / Invoice..." 
+              placeholder="No. WhatsApp / Invoice..." 
               class="w-full text-xs pl-9 pr-3 py-2 bg-slate-100 focus:bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#f5125e] font-semibold text-slate-800" 
               required 
             />
@@ -959,7 +946,7 @@
       <div id="history-list" class="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3.5 no-scrollbar">
         <div class="py-16 text-center text-slate-400 text-xs">
           <i data-lucide="search" class="w-9 h-9 mx-auto mb-2 stroke-1 text-slate-300"></i>
-          Masukkan nomor WhatsApp atau Email saat order untuk menampilkan riwayat belanja Anda.
+          Masukkan nomor WhatsApp saat order untuk menampilkan riwayat belanja Anda.
         </div>
       </div>
 
@@ -1052,7 +1039,7 @@
   <script>
     const _wEnc = "aHR0cHM6Ly90b2tvLWRpZ2l0YWwtYXBpLnJpenFpbmFzdG9yZTk3LndvcmtlcnMuZGV2";
     const API_URL = atob(_wEnc);
-    const WHATSAPP_NUMBER = "6282243890517"; 
+    const WHATSAPP_NUMBER = "628214369690"; 
     const QRIS_GOPAY_URL = "https://i.ibb.co.com/PGRmz0G8/Whats-App-Image-2026-08-24-at-12-25-05.jpg"; 
 
     // KONFIGURASI JAM OPERASIONAL TOKO (WIB / UTC+7)
@@ -1075,7 +1062,6 @@
     window.currentCheckoutVariant = null;
     window.currentCheckoutQty = 1;
     window.tripayCheckInterval = null;
-    window.appliedCouponDiscount = 0;
 
     // DATA RIWAYAT SEMENTARA UNTUK TAB FILTER SHOPEE
     window.currentFetchedOrderList = [];
@@ -1107,7 +1093,7 @@
     let promoTimerInterval = null;
 
     // =========================================================================
-    // HELPER: EKSTRAK HARGA TERMURAH & TOTAL STOK DARI VARIAN BERTINGKAT / LAMA
+    // HELPER: EKSTRAK HARGA TERMURAH DARI VARIAN BERTINGKAT / LAMA
     // =========================================================================
     function getProductAllPrices(item) {
       let allPrices = [];
@@ -1894,7 +1880,6 @@
                              currentSelectedProduct.variants[0].groupName !== undefined;
 
       if (isNestedFormat) {
-        // 1. Render Tombol Grup Varian (Tingkat 1)
         container.innerHTML = currentSelectedProduct.variants.map((g, gIdx) => `
           <button type="button" onclick="selectVariantGroup(${gIdx})" class="px-3 py-1.5 rounded-xl text-xs font-bold border transition-all flex items-center gap-1.5 ${gIdx === groupIndex ? 'bg-rose-50 border-[#f5125e] text-[#f5125e] shadow-2xs' : 'bg-white border-slate-200 text-slate-600 hover:border-rose-200'}">
             <span>${escapeHtml(g.groupName)}</span>
@@ -1902,7 +1887,6 @@
           </button>
         `).join('');
 
-        // 2. Render Pilihan Sub-Paket dari Grup Aktif (Tingkat 2)
         const activeGroup = currentSelectedProduct.variants[groupIndex] || currentSelectedProduct.variants[0];
         const options = activeGroup.options || [];
 
@@ -1942,7 +1926,6 @@
           currentSelectedVariant = { name: activeGroup.groupName, price: 0, items: [] };
         }
       } else {
-        // Fallback Format Lama (1 Tingkat)
         if (subWrapper) subWrapper.classList.add('hidden');
         container.innerHTML = currentSelectedProduct.variants.map((v, idx) => `
           <button type="button" onclick="selectVariant(${idx})" class="px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${idx === groupIndex ? 'bg-rose-50 border-[#f5125e] text-[#f5125e]' : 'bg-white border-slate-200 text-slate-600 hover:border-rose-200'}">${escapeHtml(v.name)}</button>
@@ -2093,7 +2076,7 @@
       } catch(e) {}
     }
 
-    window.currentBuyerData = { name: '', email: '', wa: '' };
+    window.currentBuyerData = { name: '', email: '-', wa: '' };
 
     window.saveOrderHistory = function(ref, productName, variantName, totalAmount, buyerData, isGateway = false) {
         let history = [];
@@ -2127,7 +2110,6 @@
       window.currentCheckoutProduct = product;
       window.currentCheckoutVariant = variant;
       window.currentCheckoutQty = qty;
-      window.appliedCouponDiscount = 0;
 
       if (window.tripayCheckInterval) clearInterval(window.tripayCheckInterval);
       
@@ -2136,11 +2118,6 @@
 
       document.getElementById('promo0-checkout-box').classList.add('hidden');
       document.getElementById('qris-container-box').classList.remove('hidden');
-
-      const cInfo = document.getElementById('coupon-applied-info');
-      const cInput = document.getElementById('coupon-code-input');
-      if (cInfo) cInfo.classList.add('hidden');
-      if (cInput) cInput.value = '';
 
       const unitPrice = Number(variant.price) || 0;
       const totalPrice = isCart ? unitPrice : (unitPrice * qty); 
@@ -2164,7 +2141,6 @@
       document.getElementById('pay-total-amount').innerText = window.currentInvoiceTotal;
       
       document.getElementById('pay-buyer-name').value = '';
-      document.getElementById('pay-buyer-email').value = '';
       document.getElementById('pay-buyer-wa').value = '';
 
       let allowedMode = 'both';
@@ -2248,13 +2224,13 @@
 
     window.startGatewayPayment = async function() {
       const name = document.getElementById('pay-buyer-name').value.trim();
-      const email = document.getElementById('pay-buyer-email').value.trim();
       const wa = document.getElementById('pay-buyer-wa').value.trim();
+      const email = '-';
 
-      if (!name || !email || !wa) {
-         showToast('Lengkapi Nama, Email, dan No WA di formulir atas terlebih dahulu!', 'error');
+      if (!name || !wa) {
+         showToast('Lengkapi Nama dan No WA di formulir atas terlebih dahulu!', 'error');
          const instrTxt = document.getElementById('qris-instruction-txt');
-         if (instrTxt) instrTxt.innerText = 'Isi data pemesan di atas, lalu klik tombol di bawah untuk membuat QRIS TriPay:';
+         if (instrTxt) instrTxt.innerText = 'Isi Nama & No WA di atas, lalu klik tombol di bawah untuk membuat QRIS TriPay:';
          const btnAction = document.getElementById('btn-pay-action');
          if (btnAction) {
            btnAction.disabled = false;
@@ -2285,7 +2261,7 @@
             invoiceNo: window.currentInvoiceNo,
             productName: window.currentInvoiceItem,
             buyerName: name,
-            buyerEmail: email,
+            buyerEmail: "customer@digitalhubstore.my.id",
             buyerPhone: wa,
             productId: window.currentCheckoutProduct?.id,
             variantName: window.currentCheckoutVariant?.name,
@@ -2381,60 +2357,6 @@
       if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 
-    window.applyStoreCoupon = async function() {
-      const codeInput = document.getElementById('coupon-code-input');
-      const code = (codeInput?.value || '').trim();
-      if (!code) {
-        showToast('Ketik kode voucher terlebih dahulu!', 'error');
-        return;
-      }
-
-      try {
-        const res = await fetch(`${API_URL}/check-coupon`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code: code, amount: window.currentInvoiceAmountNumeric })
-        });
-        const result = await res.json();
-
-        if (result.valid) {
-          window.appliedCouponDiscount = result.discountAmount;
-          const newTotal = result.finalAmount;
-          window.currentInvoiceAmountNumeric = newTotal;
-          window.currentInvoiceTotal = formatIDR(newTotal);
-
-          document.getElementById('pay-total-amount').innerText = window.currentInvoiceTotal;
-          document.getElementById('coupon-applied-text').innerText = `${result.message} (-${formatIDR(result.discountAmount)})`;
-          document.getElementById('coupon-applied-info').classList.remove('hidden');
-          showToast(`Berhasil hemat ${formatIDR(result.discountAmount)}! 🎉`);
-          
-          if (window.activeCheckoutMethod === 'gateway') {
-            window.startGatewayPayment();
-          }
-        } else {
-          showToast(result.message || 'Kupon tidak berlaku', 'error');
-        }
-      } catch (e) {
-        showToast('Gagal memverifikasi kupon', 'error');
-      }
-    };
-
-    window.removeStoreCoupon = function() {
-      window.appliedCouponDiscount = 0;
-      document.getElementById('coupon-applied-info').classList.add('hidden');
-      document.getElementById('coupon-code-input').value = '';
-      if (currentSelectedVariant) {
-        const originalTotal = (Number(currentSelectedVariant.price) || 0) * currentSelectedQuantity;
-        window.currentInvoiceAmountNumeric = originalTotal;
-        window.currentInvoiceTotal = formatIDR(originalTotal);
-        document.getElementById('pay-total-amount').innerText = window.currentInvoiceTotal;
-      }
-      showToast('Kupon dibatalkan');
-      if (window.activeCheckoutMethod === 'gateway') {
-        window.startGatewayPayment();
-      }
-    };
-
     window.copyAccountSmart = function(type) {
       const fullText = document.getElementById('account-data')?.innerText || '';
       if (!fullText) return;
@@ -2455,11 +2377,11 @@
 
     window.manualPaymentSuccess = async function() {
       const name = document.getElementById('pay-buyer-name').value.trim();
-      const email = document.getElementById('pay-buyer-email').value.trim();
       const wa = document.getElementById('pay-buyer-wa').value.trim();
+      const email = '-';
 
-      if (!name || !email || !wa) {
-         showToast('Tolong lengkapi Nama, Email, dan No WA Anda!', 'error');
+      if (!name || !wa) {
+         showToast('Tolong lengkapi Nama dan No WA Anda!', 'error');
          return;
       }
 
@@ -2629,7 +2551,6 @@
       const order = customOrderData || null;
 
       const name = order?.buyerName || window.currentBuyerData?.name || document.getElementById('pay-buyer-name')?.value.trim() || "Pelanggan Setia";
-      const email = order?.buyerEmail || window.currentBuyerData?.email || document.getElementById('pay-buyer-email')?.value.trim() || "-";
       const wa = order?.buyerWA || window.currentBuyerData?.wa || document.getElementById('pay-buyer-wa')?.value.trim() || "-";
       
       const invNo = order?.reference || window.currentInvoiceNo || `INV-${Date.now()}`;
@@ -2675,7 +2596,6 @@
               <h3 style="margin: 0 0 8px; font-size: 13px; color: #334155; font-weight: bold; text-transform: uppercase;">Detail Pembeli</h3>
               <table style="width: 100%; font-size: 12.5px; border-collapse: collapse;">
                   <tr><td style="padding: 3px 0; width: 90px; color: #64748b;">Nama</td><td>: <b>${name}</b></td></tr>
-                  <tr><td style="padding: 3px 0; color: #64748b;">Email</td><td>: <b>${email}</b></td></tr>
                   <tr><td style="padding: 3px 0; color: #64748b;">No. WA</td><td>: <b>${wa}</b></td></tr>
               </table>
           </div>
@@ -2720,7 +2640,6 @@
 
     window.confirmViaWA = function() {
         const name = window.currentBuyerData.name || document.getElementById('pay-buyer-name')?.value.trim() || "-";
-        const email = window.currentBuyerData.email || document.getElementById('pay-buyer-email')?.value.trim() || "-";
         const wa = window.currentBuyerData.wa || document.getElementById('pay-buyer-wa')?.value.trim() || "-";
         
         const inv = window.currentInvoiceNo || "INV-DIGITAL";
@@ -2739,7 +2658,6 @@
 
 👤 *DATA PEMBELI*
 *Nama          :* ${name}
-*Email          :* ${email}
 *No. WhatsApp :* ${wa}
 
 📦 *RINCIAN PESANAN*
@@ -2784,7 +2702,7 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
         document.getElementById('history-list').innerHTML = `
           <div class="py-16 text-center text-slate-400 text-xs">
             <i data-lucide="search" class="w-9 h-9 mx-auto mb-2 stroke-1 text-slate-300"></i>
-            Masukkan nomor WhatsApp atau Email saat order untuk menampilkan riwayat belanja Anda.
+            Masukkan nomor WhatsApp saat order untuk menampilkan riwayat belanja Anda.
           </div>`;
       }
       if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -3027,7 +2945,6 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
             <p style="margin: 0 0 6px; font-weight: bold; color: #334155;">Data Pembeli</p>
             <div style="display: grid; grid-template-columns: 80px 1fr; gap: 4px;">
               <span style="color: #64748b;">Nama</span><span style="font-weight: 600;">: ${item.buyerName || '-'}</span>
-              <span style="color: #64748b;">Email</span><span style="font-weight: 600;">: ${item.buyerEmail || '-'}</span>
               <span style="color: #64748b;">WhatsApp</span><span style="font-weight: 600;">: ${item.buyerWA || '-'}</span>
             </div>
           </div>
@@ -3036,7 +2953,7 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
             <thead>
               <tr style="background: #f5125e; color: white;">
                 <th style="padding: 8px 10px; text-align: left; border-radius: 6px 0 0 6px;">Produk</th>
-                <th style="padding: 8px 10px; text-align: right; border-radius: 0 6px 6px;">Total</th>
+                <th style="padding: 8px 10px; text-align: right; border-radius: 0 6px 6px 0;">Total</th>
               </tr>
             </thead>
             <tbody>
@@ -3342,12 +3259,12 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
         showBotTyping();
         setTimeout(() => {
           removeBotTyping();
-          appendBotChatMessage(`**Panduan Cek Pesanan & Unduh Invoice:**\n\n1. Klik menu **"Pesanan"** di bar navigasi bawah (atau menu atas jika di PC/Laptop).\n2. Masukkan **Nomor WhatsApp** atau **Email** yang Kakak gunakan saat checkout.\n3. Klik tombol **"Cari"**.\n4. Riwayat pesanan akan muncul. Klik **"Lihat Invoice"** lalu pilih tombol merah **"Unduh PDF"** untuk menyimpan bukti berstatus sukses/lunas! 📄✨\n\n👉 <button onclick="closeChatModal(); openHistoryModal();" class="text-rose-600 font-black underline bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-lg inline-block mt-1.5 shadow-2xs cursor-pointer">Buka Menu Riwayat Sekarang</button>`);
+          appendBotChatMessage(`**Panduan Cek Pesanan & Unduh Invoice:**\n\n1. Klik menu **"Pesanan"** di bar navigasi bawah (atau menu atas jika di PC/Laptop).\n2. Masukkan **Nomor WhatsApp** yang Kakak gunakan saat checkout.\n3. Klik tombol **"Cari"**.\n4. Riwayat pesanan akan muncul. Klik **"Lihat Invoice"** lalu pilih tombol merah **"Unduh PDF"** untuk menyimpan bukti berstatus sukses/lunas! 📄✨\n\n👉 <button onclick="closeChatModal(); openHistoryModal();" class="text-rose-600 font-black underline bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-lg inline-block mt-1.5 shadow-2xs cursor-pointer">Buka Menu Riwayat Sekarang</button>`);
         }, 800);
       } else if (action === 'menu_cara_beli') {
         appendUserChatMessage("Bagaimana cara beli produk via QRIS dan sistem garansinya?");
         showBotTyping();
-        setTimeout(() => { removeBotTyping(); appendBotChatMessage(`**Cara Beli Sangat Mudah:**\n1. Pilih produk & paket yang diinginkan di beranda.\n2. Klik **Beli Sekarang** dan isi Form Pembeli.\n3. Scan QRIS GoPay atau TriPay yang muncul.\n4. Download Invoice PDF lalu konfirmasi ke WA Admin! ⚡\n\n**Jam Operasional:** 08.00 – 23.00 WIB (Order di luar jam kerja tetap aman & diproses pagi pukul 08.00 WIB).\n\n**Info Garansi:**\nSemua produk bergaransi penuh sesuai masa aktif.`); }, 1200);
+        setTimeout(() => { removeBotTyping(); appendBotChatMessage(`**Cara Beli Sangat Mudah:**\n1. Pilih produk & paket yang diinginkan di beranda.\n2. Klik **Beli Sekarang** dan isi Nama & No WhatsApp.\n3. Scan QRIS GoPay atau TriPay yang muncul.\n4. Download Invoice PDF lalu konfirmasi ke WA Admin! ⚡\n\n**Jam Operasional:** 08.00 – 23.00 WIB (Order di luar jam kerja tetap aman & diproses pagi pukul 08.00 WIB).\n\n**Info Garansi:**\nSemua produk bergaransi penuh sesuai masa aktif.`); }, 1200);
       } else if (action === 'menu_hubungi_admin') {
         appendUserChatMessage("Saya ingin menghubungi Admin CS via WhatsApp.");
         chatBotState = 'awaiting_wa_reason'; 
@@ -3394,7 +3311,7 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
       }
 
       if (text.includes('invoice') || text.includes('struk') || text.includes('nota') || text.includes('riwayat') || text.includes('cek pesanan') || text.includes('unduh pdf')) {
-        appendBotChatMessage(`Untuk mengecek atau mengunduh ulang **Invoice PDF** Kakak:\n\n1. Buka menu **Pesanan** di bagian bawah.\n2. Masukkan nomor WA / Email yang Kakak pakai saat membeli.\n3. Klik **Lihat Invoice** lalu tekan **Unduh PDF**.\n\n👉 <button onclick="closeChatModal(); openHistoryModal();" class="text-rose-600 font-black underline bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-lg inline-block mt-1 shadow-2xs cursor-pointer">Buka Riwayat Pesanan</button>`);
+        appendBotChatMessage(`Untuk mengecek atau mengunduh ulang **Invoice PDF** Kakak:\n\n1. Buka menu **Pesanan** di bagian bawah.\n2. Masukkan nomor WA yang Kakak pakai saat membeli.\n3. Klik **Lihat Invoice** lalu tekan **Unduh PDF**.\n\n👉 <button onclick="closeChatModal(); openHistoryModal();" class="text-rose-600 font-black underline bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-lg inline-block mt-1 shadow-2xs cursor-pointer">Buka Riwayat Pesanan</button>`);
         return;
       }
       
