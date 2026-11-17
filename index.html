@@ -159,7 +159,7 @@
     </div>
   </div>
 
-<!-- TOP BAR STATUS JAM OPERASIONAL & HITUNG MUNDUR REAL-TIME -->
+  <!-- TOP BAR STATUS JAM OPERASIONAL & HITUNG MUNDUR REAL-TIME -->
   <div id="store-op-banner" class="bg-slate-900 text-white px-3 sm:px-8 py-1.5 sm:py-2 text-[10px] sm:text-xs border-b border-slate-800 transition-colors duration-300">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-2">
       
@@ -169,7 +169,6 @@
           <span id="op-status-dot" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
           <span id="op-status-text">TOKO BUKA</span>
         </span>
-        <!-- Teks Keterangan disembunyikan di HP (hidden) dan muncul di layar lebih besar (sm:block) -->
         <span id="op-schedule-desc" class="text-slate-300 font-medium truncate hidden sm:block">
           Jam Kerja: <b>08.00 – 23.00 WIB</b> <span class="hidden md:inline text-slate-400">• Pesanan diproses cepat!</span>
         </span>
@@ -184,6 +183,7 @@
       
     </div>
   </div>
+
   <!-- Header Toko -->
   <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-rose-100/80 shadow-xs px-3 sm:px-8 py-3">
     <div class="w-full flex items-center justify-between gap-2.5 sm:gap-6">
@@ -484,7 +484,7 @@
     <button onclick="openChatModal()" class="flex flex-col items-center gap-0.5 hover:text-[#f5125e]"><i data-lucide="message-square-more" class="w-4 h-4"></i><span>Chat CS</span></button>
   </div>
 
-  <!-- MODAL DETAIL PRODUK -->
+  <!-- MODAL DETAIL PRODUK (DENGAN VARIAN BERTINGKAT: GRUP & SUB-PAKET) -->
   <div id="detail-modal" class="fixed inset-0 z-50 overflow-hidden hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
     <div onclick="closeDetailModal()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
     <div id="detail-modal-card" class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col h-[92vh] sm:h-auto sm:max-h-[94vh] relative z-10 overflow-hidden">
@@ -511,13 +511,24 @@
       </div>
 
       <div class="p-4 overflow-y-auto space-y-4 text-xs sm:text-sm flex-1 bg-white">
+        <!-- PILIHAN GRUP VARIAN (TINGKAT 1) -->
         <div>
-          <h4 class="font-bold text-slate-800 mb-1.5 flex items-center justify-between text-xs">
+          <h4 class="font-bold text-slate-800 mb-2 flex items-center justify-between text-xs">
             <span>Pilihan Varian / Layanan:</span>
             <span id="modal-stock-indicator" class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100">Stok Siap Kirim</span>
           </h4>
           <div id="modal-variants-list" class="flex flex-wrap gap-2"></div>
         </div>
+
+        <!-- PILIHAN SUB-PAKET (TINGKAT 2 - MUNCUL OTOMATIS SAAT GRUP DIPILIH) -->
+        <div id="modal-subvariants-wrapper" class="hidden bg-slate-50 p-3 rounded-2xl border border-slate-200/80 space-y-2">
+          <h5 class="text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
+            <i data-lucide="layers" class="w-3.5 h-3.5 text-[#f5125e]"></i>
+            <span>Pilih Sub-Paket (<span id="selected-group-label" class="text-[#f5125e]"></span>):</span>
+          </h5>
+          <div id="modal-subvariants-list" class="grid grid-cols-2 gap-2"></div>
+        </div>
+
         <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex items-center justify-around text-center">
           <div><span class="text-[10px] text-slate-400 block">Terjual</span><span id="modal-sold" class="font-bold text-slate-800"></span></div>
           <div class="w-px h-5 bg-slate-200"></div>
@@ -808,7 +819,7 @@
              <div class="bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-center mt-2">
                <p class="text-[10px] sm:text-[10.5px] text-slate-600 leading-relaxed font-medium">
                  🕒 <b>Jam Operasional Toko:</b> 08.00 – 23.00 WIB (Proses cepat 5–30 menit).<br/>
-                 <span class="text-slate-500 text-[9.5px]">Pesanan manual di luar jam kerja tetap aman tercatat dan langsung diproses pada antrean pertama pukul 08.00 WIB.</span>
+                 <span class="text-slate-500 text-[9.5px]">Pesanan manual di luar jam kerja tetap aman tercatat dan langsung diproses pada antrean pertama pukul 08.00 WIB pagi.</span>
                </p>
              </div>
           </div>
@@ -1084,6 +1095,8 @@
     let searchQuery = '';
     let currentSort = 'default';
     let currentSelectedProduct = null;
+    let currentSelectedGroupIndex = 0;
+    let currentSelectedSubIndex = 0;
     let currentSelectedVariant = null;
     let currentSelectedQuantity = 1; 
     let deferredPwaPrompt = null;
@@ -1092,6 +1105,28 @@
     let lastDiscussedProduct = null; 
     let promo0Data = null;
     let promoTimerInterval = null;
+
+    // =========================================================================
+    // HELPER: EKSTRAK HARGA TERMURAH & TOTAL STOK DARI VARIAN BERTINGKAT / LAMA
+    // =========================================================================
+    function getProductAllPrices(item) {
+      let allPrices = [];
+      if (item.variants && Array.isArray(item.variants) && item.variants.length > 0) {
+        if (item.variants[0].groupName !== undefined) {
+          item.variants.forEach(g => {
+            (g.options || []).forEach(opt => {
+              allPrices.push(Number(opt.price || 0));
+            });
+          });
+        } else {
+          item.variants.forEach(v => {
+            allPrices.push(Number(v.price || 0));
+          });
+        }
+      }
+      if (allPrices.length === 0) allPrices.push(Number(item.price || 0));
+      return allPrices;
+    }
 
     // =========================================================================
     // FUNGSI REAL-TIME JAM OPERASIONAL & COUNTDOWN (SINKRON WIB / UTC+7)
@@ -1110,8 +1145,8 @@
     function updateStoreOperationalStatus() {
       const wib = getWIBCurrentInfo();
       const currentSecondsOfDay = (wib.hours * 3600) + (wib.minutes * 60) + wib.seconds;
-      const openSeconds = STORE_OPEN_HOUR * 3600;   // 08:00:00
-      const closeSeconds = STORE_CLOSE_HOUR * 3600; // 23:00:00
+      const openSeconds = STORE_OPEN_HOUR * 3600;
+      const closeSeconds = STORE_CLOSE_HOUR * 3600;
 
       const isOpen = currentSecondsOfDay >= openSeconds && currentSecondsOfDay < closeSeconds;
       window.isStoreCurrentlyOpen = isOpen;
@@ -1559,7 +1594,7 @@
 
       if(popSec) popSec.classList.remove('hidden');
       popGrid.innerHTML = bestProducts.slice(0, 4).map(item => {
-        const prices = item.variants && item.variants.length > 0 ? item.variants.map(v => Number(v.price || 0)) : [Number(item.price || 0)];
+        const prices = getProductAllPrices(item);
         return `
           <div onclick="openDetailModal('${item.id}')" class="bg-white rounded-2xl p-2.5 border border-rose-200/90 shadow-2xs hover:border-[#f5125e] transition-all cursor-pointer group flex flex-col justify-between relative">
             <div>
@@ -1622,9 +1657,9 @@
       if (currentSort === 'popular') {
         filtered.sort((a, b) => Number(b.sold || 0) - Number(a.sold || 0));
       } else if (currentSort === 'price-asc') {
-        filtered.sort((a, b) => Math.min(...(a.variants && a.variants.length > 0 ? a.variants : [{price: a.price||0}]).map(v => Number(v.price||0))) - Math.min(...(b.variants && b.variants.length > 0 ? b.variants : [{price: b.price||0}]).map(v => Number(v.price||0))));
+        filtered.sort((a, b) => Math.min(...getProductAllPrices(a)) - Math.min(...getProductAllPrices(b)));
       } else if (currentSort === 'price-desc') {
-        filtered.sort((a, b) => Math.min(...(b.variants && b.variants.length > 0 ? b.variants : [{price: b.price||0}]).map(v => Number(v.price||0))) - Math.min(...(a.variants && a.variants.length > 0 ? a.variants : [{price: a.price||0}]).map(v => Number(v.price||0))));
+        filtered.sort((a, b) => Math.min(...getProductAllPrices(b)) - Math.min(...getProductAllPrices(a)));
       } else if (currentSort === 'rating') {
         filtered.sort((a, b) => Number(b.rating || 5) - Number(a.rating || 5));
       }
@@ -1638,7 +1673,7 @@
       }
 
       grid.innerHTML = filtered.map(item => {
-        const prices = item.variants && item.variants.length > 0 ? item.variants.map(v => Number(v.price || 0)) : [Number(item.price || 0)];
+        const prices = getProductAllPrices(item);
         const minPrice = Math.min(...prices);
         const ratingNum = Math.round(Number(item.rating || 5));
         const starsHtml = '★'.repeat(ratingNum);
@@ -1667,7 +1702,7 @@
       if(typeof lucide !== 'undefined') lucide.createIcons();
     }
 
-    // ================= FUNGSI MODAL DETAIL =================
+    // ================= FUNGSI MODAL DETAIL (DENGAN VARIAN BERTINGKAT) =================
     window.openDetailModal = function(id) {
       history.pushState({ modalOpen: true }, '', '#detail');
       const p = products.find(i => i.id == id);
@@ -1678,8 +1713,9 @@
       if (!p.variants || p.variants.length === 0) {
           p.variants = [{ name: 'Default', price: p.price || 0, originalPrice: p.originalPrice || 0, items: [] }];
       }
-      currentSelectedVariant = p.variants[0];
       
+      currentSelectedGroupIndex = 0;
+      currentSelectedSubIndex = 0;
       currentSelectedQuantity = 1;
       const qtyElem = document.getElementById('modal-quantity');
       if(qtyElem) qtyElem.innerText = currentSelectedQuantity;
@@ -1714,7 +1750,7 @@
         `).join('');
       }
 
-      window.renderVariantSelection(0);
+      window.renderVariantSelection(0, 0);
       window.removeReviewImage();
       window.loadProductReviews(p.id);
       document.getElementById('detail-modal').classList.remove('hidden');
@@ -1771,7 +1807,6 @@
       document.getElementById('payment-modal').classList.add('hidden'); 
     };
 
-    // ================= FUNGSI MODAL KOMUNITAS / LIVE ORDER WA =================
     window.openCommunityModal = function() {
       history.pushState({ modalOpen: true }, '', '#live-wa');
       document.getElementById('community-modal').classList.remove('hidden');
@@ -1842,11 +1877,78 @@
       });
     };
 
-    window.renderVariantSelection = function(activeIndex) {
+    // =========================================================================
+    // LOGIKA PEMILIHAN VARIAN BERTINGKAT (TINGKAT 1: GRUP, TINGKAT 2: SUB-PAKET)
+    // =========================================================================
+    window.renderVariantSelection = function(groupIndex = 0, subIndex = 0) {
       const container = document.getElementById('modal-variants-list');
-      container.innerHTML = currentSelectedProduct.variants.map((v, idx) => `
-        <button onclick="selectVariant(${idx})" class="px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${idx === activeIndex ? 'bg-rose-50 border-[#f5125e] text-[#f5125e]' : 'bg-white border-slate-200 text-slate-600 hover:border-rose-200'}">${v.name}</button>
-      `).join('');
+      const subWrapper = document.getElementById('modal-subvariants-wrapper');
+      const subListContainer = document.getElementById('modal-subvariants-list');
+      const groupLabelEl = document.getElementById('selected-group-label');
+
+      currentSelectedGroupIndex = groupIndex;
+      currentSelectedSubIndex = subIndex;
+
+      const isNestedFormat = currentSelectedProduct.variants &&
+                             currentSelectedProduct.variants.length > 0 &&
+                             currentSelectedProduct.variants[0].groupName !== undefined;
+
+      if (isNestedFormat) {
+        // 1. Render Tombol Grup Varian (Tingkat 1)
+        container.innerHTML = currentSelectedProduct.variants.map((g, gIdx) => `
+          <button type="button" onclick="selectVariantGroup(${gIdx})" class="px-3 py-1.5 rounded-xl text-xs font-bold border transition-all flex items-center gap-1.5 ${gIdx === groupIndex ? 'bg-rose-50 border-[#f5125e] text-[#f5125e] shadow-2xs' : 'bg-white border-slate-200 text-slate-600 hover:border-rose-200'}">
+            <span>${escapeHtml(g.groupName)}</span>
+            <i data-lucide="chevron-down" class="w-3.5 h-3.5 ${gIdx === groupIndex ? 'text-[#f5125e] rotate-180' : 'text-slate-400'} transition-transform"></i>
+          </button>
+        `).join('');
+
+        // 2. Render Pilihan Sub-Paket dari Grup Aktif (Tingkat 2)
+        const activeGroup = currentSelectedProduct.variants[groupIndex] || currentSelectedProduct.variants[0];
+        const options = activeGroup.options || [];
+
+        if (options.length > 0) {
+          if (subWrapper) subWrapper.classList.remove('hidden');
+          if (groupLabelEl) groupLabelEl.innerText = activeGroup.groupName;
+
+          const safeSubIdx = subIndex < options.length ? subIndex : 0;
+          currentSelectedSubIndex = safeSubIdx;
+
+          subListContainer.innerHTML = options.map((opt, oIdx) => {
+            const optStock = Array.isArray(opt.items) ? opt.items.length : (Number(opt.stock) || 0);
+            const isSelected = oIdx === safeSubIdx;
+            return `
+              <button type="button" onclick="selectSubVariant(${oIdx})" class="p-2.5 rounded-xl text-left border-2 transition-all flex flex-col justify-between relative ${isSelected ? 'bg-white border-[#f5125e] shadow-xs' : 'bg-white/80 border-slate-200 hover:border-rose-200'} ${optStock <= 0 ? 'opacity-60' : ''}">
+                <div class="flex items-start justify-between gap-1">
+                  <span class="font-bold text-[11px] leading-tight ${isSelected ? 'text-[#f5125e]' : 'text-slate-800'}">${escapeHtml(opt.name)}</span>
+                  ${isSelected ? `<i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-[#f5125e] flex-shrink-0"></i>` : ''}
+                </div>
+                <div class="mt-1.5 flex items-center justify-between">
+                  <span class="font-black text-xs text-slate-900">${formatIDR(Number(opt.price || 0))}</span>
+                  <span class="text-[9px] font-bold ${optStock > 0 ? 'text-emerald-600' : 'text-rose-500'}">${optStock > 0 ? `Stok ${optStock}` : 'Habis'}</span>
+                </div>
+              </button>
+            `;
+          }).join('');
+
+          const chosenOpt = options[safeSubIdx];
+          currentSelectedVariant = {
+            ...chosenOpt,
+            name: `${activeGroup.groupName} - ${chosenOpt.name}`,
+            rawOptionName: chosenOpt.name,
+            groupName: activeGroup.groupName
+          };
+        } else {
+          if (subWrapper) subWrapper.classList.add('hidden');
+          currentSelectedVariant = { name: activeGroup.groupName, price: 0, items: [] };
+        }
+      } else {
+        // Fallback Format Lama (1 Tingkat)
+        if (subWrapper) subWrapper.classList.add('hidden');
+        container.innerHTML = currentSelectedProduct.variants.map((v, idx) => `
+          <button type="button" onclick="selectVariant(${idx})" class="px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${idx === groupIndex ? 'bg-rose-50 border-[#f5125e] text-[#f5125e]' : 'bg-white border-slate-200 text-slate-600 hover:border-rose-200'}">${escapeHtml(v.name)}</button>
+        `).join('');
+        currentSelectedVariant = currentSelectedProduct.variants[groupIndex] || currentSelectedProduct.variants[0];
+      }
       
       window.updateModalPriceDisplay();
       document.getElementById('modal-desc').innerText = currentSelectedVariant.desc || currentSelectedProduct.description || 'Tidak ada deskripsi.';
@@ -1854,7 +1956,7 @@
       const stockBadge = document.getElementById('modal-stock-indicator');
       const btnBuy = document.getElementById('modal-btn-buy');
       const btnCart = document.getElementById('modal-btn-cart');
-      const stockCount = Array.isArray(currentSelectedVariant.items) ? currentSelectedVariant.items.length : 0;
+      const stockCount = Array.isArray(currentSelectedVariant.items) ? currentSelectedVariant.items.length : (Number(currentSelectedVariant.stock) || 0);
 
       if (stockBadge) {
         if (stockCount > 0) {
@@ -1879,11 +1981,19 @@
           if (btnCart) btnCart.disabled = true;
         }
       }
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    };
+
+    window.selectVariantGroup = function(gIdx) {
+      window.renderVariantSelection(gIdx, 0);
+    };
+
+    window.selectSubVariant = function(oIdx) {
+      window.renderVariantSelection(currentSelectedGroupIndex, oIdx);
     };
 
     window.selectVariant = function(idx) {
-      currentSelectedVariant = currentSelectedProduct.variants[idx];
-      window.renderVariantSelection(idx); 
+      window.renderVariantSelection(idx, 0); 
     };
 
     window.handleModalCart = function() {
@@ -2057,7 +2167,6 @@
       document.getElementById('pay-buyer-email').value = '';
       document.getElementById('pay-buyer-wa').value = '';
 
-      // Prioritaskan setting varian terlebih dahulu
       let allowedMode = 'both';
       const varPayType = variant?.paymentType || 'default';
       const prodPayType = product?.paymentType || 'default';
@@ -2212,7 +2321,6 @@
     function startTripayStatusPolling(reference) {
       if (window.tripayCheckInterval) clearInterval(window.tripayCheckInterval);
 
-      // Fungsi eksekusi cek status
       const checkNow = async () => {
         try {
           const res = await fetch(`${API_URL}/check-status`, {
@@ -2227,7 +2335,6 @@
           });
           const result = await res.json();
 
-          // Jika status sudah lunas, langsung hentikan polling dan tampilkan akun
           if (result && (result.status === 'PAID' || result.paid)) {
             clearInterval(window.tripayCheckInterval);
             onGatewayPaymentSuccess(result.account || 'Akun Anda telah diaktifkan secara otomatis!', result.terms);
@@ -2235,10 +2342,7 @@
         } catch(err) {}
       };
 
-      // 1. Langsung tembak cek di detik ke-0 (tanpa nunggu jeda)
       checkNow();
-
-      // 2. Ulangi pengecekan setiap 1.5 detik (1500 ms) agar langsung terdeteksi begitu transfer selesai
       window.tripayCheckInterval = setInterval(checkNow, 1500);
     }
     
@@ -2259,7 +2363,6 @@
       accData.className = 'font-mono text-[11px] sm:text-xs text-emerald-400 whitespace-pre-wrap break-all select-all leading-relaxed';
       accData.innerText = accountInfo;
 
-      // Tampilkan S&K di layar hasil jika tersedia
       const termsBox = document.getElementById('checkout-terms-container');
       const termsTxt = document.getElementById('checkout-terms-text');
       const currentTerms = termsInfo || window.currentCheckoutVariant?.terms || window.currentCheckoutProduct?.terms || '';
@@ -2367,7 +2470,6 @@
       btnAction.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin inline mr-1"></i> Mengambil Akun...`;
       if (typeof lucide !== 'undefined') lucide.createIcons();
 
-      // JIKA INI ORDER PROMO RP 0
       if (window.isPromo0Order) {
         try {
           const res = await fetch(`${API_URL}/claim-promo`, {
@@ -2396,7 +2498,6 @@
           document.getElementById('btn-confirm-wa').classList.remove('hidden');
           document.getElementById('account-data').innerText = givenAccount;
 
-          // S&K Promo di Layar Hasil
           const termsBox = document.getElementById('checkout-terms-container');
           const termsTxt = document.getElementById('checkout-terms-text');
           const promoTerms = promo0Data?.terms || '1. Dilarang mengganti informasi akun.\n2. Akun langsung aktif dan siap digunakan.';
@@ -2440,7 +2541,6 @@
         return;
       }
 
-      // JIKA INI ORDER BIASA (MANUAL QRIS)
       document.getElementById('step-pay').classList.add('hidden');
       document.getElementById('step-result').classList.remove('hidden');
       document.getElementById('res-title').innerText = "Verifikasi Pembayaran";
@@ -2453,7 +2553,6 @@
         ? "MENUNGGU VERIFIKASI PEMBAYARAN.\nKirimkan tangkapan layar (screenshot) bukti transfer asli ke WhatsApp Admin untuk validasi & pengiriman akses akun."
         : "PESANAN TERCATAT (ORDER DI LUAR JAM OPERASIONAL).\nSilakan tetap kirim bukti transfer ke WhatsApp Admin. Pesanan Anda masuk antrean prioritas pertama pukul 08.00 WIB pagi.";
 
-      // Tampilkan S&K di Layar Hasil Saja
       const termsBox = document.getElementById('checkout-terms-container');
       const termsTxt = document.getElementById('checkout-terms-text');
       const currentTerms = window.currentCheckoutVariant?.terms || window.currentCheckoutProduct?.terms || '';
@@ -2839,17 +2938,14 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
               </div>
 
               <div class="flex items-center justify-end gap-2 pt-1 flex-wrap">
-                <!-- Tombol Lihat Invoice -->
                 <button onclick="viewInvoiceFromData('${itemBase64}')" class="px-3 py-1.5 rounded-xl border border-slate-200 text-slate-700 font-bold text-[11px] hover:bg-slate-50 transition active:scale-95 cursor-pointer">
                   Lihat Invoice
                 </button>
 
-                <!-- Tombol Beli Lagi -->
                 <button onclick="reorderProduct('${matchedProd ? matchedProd.id : ''}')" class="px-3 py-1.5 rounded-xl border border-slate-200 text-slate-700 font-bold text-[11px] hover:bg-slate-50 transition active:scale-95 cursor-pointer">
                   Beli Lagi
                 </button>
 
-                <!-- Tombol Nilai (Khusus Pesanan Selesai) -->
                 ${isDone ? `
                   <button onclick="openReviewModalFromOrder('${matchedProd ? matchedProd.id : ''}', '${escapeHtml(item.productName)}', '${escapeHtml(item.buyerName || '')}')" class="px-4 py-1.5 rounded-xl bg-[#f5125e] hover:bg-[#d40c4e] text-white font-bold text-[11px] transition active:scale-95 shadow-2xs cursor-pointer">
                     Nilai
@@ -3182,8 +3278,9 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
       const container = document.getElementById('product-reviews-list');
       if (!container || !currentSelectedProduct) return;
       
+      const customList = (currentSelectedProduct.customReviews || []).filter(r => !r.hidden);
       const onlineList = window.productOnlineReviews[currentSelectedProduct.id] || [];
-      let listToShow = [...onlineList];
+      let listToShow = [...customList, ...onlineList];
 
       if (activeReviewFilter === 'star5') {
         listToShow = listToShow.filter(r => Number(r.rating) === 5);
@@ -3349,7 +3446,7 @@ _Halo Admin DigitalHub, mohon dicek dan divalidasi pembayarannya. Terima kasih!_
 
       if (matchedProduct) {
         lastDiscussedProduct = matchedProduct; 
-        const prices = matchedProduct.variants && matchedProduct.variants.length > 0 ? matchedProduct.variants.map(v => Number(v.price||0)) : [Number(matchedProduct.price||0)];
+        const prices = getProductAllPrices(matchedProduct);
         const minPrice = formatIDR(Math.min(...prices));
         appendBotChatMessage(`Untuk produk **${matchedProduct.name}** saat ini stoknya **READY** dan bisa diproses cepat! 🎉\n\nHarganya mulai dari **${minPrice}**. Kakak bisa langsung cari produknya di katalog dan klik "Beli Sekarang".`);
         return;
